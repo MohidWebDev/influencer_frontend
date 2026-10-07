@@ -25,6 +25,9 @@ import { useTaxonomy } from '../hooks/useTaxonomy'
 import { countryName, languageName } from '../utils/format'
 
 const PAGE_SIZE = 12
+// Explore ke upar wale card ki tasveer (Unsplash)
+const HEADER_IMAGE =
+  'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1600&q=80'
 const FILTER_KEYS = [
   'profession',
   'industry',
@@ -240,9 +243,15 @@ function Search() {
   return (
     <div className="space-y-6">
       {/* Upar: heading + search */}
-      <section className="relative overflow-hidden rounded-3xl bg-gray-900 px-5 py-8 text-white sm:px-8 md:py-10">
-        <div className="pointer-events-none absolute -end-16 -top-16 h-56 w-56 rounded-full bg-white/5" />
-        <div className="pointer-events-none absolute -bottom-20 end-24 h-40 w-40 rounded-full bg-white/5" />
+      <section className="relative isolate overflow-hidden rounded-3xl bg-gray-900 px-5 py-10 text-white sm:px-8 md:py-14">
+        {/* Peeche tasveer; likhai wali taraf gehra parda taake text saaf parha jaye */}
+        <img
+          src={HEADER_IMAGE}
+          alt=""
+          decoding="async"
+          className="absolute inset-0 -z-10 h-full w-full object-cover object-center"
+        />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-gray-950/95 via-gray-950/75 to-gray-950/20 rtl:bg-gradient-to-l" />
         <div className="relative max-w-2xl">
           <p className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-white/60">
             <FontAwesomeIcon icon={faMagnifyingGlass} />

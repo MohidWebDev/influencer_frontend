@@ -239,11 +239,8 @@ function Home() {
             {t('home.howSubtitle')}
           </p>
           <ol className="mt-8 grid gap-6 md:grid-cols-3">
-            {steps.map((step, i) => (
-              <li key={step.title} className="relative rounded-2xl bg-gray-50 p-5">
-                <span className="absolute end-4 top-4 text-3xl font-bold text-gray-200">
-                  {i + 1}
-                </span>
+            {steps.map((step) => (
+              <li key={step.title} className="rounded-2xl bg-gray-50 p-5">
                 <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-900 text-white">
                   <FontAwesomeIcon icon={step.icon} />
                 </span>
