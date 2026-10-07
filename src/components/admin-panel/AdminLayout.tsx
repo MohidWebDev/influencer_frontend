@@ -1,4 +1,6 @@
 import { NavLink, Outlet, Link } from 'react-router-dom'
+import { useAdminAlerts } from '../../hooks/useAdminAlerts'
+import CountBadge from '../CountBadge'
 import { useTranslation } from 'react-i18next'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -22,6 +24,7 @@ const LINKS: { to: string; key: string; icon: IconDefinition; end?: boolean }[] 
 // /admin ka dhaancha: sidebar + page. dir se Urdu/Arabic mein layout ulta ho jata hai
 function AdminLayout() {
   const { t, i18n } = useTranslation()
+  const alerts = useAdminAlerts()
 
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     `flex shrink-0 items-center gap-3 whitespace-nowrap rounded-lg px-3 py-2 text-sm transition ${
@@ -45,6 +48,8 @@ function AdminLayout() {
               <NavLink key={link.to} to={link.to} end={link.end} className={linkClass}>
                 <FontAwesomeIcon icon={link.icon} className="w-4" />
                 {t(link.key)}
+                {link.to === '/admin/claims' && <CountBadge count={alerts.claims} />}
+                {link.to === '/admin/reports' && <CountBadge count={alerts.reports} />}
               </NavLink>
             ))}
           </nav>

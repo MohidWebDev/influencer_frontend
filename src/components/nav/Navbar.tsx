@@ -21,7 +21,9 @@ import {
   type NavItem,
 } from '../../constants/navigation'
 import { ROLE_LABELS } from '../../constants/roles'
+import { useAdminAlerts } from '../../hooks/useAdminAlerts'
 import { useAuth } from '../../hooks/useAuth'
+import CountBadge from '../CountBadge'
 import Avatar from '../Avatar'
 import AccountMenu from './AccountMenu'
 import LanguageMenu from './LanguageMenu'
@@ -41,6 +43,7 @@ function Navbar() {
   }
 
   const role = user?.role
+  const alerts = useAdminAlerts()
   const mainItems = MAIN_NAV.filter((item) => canSee(item, role))
   const utilityItems = UTILITY_NAV.filter((item) => canSee(item, role))
   const active = (item: NavItem) => isNavActive(item, pathname, search)
@@ -70,6 +73,7 @@ function Navbar() {
             <Link key={item.to} to={item.to} className={linkClass(active(item))}>
               <FontAwesomeIcon icon={item.icon} />
               {item.label}
+              {item.to === '/admin' && <CountBadge count={alerts.total} />}
             </Link>
           ))}
         </div>
@@ -170,6 +174,7 @@ function Navbar() {
                   >
                     <FontAwesomeIcon icon={item.icon} className="w-4" />
                     {item.label}
+                    {item.to === '/admin' && <CountBadge count={alerts.total} />}
                   </Link>
                 </li>
               ))}

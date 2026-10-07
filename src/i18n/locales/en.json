@@ -762,5 +762,12 @@
     "sendNewCodeTo": "Send a new code to",
     "correctCodeTo": "The talent entered the correct code sent to {{url}}.",
     "rejectClaim": "Reject claim"
+  },
+  "live": {
+    "claimsNeedAction": "New claim activity: {{count}} claim(s) need your action.",
+    "newReport": "New report received. Open reports: {{count}}.",
+    "codeSent": "A verification code for {{name}} was sent to {{url}}. Enter it on your dashboard.",
+    "approved": "Your claim for {{name}} was approved. The profile is now yours.",
+    "rejected": "Your claim for {{name}} was rejected."
   }
 }
