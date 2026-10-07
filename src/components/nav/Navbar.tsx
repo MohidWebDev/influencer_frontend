@@ -55,6 +55,7 @@ function Navbar() {
     }`
 
   const dashboardItem = ACCOUNT_NAV[0]
+  const showDashboard = canSee(dashboardItem, role)
 
   return (
     <header className="relative border-b border-gray-200 bg-white">
@@ -90,10 +91,12 @@ function Navbar() {
                     <FontAwesomeIcon icon={item.icon} />
                   </Link>
                 ))}
-                <Link to="/dashboard" className={`${linkClass(active(dashboardItem))} ms-1`}>
-                  <FontAwesomeIcon icon={faTableColumns} />
-                  {t('site.nav.dashboard')}
-                </Link>
+                {showDashboard && (
+                  <Link to="/dashboard" className={`${linkClass(active(dashboardItem))} ms-1`}>
+                    <FontAwesomeIcon icon={faTableColumns} />
+                    {t('site.nav.dashboard')}
+                  </Link>
+                )}
                 <div className="ms-1">
                   <AccountMenu onLogout={handleLogout} />
                 </div>
@@ -155,7 +158,9 @@ function Navbar() {
             <ul className="space-y-1">
               {[
                 ...mainItems,
-                ...(user ? [dashboardItem, ...utilityItems, ACCOUNT_NAV[1]] : []),
+                ...(user
+                  ? [...(showDashboard ? [dashboardItem] : []), ...utilityItems, ACCOUNT_NAV[1]]
+                  : []),
               ].map((item) => (
                 <li key={item.to}>
                   <Link

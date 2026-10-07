@@ -11,14 +11,16 @@ function Login() {
   const { user, login } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
-  const redirectTo = (location.state as { from?: string } | null)?.from ?? '/dashboard'
+  const from = (location.state as { from?: string } | null)?.from
+  // Admin seedha Admin panel pe, baqi sab apne dashboard pe
+  const homeFor = (role?: string) => (role === 'admin' ? '/admin' : '/dashboard')
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  if (user) return <Navigate to={redirectTo} replace />
+  if (user) return <Navigate to={from ?? homeFor(user.role)} replace />
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
@@ -28,7 +30,7 @@ function Login() {
     try {
       const loggedIn = await login({ email, password })
       toast.success(t('login.welcomeBack', { name: loggedIn.name }))
-      navigate(redirectTo, { replace: true })
+      navigate(from ?? homeFor(loggedIn.role), { replace: true })
     } catch (error) {
       const { message, fields } = getApiError(error)
       setErrors(fields)

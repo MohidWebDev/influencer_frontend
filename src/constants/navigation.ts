@@ -8,10 +8,8 @@ import {
   faIdCard,
   faLayerGroup,
   faShieldHalved,
-  faPlus,
   faStar,
   faTableColumns,
-  faUserCheck,
   faUsers,
 } from '@fortawesome/free-solid-svg-icons'
 import { tr } from '../i18n/translated'
@@ -74,22 +72,6 @@ export const MAIN_NAV: NavItem[] = [
     roles: ['business', 'agency', 'organization'],
   },
   {
-    to: '/dashboard?tab=claims',
-    get label() {
-      return tr('site.nav.claims')
-    },
-    icon: faUserCheck,
-    roles: ['admin'],
-  },
-  {
-    to: '/dashboard/people/new',
-    get label() {
-      return tr('site.nav.addProfile')
-    },
-    icon: faPlus,
-    roles: ['admin'],
-  },
-  {
     to: '/admin',
     get label() {
       return tr('site.nav.adminPanel')
@@ -127,7 +109,8 @@ export const ACCOUNT_NAV: NavItem[] = [
       return tr('site.nav.dashboard')
     },
     icon: faTableColumns,
-    roles: 'auth',
+    // Admin ke liye Dashboard nahi, us ka Admin panel hai
+    roles: ['talent', 'representative', 'business', 'agency', 'organization'],
   },
   {
     to: '/settings',
