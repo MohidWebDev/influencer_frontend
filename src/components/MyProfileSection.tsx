@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRight, faArrowUpRightFromSquare, faPen } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
@@ -9,6 +10,7 @@ import { isOpenClaim } from '../types/claim'
 
 // Talent dashboard ka sab se upar wala hissa: meri profile ki halat
 function MyProfileSection() {
+  const { t } = useTranslation()
   const { data: profile, isLoading: profileLoading } = useQuery(myProfileQuery)
   const { data: claims, isLoading: claimsLoading } = useQuery(myClaimsQuery)
 
@@ -23,7 +25,7 @@ function MyProfileSection() {
     return (
       <section className={`${box} border-green-200`}>
         <p className="text-xs font-medium uppercase tracking-wide text-green-700">
-          Your public profile
+          {t('myProfile.label')}
         </p>
         <div className="mt-3 flex flex-col gap-4 sm:flex-row sm:items-center">
           <Avatar name={profile.name} photoUrl={profile.photoUrl} />
@@ -38,14 +40,15 @@ function MyProfileSection() {
               to={`/people/${profile.slug}`}
               className="rounded-lg border border-gray-300 px-4 py-2 text-sm hover:bg-gray-100"
             >
-              View <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="ml-1 text-xs" />
+              {t('myProfile.view')}{' '}
+              <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="ms-1 text-xs" />
             </Link>
             <Link
               to="/dashboard/profile/edit"
               className="rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
             >
-              <FontAwesomeIcon icon={faPen} className="mr-1.5" />
-              Edit profile
+              <FontAwesomeIcon icon={faPen} className="me-1.5" />
+              {t('claimAction.editProfile')}
             </Link>
           </div>
         </div>
@@ -63,23 +66,22 @@ function MyProfileSection() {
     <section className={`${box} border-gray-200`}>
       {latest?.status === 'rejected' && (
         <p className="mb-4 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
-          Your claim for <strong>{latest.person.name}</strong> was not approved:{' '}
-          {latest.rejectionReason}
+          {t('myProfile.rejected', { name: latest.person.name, reason: latest.rejectionReason })}
         </p>
       )}
       <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
-        Your public profile
+        {t('myProfile.label')}
       </p>
-      <h2 className="mt-2 text-lg font-semibold">Find your profile and claim it</h2>
+      <h2 className="mt-2 text-lg font-semibold">{t('myProfile.findTitle')}</h2>
       <p className="mt-1 text-sm text-gray-600">
-        Search for your name. On your profile page, click{' '}
-        <strong>&quot;Is this you? Claim&quot;</strong>.
+        {t('myProfile.findBody')}
       </p>
       <Link
         to="/search"
         className="mt-4 inline-block rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
       >
-        Find my profile <FontAwesomeIcon icon={faArrowRight} className="ml-1" />
+        {t('myProfile.findButton')}{' '}
+        <FontAwesomeIcon icon={faArrowRight} className="ms-1 rtl:rotate-180" />
       </Link>
     </section>
   )

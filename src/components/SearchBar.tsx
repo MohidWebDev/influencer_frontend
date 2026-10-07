@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { useState, type FormEvent } from 'react'
@@ -10,6 +11,7 @@ interface SearchBarProps {
 
 // Enter dabane pe /search?q=... pe le jata hai
 function SearchBar({ initialValue = '', size = 'md' }: SearchBarProps) {
+  const { t } = useTranslation()
   const [value, setValue] = useState(initialValue)
   const navigate = useNavigate()
 
@@ -27,17 +29,17 @@ function SearchBar({ initialValue = '', size = 'md' }: SearchBarProps) {
         type="search"
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        placeholder="Search by name or what they do..."
-        aria-label="Search people"
+        placeholder={t('site.search.placeholder')}
+        aria-label={t('site.search.label')}
         className={`min-w-0 flex-1 rounded-xl border border-gray-300 bg-white px-4 outline-none focus:ring-2 focus:ring-gray-900 ${padding}`}
       />
       <button
         type="submit"
-        aria-label="Search"
+        aria-label={t('common.search')}
         className={`rounded-xl bg-gray-900 px-5 font-medium text-white hover:bg-gray-800 ${padding}`}
       >
-        <FontAwesomeIcon icon={faMagnifyingGlass} className="sm:mr-2" />
-        <span className="hidden sm:inline">Search</span>
+        <FontAwesomeIcon icon={faMagnifyingGlass} className="sm:me-2" />
+        <span className="hidden sm:inline">{t('common.search')}</span>
       </button>
     </form>
   )

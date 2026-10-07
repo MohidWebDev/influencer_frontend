@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useState, type FormEvent } from 'react'
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
@@ -6,6 +7,7 @@ import { useAuth } from '../hooks/useAuth'
 import { getApiError } from '../utils/apiError'
 
 function Login() {
+  const { t } = useTranslation()
   const { user, login } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
@@ -25,7 +27,7 @@ function Login() {
 
     try {
       const loggedIn = await login({ email, password })
-      toast.success(`Welcome back, ${loggedIn.name}!`)
+      toast.success(t('login.welcomeBack', { name: loggedIn.name }))
       navigate(redirectTo, { replace: true })
     } catch (error) {
       const { message, fields } = getApiError(error)
@@ -38,13 +40,13 @@ function Login() {
 
   return (
     <section className="mx-auto max-w-md rounded-2xl bg-white p-6 shadow-sm md:p-8">
-      <h1 className="text-2xl font-bold">Log in</h1>
-      <p className="mt-1 text-sm text-gray-500">Welcome back! Enter your details.</p>
+      <h1 className="text-2xl font-bold">{t('login.title')}</h1>
+      <p className="mt-1 text-sm text-gray-500">{t('login.subtitle')}</p>
 
       <form onSubmit={handleSubmit} className="mt-6 space-y-4" noValidate>
         <FormField
           id="email"
-          label="Email"
+          label={t('login.email')}
           type="email"
           autoComplete="email"
           value={email}
@@ -54,7 +56,7 @@ function Login() {
         />
         <FormField
           id="password"
-          label="Password"
+          label={t('login.password')}
           type="password"
           autoComplete="current-password"
           value={password}
@@ -67,14 +69,14 @@ function Login() {
           disabled={isSubmitting}
           className="w-full rounded-lg bg-gray-900 py-2.5 font-medium text-white hover:bg-gray-800 disabled:opacity-60"
         >
-          {isSubmitting ? 'Logging in...' : 'Log in'}
+          {isSubmitting ? t('login.submitting') : t('login.submit')}
         </button>
       </form>
 
       <p className="mt-6 text-center text-sm text-gray-600">
-        Don&apos;t have an account?{' '}
+        {t('login.noAccount')}{' '}
         <Link to="/register" className="font-medium text-gray-900 underline">
-          Sign up
+          {t('login.signup')}
         </Link>
       </p>
     </section>

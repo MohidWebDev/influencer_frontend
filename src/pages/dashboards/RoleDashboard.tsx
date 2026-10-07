@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -31,106 +32,107 @@ interface RoleConfig {
 
 const EXPLORE: DashboardCard = {
   icon: faMagnifyingGlass,
-  title: 'Discover people',
+  title: 'dash.discover.title',
   description:
-    'Search journalists, creators, speakers and experts by profession, industry, topic and location.',
-  action: { label: 'Explore people', to: '/search' },
+    'dash.discover.description',
+  action: { label: 'dash.discover.action', to: '/search' },
 }
 
 // Har account type ka apna dashboard. Features aage ke phases mein judenge
 const ROLE_DASHBOARDS: Record<SignupRole, RoleConfig> = {
   talent: {
-    title: 'Talent dashboard',
-    subtitle: 'Manage your public profile, what you offer and who wants to work with you.',
+    title: 'dash.talent.title',
+    subtitle: 'dash.talent.subtitle',
     cards: [
       {
         icon: faFileInvoiceDollar,
-        title: 'Services & rates',
-        description: 'List what you offer (talks, campaigns, podcasts) and your price range.',
+        title: 'dash.services.title',
+        description: 'dash.services.description',
       },
       {
         icon: faCalendarCheck,
-        title: 'Availability',
-        description: 'Tell businesses what you are open to right now.',
+        title: 'dash.availability.title',
+        description: 'dash.availability.description',
       },
       {
         icon: faEnvelopeOpenText,
-        title: 'Inquiries',
-        description: 'Requests from businesses and organizations. Accept or decline.',
+        title: 'dash.inquiries.title',
+        description: 'dash.inquiries.description',
       },
     ],
   },
   representative: {
-    title: 'Manager dashboard',
-    subtitle: 'Handle profiles and inquiries for the talents you represent.',
+    title: 'dash.representative.title',
+    subtitle: 'dash.representative.subtitle',
     cards: [
       {
         icon: faUsers,
-        title: 'Your talents',
-        description: 'Profiles you manage on behalf of the people you represent.',
+        title: 'dash.yourTalents.title',
+        description: 'dash.yourTalents.description',
       },
       {
         icon: faEnvelopeOpenText,
-        title: 'Inquiries',
-        description: 'All requests for your talents in one inbox.',
+        title: 'dash.inquiries.title',
+        description: 'dash.repInquiries.description',
       },
       EXPLORE,
     ],
   },
   business: {
-    title: 'Business dashboard',
-    subtitle: 'Find the right people for your brand and track your requests.',
+    title: 'dash.business.title',
+    subtitle: 'dash.business.subtitle',
     cards: [
       EXPLORE,
       {
         icon: faStar,
-        title: 'Shortlists',
-        description: 'Save people you like into lists and share them with your team.',
+        title: 'dash.shortlists.title',
+        description: 'dash.shortlists.businessDescription',
       },
       {
         icon: faEnvelopeOpenText,
-        title: 'Sent inquiries',
-        description: 'Track the requests you sent and their status.',
+        title: 'dash.sentInquiries.title',
+        description: 'dash.sentInquiries.businessDescription',
       },
     ],
   },
   agency: {
-    title: 'Agency dashboard',
-    subtitle: 'Plan campaigns and manage requests for your clients.',
+    title: 'dash.agency.title',
+    subtitle: 'dash.agency.subtitle',
     cards: [
       EXPLORE,
       {
         icon: faStar,
-        title: 'Shortlists',
-        description: 'Build talent lists for each client or campaign.',
+        title: 'dash.shortlists.title',
+        description: 'dash.shortlists.agencyDescription',
       },
       {
         icon: faEnvelopeOpenText,
-        title: 'Sent inquiries',
-        description: 'Track every request you sent on behalf of clients.',
+        title: 'dash.sentInquiries.title',
+        description: 'dash.sentInquiries.agencyDescription',
       },
     ],
   },
   organization: {
-    title: 'Organization dashboard',
-    subtitle: 'Find speakers, experts and guests for your events and programs.',
+    title: 'dash.organization.title',
+    subtitle: 'dash.organization.subtitle',
     cards: [
       EXPLORE,
       {
         icon: faMicrophone,
-        title: 'Event requests',
-        description: 'Invite speakers and experts and follow up on replies.',
+        title: 'dash.eventRequests.title',
+        description: 'dash.eventRequests.description',
       },
       {
         icon: faStar,
-        title: 'Shortlists',
-        description: 'Keep lists of people for upcoming events.',
+        title: 'dash.shortlists.title',
+        description: 'dash.shortlists.orgDescription',
       },
     ],
   },
 }
 
 function RoleDashboard({ role }: { role: SignupRole }) {
+  const { t } = useTranslation()
   const config = ROLE_DASHBOARDS[role]
 
   return (
@@ -140,8 +142,8 @@ function RoleDashboard({ role }: { role: SignupRole }) {
       {role === 'talent' && <MyProfileSection />}
 
       <div>
-        <h2 className="text-lg font-semibold">{config.title}</h2>
-        <p className="text-sm text-gray-500">{config.subtitle}</p>
+        <h2 className="text-lg font-semibold">{t(config.title)}</h2>
+        <p className="text-sm text-gray-500">{t(config.subtitle)}</p>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -156,18 +158,19 @@ function RoleDashboard({ role }: { role: SignupRole }) {
               </span>
               {!card.action && (
                 <span className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs text-gray-500">
-                  Coming soon
+                  {t('dash.comingSoon')}
                 </span>
               )}
             </div>
-            <h3 className="mt-3 font-semibold">{card.title}</h3>
-            <p className="mt-1 flex-1 text-sm text-gray-600">{card.description}</p>
+            <h3 className="mt-3 font-semibold">{t(card.title)}</h3>
+            <p className="mt-1 flex-1 text-sm text-gray-600">{t(card.description)}</p>
             {card.action && (
               <Link
                 to={card.action.to}
                 className="mt-4 self-start rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
               >
-                {card.action.label} <FontAwesomeIcon icon={faArrowRight} className="ml-1" />
+                {t(card.action.label)}{' '}
+                <FontAwesomeIcon icon={faArrowRight} className="ms-1 rtl:rotate-180" />
               </Link>
             )}
           </article>

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import type { ReactNode } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
@@ -10,11 +11,12 @@ interface ProtectedRouteProps {
 }
 
 function ProtectedRoute({ children, roles }: ProtectedRouteProps) {
+  const { t } = useTranslation()
   const { user, isLoading } = useAuth()
   const location = useLocation()
 
   if (isLoading) {
-    return <p className="text-center text-gray-500">Loading...</p>
+    return <p className="text-center text-gray-500">{t('common.loading')}</p>
   }
 
   if (!user) {
@@ -25,7 +27,7 @@ function ProtectedRoute({ children, roles }: ProtectedRouteProps) {
   if (roles && !roles.includes(user.role)) {
     return (
       <p className="text-center text-red-600">
-        You do not have permission to view this page.
+        {t('site.noPermission')}
       </p>
     )
   }

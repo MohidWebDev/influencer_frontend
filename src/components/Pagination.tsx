@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 interface PaginationProps {
@@ -7,6 +8,7 @@ interface PaginationProps {
 }
 
 function Pagination({ page, totalPages, onChange }: PaginationProps) {
+  const { t } = useTranslation()
   if (totalPages <= 1) return null
 
   const buttonClass =
@@ -15,19 +17,19 @@ function Pagination({ page, totalPages, onChange }: PaginationProps) {
   return (
     <nav aria-label="Pagination" className="mt-8 flex items-center justify-center gap-3">
       <button className={buttonClass} disabled={page <= 1} onClick={() => onChange(page - 1)}>
-        <FontAwesomeIcon icon={faChevronLeft} className="mr-1.5 text-xs" />
-        Previous
+        <FontAwesomeIcon icon={faChevronLeft} className="me-1.5 text-xs rtl:rotate-180" />
+        {t('common.previous')}
       </button>
       <span className="text-sm text-gray-600">
-        Page {page} of {totalPages}
+        {t('common.pageOf', { page, total: totalPages })}
       </span>
       <button
         className={buttonClass}
         disabled={page >= totalPages}
         onClick={() => onChange(page + 1)}
       >
-        Next
-        <FontAwesomeIcon icon={faChevronRight} className="ml-1.5 text-xs" />
+        {t('common.next')}
+        <FontAwesomeIcon icon={faChevronRight} className="ms-1.5 text-xs rtl:rotate-180" />
       </button>
     </nav>
   )

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { useState, type FormEvent } from 'react'
@@ -16,6 +17,7 @@ import { getApiError } from '../../utils/apiError'
 const PAGE_SIZE = 20
 
 function AdminDashboard() {
+  const { t } = useTranslation()
   const [searchParams, setSearchParams] = useSearchParams()
   const [search, setSearch] = useState(searchParams.get('q') ?? '')
   const queryClient = useQueryClient()
@@ -36,7 +38,7 @@ function AdminDashboard() {
   const quickUpdate = useMutation({
     mutationFn: ({ id, input }: { id: string; input: PersonInput }) => updatePerson(id, input),
     onSuccess: (person) => {
-      toast.success(`${person.name} updated`)
+      toast.success(t('oldAdmin.updated', { name: person.name }))
       // Purana cache bekaar karo taake har jagah naya data aaye
       queryClient.invalidateQueries({ queryKey: ['admin'] })
       queryClient.invalidateQueries({ queryKey: ['people'] })
@@ -48,7 +50,7 @@ function AdminDashboard() {
   const remove = useMutation({
     mutationFn: (person: { _id: string; slug: string; name: string }) => deletePerson(person._id),
     onSuccess: (_data, person) => {
-      toast.success(`${person.name} deleted`)
+      toast.success(t('oldAdmin.deleted', { name: person.name }))
       queryClient.invalidateQueries({ queryKey: ['admin'] })
       queryClient.invalidateQueries({ queryKey: ['people'] })
       queryClient.removeQueries({ queryKey: ['person', person.slug] })
@@ -91,8 +93,8 @@ function AdminDashboard() {
           to="/dashboard/people/new"
           className="rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
         >
-          <FontAwesomeIcon icon={faPlus} className="mr-1.5" />
-          New profile
+          <FontAwesomeIcon icon={faPlus} className="me-1.5" />
+          {t('oldAdmin.newProfile')}
         </Link>
       </DashboardHeader>
 
@@ -103,7 +105,7 @@ function AdminDashboard() {
           className={tabClass(tab === 'people')}
           onClick={() => setSearchParams({})}
         >
-          People
+          {t('oldAdmin.people')}
         </button>
         <button
           role="tab"
@@ -111,9 +113,9 @@ function AdminDashboard() {
           className={tabClass(tab === 'claims')}
           onClick={() => setSearchParams({ tab: 'claims' })}
         >
-          Claim requests
+          {t('oldAdmin.claimRequests')}
           {pendingCount > 0 && (
-            <span className="ml-2 rounded-full bg-red-600 px-2 py-0.5 text-xs text-white">
+            <span className="ms-2 rounded-full bg-red-600 px-2 py-0.5 text-xs text-white">
               {pendingCount}
             </span>
           )}
@@ -126,8 +128,8 @@ function AdminDashboard() {
         <section className="space-y-4">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
-              <h2 className="text-lg font-semibold">People profiles</h2>
-              <p className="text-sm text-gray-500">{data ? `${total} profiles` : ' '}</p>
+              <h2 className="text-lg font-semibold">{t('oldAdmin.peopleProfiles')}</h2>
+              <p className="text-sm text-gray-500">{data ? t('oldAdmin.profilesCount', { count: total }) : ' '}</p>
             </div>
           </div>
 
@@ -137,23 +139,23 @@ function AdminDashboard() {
                 type="search"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search by name or slug"
-                aria-label="Search profiles"
+                placeholder={t('oldAdmin.searchPlaceholder')}
+                aria-label={t('oldAdmin.searchProfiles')}
                 className="min-w-0 flex-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm"
               />
               <button type="submit" className="rounded-lg bg-gray-900 px-4 py-2 text-sm text-white">
-                Search
+                {t('common.search')}
               </button>
             </form>
             <select
-              aria-label="Visibility"
+              aria-label={t('oldAdmin.visibility')}
               value={searchParams.get('visibility') ?? ''}
               onChange={(e) => setParam('visibility', e.target.value)}
               className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm"
             >
-              <option value="">All profiles</option>
-              <option value="visible">Visible</option>
-              <option value="hidden">Hidden</option>
+              <option value="">{t('oldAdmin.allProfiles')}</option>
+              <option value="visible">{t('oldAdmin.visible')}</option>
+              <option value="hidden">{t('oldAdmin.hidden')}</option>
             </select>
           </div>
 
@@ -161,7 +163,7 @@ function AdminDashboard() {
 
           {data && data.people.length === 0 && (
             <p className="rounded-2xl border border-dashed border-gray-300 p-8 text-center text-gray-500">
-              No profiles found.
+              {t('oldAdmin.noProfiles')}
             </p>
           )}
 

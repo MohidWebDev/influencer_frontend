@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useState, type FormEvent } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
@@ -8,6 +9,7 @@ import type { SignupRole } from '../types/user'
 import { getApiError } from '../utils/apiError'
 
 function Register() {
+  const { t } = useTranslation()
   const { user, register } = useAuth()
   const navigate = useNavigate()
 
@@ -25,14 +27,14 @@ function Register() {
     setErrors({})
 
     if (!role) {
-      setErrors({ role: 'Choose an account type' })
+      setErrors({ role: t('register.chooseType') })
       return
     }
 
     setIsSubmitting(true)
     try {
       const created = await register({ name, email, password, role })
-      toast.success(`Welcome, ${created.name}!`)
+      toast.success(t('register.welcome', { name: created.name }))
       navigate('/dashboard', { replace: true })
     } catch (error) {
       const { message, fields } = getApiError(error)
@@ -45,12 +47,12 @@ function Register() {
 
   return (
     <section className="mx-auto max-w-2xl rounded-2xl bg-white p-6 shadow-sm md:p-8">
-      <h1 className="text-2xl font-bold">Create your account</h1>
-      <p className="mt-1 text-sm text-gray-500">First, tell us who you are.</p>
+      <h1 className="text-2xl font-bold">{t('register.title')}</h1>
+      <p className="mt-1 text-sm text-gray-500">{t('register.subtitle')}</p>
 
       <form onSubmit={handleSubmit} className="mt-6 space-y-6" noValidate>
         <fieldset>
-          <legend className="mb-2 text-sm font-medium">I am a...</legend>
+          <legend className="mb-2 text-sm font-medium">{t('register.iAm')}</legend>
           <div className="grid gap-3 sm:grid-cols-2">
             {SIGNUP_ROLE_OPTIONS.map((option) => (
               <label
@@ -82,7 +84,7 @@ function Register() {
         <div className="space-y-4">
           <FormField
             id="name"
-            label="Full name"
+            label={t('register.fullName')}
             autoComplete="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -91,7 +93,7 @@ function Register() {
           />
           <FormField
             id="email"
-            label="Email"
+            label={t('login.email')}
             type="email"
             autoComplete="email"
             value={email}
@@ -101,10 +103,10 @@ function Register() {
           />
           <FormField
             id="password"
-            label="Password"
+            label={t('login.password')}
             type="password"
             autoComplete="new-password"
-            placeholder="At least 8 characters"
+            placeholder={t('register.passwordHint')}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             error={errors.password}
@@ -117,14 +119,14 @@ function Register() {
           disabled={isSubmitting}
           className="w-full rounded-lg bg-gray-900 py-2.5 font-medium text-white hover:bg-gray-800 disabled:opacity-60"
         >
-          {isSubmitting ? 'Creating account...' : 'Create account'}
+          {isSubmitting ? t('register.submitting') : t('register.submit')}
         </button>
       </form>
 
       <p className="mt-6 text-center text-sm text-gray-600">
-        Already have an account?{' '}
+        {t('register.haveAccount')}{' '}
         <Link to="/login" className="font-medium text-gray-900 underline">
-          Log in
+          {t('register.login')}
         </Link>
       </p>
     </section>

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useCallback, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -10,6 +11,7 @@ import Avatar from '../Avatar'
 
 // Desktop pe naam wala button: Dashboard, Settings, Log out
 function AccountMenu({ onLogout }: { onLogout: () => void }) {
+  const { t } = useTranslation()
   const { user } = useAuth()
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
@@ -21,15 +23,15 @@ function AccountMenu({ onLogout }: { onLogout: () => void }) {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen((o) => !o)}
-        aria-label="Account menu"
+        aria-label={t('site.nav.accountMenu')}
         aria-expanded={open}
-        className="inline-flex items-center gap-2 rounded-full border border-gray-200 py-1 pl-1 pr-3 hover:bg-gray-50"
+        className="inline-flex items-center gap-2 rounded-full border border-gray-200 py-1 ps-1 pe-3 hover:bg-gray-50"
       >
         <Avatar name={user.name} size="sm" />
         <FontAwesomeIcon icon={faChevronDown} className="text-xs text-gray-500" />
       </button>
       {open && (
-        <div className="absolute right-0 z-30 mt-2 w-60 rounded-xl border border-gray-200 bg-white py-2 shadow-lg">
+        <div className="absolute end-0 z-30 mt-2 w-60 rounded-xl border border-gray-200 bg-white py-2 shadow-lg">
           <div className="border-b border-gray-100 px-4 pb-3">
             <p className="truncate font-medium">{user.name}</p>
             <p className="truncate text-xs text-gray-500">
@@ -52,10 +54,10 @@ function AccountMenu({ onLogout }: { onLogout: () => void }) {
               close()
               onLogout()
             }}
-            className="flex w-full items-center gap-3 px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50"
+            className="flex w-full items-center gap-3 px-4 py-2 text-start text-sm text-red-600 hover:bg-red-50"
           >
             <FontAwesomeIcon icon={faRightFromBracket} className="w-4" />
-            Log out
+            {t('site.nav.logout')}
           </button>
         </div>
       )}

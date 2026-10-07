@@ -52,16 +52,7 @@ function App() {
           path="/dashboard/services"
           element={
             <ProtectedRoute roles={['talent']}>
-              <ComingSoon
-                title="Services & availability"
-                icon={faBriefcase}
-                description="Tell businesses what you offer and what you are open to."
-                features={[
-                  'Add services like keynote talks, brand campaigns or podcast guesting',
-                  'Set a fixed price, a price range or "ask for a quote"',
-                  'Turn availability on or off: speaking, campaigns, podcasts, events',
-                ]}
-              />
+              <ComingSoon page="services" icon={faBriefcase} />
             </ProtectedRoute>
           }
         />
@@ -69,16 +60,7 @@ function App() {
           path="/inbox"
           element={
             <ProtectedRoute>
-              <ComingSoon
-                title="Inbox"
-                icon={faEnvelope}
-                description="All your inquiries and conversations in one place."
-                features={[
-                  'Businesses send inquiries with a brief, budget and date',
-                  'Talent and managers accept or decline',
-                  'A message thread for every inquiry',
-                ]}
-              />
+              <ComingSoon page="inbox" icon={faEnvelope} />
             </ProtectedRoute>
           }
         />
@@ -86,16 +68,7 @@ function App() {
           path="/notifications"
           element={
             <ProtectedRoute>
-              <ComingSoon
-                title="Notifications"
-                icon={faBell}
-                description="Stay updated without checking every page."
-                features={[
-                  'New inquiry received',
-                  'Inquiry accepted or declined',
-                  'Profile claim updates',
-                ]}
-              />
+              <ComingSoon page="notifications" icon={faBell} />
             </ProtectedRoute>
           }
         />
@@ -103,16 +76,7 @@ function App() {
           path="/shortlists"
           element={
             <ProtectedRoute roles={['business', 'agency', 'organization']}>
-              <ComingSoon
-                title="Shortlists"
-                icon={faStar}
-                description="Save people you like and plan who to contact."
-                features={[
-                  'Create lists for campaigns or events',
-                  'Add or remove people from any profile',
-                  'Share a list with your team using a link',
-                ]}
-              />
+              <ComingSoon page="shortlists" icon={faStar} />
             </ProtectedRoute>
           }
         />
@@ -120,16 +84,7 @@ function App() {
           path="/talents"
           element={
             <ProtectedRoute roles={['representative']}>
-              <ComingSoon
-                title="My talents"
-                icon={faUsers}
-                description="Manage the people you represent."
-                features={[
-                  'Link the profiles you manage to your account',
-                  'Edit their services and availability',
-                  'See inquiries for all your talents together',
-                ]}
-              />
+              <ComingSoon page="talents" icon={faUsers} />
             </ProtectedRoute>
           }
         />
@@ -137,16 +92,7 @@ function App() {
           path="/settings"
           element={
             <ProtectedRoute>
-              <ComingSoon
-                title="Settings"
-                icon={faGear}
-                description="Manage your account."
-                features={[
-                  'Change your password',
-                  'Verify your email address',
-                  'Choose your language: English, Urdu or Arabic',
-                ]}
-              />
+              <ComingSoon page="settings" icon={faGear} />
             </ProtectedRoute>
           }
         />

@@ -14,6 +14,7 @@ import {
   faUserCheck,
   faUsers,
 } from '@fortawesome/free-solid-svg-icons'
+import { tr } from '../i18n/translated'
 import type { Role } from '../types/user'
 
 export interface NavItem {
@@ -26,32 +27,116 @@ export interface NavItem {
 
 // Navbar ke beech wale links (document ke saare pages)
 export const MAIN_NAV: NavItem[] = [
-  { to: '/search', label: 'Explore', icon: faCompass },
-  { to: '/browse', label: 'Browse', icon: faLayerGroup },
-  { to: '/my-profile', label: 'My profile', icon: faIdCard, roles: ['talent'] },
-  { to: '/dashboard/services', label: 'Services', icon: faBriefcase, roles: ['talent'] },
-  { to: '/talents', label: 'My talents', icon: faUsers, roles: ['representative'] },
+  {
+    to: '/search',
+    get label() {
+      return tr('site.nav.explore')
+    },
+    icon: faCompass,
+  },
+  {
+    to: '/browse',
+    get label() {
+      return tr('site.nav.browse')
+    },
+    icon: faLayerGroup,
+  },
+  {
+    to: '/my-profile',
+    get label() {
+      return tr('site.nav.myProfile')
+    },
+    icon: faIdCard,
+    roles: ['talent'],
+  },
+  {
+    to: '/dashboard/services',
+    get label() {
+      return tr('site.nav.services')
+    },
+    icon: faBriefcase,
+    roles: ['talent'],
+  },
+  {
+    to: '/talents',
+    get label() {
+      return tr('site.nav.myTalents')
+    },
+    icon: faUsers,
+    roles: ['representative'],
+  },
   {
     to: '/shortlists',
-    label: 'Shortlists',
+    get label() {
+      return tr('site.nav.shortlists')
+    },
     icon: faStar,
     roles: ['business', 'agency', 'organization'],
   },
-  { to: '/dashboard?tab=claims', label: 'Claims', icon: faUserCheck, roles: ['admin'] },
-  { to: '/dashboard/people/new', label: 'Add profile', icon: faPlus, roles: ['admin'] },
-  { to: '/admin', label: 'Admin panel', icon: faShieldHalved, roles: ['admin'] },
+  {
+    to: '/dashboard?tab=claims',
+    get label() {
+      return tr('site.nav.claims')
+    },
+    icon: faUserCheck,
+    roles: ['admin'],
+  },
+  {
+    to: '/dashboard/people/new',
+    get label() {
+      return tr('site.nav.addProfile')
+    },
+    icon: faPlus,
+    roles: ['admin'],
+  },
+  {
+    to: '/admin',
+    get label() {
+      return tr('site.nav.adminPanel')
+    },
+    icon: faShieldHalved,
+    roles: ['admin'],
+  },
 ]
 
 // Right side ke chhote icon buttons (logged-in)
 export const UTILITY_NAV: NavItem[] = [
-  { to: '/inbox', label: 'Inbox', icon: faEnvelope, roles: 'auth' },
-  { to: '/notifications', label: 'Notifications', icon: faBell, roles: 'auth' },
+  {
+    to: '/inbox',
+    get label() {
+      return tr('site.nav.inbox')
+    },
+    icon: faEnvelope,
+    roles: 'auth',
+  },
+  {
+    to: '/notifications',
+    get label() {
+      return tr('site.nav.notifications')
+    },
+    icon: faBell,
+    roles: 'auth',
+  },
 ]
 
 // Account menu ke andar
 export const ACCOUNT_NAV: NavItem[] = [
-  { to: '/dashboard', label: 'Dashboard', icon: faTableColumns, roles: 'auth' },
-  { to: '/settings', label: 'Settings', icon: faGear, roles: 'auth' },
+  {
+    to: '/dashboard',
+    get label() {
+      return tr('site.nav.dashboard')
+    },
+    icon: faTableColumns,
+    roles: 'auth',
+  },
+  {
+    to: '/settings',
+    get label() {
+      return tr('site.nav.settings')
+    },
+    icon: faGear,
+    roles: 'auth',
+  },
 ]
 
 export function canSee(item: NavItem, role: Role | undefined) {

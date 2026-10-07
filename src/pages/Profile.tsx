@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle, faGlobe, faLanguage, faLocationDot } from '@fortawesome/free-solid-svg-icons'
 import { Link, useParams } from 'react-router-dom'
@@ -33,21 +34,22 @@ function TagList({ title, items, param }: { title: string; items: TaxonomyItem[]
 }
 
 function Profile() {
+  const { t, i18n } = useTranslation()
   const { slug = '' } = useParams()
 
   const { data: person, isLoading, error } = useQuery({ ...personQuery(slug), retry: false })
 
-  if (isLoading) return <p className="text-center text-gray-500">Loading...</p>
+  if (isLoading) return <p className="text-center text-gray-500">{t('common.loading')}</p>
 
   if (error || !person) {
     const notFound = axios.isAxiosError(error) && error.response?.status === 404
     return (
       <section className="text-center">
         <h1 className="text-2xl font-bold">
-          {notFound ? 'Profile not found' : 'Could not load this profile'}
+          {notFound ? t('profile.notFound') : t('profile.loadError')}
         </h1>
         <Link to="/search" className="mt-4 inline-block underline">
-          Back to search
+          {t('profile.backToSearch')}
         </Link>
       </section>
     )
@@ -59,7 +61,7 @@ function Profile() {
     <div className="space-y-6">
       {person.isDemo && (
         <p className="rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-800">
-          This is a fictional sample profile used for testing.
+          {t('profile.demo')}
         </p>
       )}
 
@@ -76,20 +78,20 @@ function Profile() {
             <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-500">
               {location && (
                 <span>
-                  <FontAwesomeIcon icon={faLocationDot} className="mr-1.5 text-gray-400" />
+                  <FontAwesomeIcon icon={faLocationDot} className="me-1.5 text-gray-400" />
                   {location}
                 </span>
               )}
               {person.languages.length > 0 && (
                 <span>
-                  <FontAwesomeIcon icon={faLanguage} className="mr-1.5 text-gray-400" />
+                  <FontAwesomeIcon icon={faLanguage} className="me-1.5 text-gray-400" />
                   {person.languages.map(languageName).join(', ')}
                 </span>
               )}
               <span>
                 <FontAwesomeIcon
                   icon={faCircle}
-                  className={`mr-1.5 text-[8px] align-middle ${person.status === 'hireable' ? 'text-green-500' : 'text-gray-400'}`}
+                  className={`me-1.5 text-[8px] align-middle ${person.status === 'hireable' ? 'text-green-500' : 'text-gray-400'}`}
                 />
                 {STATUS_LABELS[person.status]}
               </span>
@@ -100,10 +102,10 @@ function Profile() {
           <div className="flex flex-col gap-2 sm:w-44">
             <button
               disabled
-              title="Coming soon"
+              title={t('profile.comingSoon')}
               className="rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white opacity-50"
             >
-              Contact / Hire
+              {t('profile.contact')}
             </button>
             <ClaimAction person={person} />
           </div>
@@ -114,24 +116,24 @@ function Profile() {
         <div className="space-y-6">
           {person.bio && (
             <section className="rounded-2xl bg-white p-6 shadow-sm">
-              <h2 className="text-lg font-semibold">About</h2>
+              <h2 className="text-lg font-semibold">{t('profile.about')}</h2>
               <p className="mt-3 whitespace-pre-line text-gray-700">{person.bio}</p>
             </section>
           )}
 
           <section className="space-y-4 rounded-2xl bg-white p-6 shadow-sm">
-            <TagList title="Professions" items={person.professions} param="profession" />
-            <TagList title="Industries" items={person.industries} param="industry" />
-            <TagList title="Topics" items={person.topics} param="topic" />
+            <TagList title={t('profile.professions')} items={person.professions} param="profession" />
+            <TagList title={t('profile.industries')} items={person.industries} param="industry" />
+            <TagList title={t('profile.topics')} items={person.topics} param="topic" />
           </section>
         </div>
 
         {/* Influence: har number alag, koi "mystery score" nahi */}
         <aside className="space-y-6">
           <section className="rounded-2xl bg-white p-6 shadow-sm">
-            <h2 className="text-lg font-semibold">Influence</h2>
+            <h2 className="text-lg font-semibold">{t('profile.influence')}</h2>
             <p className="mt-3 text-3xl font-bold">{formatCount(person.totalFollowers)}</p>
-            <p className="text-sm text-gray-500">total followers across platforms</p>
+            <p className="text-sm text-gray-500">{t('profile.totalFollowers')}</p>
 
             {person.socialAccounts.length > 0 && (
               <ul className="mt-5 divide-y divide-gray-100">
@@ -152,11 +154,11 @@ function Profile() {
                       />
                       {PLATFORM_LABELS[account.platform]}
                     </a>
-                    <span className="text-right text-gray-600">
+                    <span className="text-end text-gray-600">
                       {account.followers !== undefined && formatCount(account.followers)}
                       {account.engagementRate !== undefined && (
-                        <span className="ml-2 text-xs text-gray-400">
-                          {account.engagementRate}% eng.
+                        <span className="ms-2 text-xs text-gray-400">
+                          {t('profile.engagement', { value: account.engagementRate })}
                         </span>
                       )}
                     </span>
@@ -172,15 +174,14 @@ function Profile() {
                 className="mt-4 inline-flex items-center gap-2 text-sm underline"
               >
                 <FontAwesomeIcon icon={faGlobe} />
-                Website
+                {t('profile.website')}
               </a>
             )}
           </section>
 
           <section className="text-xs text-gray-500">
             <p>
-              Information on unclaimed profiles comes from public sources. Last updated{' '}
-              {new Date(person.updatedAt).toLocaleDateString()}.
+              {t('profile.sources', { date: new Date(person.updatedAt).toLocaleDateString(i18n.language) })}
             </p>
             <ReportProfileLink slug={person.slug} />
           </section>

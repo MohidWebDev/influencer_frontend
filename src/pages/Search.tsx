@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useEffect, useState, type ReactNode } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query'
@@ -45,6 +46,7 @@ function FilterSelect({
   options: Option[]
   onChange: (name: string, value: string) => void
 }) {
+  const { t } = useTranslation()
   return (
     <label className="block">
       <span className="mb-1 block text-sm font-medium">{label}</span>
@@ -53,7 +55,7 @@ function FilterSelect({
         onChange={(e) => onChange(name, e.target.value)}
         className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm"
       >
-        <option value="">Any</option>
+        <option value="">{t('search.any')}</option>
         {options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}
@@ -66,17 +68,18 @@ function FilterSelect({
 
 // City likhte waqt har harf pe search na ho: Enter ya bahar click pe lagao
 function CityFilter({ value, onChange }: { value: string; onChange: (value: string) => void }) {
+  const { t } = useTranslation()
   const [draft, setDraft] = useState(value)
 
   return (
     <label className="block">
-      <span className="mb-1 block text-sm font-medium">City</span>
+      <span className="mb-1 block text-sm font-medium">{t('search.city')}</span>
       <input
         value={draft}
         onChange={(e) => setDraft(e.target.value)}
         onBlur={() => onChange(draft.trim())}
         onKeyDown={(e) => e.key === 'Enter' && onChange(draft.trim())}
-        placeholder="e.g. Lahore"
+        placeholder={t('search.cityPlaceholder')}
         className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm"
       />
     </label>
@@ -84,6 +87,7 @@ function CityFilter({ value, onChange }: { value: string; onChange: (value: stri
 }
 
 function Search() {
+  const { t } = useTranslation()
   // Saare filters URL mein: /search?q=ai&country=PK&page=2
   // Is se link share ho sakta hai aur back button kaam karta hai
   const [searchParams, setSearchParams] = useSearchParams()
@@ -146,15 +150,15 @@ function Search() {
 
   let results: ReactNode
   if (isLoading) {
-    results = <p className="text-gray-500">Loading...</p>
+    results = <p className="text-gray-500">{t('common.loading')}</p>
   } else if (isError) {
-    results = <p className="text-red-600">Could not load results. Please try again.</p>
+    results = <p className="text-red-600">{t('search.loadError')}</p>
   } else if (data && data.people.length === 0) {
     results = (
       <div className="rounded-2xl border border-dashed border-gray-300 p-10 text-center">
-        <p className="font-medium">No people match your search.</p>
+        <p className="font-medium">{t('search.noResults')}</p>
         <button onClick={clearFilters} className="mt-3 text-sm underline">
-          Clear filters
+          {t('search.clearFilters')}
         </button>
       </div>
     )
@@ -177,17 +181,18 @@ function Search() {
 
       <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm text-gray-600">
-          {data ? `${total} ${total === 1 ? 'person' : 'people'} found` : ' '}
+          {data ? t('search.found', { count: total }) : ' '}
         </p>
         <div className="flex items-center gap-2">
           <button
             onClick={() => setShowFilters((open) => !open)}
             className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm md:hidden"
           >
-            Filters{activeFilters > 0 && ` (${activeFilters})`}
+            {t('search.filters')}
+            {activeFilters > 0 && ` (${activeFilters})`}
           </button>
           <select
-            aria-label="Sort by"
+            aria-label={t('search.sortBy')}
             value={get('sort') || 'followers'}
             onChange={(e) => setFilter('sort', e.target.value)}
             className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm"
@@ -205,11 +210,11 @@ function Search() {
         <aside
           className={`${showFilters ? 'block' : 'hidden'} space-y-4 rounded-2xl bg-white p-4 shadow-sm md:block md:self-start`}
         >
-          <FilterSelect label="Profession" name="profession" value={get('profession')} options={toOptions(professions)} onChange={setFilter} />
-          <FilterSelect label="Industry" name="industry" value={get('industry')} options={toOptions(industries)} onChange={setFilter} />
-          <FilterSelect label="Topic" name="topic" value={get('topic')} options={toOptions(topics)} onChange={setFilter} />
+          <FilterSelect label={t('search.profession')} name="profession" value={get('profession')} options={toOptions(professions)} onChange={setFilter} />
+          <FilterSelect label={t('search.industry')} name="industry" value={get('industry')} options={toOptions(industries)} onChange={setFilter} />
+          <FilterSelect label={t('search.topic')} name="topic" value={get('topic')} options={toOptions(topics)} onChange={setFilter} />
           <FilterSelect
-            label="Country"
+            label={t('search.country')}
             name="country"
             value={get('country')}
             options={COUNTRY_OPTIONS.map((code) => ({ value: code, label: countryName(code) }))}
@@ -217,15 +222,15 @@ function Search() {
           />
           <CityFilter key={get('city')} value={get('city')} onChange={(value) => setFilter('city', value)} />
           <FilterSelect
-            label="Language"
+            label={t('search.language')}
             name="language"
             value={get('language')}
             options={LANGUAGE_OPTIONS.map((code) => ({ value: code, label: languageName(code) }))}
             onChange={setFilter}
           />
-          <FilterSelect label="Followers" name="minFollowers" value={get('minFollowers')} options={FOLLOWER_OPTIONS} onChange={setFilter} />
+          <FilterSelect label={t('search.followers')} name="minFollowers" value={get('minFollowers')} options={FOLLOWER_OPTIONS} onChange={setFilter} />
           <FilterSelect
-            label="Availability"
+            label={t('search.availability')}
             name="status"
             value={get('status')}
             options={Object.entries(STATUS_LABELS).map(([value, label]) => ({ value, label }))}
@@ -233,7 +238,7 @@ function Search() {
           />
           {activeFilters > 0 && (
             <button onClick={clearFilters} className="w-full text-sm underline">
-              Clear all filters
+              {t('search.clearAllFilters')}
             </button>
           )}
         </aside>

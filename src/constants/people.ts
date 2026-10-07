@@ -10,28 +10,30 @@ import {
   faYoutube,
 } from '@fortawesome/free-brands-svg-icons'
 import { faGlobe, faLink, faPodcast } from '@fortawesome/free-solid-svg-icons'
+import { translatedLabels, tr } from '../i18n/translated'
 import type { ProfileStatus, SocialPlatform } from '../types/person'
 
-export const STATUS_LABELS: Record<ProfileStatus, string> = {
-  public: 'Public profile',
-  contactable: 'Contactable',
-  represented: 'Has representation',
-  hireable: 'Available to hire',
-}
+export const STATUS_LABELS: Record<ProfileStatus, string> = translatedLabels(
+  ['public', 'contactable', 'represented', 'hireable'],
+  'profileStatus',
+)
 
-export const PLATFORM_LABELS: Record<SocialPlatform, string> = {
-  instagram: 'Instagram',
-  youtube: 'YouTube',
-  tiktok: 'TikTok',
-  x: 'X (Twitter)',
-  facebook: 'Facebook',
-  linkedin: 'LinkedIn',
-  snapchat: 'Snapchat',
-  twitch: 'Twitch',
-  podcast: 'Podcast',
-  website: 'Website',
-  other: 'Other',
-}
+export const PLATFORM_LABELS: Record<SocialPlatform, string> = translatedLabels(
+  [
+    'instagram',
+    'youtube',
+    'tiktok',
+    'x',
+    'facebook',
+    'linkedin',
+    'snapchat',
+    'twitch',
+    'podcast',
+    'website',
+    'other',
+  ],
+  'platform',
+)
 
 // Pakistan pehle, phir Gulf (document Section 1)
 export const COUNTRY_OPTIONS = ['PK', 'AE', 'SA', 'QA', 'KW', 'BH', 'OM', 'GB', 'US']
@@ -45,11 +47,12 @@ export const FOLLOWER_OPTIONS = [
   { value: '1000000', label: '1M+' },
 ]
 
-export const SORT_OPTIONS = [
-  { value: 'followers', label: 'Most followers' },
-  { value: 'newest', label: 'Newest' },
-  { value: 'name', label: 'Name (A-Z)' },
-]
+export const SORT_OPTIONS = (['followers', 'newest', 'name'] as const).map((value) => ({
+  value,
+  get label() {
+    return tr(`sort.${value}`)
+  },
+}))
 
 // Har platform ka Font Awesome icon (brands wale asli logo hain)
 export const PLATFORM_ICONS: Record<SocialPlatform, IconDefinition> = {

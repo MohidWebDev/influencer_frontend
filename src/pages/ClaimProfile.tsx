@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { useState, type FormEvent } from 'react'
@@ -13,6 +14,7 @@ import { getApiError } from '../utils/apiError'
 
 // /people/:slug/claim -> talent saboot ke saath claim bhejta hai
 function ClaimProfile() {
+  const { t } = useTranslation()
   const { slug = '' } = useParams()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
@@ -30,7 +32,7 @@ function ClaimProfile() {
     mutationFn: createClaim,
     onMutate: () => setErrors({}),
     onSuccess: () => {
-      toast.success('Claim sent! We will review it soon.')
+      toast.success(t('claimForm.sent'))
       queryClient.invalidateQueries({ queryKey: ['claims'] })
       navigate('/dashboard')
     },
@@ -42,23 +44,23 @@ function ClaimProfile() {
   })
 
   if (isLoading || myProfile.isLoading || myClaims.isLoading) {
-    return <p className="text-center text-gray-500">Loading...</p>
+    return <p className="text-center text-gray-500">{t('common.loading')}</p>
   }
-  if (!person) return <p className="text-center">Profile not found.</p>
+  if (!person) return <p className="text-center">{t('profile.notFound')}</p>
 
   // Talent ki pehle se profile hai, ya claim pending hai: form mat dikhao
   const pending = myClaims.data?.find((claim) => isOpenClaim(claim.status))
   const blockMessage = myProfile.data
-    ? 'You already own a profile. One talent account can have only one profile.'
+    ? t('claimForm.ownsProfile')
     : pending
-      ? `You already have a claim under review for ${pending.person.name}.`
+      ? t('claimForm.pendingFor', { name: pending.person.name })
       : null
   if (blockMessage) {
     return (
       <section className="mx-auto max-w-xl rounded-2xl bg-white p-6 text-center shadow-sm">
         <p className="font-medium">{blockMessage}</p>
         <Link to="/dashboard" className="mt-3 inline-block text-sm underline">
-          Go to dashboard
+          {t('site.goToDashboard')}
         </Link>
       </section>
     )
@@ -67,9 +69,9 @@ function ClaimProfile() {
   if (person.claimedBy) {
     return (
       <section className="mx-auto max-w-xl rounded-2xl bg-white p-6 text-center shadow-sm">
-        <p className="font-medium">This profile has already been claimed.</p>
+        <p className="font-medium">{t('claimForm.alreadyClaimed')}</p>
         <Link to={`/people/${person.slug}`} className="mt-3 inline-block text-sm underline">
-          Back to profile
+          {t('reportForm.backToProfile')}
         </Link>
       </section>
     )
@@ -92,14 +94,14 @@ function ClaimProfile() {
   return (
     <div className="mx-auto max-w-xl space-y-6">
       <Link to={`/people/${person.slug}`} className="text-sm underline">
-        <FontAwesomeIcon icon={faArrowLeft} className="mr-1.5" />
-        Back to profile
+        <FontAwesomeIcon icon={faArrowLeft} className="me-1.5 rtl:rotate-180" />
+        {t('reportForm.backToProfile')}
       </Link>
 
       <section className="flex items-center gap-4 rounded-2xl bg-white p-5 shadow-sm">
         <Avatar name={person.name} photoUrl={person.photoUrl} />
         <div className="min-w-0">
-          <p className="text-sm text-gray-500">You are claiming</p>
+          <p className="text-sm text-gray-500">{t('claimForm.youAreClaiming')}</p>
           <h1 className="truncate text-xl font-bold">{person.name}</h1>
         </div>
       </section>
@@ -110,36 +112,36 @@ function ClaimProfile() {
         className="space-y-4 rounded-2xl bg-white p-6 shadow-sm"
       >
         <div>
-          <h2 className="text-lg font-semibold">Help us verify it&apos;s you</h2>
+          <h2 className="text-lg font-semibold">{t('claimForm.verifyTitle')}</h2>
           <ol className="mt-3 space-y-1 text-sm text-gray-600">
-            <li>1. Add your official account links (Instagram, X, YouTube, website...).</li>
-            <li>2. Our team sends a 6-digit code as a message to one of these accounts.</li>
-            <li>3. Enter the code on your dashboard. Then we approve your claim.</li>
+            <li>{t('claimForm.step1')}</li>
+            <li>{t('claimForm.step2')}</li>
+            <li>{t('claimForm.step3')}</li>
           </ol>
         </div>
 
         <FormField
           id="contactEmail"
-          label="Official email (optional)"
+          label={t('claimForm.officialEmail')}
           type="email"
-          placeholder="e.g. you@yourwebsite.com"
+          placeholder={t('claimForm.emailPlaceholder')}
           value={contactEmail}
           onChange={(e) => setContactEmail(e.target.value)}
           error={errors.contactEmail}
         />
 
         <div className="space-y-2">
-          <span className="block text-sm font-medium">Your official account links *</span>
+          <span className="block text-sm font-medium">{t('claimForm.linksLabel')}</span>
           <p className="text-xs text-gray-500">
-            We will send the code as a message to one of these. Use accounts you can log in to.
+            {t('claimForm.linksHelp')}
           </p>
           {links.map((link, index) => (
             <input
               key={index}
               type="url"
-              aria-label={`Proof link ${index + 1}`}
+              aria-label={t('claimForm.proofLink', { n: index + 1 })}
               placeholder={
-                index === 0 ? 'https://instagram.com/yourname' : 'https://... (optional)'
+                index === 0 ? 'https://instagram.com/yourname' : t('claimForm.optionalUrl')
               }
               value={link}
               onChange={(e) => setLinks(links.map((l, i) => (i === index ? e.target.value : l)))}
@@ -151,12 +153,12 @@ function ClaimProfile() {
 
         <div>
           <label htmlFor="note" className="mb-1 block text-sm font-medium">
-            Anything else we should know? (optional)
+            {t('claimForm.noteLabel')}
           </label>
           <textarea
             id="note"
             rows={4}
-            placeholder="e.g. My manager can also confirm. Their email is ..."
+            placeholder={t('claimForm.notePlaceholder')}
             value={note}
             onChange={(e) => setNote(e.target.value)}
             className={`w-full rounded-lg border px-3 py-2 ${errors.note ? 'border-red-500' : 'border-gray-300'}`}
@@ -169,7 +171,7 @@ function ClaimProfile() {
           disabled={submit.isPending}
           className="w-full rounded-lg bg-gray-900 py-2.5 font-medium text-white hover:bg-gray-800 disabled:opacity-60"
         >
-          {submit.isPending ? 'Sending...' : 'Send claim'}
+          {submit.isPending ? t('claimForm.sending') : t('claimForm.submit')}
         </button>
       </form>
     </div>

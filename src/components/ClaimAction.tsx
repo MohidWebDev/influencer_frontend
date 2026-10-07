@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleCheck, faHourglassHalf, faPen } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
@@ -14,6 +15,7 @@ const outline = 'rounded-lg border border-gray-300 px-4 py-2 text-center text-sm
 // (meri profile kaunsi hai, mera claim pending hai?), kyunke public profile ka data
 // cache se aata hai aur thoda purana ho sakta hai
 function ClaimAction({ person }: { person: Person }) {
+  const { t } = useTranslation()
   const { user } = useAuth()
   const isTalent = user?.role === 'talent'
   const myProfile = useQuery({ ...myProfileQuery, enabled: isTalent })
@@ -27,12 +29,12 @@ function ClaimAction({ person }: { person: Person }) {
     return (
       <>
         <span className="rounded-lg bg-green-50 px-4 py-2 text-center text-sm text-green-700">
-          <FontAwesomeIcon icon={faCircleCheck} className="mr-1.5" />
-          This is your profile
+          <FontAwesomeIcon icon={faCircleCheck} className="me-1.5" />
+          {t('claimAction.yourProfile')}
         </span>
         <Link to="/dashboard/profile/edit" className={outline}>
-          <FontAwesomeIcon icon={faPen} className="mr-1.5" />
-          Edit profile
+          <FontAwesomeIcon icon={faPen} className="me-1.5" />
+          {t('claimAction.editProfile')}
         </Link>
       </>
     )
@@ -42,8 +44,8 @@ function ClaimAction({ person }: { person: Person }) {
   if (person.claimedBy) {
     return (
       <span className="rounded-lg bg-green-50 px-4 py-2 text-center text-sm text-green-700">
-        <FontAwesomeIcon icon={faCircleCheck} className="mr-1.5" />
-        Claimed profile
+        <FontAwesomeIcon icon={faCircleCheck} className="me-1.5" />
+        {t('claimAction.claimed')}
       </span>
     )
   }
@@ -52,7 +54,7 @@ function ClaimAction({ person }: { person: Person }) {
   if (!user) {
     return (
       <Link to="/login" state={{ from: `/people/${person.slug}/claim` }} className={outline}>
-        Is this you? Claim
+        {t('claimAction.claim')}
       </Link>
     )
   }
@@ -61,10 +63,10 @@ function ClaimAction({ person }: { person: Person }) {
   if (!isTalent) {
     return (
       <button
-        onClick={() => toast('Only talent accounts can claim a profile')}
+        onClick={() => toast(t('claimAction.onlyTalent'))}
         className={`${outline} text-gray-500`}
       >
-        Is this you? Claim
+        {t('claimAction.claim')}
       </button>
     )
   }
@@ -77,8 +79,8 @@ function ClaimAction({ person }: { person: Person }) {
   if (pending) {
     return pending.person._id === person._id ? (
       <span className="rounded-lg bg-amber-50 px-4 py-2 text-center text-sm text-amber-800">
-        <FontAwesomeIcon icon={faHourglassHalf} className="mr-1.5" />
-        Claim under review
+        <FontAwesomeIcon icon={faHourglassHalf} className="me-1.5" />
+        {t('claimAction.underReview')}
       </span>
     ) : null
   }

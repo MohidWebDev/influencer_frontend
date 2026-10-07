@@ -1,19 +1,21 @@
-// 1250000 -> "1.3M"
+import i18n from '../i18n'
+
+// 1250000 -> "1.3M" (chuni hui zaban ke andaaz mein)
 export function formatCount(value: number) {
-  return new Intl.NumberFormat('en', {
+  return new Intl.NumberFormat(i18n.language, {
     notation: 'compact',
     maximumFractionDigits: 1,
   }).format(value)
 }
 
-const countryNames = new Intl.DisplayNames(['en'], { type: 'region' })
-const languageNames = new Intl.DisplayNames(['en'], { type: 'language' })
+const countryNames = () => new Intl.DisplayNames([i18n.language], { type: 'region' })
+const languageNames = () => new Intl.DisplayNames([i18n.language], { type: 'language' })
 
-// "PK" -> "Pakistan"
+// "PK" -> "Pakistan" / "پاکستان"
 export function countryName(code?: string) {
   if (!code) return ''
   try {
-    return countryNames.of(code) ?? code
+    return countryNames().of(code) ?? code
   } catch {
     return code
   }
@@ -22,7 +24,7 @@ export function countryName(code?: string) {
 // "ur" -> "Urdu"
 export function languageName(code: string) {
   try {
-    return languageNames.of(code) ?? code
+    return languageNames().of(code) ?? code
   } catch {
     return code
   }

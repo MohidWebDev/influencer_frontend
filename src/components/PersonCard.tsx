@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationDot, faUsers } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
@@ -9,6 +10,7 @@ import Avatar from './Avatar'
 import VerifiedBadge from './VerifiedBadge'
 
 function PersonCard({ person }: { person: PersonSummary }) {
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
 
   // Card pe mouse/ungli aate hi profile pehle se mangwa lo.
@@ -42,14 +44,14 @@ function PersonCard({ person }: { person: PersonSummary }) {
         <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500">
           {location && (
             <span>
-              <FontAwesomeIcon icon={faLocationDot} className="mr-1 text-gray-400" />
+              <FontAwesomeIcon icon={faLocationDot} className="me-1 text-gray-400" />
               {location}
             </span>
           )}
           {person.totalFollowers > 0 && (
             <span>
-              <FontAwesomeIcon icon={faUsers} className="mr-1 text-gray-400" />
-              {formatCount(person.totalFollowers)} followers
+              <FontAwesomeIcon icon={faUsers} className="me-1 text-gray-400" />
+              {t('site.followers', { value: formatCount(person.totalFollowers) })}
             </span>
           )}
         </div>

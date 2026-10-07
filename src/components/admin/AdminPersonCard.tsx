@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faArrowUpRightFromSquare,
@@ -37,6 +38,7 @@ function AdminPersonCard({
   onToggleHidden,
   onDelete,
 }: AdminPersonCardProps) {
+  const { t } = useTranslation()
   const isHidden = person.visibility === 'hidden'
   const isClaimed = Boolean(person.claimedBy)
   // Delete se pehle card ke andar hi "Are you sure?" poochte hain
@@ -61,24 +63,24 @@ function AdminPersonCard({
           <div className="mt-3 flex flex-wrap gap-1.5">
             {person.verified && (
               <Badge className="bg-blue-50 text-blue-700">
-                <FontAwesomeIcon icon={faCircleCheck} className="mr-1" />
-                Verified
+                <FontAwesomeIcon icon={faCircleCheck} className="me-1" />
+                {t('site.verified')}
               </Badge>
             )}
-            {isHidden && <Badge className="bg-red-100 text-red-700">Hidden</Badge>}
-            {person.claimedBy && <Badge className="bg-green-50 text-green-700">Claimed</Badge>}
-            {person.isDemo && <Badge className="bg-amber-50 text-amber-800">Demo</Badge>}
+            {isHidden && <Badge className="bg-red-100 text-red-700">{t('oldAdmin.hidden')}</Badge>}
+            {person.claimedBy && <Badge className="bg-green-50 text-green-700">{t('oldAdmin.claimed')}</Badge>}
+            {person.isDemo && <Badge className="bg-amber-50 text-amber-800">{t('oldAdmin.demo')}</Badge>}
           </div>
         </div>
       </div>
 
       <dl className="mx-5 grid grid-cols-2 gap-3 rounded-xl bg-gray-50 p-3 text-xs">
         <div>
-          <dt className="text-gray-500">Followers</dt>
+          <dt className="text-gray-500">{t('oldAdmin.followers')}</dt>
           <dd className="mt-0.5 text-sm font-semibold">{formatCount(person.totalFollowers)}</dd>
         </div>
         <div>
-          <dt className="text-gray-500">State</dt>
+          <dt className="text-gray-500">{t('oldAdmin.state')}</dt>
           <dd className="mt-0.5 text-sm font-semibold">{STATUS_LABELS[person.status]}</dd>
         </div>
       </dl>
@@ -86,25 +88,25 @@ function AdminPersonCard({
       {confirmDelete ? (
         <div className="mx-5 mt-auto mb-5 rounded-xl border border-red-200 bg-red-50 p-4">
           <p className="text-sm font-medium text-red-800">
-            <FontAwesomeIcon icon={faTriangleExclamation} className="mr-1.5" />
-            Delete {person.name} permanently?
+            <FontAwesomeIcon icon={faTriangleExclamation} className="me-1.5" />
+            {t('oldAdmin.deleteConfirm', { name: person.name })}
           </p>
           <p className="mt-1 text-xs text-red-700">
-            This cannot be undone. To take a profile down temporarily, use Hide instead.
+            {t('oldAdmin.deleteWarning')}
           </p>
           <div className="mt-3 flex gap-2">
             <button
               onClick={() => setConfirmDelete(false)}
               className={`${button} flex-1 border border-gray-300 bg-white text-gray-700 hover:bg-gray-100`}
             >
-              Cancel
+              {t('common.cancel')}
             </button>
             <button
               onClick={onDelete}
               disabled={isBusy}
               className={`${button} flex-1 bg-red-600 text-white hover:bg-red-700`}
             >
-              Yes, delete
+              {t('oldAdmin.yesDelete')}
             </button>
           </div>
         </div>
@@ -118,7 +120,7 @@ function AdminPersonCard({
               to={`/dashboard/people/${person._id}/edit`}
               className={`${button} bg-gray-900 text-white hover:bg-gray-800`}
             >
-              <FontAwesomeIcon icon={faPen} /> Edit
+              <FontAwesomeIcon icon={faPen} /> {t('oldAdmin.edit')}
             </Link>
           )}
           <button
@@ -131,7 +133,7 @@ function AdminPersonCard({
             }`}
           >
             <FontAwesomeIcon icon={person.verified ? faBan : faCircleCheck} />
-            {person.verified ? 'Unverify' : 'Verify'}
+            {person.verified ? t('oldAdmin.unverify') : t('oldAdmin.verify')}
           </button>
           <button
             onClick={onToggleHidden}
@@ -143,21 +145,21 @@ function AdminPersonCard({
             }`}
           >
             <FontAwesomeIcon icon={isHidden ? faEye : faEyeSlash} />
-            {isHidden ? 'Show' : 'Hide'}
+            {isHidden ? t('oldAdmin.show') : t('oldAdmin.hide')}
           </button>
           {isHidden ? (
             <span
               className={`${button} cursor-not-allowed border border-gray-200 text-gray-400`}
-              title="Hidden profiles are not public"
+              title={t('oldAdmin.hiddenNotPublic')}
             >
-              View
+              {t('oldAdmin.view')}
             </span>
           ) : (
             <Link
               to={`/people/${person.slug}`}
               className={`${button} border border-gray-300 text-gray-700 hover:bg-gray-100`}
             >
-              View <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="text-[10px]" />
+              {t('oldAdmin.view')} <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="text-[10px]" />
             </Link>
           )}
           <button
@@ -165,7 +167,7 @@ function AdminPersonCard({
             disabled={isBusy}
             className={`${button} ${isClaimed ? '' : 'col-span-2 sm:col-span-1'} border border-red-200 text-red-600 hover:bg-red-600 hover:text-white`}
           >
-            <FontAwesomeIcon icon={faTrash} /> Delete
+            <FontAwesomeIcon icon={faTrash} /> {t('oldAdmin.delete')}
           </button>
         </div>
       )}

@@ -234,5 +234,442 @@
     "sending": "Sending...",
     "sent": "Thank you. We received your report.",
     "backToProfile": "Back to profile"
+  },
+  "site": {
+    "nav": {
+      "explore": "Explore",
+      "browse": "Browse",
+      "myProfile": "My profile",
+      "services": "Services",
+      "myTalents": "My talents",
+      "shortlists": "Shortlists",
+      "claims": "Claims",
+      "addProfile": "Add profile",
+      "adminPanel": "Admin panel",
+      "inbox": "Inbox",
+      "notifications": "Notifications",
+      "dashboard": "Dashboard",
+      "settings": "Settings",
+      "login": "Log in",
+      "signup": "Sign up",
+      "logout": "Log out",
+      "loggedOut": "Logged out",
+      "openMenu": "Open menu",
+      "closeMenu": "Close menu",
+      "accountMenu": "Account menu",
+      "language": "Language"
+    },
+    "search": {
+      "placeholder": "Search by name or what they do...",
+      "label": "Search people"
+    },
+    "verified": "Verified",
+    "verifiedTitle": "Verified profile",
+    "followers": "{{value}} followers",
+    "somethingWrong": "Something went wrong. Please try again.",
+    "fixFields": "Please fix the highlighted fields",
+    "noPermission": "You do not have permission to view this page.",
+    "backToDashboard": "Back to dashboard",
+    "goToDashboard": "Go to dashboard"
+  },
+  "roleDesc": {
+    "talent": "Creator, journalist, speaker, expert or public figure",
+    "representative": "I represent one or more talents",
+    "business": "I want to hire or collaborate with talent",
+    "agency": "Marketing, PR or talent agency",
+    "organization": "NGO, university, event organizer or government body"
+  },
+  "profileStatus": {
+    "public": "Public profile",
+    "contactable": "Contactable",
+    "represented": "Has representation",
+    "hireable": "Available to hire"
+  },
+  "platform": {
+    "instagram": "Instagram",
+    "youtube": "YouTube",
+    "tiktok": "TikTok",
+    "x": "X (Twitter)",
+    "facebook": "Facebook",
+    "linkedin": "LinkedIn",
+    "snapchat": "Snapchat",
+    "twitch": "Twitch",
+    "podcast": "Podcast",
+    "website": "Website",
+    "other": "Other"
+  },
+  "sort": {
+    "followers": "Most followers",
+    "newest": "Newest",
+    "name": "Name (A-Z)"
+  },
+  "home": {
+    "title": "Discover the people who influence your world",
+    "subtitle": "Find journalists, creators, speakers, experts and public figures. See their real reach, then connect or hire.",
+    "browseByIndustry": "Browse by industry",
+    "mostFollowed": "Most followed",
+    "seeAll": "See all",
+    "loadError": "Could not load people right now. Please refresh the page or try again later.",
+    "noProfiles": "No profiles yet."
+  },
+  "login": {
+    "title": "Log in",
+    "subtitle": "Welcome back! Enter your details.",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Log in",
+    "submitting": "Logging in...",
+    "noAccount": "Don't have an account?",
+    "signup": "Sign up",
+    "welcomeBack": "Welcome back, {{name}}!"
+  },
+  "notFound": {
+    "title": "404 - Page not found",
+    "goHome": "Go home"
+  },
+  "browse": {
+    "title": "Browse",
+    "subtitle": "Find people by what they do, the industry they work in, the topics they cover, or where they are.",
+    "industries": "Industries",
+    "professions": "Professions",
+    "topics": "Topics",
+    "countries": "Countries"
+  },
+  "claimAction": {
+    "yourProfile": "This is your profile",
+    "editProfile": "Edit profile",
+    "claimed": "Claimed profile",
+    "claim": "Is this you? Claim",
+    "onlyTalent": "Only talent accounts can claim a profile",
+    "underReview": "Claim under review"
+  },
+  "myProfile": {
+    "label": "Your public profile",
+    "view": "View",
+    "rejected": "Your claim for {{name}} was not approved: {{reason}}",
+    "findTitle": "Find your profile and claim it",
+    "findBody": "Search for your name. On your profile page, click \"Is this you? Claim\".",
+    "findButton": "Find my profile"
+  },
+  "apiErrors": {
+    "INVALID_CREDENTIALS": "Email or password is incorrect",
+    "EMAIL_TAKEN": "This email is already registered",
+    "UNAUTHORIZED": "Please log in",
+    "FORBIDDEN": "You do not have permission to do this",
+    "ACCOUNT_SUSPENDED": "This account has been suspended",
+    "NOT_FOUND": "Not found",
+    "ALREADY_CLAIMED": "This profile has already been claimed",
+    "ALREADY_OWNS_PROFILE": "You already own a profile",
+    "CLAIM_PENDING": "You already have a claim waiting for review",
+    "INVALID_CODE": "That code is not correct",
+    "CODE_EXPIRED": "This code has expired. We will send you a new one.",
+    "TOO_MANY_ATTEMPTS": "Too many wrong attempts. We will send you a new code.",
+    "NO_ACTIVE_CODE": "There is no code to verify for this claim",
+    "PROFILE_CLAIMED": "This profile is claimed. Only its owner can edit it.",
+    "CANNOT_MODIFY_SELF": "You cannot change your own account here",
+    "LAST_ADMIN": "At least one active admin must remain",
+    "CODE_NOT_VERIFIED": "The talent has not entered the correct code yet",
+    "ALREADY_REVIEWED": "This claim was already reviewed"
+  },
+  "search": {
+    "any": "Any",
+    "cityPlaceholder": "e.g. Lahore",
+    "loadError": "Could not load results. Please try again.",
+    "noResults": "No people match your search.",
+    "clearFilters": "Clear filters",
+    "clearAllFilters": "Clear all filters",
+    "found": "{{count}} found",
+    "filters": "Filters",
+    "sortBy": "Sort by",
+    "profession": "Profession",
+    "industry": "Industry",
+    "topic": "Topic",
+    "country": "Country",
+    "city": "City",
+    "language": "Language",
+    "followers": "Followers",
+    "availability": "Availability"
+  },
+  "profile": {
+    "notFound": "Profile not found",
+    "loadError": "Could not load this profile",
+    "backToSearch": "Back to search",
+    "demo": "This is a fictional sample profile used for testing.",
+    "contact": "Contact / Hire",
+    "comingSoon": "Coming soon",
+    "about": "About",
+    "professions": "Professions",
+    "industries": "Industries",
+    "topics": "Topics",
+    "influence": "Influence",
+    "totalFollowers": "total followers across platforms",
+    "engagement": "{{value}}% eng.",
+    "website": "Website",
+    "sources": "Information on unclaimed profiles comes from public sources. Last updated {{date}}."
+  },
+  "register": {
+    "title": "Create your account",
+    "subtitle": "First, tell us who you are.",
+    "iAm": "I am a...",
+    "chooseType": "Choose an account type",
+    "fullName": "Full name",
+    "passwordHint": "At least 8 characters",
+    "submit": "Create account",
+    "submitting": "Creating account...",
+    "haveAccount": "Already have an account?",
+    "login": "Log in",
+    "welcome": "Welcome, {{name}}!"
+  },
+  "claimForm": {
+    "sent": "Claim sent! We will review it soon.",
+    "ownsProfile": "You already own a profile. One talent account can have only one profile.",
+    "pendingFor": "You already have a claim under review for {{name}}.",
+    "alreadyClaimed": "This profile has already been claimed.",
+    "youAreClaiming": "You are claiming",
+    "verifyTitle": "Help us verify it's you",
+    "step1": "1. Add your official account links (Instagram, X, YouTube, website...).",
+    "step2": "2. Our team sends a 6-digit code as a message to one of these accounts.",
+    "step3": "3. Enter the code on your dashboard. Then we approve your claim.",
+    "officialEmail": "Official email (optional)",
+    "emailPlaceholder": "e.g. you@yourwebsite.com",
+    "linksLabel": "Your official account links *",
+    "linksHelp": "We will send the code as a message to one of these. Use accounts you can log in to.",
+    "proofLink": "Proof link {{n}}",
+    "optionalUrl": "https://... (optional)",
+    "noteLabel": "Anything else we should know? (optional)",
+    "notePlaceholder": "e.g. My manager can also confirm. Their email is ...",
+    "submit": "Send claim",
+    "sending": "Sending..."
+  },
+  "claimProgress": {
+    "step1": "Claim sent",
+    "step2": "Code sent to you",
+    "step3": "Code verified",
+    "step4": "Approved",
+    "verifiedToast": "Code verified! An admin will approve your claim soon.",
+    "inProgress": "Profile claim in progress",
+    "claiming": "Claiming",
+    "pendingBody": "Our team will send a 6-digit code as a message to one of your official accounts, usually within 1–2 days. Keep an eye on your inbox there.",
+    "sentBefore": "We sent a 6-digit code to",
+    "sentAfter": "Open your messages there and enter the code below.",
+    "expired": "This code has expired. We will send you a new one.",
+    "codeLabel": "6-digit code",
+    "checking": "Checking...",
+    "verify": "Verify code",
+    "expiresOn": "Code expires on {{date}}.",
+    "verifiedBody": "Code verified. An admin will give final approval soon, then you can edit your profile."
+  },
+  "editProfile": {
+    "updated": "Profile updated",
+    "title": "Edit your profile",
+    "subtitle": "These details are shown on your public profile."
+  },
+  "comingSoon": {
+    "badge": "Coming soon",
+    "services": {
+      "title": "Services & availability",
+      "description": "Tell businesses what you offer and what you are open to.",
+      "f1": "Add services like keynote talks, brand campaigns or podcast guesting",
+      "f2": "Set a fixed price, a price range or \"ask for a quote\"",
+      "f3": "Turn availability on or off: speaking, campaigns, podcasts, events"
+    },
+    "inbox": {
+      "title": "Inbox",
+      "description": "All your inquiries and conversations in one place.",
+      "f1": "Businesses send inquiries with a brief, budget and date",
+      "f2": "Talent and managers accept or decline",
+      "f3": "A message thread for every inquiry"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "description": "Stay updated without checking every page.",
+      "f1": "New inquiry received",
+      "f2": "Inquiry accepted or declined",
+      "f3": "Profile claim updates"
+    },
+    "shortlists": {
+      "title": "Shortlists",
+      "description": "Save people you like and plan who to contact.",
+      "f1": "Create lists for campaigns or events",
+      "f2": "Add or remove people from any profile",
+      "f3": "Share a list with your team using a link"
+    },
+    "talents": {
+      "title": "My talents",
+      "description": "Manage the people you represent.",
+      "f1": "Link the profiles you manage to your account",
+      "f2": "Edit their services and availability",
+      "f3": "See inquiries for all your talents together"
+    },
+    "settings": {
+      "title": "Settings",
+      "description": "Manage your account.",
+      "f1": "Change your password",
+      "f2": "Verify your email address",
+      "f3": "Choose your language: English, Urdu or Arabic"
+    }
+  },
+  "dash": {
+    "hi": "Hi, {{name}}",
+    "comingSoon": "Coming soon",
+    "discover": {
+      "title": "Discover people",
+      "description": "Search journalists, creators, speakers and experts by profession, industry, topic and location.",
+      "action": "Explore people"
+    },
+    "talent": {
+      "title": "Talent dashboard",
+      "subtitle": "Manage your public profile, what you offer and who wants to work with you."
+    },
+    "services": {
+      "title": "Services & rates",
+      "description": "List what you offer (talks, campaigns, podcasts) and your price range."
+    },
+    "availability": {
+      "title": "Availability",
+      "description": "Tell businesses what you are open to right now."
+    },
+    "inquiries": {
+      "title": "Inquiries",
+      "description": "Requests from businesses and organizations. Accept or decline."
+    },
+    "representative": {
+      "title": "Manager dashboard",
+      "subtitle": "Handle profiles and inquiries for the talents you represent."
+    },
+    "yourTalents": {
+      "title": "Your talents",
+      "description": "Profiles you manage on behalf of the people you represent."
+    },
+    "repInquiries": {
+      "description": "All requests for your talents in one inbox."
+    },
+    "business": {
+      "title": "Business dashboard",
+      "subtitle": "Find the right people for your brand and track your requests."
+    },
+    "shortlists": {
+      "title": "Shortlists",
+      "businessDescription": "Save people you like into lists and share them with your team.",
+      "agencyDescription": "Build talent lists for each client or campaign.",
+      "orgDescription": "Keep lists of people for upcoming events."
+    },
+    "sentInquiries": {
+      "title": "Sent inquiries",
+      "businessDescription": "Track the requests you sent and their status.",
+      "agencyDescription": "Track every request you sent on behalf of clients."
+    },
+    "agency": {
+      "title": "Agency dashboard",
+      "subtitle": "Plan campaigns and manage requests for your clients."
+    },
+    "organization": {
+      "title": "Organization dashboard",
+      "subtitle": "Find speakers, experts and guests for your events and programs."
+    },
+    "eventRequests": {
+      "title": "Event requests",
+      "description": "Invite speakers and experts and follow up on replies."
+    }
+  },
+  "oldAdmin": {
+    "newProfile": "New profile",
+    "people": "People",
+    "claimRequests": "Claim requests",
+    "peopleProfiles": "People profiles",
+    "profilesCount": "{{count}} profiles",
+    "searchPlaceholder": "Search by name or slug",
+    "searchProfiles": "Search profiles",
+    "visibility": "Visibility",
+    "allProfiles": "All profiles",
+    "visible": "Visible",
+    "hidden": "Hidden",
+    "noProfiles": "No profiles found.",
+    "updated": "{{name}} updated",
+    "deleted": "{{name}} deleted",
+    "created": "Profile created",
+    "saved": "Changes saved",
+    "editTitle": "Edit {{name}}",
+    "claimedTitle": "{{name}} is a claimed profile",
+    "claimedBody": "Only the owner can edit it. As an admin you can still verify, hide or delete it from the dashboard.",
+    "followers": "Followers",
+    "state": "State",
+    "claimed": "Claimed",
+    "demo": "Demo",
+    "deleteConfirm": "Delete {{name}} permanently?",
+    "deleteWarning": "This cannot be undone. To take a profile down temporarily, use Hide instead.",
+    "yesDelete": "Yes, delete",
+    "edit": "Edit",
+    "verify": "Verify",
+    "unverify": "Unverify",
+    "show": "Show",
+    "hide": "Hide",
+    "view": "View",
+    "hiddenNotPublic": "Hidden profiles are not public",
+    "delete": "Delete",
+    "remove": "Remove {{name}}",
+    "add": "+ Add {{what}}"
+  },
+  "personForm": {
+    "identity": "Identity",
+    "fullName": "Full name",
+    "fullNameRequired": "Full name *",
+    "nameSupport": "To change your name, contact support.",
+    "headline": "Headline",
+    "headlinePlaceholder": "e.g. Tech journalist covering AI",
+    "bio": "Bio",
+    "photoUrl": "Photo URL",
+    "website": "Website",
+    "country": "Country",
+    "city": "City",
+    "languages": "Languages",
+    "categories": "Categories",
+    "professions": "Professions",
+    "industries": "Industries",
+    "topics": "Topics",
+    "social": "Social accounts",
+    "addAccount": "+ Add account",
+    "noSocial": "No social accounts yet.",
+    "platform": "Platform",
+    "profileUrl": "Profile URL *",
+    "handle": "Handle",
+    "followers": "Followers",
+    "engagement": "Engagement %",
+    "removeAccount": "Remove account",
+    "adminSettings": "Admin settings",
+    "profileState": "Profile state",
+    "visibility": "Visibility",
+    "visible": "Visible to everyone",
+    "hiddenOpt": "Hidden (taken down)",
+    "verified": "Verified profile",
+    "source": "Source of this information",
+    "sourceHelp": "Required for unclaimed profiles. Use public information only.",
+    "sourceType": "Source type",
+    "sourceUrl": "Source URL",
+    "note": "Note",
+    "notePlaceholder": "e.g. Official website bio",
+    "create": "Create profile",
+    "saveChanges": "Save changes",
+    "src": {
+      "public_web": "Public website / news",
+      "research_sheet": "Research sheet",
+      "self_submitted": "Sent by the person",
+      "admin": "Admin knowledge"
+    }
+  },
+  "oldClaims": {
+    "title": "Claim requests",
+    "statusAria": "Claim status",
+    "dmMessage": "Hi! To verify your profile on our platform, enter this code on your dashboard: {{code}}. It expires in 48 hours.",
+    "codeCopied": "Code copied",
+    "messageCopied": "Message copied",
+    "copyMessage": "Copy message",
+    "codeOnceLong": "This code is shown only once. If you lose it, send a new code.",
+    "approvedFor": "{{name}} claim approved",
+    "sentAt": "Sent {{date}}",
+    "locked": "Locked: send a new code.",
+    "sendNewCodeTo": "Send a new code to",
+    "correctCodeTo": "The talent entered the correct code sent to {{url}}.",
+    "rejectClaim": "Reject claim"
   }
 }

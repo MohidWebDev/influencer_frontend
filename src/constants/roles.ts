@@ -1,43 +1,27 @@
+import { translatedLabels, tr } from '../i18n/translated'
 import type { Role, SignupRole } from '../types/user'
 
-// Signup page pe dikhne wale account types
-export const SIGNUP_ROLE_OPTIONS: {
-  value: SignupRole
-  label: string
-  description: string
-}[] = [
-  {
-    value: 'talent',
-    label: 'Talent',
-    description: 'Creator, journalist, speaker, expert or public figure',
-  },
-  {
-    value: 'representative',
-    label: 'Manager / Agent',
-    description: 'I represent one or more talents',
-  },
-  {
-    value: 'business',
-    label: 'Business',
-    description: 'I want to hire or collaborate with talent',
-  },
-  {
-    value: 'agency',
-    label: 'Agency',
-    description: 'Marketing, PR or talent agency',
-  },
-  {
-    value: 'organization',
-    label: 'Organization',
-    description: 'NGO, university, event organizer or government body',
-  },
+// Signup page pe dikhne wale account types (labels chuni hui zaban mein)
+const SIGNUP_ROLES: SignupRole[] = [
+  'talent',
+  'representative',
+  'business',
+  'agency',
+  'organization',
 ]
 
-export const ROLE_LABELS: Record<Role, string> = {
-  talent: 'Talent',
-  representative: 'Manager / Agent',
-  business: 'Business',
-  agency: 'Agency',
-  organization: 'Organization',
-  admin: 'Admin',
-}
+export const SIGNUP_ROLE_OPTIONS: { value: SignupRole; label: string; description: string }[] =
+  SIGNUP_ROLES.map((value) => ({
+    value,
+    get label() {
+      return tr(`roles.${value}`)
+    },
+    get description() {
+      return tr(`roleDesc.${value}`)
+    },
+  }))
+
+export const ROLE_LABELS: Record<Role, string> = translatedLabels(
+  ['talent', 'representative', 'business', 'agency', 'organization', 'admin'],
+  'roles',
+)

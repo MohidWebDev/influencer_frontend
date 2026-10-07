@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons'
 import { useState, type FormEvent } from 'react'
@@ -8,7 +9,7 @@ import { verifyClaimCode } from '../api/claims'
 import type { Claim } from '../types/claim'
 import { getApiError } from '../utils/apiError'
 
-const STEPS = ['Claim sent', 'Code sent to you', 'Code verified', 'Approved']
+const STEPS = ['claimProgress.step1', 'claimProgress.step2', 'claimProgress.step3', 'claimProgress.step4']
 
 function stepIndex(status: Claim['status']) {
   return { pending: 0, code_sent: 1, code_verified: 2, approved: 3, rejected: 0 }[status]
@@ -16,6 +17,7 @@ function stepIndex(status: Claim['status']) {
 
 // Talent dashboard pe khule claim ki halat + code daalne ka box
 function ClaimProgress({ claim }: { claim: Claim }) {
+  const { t, i18n } = useTranslation()
   const queryClient = useQueryClient()
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
@@ -29,7 +31,7 @@ function ClaimProgress({ claim }: { claim: Claim }) {
     mutationFn: () => verifyClaimCode(claim._id, code),
     onMutate: () => setError(''),
     onSuccess: () => {
-      toast.success('Code verified! An admin will approve your claim soon.')
+      toast.success(t('claimProgress.verifiedToast'))
       queryClient.invalidateQueries({ queryKey: ['claims'] })
     },
     onError: (err) => {
@@ -46,10 +48,10 @@ function ClaimProgress({ claim }: { claim: Claim }) {
   return (
     <section className="rounded-2xl border border-amber-200 bg-white p-5 shadow-sm md:p-6">
       <p className="text-xs font-medium uppercase tracking-wide text-amber-700">
-        Profile claim in progress
+        {t('claimProgress.inProgress')}
       </p>
       <p className="mt-2">
-        Claiming{' '}
+        {t('claimProgress.claiming')}{' '}
         <Link to={`/people/${claim.person.slug}`} className="font-semibold underline">
           {claim.person.name}
         </Link>
@@ -65,7 +67,7 @@ function ClaimProgress({ claim }: { claim: Claim }) {
             <span
               className={`mt-1.5 block text-[11px] leading-tight sm:text-xs ${index <= current ? 'font-medium text-gray-900' : 'text-gray-400'}`}
             >
-              {step}
+              {t(step)}
             </span>
           </li>
         ))}
@@ -73,15 +75,14 @@ function ClaimProgress({ claim }: { claim: Claim }) {
 
       {claim.status === 'pending' && (
         <p className="mt-4 rounded-xl bg-gray-50 p-4 text-sm text-gray-700">
-          Our team will send a <strong>6-digit code</strong> as a message to one of your official
-          accounts, usually within 1–2 days. Keep an eye on your inbox there.
+          {t('claimProgress.pendingBody')}
         </p>
       )}
 
       {claim.status === 'code_sent' && (
         <div className="mt-4 rounded-xl bg-amber-50 p-4">
           <p className="text-sm text-gray-800">
-            We sent a 6-digit code to{' '}
+            {t('claimProgress.sentBefore')}{' '}
             <a
               href={claim.verification?.channelUrl}
               target="_blank"
@@ -90,11 +91,11 @@ function ClaimProgress({ claim }: { claim: Claim }) {
             >
               {claim.verification?.channelUrl}
             </a>
-            . Open your messages there and enter the code below.
+            . {t('claimProgress.sentAfter')}
           </p>
           {isExpired ? (
             <p className="mt-3 text-sm text-red-700">
-              This code has expired. We will send you a new one.
+              {t('claimProgress.expired')}
             </p>
           ) : (
             <form onSubmit={handleSubmit} className="mt-3 flex flex-wrap gap-2" noValidate>
@@ -102,7 +103,7 @@ function ClaimProgress({ claim }: { claim: Claim }) {
                 inputMode="numeric"
                 autoComplete="one-time-code"
                 maxLength={6}
-                aria-label="6-digit code"
+                aria-label={t('claimProgress.codeLabel')}
                 placeholder="______"
                 value={code}
                 onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
@@ -113,14 +114,14 @@ function ClaimProgress({ claim }: { claim: Claim }) {
                 disabled={code.length !== 6 || verify.isPending}
                 className="rounded-lg bg-gray-900 px-5 py-2 text-sm font-medium text-white hover:bg-gray-800 disabled:opacity-50"
               >
-                {verify.isPending ? 'Checking...' : 'Verify code'}
+                {verify.isPending ? t('claimProgress.checking') : t('claimProgress.verify')}
               </button>
             </form>
           )}
           {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
           {expiresAt && !isExpired && (
             <p className="mt-2 text-xs text-gray-500">
-              Code expires on {expiresAt.toLocaleString()}.
+              {t('claimProgress.expiresOn', { date: expiresAt.toLocaleString(i18n.language) })}
             </p>
           )}
         </div>
@@ -128,8 +129,8 @@ function ClaimProgress({ claim }: { claim: Claim }) {
 
       {claim.status === 'code_verified' && (
         <p className="mt-4 rounded-xl bg-green-50 p-4 text-sm text-green-800">
-          <FontAwesomeIcon icon={faCircleCheck} className="mr-1.5" />
-          Code verified. An admin will give final approval soon, then you can edit your profile.
+          <FontAwesomeIcon icon={faCircleCheck} className="me-1.5" />
+          {t('claimProgress.verifiedBody')}
         </p>
       )}
     </section>

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useState, type FormEvent } from 'react'
 import FormField from '../FormField'
 import TaxonomyPicker from './TaxonomyPicker'
@@ -12,12 +13,7 @@ import type { PersonInput } from '../../types/admin'
 import type { Person, ProfileStatus, SocialPlatform } from '../../types/person'
 import { countryName, languageName } from '../../utils/format'
 
-const SOURCE_TYPES = [
-  { value: 'public_web', label: 'Public website / news' },
-  { value: 'research_sheet', label: 'Research sheet' },
-  { value: 'self_submitted', label: 'Sent by the person' },
-  { value: 'admin', label: 'Admin knowledge' },
-]
+const SOURCE_TYPES = ['public_web', 'research_sheet', 'self_submitted', 'admin']
 
 // Form ke andar sab kuch string mein rakhte hain (inputs strings dete hain)
 interface SocialRow {
@@ -135,6 +131,7 @@ const selectClass = 'w-full rounded-lg border border-gray-300 bg-white px-3 py-2
 const sectionClass = 'space-y-4 rounded-2xl bg-white p-6 shadow-sm'
 
 function PersonForm({ person, mode = 'admin', isSaving, errors, onSubmit }: PersonFormProps) {
+  const { t } = useTranslation()
   const isNew = !person
   const isOwner = mode === 'owner'
   const [form, setForm] = useState<FormState>(() => toFormState(person))
@@ -170,17 +167,17 @@ function PersonForm({ person, mode = 'admin', isSaving, errors, onSubmit }: Pers
   return (
     <form onSubmit={handleSubmit} noValidate className="space-y-6">
       <section className={sectionClass}>
-        <h2 className="text-lg font-semibold">Identity</h2>
+        <h2 className="text-lg font-semibold">{t('personForm.identity')}</h2>
         {isOwner ? (
           <div>
-            <span className="mb-1 block text-sm font-medium">Full name</span>
+            <span className="mb-1 block text-sm font-medium">{t('personForm.fullName')}</span>
             <p className="rounded-lg bg-gray-50 px-3 py-2 text-gray-700">{form.name}</p>
-            <p className="mt-1 text-xs text-gray-500">To change your name, contact support.</p>
+            <p className="mt-1 text-xs text-gray-500">{t('personForm.nameSupport')}</p>
           </div>
         ) : (
           <FormField
             id="name"
-            label="Full name *"
+            label={t('personForm.fullNameRequired')}
             value={form.name}
             onChange={(e) => update('name', e.target.value)}
             error={errors.name}
@@ -188,15 +185,15 @@ function PersonForm({ person, mode = 'admin', isSaving, errors, onSubmit }: Pers
         )}
         <FormField
           id="headline"
-          label="Headline"
-          placeholder="e.g. Tech journalist covering AI"
+          label={t('personForm.headline')}
+          placeholder={t('personForm.headlinePlaceholder')}
           value={form.headline}
           onChange={(e) => update('headline', e.target.value)}
           error={errors.headline}
         />
         <div>
           <label htmlFor="bio" className="mb-1 block text-sm font-medium">
-            Bio
+            {t('personForm.bio')}
           </label>
           <textarea
             id="bio"
@@ -209,7 +206,7 @@ function PersonForm({ person, mode = 'admin', isSaving, errors, onSubmit }: Pers
         </div>
         <FormField
           id="photoUrl"
-          label="Photo URL"
+          label={t('personForm.photoUrl')}
           placeholder="https://..."
           value={form.photoUrl}
           onChange={(e) => update('photoUrl', e.target.value)}
@@ -217,7 +214,7 @@ function PersonForm({ person, mode = 'admin', isSaving, errors, onSubmit }: Pers
         />
         <FormField
           id="websiteUrl"
-          label="Website"
+          label={t('personForm.website')}
           placeholder="https://..."
           value={form.websiteUrl}
           onChange={(e) => update('websiteUrl', e.target.value)}
@@ -225,7 +222,7 @@ function PersonForm({ person, mode = 'admin', isSaving, errors, onSubmit }: Pers
         />
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="block">
-            <span className="mb-1 block text-sm font-medium">Country</span>
+            <span className="mb-1 block text-sm font-medium">{t('personForm.country')}</span>
             <select
               value={form.country}
               onChange={(e) => update('country', e.target.value)}
@@ -240,14 +237,14 @@ function PersonForm({ person, mode = 'admin', isSaving, errors, onSubmit }: Pers
           </label>
           <FormField
             id="city"
-            label="City"
+            label={t('personForm.city')}
             value={form.city}
             onChange={(e) => update('city', e.target.value)}
             error={errors.city}
           />
         </div>
         <fieldset>
-          <legend className="mb-2 text-sm font-medium">Languages</legend>
+          <legend className="mb-2 text-sm font-medium">{t('personForm.languages')}</legend>
           <div className="flex flex-wrap gap-2">
             {LANGUAGE_OPTIONS.map((code) => (
               <label
@@ -268,23 +265,23 @@ function PersonForm({ person, mode = 'admin', isSaving, errors, onSubmit }: Pers
       </section>
 
       <section className={sectionClass}>
-        <h2 className="text-lg font-semibold">Categories</h2>
+        <h2 className="text-lg font-semibold">{t('personForm.categories')}</h2>
         <TaxonomyPicker
-          label="Professions"
+          label={t('personForm.professions')}
           items={professions}
           selected={form.professions}
           onChange={(v) => update('professions', v)}
           error={errors.professions}
         />
         <TaxonomyPicker
-          label="Industries"
+          label={t('personForm.industries')}
           items={industries}
           selected={form.industries}
           onChange={(v) => update('industries', v)}
           error={errors.industries}
         />
         <TaxonomyPicker
-          label="Topics"
+          label={t('personForm.topics')}
           items={topics}
           selected={form.topics}
           onChange={(v) => update('topics', v)}
@@ -294,7 +291,7 @@ function PersonForm({ person, mode = 'admin', isSaving, errors, onSubmit }: Pers
 
       <section className={sectionClass}>
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Social accounts</h2>
+          <h2 className="text-lg font-semibold">{t('personForm.social')}</h2>
           <button
             type="button"
             onClick={() =>
@@ -305,11 +302,11 @@ function PersonForm({ person, mode = 'admin', isSaving, errors, onSubmit }: Pers
             }
             className="rounded-lg border border-gray-300 px-3 py-1.5 text-sm hover:bg-gray-100"
           >
-            + Add account
+            {t('personForm.addAccount')}
           </button>
         </div>
         {form.socialAccounts.length === 0 && (
-          <p className="text-sm text-gray-500">No social accounts yet.</p>
+          <p className="text-sm text-gray-500">{t('personForm.noSocial')}</p>
         )}
         {form.socialAccounts.map((row, index) => (
           <div
@@ -317,7 +314,7 @@ function PersonForm({ person, mode = 'admin', isSaving, errors, onSubmit }: Pers
             className="grid gap-3 rounded-xl border border-gray-200 p-4 sm:grid-cols-2"
           >
             <label className="block">
-              <span className="mb-1 block text-sm font-medium">Platform</span>
+              <span className="mb-1 block text-sm font-medium">{t('personForm.platform')}</span>
               <select
                 value={row.platform}
                 onChange={(e) =>
@@ -334,7 +331,7 @@ function PersonForm({ person, mode = 'admin', isSaving, errors, onSubmit }: Pers
             </label>
             <FormField
               id={`social-url-${index}`}
-              label="Profile URL *"
+              label={t('personForm.profileUrl')}
               placeholder="https://..."
               value={row.url}
               onChange={(e) => updateSocial(index, { url: e.target.value })}
@@ -342,7 +339,7 @@ function PersonForm({ person, mode = 'admin', isSaving, errors, onSubmit }: Pers
             />
             <FormField
               id={`social-handle-${index}`}
-              label="Handle"
+              label={t('personForm.handle')}
               placeholder="@name"
               value={row.handle}
               onChange={(e) => updateSocial(index, { handle: e.target.value })}
@@ -350,7 +347,7 @@ function PersonForm({ person, mode = 'admin', isSaving, errors, onSubmit }: Pers
             <div className="grid grid-cols-2 gap-3">
               <FormField
                 id={`social-followers-${index}`}
-                label="Followers"
+                label={t('personForm.followers')}
                 type="number"
                 min={0}
                 value={row.followers}
@@ -359,7 +356,7 @@ function PersonForm({ person, mode = 'admin', isSaving, errors, onSubmit }: Pers
               />
               <FormField
                 id={`social-eng-${index}`}
-                label="Engagement %"
+                label={t('personForm.engagement')}
                 type="number"
                 min={0}
                 max={100}
@@ -379,7 +376,7 @@ function PersonForm({ person, mode = 'admin', isSaving, errors, onSubmit }: Pers
               }
               className="justify-self-start text-sm text-red-600 hover:underline"
             >
-              Remove account
+              {t('personForm.removeAccount')}
             </button>
           </div>
         ))}
@@ -387,10 +384,10 @@ function PersonForm({ person, mode = 'admin', isSaving, errors, onSubmit }: Pers
 
       {!isOwner && (
         <section className={sectionClass}>
-          <h2 className="text-lg font-semibold">Admin settings</h2>
+          <h2 className="text-lg font-semibold">{t('personForm.adminSettings')}</h2>
           <div className="grid gap-4 sm:grid-cols-2">
             <label className="block">
-              <span className="mb-1 block text-sm font-medium">Profile state</span>
+              <span className="mb-1 block text-sm font-medium">{t('personForm.profileState')}</span>
               <select
                 value={form.status}
                 onChange={(e) => update('status', e.target.value as ProfileStatus)}
@@ -405,14 +402,14 @@ function PersonForm({ person, mode = 'admin', isSaving, errors, onSubmit }: Pers
             </label>
             {!isNew && (
               <label className="block">
-                <span className="mb-1 block text-sm font-medium">Visibility</span>
+                <span className="mb-1 block text-sm font-medium">{t('personForm.visibility')}</span>
                 <select
                   value={form.visibility}
                   onChange={(e) => update('visibility', e.target.value as 'visible' | 'hidden')}
                   className={selectClass}
                 >
-                  <option value="visible">Visible to everyone</option>
-                  <option value="hidden">Hidden (taken down)</option>
+                  <option value="visible">{t('personForm.visible')}</option>
+                  <option value="hidden">{t('personForm.hiddenOpt')}</option>
                 </select>
               </label>
             )}
@@ -424,7 +421,7 @@ function PersonForm({ person, mode = 'admin', isSaving, errors, onSubmit }: Pers
               onChange={(e) => update('verified', e.target.checked)}
               className="h-4 w-4"
             />
-            Verified profile
+            {t('personForm.verified')}
           </label>
         </section>
       )}
@@ -432,27 +429,27 @@ function PersonForm({ person, mode = 'admin', isSaving, errors, onSubmit }: Pers
       {/* Document ka rule: har profile ke saath likha ho ke maloomat kahan se aayi */}
       {isNew && (
         <section className={sectionClass}>
-          <h2 className="text-lg font-semibold">Source of this information</h2>
+          <h2 className="text-lg font-semibold">{t('personForm.source')}</h2>
           <p className="text-sm text-gray-500">
-            Required for unclaimed profiles. Use public information only.
+            {t('personForm.sourceHelp')}
           </p>
           <label className="block">
-            <span className="mb-1 block text-sm font-medium">Source type</span>
+            <span className="mb-1 block text-sm font-medium">{t('personForm.sourceType')}</span>
             <select
               value={form.sourceType}
               onChange={(e) => update('sourceType', e.target.value)}
               className={selectClass}
             >
               {SOURCE_TYPES.map((s) => (
-                <option key={s.value} value={s.value}>
-                  {s.label}
+                <option key={s} value={s}>
+                  {t(`personForm.src.${s}`)}
                 </option>
               ))}
             </select>
           </label>
           <FormField
             id="sourceUrl"
-            label="Source URL"
+            label={t('personForm.sourceUrl')}
             placeholder="https://..."
             value={form.sourceUrl}
             onChange={(e) => update('sourceUrl', e.target.value)}
@@ -460,8 +457,8 @@ function PersonForm({ person, mode = 'admin', isSaving, errors, onSubmit }: Pers
           />
           <FormField
             id="sourceNote"
-            label="Note"
-            placeholder="e.g. Official website bio"
+            label={t('personForm.note')}
+            placeholder={t('personForm.notePlaceholder')}
             value={form.sourceNote}
             onChange={(e) => update('sourceNote', e.target.value)}
           />
@@ -473,7 +470,7 @@ function PersonForm({ person, mode = 'admin', isSaving, errors, onSubmit }: Pers
         disabled={isSaving}
         className="w-full rounded-lg bg-gray-900 py-3 font-medium text-white hover:bg-gray-800 disabled:opacity-60 sm:w-auto sm:px-8"
       >
-        {isSaving ? 'Saving...' : isNew ? 'Create profile' : 'Save changes'}
+        {isSaving ? t('common.saving') : isNew ? t('personForm.create') : t('personForm.saveChanges')}
       </button>
     </form>
   )

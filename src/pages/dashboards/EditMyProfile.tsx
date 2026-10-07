@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { useState } from 'react'
@@ -12,6 +13,7 @@ import { getApiError } from '../../utils/apiError'
 
 // /dashboard/profile/edit -> talent apni claimed profile edit karta hai
 function EditMyProfile() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const [errors, setErrors] = useState<Record<string, string>>({})
@@ -21,7 +23,7 @@ function EditMyProfile() {
     mutationFn: (input: PersonInput) => updatePerson(profile!._id, input),
     onMutate: () => setErrors({}),
     onSuccess: (saved) => {
-      toast.success('Profile updated')
+      toast.success(t('editProfile.updated'))
       queryClient.invalidateQueries({ queryKey: ['claims'] })
       queryClient.invalidateQueries({ queryKey: ['people'] })
       queryClient.invalidateQueries({ queryKey: ['person', saved.slug] })
@@ -43,11 +45,11 @@ function EditMyProfile() {
     <div className="mx-auto max-w-3xl space-y-6">
       <div>
         <Link to="/dashboard" className="text-sm underline">
-          <FontAwesomeIcon icon={faArrowLeft} className="mr-1.5" />
-          Back to dashboard
+          <FontAwesomeIcon icon={faArrowLeft} className="me-1.5 rtl:rotate-180" />
+          {t('site.backToDashboard')}
         </Link>
-        <h1 className="mt-2 text-2xl font-bold">Edit your profile</h1>
-        <p className="text-sm text-gray-500">These details are shown on your public profile.</p>
+        <h1 className="mt-2 text-2xl font-bold">{t('editProfile.title')}</h1>
+        <p className="text-sm text-gray-500">{t('editProfile.subtitle')}</p>
       </div>
       <PersonForm
         key={profile._id}

@@ -8,6 +8,7 @@ import { AuthProvider } from './context/AuthProvider.tsx'
 import './index.css'
 import './i18n'
 import App from './App.tsx'
+import LanguageRoot from './components/LanguageRoot'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -27,7 +28,9 @@ createRoot(document.getElementById('root')!).render(
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <AuthProvider>
-          <App />
+          <LanguageRoot>
+            <App />
+          </LanguageRoot>
         </AuthProvider>
       </BrowserRouter>
       <Toaster position="bottom-right" />

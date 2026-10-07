@@ -1,13 +1,15 @@
+import { useTranslation } from 'react-i18next'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons'
 function VerifiedBadge() {
+  const { t } = useTranslation()
   return (
     <span
-      title="Verified profile"
+      title={t('site.verifiedTitle')}
       className="inline-flex items-center rounded-full bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700"
     >
-      <FontAwesomeIcon icon={faCircleCheck} className="mr-1" />
-      Verified
+      <FontAwesomeIcon icon={faCircleCheck} className="me-1" />
+      {t('site.verified')}
     </span>
   )
 }

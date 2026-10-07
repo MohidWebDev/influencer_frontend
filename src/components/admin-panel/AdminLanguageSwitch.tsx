@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGlobe } from '@fortawesome/free-solid-svg-icons'
-import { LANGUAGES, saveLanguage } from '../../i18n'
+import { LANGUAGES, changeLanguage } from '../../i18n'
 
 function AdminLanguageSwitch() {
   const { t, i18n } = useTranslation()
@@ -12,10 +12,7 @@ function AdminLanguageSwitch() {
       <span className="sr-only">{t('nav.language')}</span>
       <select
         value={i18n.language}
-        onChange={(e) => {
-          i18n.changeLanguage(e.target.value)
-          saveLanguage(e.target.value)
-        }}
+        onChange={(e) => changeLanguage(e.target.value)}
         className="flex-1 bg-transparent outline-none"
       >
         {LANGUAGES.map((language) => (

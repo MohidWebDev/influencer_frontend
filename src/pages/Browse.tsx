@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -26,6 +27,7 @@ function BrowseSection({
   icon: IconDefinition
   chips: Chip[]
 }) {
+  const { t } = useTranslation()
   return (
     <section className="rounded-2xl bg-white p-6 shadow-sm">
       <h2 className="flex items-center gap-3 text-lg font-semibold">
@@ -35,7 +37,7 @@ function BrowseSection({
         {title}
       </h2>
       <div className="mt-4 flex flex-wrap gap-2">
-        {chips.length === 0 && <p className="text-sm text-gray-500">Loading...</p>}
+        {chips.length === 0 && <p className="text-sm text-gray-500">{t('common.loading')}</p>}
         {chips.map((chip) => (
           <Link
             key={chip.key}
@@ -52,6 +54,7 @@ function BrowseSection({
 
 // /browse -> profession, industry, topic aur country ke hisaab se dhoondo
 function Browse() {
+  const { t } = useTranslation()
   const { data: professions = [] } = useTaxonomy('professions')
   const { data: industries = [] } = useTaxonomy('industries')
   const { data: topics = [] } = useTaxonomy('topics')
@@ -62,21 +65,20 @@ function Browse() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold md:text-3xl">Browse</h1>
+        <h1 className="text-2xl font-bold md:text-3xl">{t('browse.title')}</h1>
         <p className="mt-1 text-gray-600">
-          Find people by what they do, the industry they work in, the topics they cover, or where
-          they are.
+          {t('browse.subtitle')}
         </p>
       </div>
-      <BrowseSection title="Industries" icon={faIndustry} chips={toChips(industries, 'industry')} />
+      <BrowseSection title={t('browse.industries')} icon={faIndustry} chips={toChips(industries, 'industry')} />
       <BrowseSection
-        title="Professions"
+        title={t('browse.professions')}
         icon={faBriefcase}
         chips={toChips(professions, 'profession')}
       />
-      <BrowseSection title="Topics" icon={faHashtag} chips={toChips(topics, 'topic')} />
+      <BrowseSection title={t('browse.topics')} icon={faHashtag} chips={toChips(topics, 'topic')} />
       <BrowseSection
-        title="Countries"
+        title={t('browse.countries')}
         icon={faEarthAsia}
         chips={COUNTRY_OPTIONS.map((code) => ({
           key: code,

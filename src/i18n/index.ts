@@ -36,4 +36,17 @@ i18n.use(initReactI18next).init({
   interpolation: { escapeValue: false },
 })
 
+// Poori site ki zaban aur disha: <html lang="ur" dir="rtl">
+function applyLanguage(code: string) {
+  document.documentElement.lang = code
+  document.documentElement.dir = i18n.dir(code)
+}
+applyLanguage(i18n.language)
+i18n.on('languageChanged', applyLanguage)
+
+export function changeLanguage(code: string) {
+  saveLanguage(code)
+  return i18n.changeLanguage(code)
+}
+
 export default i18n

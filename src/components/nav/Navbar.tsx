@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -26,6 +27,7 @@ import AccountMenu from './AccountMenu'
 import LanguageMenu from './LanguageMenu'
 
 function Navbar() {
+  const { t } = useTranslation()
   const { user, isLoading, logout } = useAuth()
   const navigate = useNavigate()
   const { pathname, search } = useLocation()
@@ -34,7 +36,7 @@ function Navbar() {
   async function handleLogout() {
     setMobileOpen(false)
     await logout()
-    toast.success('Logged out')
+    toast.success(t('site.nav.loggedOut'))
     navigate('/')
   }
 
@@ -57,7 +59,7 @@ function Navbar() {
   return (
     <header className="relative border-b border-gray-200 bg-white">
       <nav className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3">
-        <Link to="/" className="mr-2 truncate text-base font-bold sm:text-xl">
+        <Link to="/" className="me-2 truncate text-base font-bold sm:text-xl">
           {PLATFORM_NAME}
         </Link>
 
@@ -72,7 +74,7 @@ function Navbar() {
         </div>
 
         {/* Desktop: right side */}
-        <div className="ml-auto hidden items-center gap-1 lg:flex">
+        <div className="ms-auto hidden items-center gap-1 lg:flex">
           <LanguageMenu />
           {!isLoading &&
             (user ? (
@@ -88,11 +90,11 @@ function Navbar() {
                     <FontAwesomeIcon icon={item.icon} />
                   </Link>
                 ))}
-                <Link to="/dashboard" className={`${linkClass(active(dashboardItem))} ml-1`}>
+                <Link to="/dashboard" className={`${linkClass(active(dashboardItem))} ms-1`}>
                   <FontAwesomeIcon icon={faTableColumns} />
-                  Dashboard
+                  {t('site.nav.dashboard')}
                 </Link>
-                <div className="ml-1">
+                <div className="ms-1">
                   <AccountMenu onLogout={handleLogout} />
                 </div>
               </>
@@ -100,25 +102,25 @@ function Navbar() {
               <>
                 <Link to="/login" className={linkClass(pathname === '/login')}>
                   <FontAwesomeIcon icon={faRightToBracket} />
-                  Log in
+                  {t('site.nav.login')}
                 </Link>
                 <Link
                   to="/register"
                   className="inline-flex items-center gap-2 rounded-lg bg-gray-900 px-3 py-1.5 text-sm text-white hover:bg-gray-800"
                 >
                   <FontAwesomeIcon icon={faUserPlus} />
-                  Sign up
+                  {t('site.nav.signup')}
                 </Link>
               </>
             ))}
         </div>
 
         {/* Mobile: notifications + menu button */}
-        <div className="ml-auto flex items-center gap-1 lg:hidden">
+        <div className="ms-auto flex items-center gap-1 lg:hidden">
           {user && (
             <Link
               to="/notifications"
-              aria-label="Notifications"
+              aria-label={t('site.nav.notifications')}
               className={iconButton(pathname === '/notifications')}
               onClick={() => setMobileOpen(false)}
             >
@@ -127,7 +129,7 @@ function Navbar() {
           )}
           <button
             onClick={() => setMobileOpen((o) => !o)}
-            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+            aria-label={mobileOpen ? t('site.nav.closeMenu') : t('site.nav.openMenu')}
             aria-expanded={mobileOpen}
             className={iconButton(mobileOpen)}
           >
@@ -176,7 +178,7 @@ function Navbar() {
                   className="inline-flex items-center gap-2 rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50"
                 >
                   <FontAwesomeIcon icon={faRightFromBracket} />
-                  Log out
+                  {t('site.nav.logout')}
                 </button>
               ) : (
                 <div className="flex gap-2">
@@ -186,7 +188,7 @@ function Navbar() {
                     className="inline-flex items-center gap-2 rounded-lg border border-gray-300 px-3 py-1.5 text-sm"
                   >
                     <FontAwesomeIcon icon={faRightToBracket} />
-                    Log in
+                    {t('site.nav.login')}
                   </Link>
                   <Link
                     to="/register"
@@ -194,7 +196,7 @@ function Navbar() {
                     className="inline-flex items-center gap-2 rounded-lg bg-gray-900 px-3 py-1.5 text-sm text-white"
                   >
                     <FontAwesomeIcon icon={faUserPlus} />
-                    Sign up
+                    {t('site.nav.signup')}
                   </Link>
                 </div>
               )}
