@@ -51,6 +51,10 @@ export interface Claim {
   // Admin list mein user ki details aati hain, "mine" mein sirf id
   user: string | { _id: string; name: string; email: string; role: string }
   status: ClaimStatus
+  // true = talent ne nayi profile khud bheji (approve hone tak chhupi)
+  isNewProfile?: boolean
+  // Nayi profile ka naam (reject pe draft mit jaye tab bhi)
+  requestedName?: string
   evidence: { contactEmail?: string; links: string[]; note?: string }
   verification?: {
     channelUrl?: string
@@ -78,4 +82,19 @@ export interface ClaimInput {
 }
 
 // Admin list ke filters
-export type ClaimFilter = ClaimStatus | 'open' | 'needs_action' | 'all'
+export type ClaimFilter = ClaimStatus | 'open' | 'needs_action' | 'all' | 'new_profiles'
+
+// Nayi profile bhejte waqt milti julti public profile
+export interface ProfileMatch {
+  _id: string
+  name: string
+  slug: string
+  headline?: string
+  photoUrl?: string
+  claimed: boolean
+}
+
+// Claim ka naam: profile, warna bheja hua naam
+export function claimPersonName(claim: Pick<Claim, 'person' | 'requestedName'>, fallback: string) {
+  return claim.person?.name ?? claim.requestedName ?? fallback
+}

@@ -5,7 +5,7 @@ import toast from 'react-hot-toast'
 import { myClaimsQuery } from '../api/queries'
 import { useAdminAlerts } from '../hooks/useAdminAlerts'
 import { useAuth } from '../hooks/useAuth'
-import type { ClaimStatus } from '../types/claim'
+import { claimPersonName, type ClaimStatus } from '../types/claim'
 
 // Itne second baad khula hua data dobara mangwao (sirf jab tab samne ho)
 const LIVE_INTERVAL_MS = 8000
@@ -80,7 +80,7 @@ function TalentNotifier() {
     for (const claim of claims) {
       const old = before.get(claim._id)
       if (!old || old === claim.status) continue
-      const name = claim.person?.name ?? t('claims.deletedProfile')
+      const name = claimPersonName(claim, t('claims.deletedProfile'))
       if (claim.status === 'waiting_for_talent') {
         toast(t('live.codeSent', { name, url: claim.verification?.channelUrl ?? '' }), {
           icon: '🔑',

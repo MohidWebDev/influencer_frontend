@@ -10,6 +10,8 @@ export interface AdminPersonRow {
   verified: boolean
   visibility: 'visible' | 'hidden'
   isDemo: boolean
+  // Talent ki bheji hui profile, claim approve hone tak chhupi
+  isDraft?: boolean
   claimedBy: string | null
   totalFollowers: number
   updatedAt: string

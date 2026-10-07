@@ -15,7 +15,13 @@ import { Link } from 'react-router-dom'
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { adminListClaims, resetClaimOtp, reviewClaim, sendClaimCode } from '../../api/claims'
-import { MAX_OTP_ATTEMPTS, isOpenClaim, type Claim, type ClaimFilter } from '../../types/claim'
+import {
+  MAX_OTP_ATTEMPTS,
+  claimPersonName,
+  isOpenClaim,
+  type Claim,
+  type ClaimFilter,
+} from '../../types/claim'
 import ClaimStatusPill from '../ClaimStatusPill'
 import { getApiError } from '../../utils/apiError'
 import Avatar from '../Avatar'
@@ -156,17 +162,24 @@ function ClaimCard({ claim }: { claim: Claim }) {
   return (
     <article className="flex flex-col rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
       <div className="flex flex-wrap items-start gap-4">
-        <Avatar name={claim.person?.name ?? '?'} photoUrl={claim.person?.photoUrl} />
+        <Avatar name={claimPersonName(claim, '?')} photoUrl={claim.person?.photoUrl} />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            {claim.person ? (
+            {claim.person && !claim.isNewProfile ? (
               <Link to={`/people/${claim.person.slug}`} className="font-semibold hover:underline">
                 {claim.person.name}
               </Link>
             ) : (
-              <span className="font-semibold text-gray-500">{t('claims.deletedProfile')}</span>
+              <span className="font-semibold text-gray-500">
+                {claimPersonName(claim, t('claims.deletedProfile'))}
+              </span>
             )}
             <ClaimStatusPill status={claim.status} />
+            {claim.isNewProfile && (
+              <span className="rounded-full bg-violet-50 px-2 py-0.5 text-[11px] font-medium text-violet-700 ring-1 ring-inset ring-violet-200">
+                {t('newProfile.badge')}
+              </span>
+            )}
           </div>
           <p className="mt-0.5 text-sm text-gray-600">
             {t('claims.colClaimant')} <strong>{requester?.name}</strong>{' '}

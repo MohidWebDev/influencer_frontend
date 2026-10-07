@@ -68,7 +68,8 @@
   "claimFilter": {
     "open": "All open",
     "needs_action": "Needs my action",
-    "all": "All claims"
+    "all": "All claims",
+    "new_profiles": "New profiles"
   },
   "claims": {
     "title": "Claims",
@@ -256,7 +257,8 @@
       "otpLockedAt": "Locked on",
       "lastOtpAttemptAt": "Last OTP attempt",
       "verifiedBy": "Verified by",
-      "verificationMethod": "Verification method"
+      "verificationMethod": "Verification method",
+      "isNewProfile": "New profile"
     },
     "close": "Close",
     "allActions": "All actions",
@@ -284,7 +286,8 @@
         "reject": "{{actor}} rejected the claim on {{target}}.",
         "reset_otp": "{{actor}} reset the OTP and sent a new code for the claim on {{target}}.",
         "otp_locked": "{{actor}} entered a wrong OTP 5 times, so the claim on {{target}} was locked.",
-        "verify_manual": "{{actor}} verified the claim on {{target}} manually and approved it."
+        "verify_manual": "{{actor}} verified the claim on {{target}} manually and approved it.",
+        "new_profile": "{{actor}} could not find their profile and submitted a new one: {{target}}."
       },
       "user": {
         "suspend": "{{actor}} suspended the user {{target}}.",
@@ -318,7 +321,8 @@
       "reject": "Rejected claim",
       "reset_otp": "Reset claim OTP",
       "otp_locked": "OTP locked",
-      "verify_manual": "Verified claim manually"
+      "verify_manual": "Verified claim manually",
+      "new_profile": "Submitted a new profile"
     },
     "user": {
       "suspend": "Suspended user",
@@ -505,7 +509,9 @@
     "ALREADY_REVIEWED": "This claim was already reviewed",
     "OTP_LOCKED": "Too many wrong attempts. Your claim is under review by the admin.",
     "INVALID_STATE": "This action is not allowed for the claim's current status.",
-    "PROFILE_NOT_CLAIMED": "A profile can only be verified after a talent has claimed it."
+    "PROFILE_NOT_CLAIMED": "A profile can only be verified after a talent has claimed it.",
+    "POSSIBLE_DUPLICATE": "A profile like this already exists",
+    "PROFILE_PENDING_REVIEW": "This profile is waiting for its claim to be approved"
   },
   "search": {
     "any": "Any",
@@ -906,5 +912,42 @@
     "ctaBody": "Browse public profiles for free. Create an account to claim your profile or send inquiries.",
     "ctaExplore": "Explore people",
     "ctaJoin": "Create a free account"
+  },
+  "newProfile": {
+    "cta": "Can't find it? Create your profile",
+    "ctaLong": "Is this you and you're not listed? Create your profile",
+    "ctaHint": "We publish it after confirming it is really you.",
+    "bannerTitle": "Are you a public figure and not listed here?",
+    "bannerBody": "Create your profile. It goes live after we verify your official account.",
+    "title": "Create your profile",
+    "subtitle": "Couldn't find yourself on the platform? Add your details. Your profile stays hidden until we confirm it is really you.",
+    "step1": "Fill in your details and at least one official social account.",
+    "step2": "We send a 6-digit code to that account. Enter it on your dashboard.",
+    "step3": "After an admin approves, your profile goes live and is yours.",
+    "forReview": "For our review team",
+    "forReviewHelp": "Optional. Helps us confirm it is you faster. Not shown publicly.",
+    "contactEmail": "Official email",
+    "note": "Note for the admin",
+    "notePlaceholder": "e.g. I host a weekly tech podcast on YouTube",
+    "submit": "Send for verification",
+    "sent": "Profile sent. We will send a code to your official account.",
+    "dupTitle": "Is one of these you?",
+    "dupBody": "We found profiles with the same name or social account. If one is yours, claim it instead of creating a new one.",
+    "thisIsMe": "This is me",
+    "alreadyClaimed": "Already claimed",
+    "createAnyway": "None of these is me, create a new profile",
+    "searchFirst": "Not sure you're listed?",
+    "searchAgain": "Search again",
+    "inProgress": "New profile under verification",
+    "yourProfile": "Your new profile:",
+    "hiddenUntilApproved": "Hidden from the public until the claim is approved.",
+    "badge": "New profile",
+    "submittedTitle": "Profile submitted by the talent",
+    "submittedHelp": "Check these details. Approving publishes the profile; rejecting deletes it.",
+    "location": "Location",
+    "approveBody": "The profile {{person}} will be published and owned by {{claimant}}.",
+    "draftBadge": "New profile · pending",
+    "draftPending": "Pending claim",
+    "draftHint": "Goes public when its claim is approved"
   }
 }

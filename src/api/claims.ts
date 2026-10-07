@@ -1,3 +1,4 @@
+import type { PersonInput } from '../types/admin'
 import api from './axios'
 import type { ApiSuccess } from '../types/api'
 import type { Claim, ClaimFilter, ClaimInput } from '../types/claim'
@@ -61,5 +62,13 @@ export async function resetClaimOtp(id: string, channelUrl?: string) {
 // Admin khud tasdeeq kare (OTP ke baghair). Is se claim approve bhi ho jata hai
 export async function verifyClaimManually(id: string) {
   const res = await api.post<ApiSuccess<{ claim: Claim }>>(`/admin/claims/${id}/verify-manual`, {})
+  return res.data.data.claim
+}
+
+// Profile na mile to talent nayi bhejta hai (chhupi draft + claim)
+export async function createNewProfileClaim(
+  input: PersonInput & { contactEmail?: string; note?: string; force?: boolean },
+) {
+  const res = await api.post<ApiSuccess<{ claim: Claim }>>('/claims/new-profile', input)
   return res.data.data.claim
 }

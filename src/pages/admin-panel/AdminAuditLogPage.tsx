@@ -16,7 +16,7 @@ const PAGE_SIZE = 25
 // Har target ke actions (auditAction.* mein inke naam hain)
 const ACTIONS: Record<(typeof TARGETS)[number], string[]> = {
   person: ['create', 'update', 'verify', 'unverify', 'hide', 'unhide', 'delete'],
-  claim: ['send_code', 'reset_otp', 'otp_locked', 'verify_manual', 'approve', 'reject'],
+  claim: ['new_profile', 'send_code', 'reset_otp', 'otp_locked', 'verify_manual', 'approve', 'reject'],
   user: ['suspend', 'unsuspend', 'role_change'],
   report: ['update'],
 }

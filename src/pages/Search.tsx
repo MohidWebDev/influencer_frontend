@@ -1,11 +1,13 @@
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState, type ReactNode } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth'
 import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faChevronDown,
   faMagnifyingGlass,
+  faPlus,
   faSliders,
   faUserGroup,
   faXmark,
@@ -103,6 +105,7 @@ function CityFilter({ value, onChange }: { value: string; onChange: (value: stri
 
 function Search() {
   const { t } = useTranslation()
+  const { user } = useAuth()
   // Saare filters URL mein: /search?q=ai&country=PK&page=2
   // Is se link share ho sakta hai aur back button kaam karta hai
   const [searchParams, setSearchParams] = useSearchParams()
@@ -196,6 +199,9 @@ function Search() {
       text: `${f.label}: ${f.options ? optionLabel(f.options, get(f.key)) : get(f.key)}`,
     }))
 
+  // Sirf guest (login ke baad) aur talent khud profile bhej sakte hain
+  const canCreateProfile = !user || user.role === 'talent'
+
   let results: ReactNode
   if (isLoading) {
     results = (
@@ -217,14 +223,24 @@ function Search() {
         </span>
         <p className="mt-4 font-semibold">{t('search.noResults')}</p>
         <p className="mt-1 text-sm text-gray-500">{t('search.noResultsHint')}</p>
-        {activeFilters > 0 && (
-          <button
-            onClick={clearFilters}
-            className="mt-5 rounded-xl bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
-          >
-            {t('search.clearFilters')}
-          </button>
-        )}
+        <div className="mt-5 flex flex-wrap justify-center gap-2">
+          {activeFilters > 0 && (
+            <button
+              onClick={clearFilters}
+              className="rounded-xl bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
+            >
+              {t('search.clearFilters')}
+            </button>
+          )}
+          {canCreateProfile && (
+            <Link
+              to="/my-profile/new"
+              className="rounded-xl border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-100"
+            >
+              {t('newProfile.ctaLong')}
+            </Link>
+          )}
+        </div>
       </div>
     )
   } else {
@@ -236,6 +252,22 @@ function Search() {
           ))}
         </div>
         <Pagination page={page} totalPages={totalPages} onChange={setPage} />
+        {/* Talent ko apni profile na mile to khud bheje */}
+        {canCreateProfile && (
+          <div className="mt-8 flex flex-col items-start justify-between gap-3 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-gray-100 sm:flex-row sm:items-center">
+            <div>
+              <p className="font-semibold">{t('newProfile.bannerTitle')}</p>
+              <p className="mt-0.5 text-sm text-gray-500">{t('newProfile.bannerBody')}</p>
+            </div>
+            <Link
+              to="/my-profile/new"
+              className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
+            >
+              <FontAwesomeIcon icon={faPlus} className="text-xs" />
+              {t('newProfile.cta')}
+            </Link>
+          </div>
+        )}
       </>
     )
   }

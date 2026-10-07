@@ -41,7 +41,19 @@ export interface ClaimDetail {
     headline?: string
     photoUrl?: string
     visibility: string
+    isDraft?: boolean
+    bio?: string
+    websiteUrl?: string
+    country?: string
+    city?: string
+    languages?: string[]
+    socialAccounts?: { platform: string; url: string; handle?: string; followers?: number }[]
+    professions?: { name: string; slug: string }[]
+    industries?: { name: string; slug: string }[]
+    topics?: { name: string; slug: string }[]
   } | null
+  isNewProfile?: boolean
+  requestedName?: string
   user: { _id: string; name: string; email: string; role: Role; status: string; createdAt: string } | null
   evidence: { contactEmail?: string; links: string[]; note?: string }
   verification?: {

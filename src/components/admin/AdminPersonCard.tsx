@@ -71,7 +71,11 @@ function AdminPersonCard({
                 {t('site.verified')}
               </Badge>
             )}
-            {isHidden && <Badge className="bg-red-100 text-red-700">{t('oldAdmin.hidden')}</Badge>}
+            {person.isDraft ? (
+              <Badge className="bg-violet-50 text-violet-700">{t('newProfile.draftBadge')}</Badge>
+            ) : (
+              isHidden && <Badge className="bg-red-100 text-red-700">{t('oldAdmin.hidden')}</Badge>
+            )}
             {person.claimedBy && <Badge className="bg-green-50 text-green-700">{t('oldAdmin.claimed')}</Badge>}
             {person.isDemo && <Badge className="bg-amber-50 text-amber-800">{t('oldAdmin.demo')}</Badge>}
           </div>
@@ -141,18 +145,28 @@ function AdminPersonCard({
               {person.verified ? t('oldAdmin.unverify') : t('oldAdmin.verify')}
             </button>
           )}
-          <button
-            onClick={onToggleHidden}
-            disabled={isBusy}
-            className={`${button} ${
-              isHidden
-                ? 'bg-green-600 text-white hover:bg-green-700'
-                : 'border border-red-200 text-red-600 hover:bg-red-50'
-            }`}
-          >
-            <FontAwesomeIcon icon={isHidden ? faEye : faEyeSlash} />
-            {isHidden ? t('oldAdmin.show') : t('oldAdmin.hide')}
-          </button>
+          {/* Talent ki bheji hui profile claim approve hone pe hi public hoti hai */}
+          {person.isDraft ? (
+            <span
+              className={`${button} cursor-not-allowed border border-violet-200 text-violet-700`}
+              title={t('newProfile.draftHint')}
+            >
+              {t('newProfile.draftPending')}
+            </span>
+          ) : (
+            <button
+              onClick={onToggleHidden}
+              disabled={isBusy}
+              className={`${button} ${
+                isHidden
+                  ? 'bg-green-600 text-white hover:bg-green-700'
+                  : 'border border-red-200 text-red-600 hover:bg-red-50'
+              }`}
+            >
+              <FontAwesomeIcon icon={isHidden ? faEye : faEyeSlash} />
+              {isHidden ? t('oldAdmin.show') : t('oldAdmin.hide')}
+            </button>
+          )}
           {isHidden ? (
             <span
               className={`${button} cursor-not-allowed border border-gray-200 text-gray-400`}

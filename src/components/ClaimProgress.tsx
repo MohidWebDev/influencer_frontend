@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { verifyClaimCode } from '../api/claims'
-import type { Claim } from '../types/claim'
+import { claimPersonName, type Claim } from '../types/claim'
 import { getApiError } from '../utils/apiError'
 
 const STEPS = ['claimProgress.step1', 'claimProgress.step2', 'claimProgress.step3', 'claimProgress.step4']
@@ -66,18 +66,29 @@ function ClaimProgress({ claim }: { claim: Claim }) {
   return (
     <section className="rounded-2xl border border-amber-200 bg-white p-5 shadow-sm md:p-6">
       <p className="text-xs font-medium uppercase tracking-wide text-amber-700">
-        {t('claimProgress.inProgress')}
+        {claim.isNewProfile ? t('newProfile.inProgress') : t('claimProgress.inProgress')}
       </p>
-      <p className="mt-2">
-        {t('claimProgress.claiming')}{' '}
-        {claim.person ? (
-          <Link to={`/people/${claim.person.slug}`} className="font-semibold underline">
-            {claim.person.name}
-          </Link>
-        ) : (
-          <span className="font-semibold">{t('claims.deletedProfile')}</span>
-        )}
-      </p>
+      {claim.isNewProfile ? (
+        // Nayi profile abhi chhupi hai: public page ka link nahi
+        <>
+          <p className="mt-2">
+            {t('newProfile.yourProfile')}{' '}
+            <span className="font-semibold">{claimPersonName(claim, '')}</span>
+          </p>
+          <p className="mt-1 text-sm text-gray-500">{t('newProfile.hiddenUntilApproved')}</p>
+        </>
+      ) : (
+        <p className="mt-2">
+          {t('claimProgress.claiming')}{' '}
+          {claim.person ? (
+            <Link to={`/people/${claim.person.slug}`} className="font-semibold underline">
+              {claim.person.name}
+            </Link>
+          ) : (
+            <span className="font-semibold">{t('claims.deletedProfile')}</span>
+          )}
+        </p>
+      )}
 
       {/* 4 qadam wali progress line */}
       <ol className="mt-4 grid grid-cols-4 gap-2">

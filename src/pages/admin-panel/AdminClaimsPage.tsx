@@ -8,7 +8,7 @@ import DataState from '../../components/admin-panel/DataState'
 import PageHeader from '../../components/admin-panel/PageHeader'
 import ClaimStatusPill from '../../components/ClaimStatusPill'
 import ClaimVerificationNote from '../../components/ClaimVerificationNote'
-import type { ClaimFilter } from '../../types/claim'
+import { claimPersonName, type ClaimFilter } from '../../types/claim'
 import { formatDateTime } from '../../utils/adminFormat'
 
 // "all" pehle: verified / approved claims list se gayab na hon
@@ -16,6 +16,7 @@ const FILTERS: ClaimFilter[] = [
   'all',
   'open',
   'needs_action',
+  'new_profiles',
   'pending',
   'waiting_for_talent',
   'otp_failed',
@@ -49,7 +50,7 @@ function AdminClaimsPage() {
   }
 
   const filterLabel = (f: ClaimFilter) =>
-    f === 'all' || f === 'open' || f === 'needs_action'
+    f === 'all' || f === 'open' || f === 'needs_action' || f === 'new_profiles'
       ? t(`claimFilter.${f}`)
       : t(`claimStatus.${f}`)
 
@@ -77,9 +78,7 @@ function AdminClaimsPage() {
         emptyText={t('claims.empty')}
         onRetry={() => refetch()}
       >
-        <div
-          className="overflow-x-auto rounded-2xl bg-white shadow-sm"
-        >
+        <div className="overflow-x-auto rounded-2xl bg-white shadow-sm">
           <table className="w-full min-w-[640px] text-sm">
             <thead className="border-b border-gray-100 text-xs uppercase text-gray-500">
               <tr>
@@ -98,13 +97,18 @@ function AdminClaimsPage() {
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
                         <Avatar
-                          name={claim.person?.name ?? '?'}
+                          name={claimPersonName(claim, '?')}
                           photoUrl={claim.person?.photoUrl}
                           size="sm"
                         />
                         <span className={`font-medium ${claim.person ? '' : 'text-gray-500'}`}>
-                          {claim.person?.name ?? t('claims.deletedProfile')}
+                          {claimPersonName(claim, t('claims.deletedProfile'))}
                         </span>
+                        {claim.isNewProfile && (
+                          <span className="rounded-full bg-violet-50 px-2 py-0.5 text-[11px] font-medium text-violet-700 ring-1 ring-inset ring-violet-200">
+                            {t('newProfile.badge')}
+                          </span>
+                        )}
                       </div>
                     </td>
                     <td className="px-4 py-3">

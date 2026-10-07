@@ -26,6 +26,7 @@ import HistoryList from '../../components/admin-panel/HistoryList'
 import ClaimStatusPill from '../../components/ClaimStatusPill'
 import { MAX_OTP_ATTEMPTS, isOpenClaim } from '../../types/claim'
 import { adminErrorMessage, formatDate, formatDateTime } from '../../utils/adminFormat'
+import { countryName, formatCount, languageName } from '../../utils/format'
 
 const card = 'rounded-2xl bg-white p-5 shadow-sm'
 const button =
@@ -98,7 +99,7 @@ function AdminClaimDetailPage() {
 
   const claim = data?.claim
   // Profile ya user delete ho chuka ho to bhi page chale
-  const personName = claim?.person?.name ?? t('claims.deletedProfile')
+  const personName = claim?.person?.name ?? claim?.requestedName ?? t('claims.deletedProfile')
   const claimantName = claim?.user?.name ?? t('claims.deletedUser')
   const selectedUrl =
     channelUrl || claim?.verification?.channelUrl || claim?.evidence.links[0] || ''
@@ -123,6 +124,11 @@ function AdminClaimDetailPage() {
                 {t('claims.detailTitle', { name: personName })}
               </h1>
               <ClaimStatusPill status={claim.status} />
+              {claim.isNewProfile && (
+                <span className="rounded-full bg-violet-50 px-2.5 py-0.5 text-xs font-medium text-violet-700 ring-1 ring-inset ring-violet-200">
+                  {t('newProfile.badge')}
+                </span>
+              )}
             </div>
 
             <div className="grid gap-5 lg:grid-cols-2">
@@ -137,7 +143,11 @@ function AdminClaimDetailPage() {
                     )}
                   </div>
                 </div>
-                {claim.person ? (
+                {claim.person?.isDraft ? (
+                  <p className="mt-3 text-sm text-violet-700">
+                    {t('newProfile.hiddenUntilApproved')}
+                  </p>
+                ) : claim.person ? (
                   <Link
                     to={`/people/${claim.person.slug}`}
                     className="mt-3 inline-flex items-center gap-2 text-sm underline"
@@ -169,6 +179,80 @@ function AdminClaimDetailPage() {
                 </div>
               </section>
             </div>
+
+            {/* Talent ki khud bheji hui profile: approve se pehle admin ise dekhe */}
+            {claim.isNewProfile && claim.person && (
+              <section className={`${card} ring-1 ring-violet-200`}>
+                <h2 className="font-semibold">{t('newProfile.submittedTitle')}</h2>
+                <p className="mt-1 text-sm text-gray-500">{t('newProfile.submittedHelp')}</p>
+                <dl className="mt-4 grid gap-4 text-sm sm:grid-cols-2">
+                  {[
+                    [t('personForm.fullName'), claim.person.name],
+                    [t('personForm.headline'), claim.person.headline],
+                    [
+                      t('newProfile.location'),
+                      [claim.person.city, claim.person.country && countryName(claim.person.country)]
+                        .filter(Boolean)
+                        .join(', '),
+                    ],
+                    [
+                      t('personForm.languages'),
+                      claim.person.languages?.map((code) => languageName(code)).join(', '),
+                    ],
+                    [
+                      t('personForm.professions'),
+                      claim.person.professions?.map((x) => x.name).join(', '),
+                    ],
+                    [
+                      t('personForm.industries'),
+                      claim.person.industries?.map((x) => x.name).join(', '),
+                    ],
+                    [t('personForm.topics'), claim.person.topics?.map((x) => x.name).join(', ')],
+                    [t('personForm.website'), claim.person.websiteUrl],
+                  ]
+                    .filter(([, value]) => value)
+                    .map(([label, value]) => (
+                      <div key={label}>
+                        <dt className="text-xs text-gray-500">{label}</dt>
+                        <dd className="mt-0.5 break-words">{value}</dd>
+                      </div>
+                    ))}
+                </dl>
+                {claim.person.bio && (
+                  <div className="mt-4 text-sm">
+                    <p className="text-xs text-gray-500">{t('personForm.bio')}</p>
+                    <p className="mt-0.5 whitespace-pre-line">{claim.person.bio}</p>
+                  </div>
+                )}
+                {!!claim.person.socialAccounts?.length && (
+                  <div className="mt-4 text-sm">
+                    <p className="text-xs text-gray-500">{t('personForm.social')}</p>
+                    <ul className="mt-1 space-y-1">
+                      {claim.person.socialAccounts.map((account) => (
+                        <li key={account.url} className="flex flex-wrap items-center gap-2">
+                          <span className="font-medium">
+                            {t(`platform.${account.platform}`, { defaultValue: account.platform })}
+                          </span>
+                          <a
+                            href={account.url}
+                            target="_blank"
+                            rel="noopener noreferrer nofollow"
+                            className="break-all text-blue-700 underline"
+                          >
+                            {account.url}
+                          </a>
+                          {account.followers !== undefined && (
+                            <span className="text-gray-500">
+                              · {t('site.followers', { value: formatCount(account.followers) })}
+                            </span>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </section>
+            )}
 
             <section className={card}>
               <h2 className="font-semibold">{t('claims.evidence')}</h2>
@@ -332,7 +416,9 @@ function AdminClaimDetailPage() {
                           disabled={sendCode.isPending || !selectedUrl}
                           className={`${button} bg-gray-900 text-white hover:bg-gray-800`}
                         >
-                          <FontAwesomeIcon icon={claim.status === 'pending' ? faKey : faRotateRight} />
+                          <FontAwesomeIcon
+                            icon={claim.status === 'pending' ? faKey : faRotateRight}
+                          />
                           {claim.status === 'pending'
                             ? t('claims.generateCode')
                             : t('claimOtp.resetAndResend')}
@@ -350,15 +436,16 @@ function AdminClaimDetailPage() {
                         </button>
                       )}
                       {claim.person &&
-                        (claim.status === 'waiting_for_talent' || claim.status === 'otp_failed') && (
-                        <button
-                          onClick={() => setDialog('verify')}
-                          className={`${button} border border-green-300 text-green-700 hover:bg-green-50`}
-                        >
-                          <FontAwesomeIcon icon={faUserCheck} />
-                          {t('claimOtp.verifyManually')}
-                        </button>
-                      )}
+                        (claim.status === 'waiting_for_talent' ||
+                          claim.status === 'otp_failed') && (
+                          <button
+                            onClick={() => setDialog('verify')}
+                            className={`${button} border border-green-300 text-green-700 hover:bg-green-50`}
+                          >
+                            <FontAwesomeIcon icon={faUserCheck} />
+                            {t('claimOtp.verifyManually')}
+                          </button>
+                        )}
                       <button
                         onClick={() => setDialog('reject')}
                         className={`${button} border border-red-200 text-red-600 hover:bg-red-50`}
@@ -386,7 +473,9 @@ function AdminClaimDetailPage() {
               onConfirm={() => review.mutate({ action: 'approve' })}
               onCancel={() => setDialog(null)}
             >
-              {t('claims.approveBody', { claimant: claimantName, person: personName })}
+              {claim.isNewProfile
+                ? t('newProfile.approveBody', { claimant: claimantName, person: personName })
+                : t('claims.approveBody', { claimant: claimantName, person: personName })}
             </ConfirmDialog>
             <ConfirmDialog
               open={dialog === 'verify'}

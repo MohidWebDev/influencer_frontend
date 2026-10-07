@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { useState, type FormEvent } from 'react'
+import { useState, type FormEvent, type ReactNode } from 'react'
 import FormField from '../FormField'
 import TaxonomyPicker from './TaxonomyPicker'
 import {
@@ -74,7 +74,7 @@ function toFormState(person?: Person): FormState {
 }
 
 // Form ki strings ko backend wali shakal mein badlo
-function toInput(form: FormState, isNew: boolean, isOwner: boolean): PersonInput {
+function toInput(form: FormState, isNew: boolean, mode: PersonFormMode): PersonInput {
   const input: PersonInput = {
     headline: form.headline,
     bio: form.bio,
@@ -97,7 +97,12 @@ function toInput(form: FormState, isNew: boolean, isOwner: boolean): PersonInput
 
   // Owner sirf apne fields bhejta hai. Naam aur state admin ka kaam hai.
   // Verified yahan nahi: woh sirf claim ke baad card ke button se hota hai
-  if (isOwner) return input
+  if (mode === 'owner') return input
+  // Talent apni nayi profile bhej raha hai: naam bhi, baqi admin wali cheezein nahi
+  if (mode === 'submit') {
+    input.name = form.name
+    return input
+  }
 
   input.name = form.name
   input.status = form.status
@@ -116,22 +121,37 @@ function toInput(form: FormState, isNew: boolean, isOwner: boolean): PersonInput
   return input
 }
 
+// 'owner' = talent apni profile edit kar raha hai
+// 'submit' = talent ko profile na mili, nayi khud bhej raha hai
+type PersonFormMode = 'admin' | 'owner' | 'submit'
+
 interface PersonFormProps {
   person?: Person
-  // 'owner' = talent apni profile edit kar raha hai
-  mode?: 'admin' | 'owner'
+  mode?: PersonFormMode
   isSaving: boolean
   errors: Record<string, string>
   onSubmit: (input: PersonInput) => void
+  // Submit button se pehle extra hissa (jaise admin ke liye note)
+  children?: ReactNode
+  submitLabel?: string
 }
 
 const selectClass = 'w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm'
 const sectionClass = 'space-y-4 rounded-2xl bg-white p-6 shadow-sm'
 
-function PersonForm({ person, mode = 'admin', isSaving, errors, onSubmit }: PersonFormProps) {
+function PersonForm({
+  person,
+  mode = 'admin',
+  isSaving,
+  errors,
+  onSubmit,
+  children,
+  submitLabel,
+}: PersonFormProps) {
   const { t } = useTranslation()
   const isNew = !person
   const isOwner = mode === 'owner'
+  const isAdmin = mode === 'admin'
   const [form, setForm] = useState<FormState>(() => toFormState(person))
   const { data: professions = [] } = useTaxonomy('professions')
   const { data: industries = [] } = useTaxonomy('industries')
@@ -159,7 +179,7 @@ function PersonForm({ person, mode = 'admin', isSaving, errors, onSubmit }: Pers
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault()
-    onSubmit(toInput(form, isNew, isOwner))
+    onSubmit(toInput(form, isNew, mode))
   }
 
   return (
@@ -306,6 +326,9 @@ function PersonForm({ person, mode = 'admin', isSaving, errors, onSubmit }: Pers
         {form.socialAccounts.length === 0 && (
           <p className="text-sm text-gray-500">{t('personForm.noSocial')}</p>
         )}
+        {errors.socialAccounts && (
+          <p className="text-sm text-red-600">{errors.socialAccounts}</p>
+        )}
         {form.socialAccounts.map((row, index) => (
           <div
             key={index}
@@ -380,7 +403,7 @@ function PersonForm({ person, mode = 'admin', isSaving, errors, onSubmit }: Pers
         ))}
       </section>
 
-      {!isOwner && (
+      {isAdmin && (
         <section className={sectionClass}>
           <h2 className="text-lg font-semibold">{t('personForm.adminSettings')}</h2>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -416,7 +439,7 @@ function PersonForm({ person, mode = 'admin', isSaving, errors, onSubmit }: Pers
       )}
 
       {/* Document ka rule: har profile ke saath likha ho ke maloomat kahan se aayi */}
-      {isNew && (
+      {isNew && isAdmin && (
         <section className={sectionClass}>
           <h2 className="text-lg font-semibold">{t('personForm.source')}</h2>
           <p className="text-sm text-gray-500">
@@ -454,12 +477,16 @@ function PersonForm({ person, mode = 'admin', isSaving, errors, onSubmit }: Pers
         </section>
       )}
 
+      {children}
+
       <button
         type="submit"
         disabled={isSaving}
         className="w-full rounded-lg bg-gray-900 py-3 font-medium text-white hover:bg-gray-800 disabled:opacity-60 sm:w-auto sm:px-8"
       >
-        {isSaving ? t('common.saving') : isNew ? t('personForm.create') : t('personForm.saveChanges')}
+        {isSaving
+          ? t('common.saving')
+          : (submitLabel ?? (isNew ? t('personForm.create') : t('personForm.saveChanges')))}
       </button>
     </form>
   )

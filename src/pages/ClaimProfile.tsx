@@ -7,7 +7,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { createClaim } from '../api/claims'
 import { myClaimsQuery, myProfileQuery, personQuery } from '../api/queries'
-import { isOpenClaim } from '../types/claim'
+import { claimPersonName, isOpenClaim } from '../types/claim'
 import Avatar from '../components/Avatar'
 import FormField from '../components/FormField'
 import { getApiError } from '../utils/apiError'
@@ -53,7 +53,7 @@ function ClaimProfile() {
   const blockMessage = myProfile.data
     ? t('claimForm.ownsProfile')
     : pending
-      ? t('claimForm.pendingFor', { name: pending.person?.name ?? t('claims.deletedProfile') })
+      ? t('claimForm.pendingFor', { name: claimPersonName(pending, t('claims.deletedProfile')) })
       : null
   if (blockMessage) {
     return (

@@ -1,12 +1,17 @@
 import { useTranslation } from 'react-i18next'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowRight, faArrowUpRightFromSquare, faPen } from '@fortawesome/free-solid-svg-icons'
+import {
+  faArrowRight,
+  faArrowUpRightFromSquare,
+  faPen,
+  faPlus,
+} from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { myClaimsQuery, myProfileQuery } from '../api/queries'
 import Avatar from './Avatar'
 import ClaimProgress from './ClaimProgress'
-import { isOpenClaim } from '../types/claim'
+import { claimPersonName, isOpenClaim } from '../types/claim'
 
 // Talent dashboard ka sab se upar wala hissa: meri profile ki halat
 function MyProfileSection() {
@@ -66,7 +71,7 @@ function MyProfileSection() {
     <section className={`${box} border-gray-200`}>
       {latest?.status === 'rejected' && (
         <p className="mb-4 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
-          {t('myProfile.rejected', { name: latest.person?.name ?? t('claims.deletedProfile'), reason: latest.rejectionReason })}
+          {t('myProfile.rejected', { name: claimPersonName(latest, t('claims.deletedProfile')), reason: latest.rejectionReason })}
         </p>
       )}
       <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
@@ -76,13 +81,24 @@ function MyProfileSection() {
       <p className="mt-1 text-sm text-gray-600">
         {t('myProfile.findBody')}
       </p>
-      <Link
-        to="/search"
-        className="mt-4 inline-block rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
-      >
-        {t('myProfile.findButton')}{' '}
-        <FontAwesomeIcon icon={faArrowRight} className="ms-1 rtl:rotate-180" />
-      </Link>
+      <div className="mt-4 flex flex-wrap items-center gap-3">
+        <Link
+          to="/search"
+          className="inline-block rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
+        >
+          {t('myProfile.findButton')}{' '}
+          <FontAwesomeIcon icon={faArrowRight} className="ms-1 rtl:rotate-180" />
+        </Link>
+        {/* Profile na mile to khud bhejo */}
+        <Link
+          to="/my-profile/new"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-100"
+        >
+          <FontAwesomeIcon icon={faPlus} className="text-xs" />
+          {t('newProfile.cta')}
+        </Link>
+      </div>
+      <p className="mt-2 text-xs text-gray-500">{t('newProfile.ctaHint')}</p>
     </section>
   )
 }
