@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { listAuditLogs } from '../../api/adminPanel'
+import ChangesDialog from '../../components/admin-panel/ChangesDialog'
+import type { AuditLogEntry } from '../../types/adminPanel'
 import AdminPager from '../../components/admin-panel/AdminPager'
 import DataState from '../../components/admin-panel/DataState'
 import PageHeader from '../../components/admin-panel/PageHeader'
@@ -13,26 +15,12 @@ import { formatDateTime } from '../../utils/adminFormat'
 const TARGETS = ['person', 'claim', 'user', 'report'] as const
 const PAGE_SIZE = 25
 
-function Snapshot({ label, value }: { label: string; value: unknown }) {
-  return (
-    <div className="min-w-0 flex-1">
-      <p className="mb-1 text-xs font-medium text-gray-500">{label}</p>
-      <pre
-        dir="ltr"
-        className="max-h-64 overflow-auto rounded-lg bg-gray-900 p-3 text-start text-xs text-gray-100"
-      >
-        {value === undefined || value === null ? '—' : JSON.stringify(value, null, 2)}
-      </pre>
-    </div>
-  )
-}
-
 // Sirf parhne ke liye: koi button yahan kuch badalta nahi
 function AdminAuditLogPage() {
   const { t } = useTranslation()
   const [params, setParams] = useSearchParams()
   const [action, setAction] = useState(params.get('action') ?? '')
-  const [open, setOpen] = useState<string | null>(null)
+  const [open, setOpen] = useState<AuditLogEntry | null>(null)
   const page = Number(params.get('page')) || 1
 
   const apiParams = new URLSearchParams(params)
@@ -158,24 +146,13 @@ function AdminAuditLogPage() {
                     </td>
                     <td className="px-4 py-3 text-end">
                       <button
-                        onClick={() => setOpen(open === log._id ? null : log._id)}
-                        aria-expanded={open === log._id}
+                        onClick={() => setOpen(log)}
                         className="whitespace-nowrap rounded-lg border border-gray-300 px-3 py-1.5 text-xs hover:bg-gray-100"
                       >
-                        {open === log._id ? t('audit.hideChanges') : t('audit.showChanges')}
+                        {t('audit.showChanges')}
                       </button>
                     </td>
                   </tr>
-                  {open === log._id && (
-                    <tr>
-                      <td colSpan={5} className="bg-gray-50 px-4 py-4">
-                        <div className="flex flex-col gap-3 md:flex-row">
-                          <Snapshot label={t('audit.before')} value={log.before} />
-                          <Snapshot label={t('audit.after')} value={log.after} />
-                        </div>
-                      </td>
-                    </tr>
-                  )}
                 </Fragment>
               ))}
             </tbody>
@@ -190,6 +167,8 @@ function AdminAuditLogPage() {
           />
         )}
       </DataState>
+
+      {open && <ChangesDialog log={open} onClose={() => setOpen(null)} />}
     </>
   )
 }

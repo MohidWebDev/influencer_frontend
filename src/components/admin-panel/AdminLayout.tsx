@@ -10,7 +10,6 @@ import {
   faUsers,
   type IconDefinition,
 } from '@fortawesome/free-solid-svg-icons'
-import AdminLanguageSwitch from './AdminLanguageSwitch'
 
 const LINKS: { to: string; key: string; icon: IconDefinition; end?: boolean }[] = [
   { to: '/admin', key: 'nav.dashboard', icon: faChartPie, end: true },
@@ -51,7 +50,6 @@ function AdminLayout() {
           </nav>
         </div>
         <div className="flex flex-wrap items-center gap-2 lg:flex-col lg:items-stretch">
-          <AdminLanguageSwitch />
           <Link
             to="/dashboard"
             className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-gray-600 hover:bg-white"
