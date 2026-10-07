@@ -13,8 +13,6 @@ import {
   faLanguage,
   faLayerGroup,
   faMagnifyingGlass,
-  faPause,
-  faPlay,
   faUsers,
   faWandMagicSparkles,
 } from '@fortawesome/free-solid-svg-icons'
@@ -38,7 +36,9 @@ const INDUSTRY_LIMIT = 8
 
 // User ne "kam harkat" chuni ho to slides khud na chalein
 function prefersReducedMotion() {
-  return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  return (
+    typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  )
 }
 
 function Home() {
@@ -48,28 +48,44 @@ function Home() {
   const { data: professions } = useTaxonomy('professions')
 
   const [slide, setSlide] = useState(0)
-  const [playing, setPlaying] = useState(() => !prefersReducedMotion())
+  const [autoPlay] = useState(() => !prefersReducedMotion())
   const [hovered, setHovered] = useState(false)
 
-  const { data: featured, isLoading, isError } = useQuery(
+  const {
+    data: featured,
+    isLoading,
+    isError,
+  } = useQuery(
     peopleQuery(new URLSearchParams({ limit: String(FEATURED_COUNT), sort: 'followers' })),
   )
 
-  // Har 6 second baad agli tasveer. Mouse upar ho, pause dabaya ho ya tab chhupa ho to ruk jao
+  // Har 6 second baad agli tasveer. Mouse/focus hero pe ho ya tab chhupa ho to ruk jao
   useEffect(() => {
-    if (!playing || hovered) return
+    if (!autoPlay || hovered) return
     const id = window.setInterval(() => {
       if (document.visibilityState === 'visible') {
         setSlide((prev) => (prev + 1) % HERO_IMAGES.length)
       }
     }, SLIDE_MS)
     return () => window.clearInterval(id)
-  }, [playing, hovered])
+  }, [autoPlay, hovered])
 
   const stats: { icon: IconDefinition; value: string; label: string }[] = [
-    { icon: faUsers, value: featured ? formatCount(featured.meta.total) : '–', label: t('home.statProfiles') },
-    { icon: faBriefcase, value: industries ? String(industries.length) : '–', label: t('home.statIndustries') },
-    { icon: faIdBadge, value: professions ? String(professions.length) : '–', label: t('home.statProfessions') },
+    {
+      icon: faUsers,
+      value: featured ? formatCount(featured.meta.total) : '–',
+      label: t('home.statProfiles'),
+    },
+    {
+      icon: faBriefcase,
+      value: industries ? String(industries.length) : '–',
+      label: t('home.statIndustries'),
+    },
+    {
+      icon: faIdBadge,
+      value: professions ? String(professions.length) : '–',
+      label: t('home.statProfessions'),
+    },
     { icon: faLanguage, value: '3', label: t('home.statLanguages') },
   ]
 
@@ -84,17 +100,17 @@ function Home() {
 
   return (
     <div className="space-y-16">
-      {/* Hero: tasveeron ka carousel + search */}
+      {/* Hero: tasveeron ka carousel, search aur platform ke numbers */}
       <section
         aria-label={t('home.heroLabel')}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         onFocus={() => setHovered(true)}
         onBlur={() => setHovered(false)}
-        className="relative overflow-hidden rounded-3xl bg-gray-900 shadow-lg"
+        className="relative isolate overflow-hidden rounded-3xl bg-gray-950 shadow-xl"
       >
-        {/* Tasveerein peeche (absolute), likhai normal flow mein: height content ke hisaab se */}
-        <div className="absolute inset-0">
+        {/* Tasveerein peeche; dheere zoom ke saath badalti hain */}
+        <div className="absolute inset-0 -z-10">
           {HERO_IMAGES.map((src, i) => (
             <img
               key={src}
@@ -102,37 +118,36 @@ function Home() {
               alt=""
               loading={i === 0 ? 'eager' : 'lazy'}
               decoding="async"
-              className={`absolute inset-0 h-full w-full object-cover transition-[opacity,transform] duration-[1500ms] ease-in-out ${
-                i === slide ? 'scale-105 opacity-100' : 'scale-100 opacity-0'
+              className={`absolute inset-0 h-full w-full object-cover transition-[opacity,transform] duration-[2000ms] ease-out ${
+                i === slide ? 'scale-100 opacity-100' : 'scale-110 opacity-0'
               }`}
             />
           ))}
+          {/* Likhai wali taraf (start) gehra, doosri taraf tasveer saaf dikhe */}
+          <div className="absolute inset-0 bg-gradient-to-r from-gray-950/90 via-gray-950/60 to-gray-950/10 rtl:bg-gradient-to-l" />
+          <div className="absolute inset-0 bg-gradient-to-t from-gray-950/80 via-transparent to-transparent" />
         </div>
 
-        {/* Andhera parda taake safed likhai saaf parhi jaye */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-black/30" />
-
-        {/* pb-36: neeche stats card hero pe chadhta hai, us ke upar dots ki jagah */}
-        <div className="relative px-5 pb-36 pt-14 md:px-10 md:pb-40 md:pt-20">
-          <div className="mx-auto w-full max-w-3xl text-center">
-            <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white/90 ring-1 ring-white/20 backdrop-blur">
-              <FontAwesomeIcon icon={faWandMagicSparkles} className="text-[10px]" />
+        <div className="flex min-h-[34rem] flex-col justify-between gap-10 p-6 sm:p-10 md:min-h-[36rem] md:p-14">
+          <div className="max-w-2xl text-center md:text-start">
+            <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white ring-1 ring-white/20 backdrop-blur">
+              <FontAwesomeIcon icon={faWandMagicSparkles} className="text-[10px] text-amber-300" />
               {t('home.badge')}
             </span>
 
-            <h1 className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">
+            <h1 className="mt-5 text-3xl font-extrabold leading-[1.1] tracking-tight text-white sm:text-4xl md:text-6xl">
               {t('home.title')}
             </h1>
-            <p className="mx-auto mt-3 max-w-2xl text-sm text-white/80 md:text-lg">
+            <p className="mt-4 max-w-xl text-sm leading-relaxed text-white/80 md:mx-0 md:text-lg mx-auto">
               {t('home.subtitle')}
             </p>
 
-            <div className="mx-auto mt-7 max-w-2xl">
+            <div className="mt-7 max-w-xl md:mx-0 mx-auto">
               <SearchBar size="lg" tone="onDark" />
             </div>
 
             {/* Jaldi wale links: sab se zyada followers + pehli chand industries */}
-            <div className="mt-5 flex flex-wrap items-center justify-center gap-2 text-xs text-white/80">
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-xs text-white/80 md:justify-start">
               <span className="hidden sm:inline">{t('home.popular')}</span>
               <Link to="/search?sort=followers" className={chip}>
                 {t('home.mostFollowed')}
@@ -144,11 +159,32 @@ function Home() {
               ))}
             </div>
           </div>
+
+          {/* Platform ke numbers: hero ke andar sheeshe jaisi patti */}
+          <dl className="grid grid-cols-2 overflow-hidden rounded-2xl bg-white/10 ring-1 ring-white/15 backdrop-blur-md md:grid-cols-4">
+            {stats.map((stat, i) => (
+              <div
+                key={stat.label}
+                className={`flex flex-col-reverse gap-1 p-4 md:p-5 ${
+                  i % 2 === 1 ? 'border-s border-white/10' : ''
+                } ${i >= 2 ? 'border-t border-white/10 md:border-t-0' : ''} ${
+                  i === 2 ? 'md:border-s' : ''
+                }`}
+              >
+                <dt className="flex items-center gap-1.5 text-xs text-white/70">
+                  <FontAwesomeIcon icon={stat.icon} className="text-[11px] text-white/50" />
+                  {stat.label}
+                </dt>
+                <dd className="text-2xl font-bold tracking-tight text-white md:text-3xl">
+                  {stat.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </div>
 
-        {/* Slide ke dots + rokne/chalane ka button */}
-        {/* Stats card (-mt-24) ke bilkul upar */}
-        <div className="absolute inset-x-0 bottom-[7.25rem] flex items-center justify-center gap-2">
+        {/* Slide ke dots: upar end wale kone mein (phone pe chhupe, wahan jagah kam hai) */}
+        <div className="absolute end-5 top-5 hidden items-center gap-1.5 sm:flex md:end-8 md:top-8">
           {HERO_IMAGES.map((_, i) => (
             <button
               key={i}
@@ -156,38 +192,12 @@ function Home() {
               onClick={() => setSlide(i)}
               aria-label={t('home.goToSlide', { n: i + 1 })}
               aria-current={i === slide}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                i === slide ? 'w-6 bg-white' : 'w-2 bg-white/50 hover:bg-white/80'
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                i === slide ? 'w-6 bg-white' : 'w-1.5 bg-white/50 hover:bg-white/80'
               }`}
             />
           ))}
-          <button
-            type="button"
-            onClick={() => setPlaying((p) => !p)}
-            aria-label={playing ? t('home.pauseSlides') : t('home.playSlides')}
-            className="ms-2 inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/15 text-[10px] text-white backdrop-blur hover:bg-white/25"
-          >
-            <FontAwesomeIcon icon={playing ? faPause : faPlay} />
-          </button>
         </div>
-      </section>
-
-      {/* Platform ke numbers: hero ke neeche thoda upar chadh kar */}
-      <section className="relative z-10 -mt-24 px-2 sm:px-6">
-        <dl className="grid grid-cols-2 gap-3 rounded-2xl bg-white p-4 shadow-lg ring-1 ring-gray-100 md:grid-cols-4 md:p-6">
-          {stats.map((stat) => (
-            <div key={stat.label} className="flex items-center gap-3 rounded-xl p-2">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gray-900 text-white">
-                <FontAwesomeIcon icon={stat.icon} />
-              </span>
-              {/* dt pehle (sahi HTML), dikhne mein number upar */}
-              <div className="flex min-w-0 flex-col-reverse">
-                <dt className="text-xs leading-tight text-gray-500">{stat.label}</dt>
-                <dd className="text-xl font-bold leading-tight">{stat.value}</dd>
-              </div>
-            </div>
-          ))}
-        </dl>
       </section>
 
       {/* Industry ke hisaab se */}
