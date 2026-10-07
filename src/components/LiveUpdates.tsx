@@ -80,7 +80,7 @@ function TalentNotifier() {
     for (const claim of claims) {
       const old = before.get(claim._id)
       if (!old || old === claim.status) continue
-      const name = claim.person.name
+      const name = claim.person?.name ?? t('claims.deletedProfile')
       if (claim.status === 'waiting_for_talent') {
         toast(t('live.codeSent', { name, url: claim.verification?.channelUrl ?? '' }), {
           icon: '🔑',
@@ -89,7 +89,7 @@ function TalentNotifier() {
       } else if (claim.status === 'approved') {
         toast.success(t('live.approved', { name }), { duration: 8000 })
         // Profile ab is talent ki hai: profile wala data bhi taaza karo
-        queryClient.invalidateQueries({ queryKey: ['person', claim.person.slug] })
+        if (claim.person) queryClient.invalidateQueries({ queryKey: ['person', claim.person.slug] })
       } else if (claim.status === 'rejected') {
         toast.error(t('live.rejected', { name }), { duration: 8000 })
       }

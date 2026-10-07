@@ -46,7 +46,8 @@ export interface ClaimPerson {
 
 export interface Claim {
   _id: string
-  person: ClaimPerson
+  // null = profile delete ho chuki hai (purana claim)
+  person: ClaimPerson | null
   // Admin list mein user ki details aati hain, "mine" mein sirf id
   user: string | { _id: string; name: string; email: string; role: string }
   status: ClaimStatus

@@ -109,7 +109,10 @@
     "approved": "دعویٰ منظور ہو گیا",
     "rejected": "دعویٰ مسترد ہو گیا",
     "rejectionReason": "وجہ: {{reason}}",
-    "reviewed": "{{name}} نے {{date}} کو جائزہ لیا"
+    "reviewed": "{{name}} نے {{date}} کو جائزہ لیا",
+    "deletedProfile": "حذف شدہ پروفائل",
+    "deletedProfileHint": "یہ پروفائل ہٹا دی گئی ہے۔ آپ یہ کلیم صرف مسترد کر سکتے ہیں۔",
+    "deletedUser": "حذف شدہ صارف"
   },
   "users": {
     "title": "صارفین",

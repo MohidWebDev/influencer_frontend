@@ -109,7 +109,10 @@
     "approved": "Claim approved",
     "rejected": "Claim rejected",
     "rejectionReason": "Reason: {{reason}}",
-    "reviewed": "Reviewed by {{name}} on {{date}}"
+    "reviewed": "Reviewed by {{name}} on {{date}}",
+    "deletedProfile": "Deleted profile",
+    "deletedProfileHint": "This profile was removed. You can only reject this claim.",
+    "deletedUser": "Deleted user"
   },
   "users": {
     "title": "Users",

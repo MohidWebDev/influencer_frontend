@@ -139,10 +139,12 @@ function ClaimCard({ claim }: { claim: Claim }) {
     onSuccess: (updated) => {
       toast.success(
         updated.status === 'approved'
-          ? t('oldClaims.approvedFor', { name: updated.person.name })
+          ? t('oldClaims.approvedFor', { name: updated.person?.name ?? t('claims.deletedProfile') })
           : t('claims.rejected'),
       )
-      queryClient.invalidateQueries({ queryKey: ['person', updated.person.slug] })
+      if (updated.person) {
+        queryClient.invalidateQueries({ queryKey: ['person', updated.person.slug] })
+      }
       refresh()
     },
     onError: (error) => toast.error(getApiError(error).message),
@@ -154,12 +156,16 @@ function ClaimCard({ claim }: { claim: Claim }) {
   return (
     <article className="flex flex-col rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
       <div className="flex flex-wrap items-start gap-4">
-        <Avatar name={claim.person.name} photoUrl={claim.person.photoUrl} />
+        <Avatar name={claim.person?.name ?? '?'} photoUrl={claim.person?.photoUrl} />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <Link to={`/people/${claim.person.slug}`} className="font-semibold hover:underline">
-              {claim.person.name}
-            </Link>
+            {claim.person ? (
+              <Link to={`/people/${claim.person.slug}`} className="font-semibold hover:underline">
+                {claim.person.name}
+              </Link>
+            ) : (
+              <span className="font-semibold text-gray-500">{t('claims.deletedProfile')}</span>
+            )}
             <ClaimStatusPill status={claim.status} />
           </div>
           <p className="mt-0.5 text-sm text-gray-600">

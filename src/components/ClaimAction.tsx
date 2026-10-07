@@ -77,7 +77,7 @@ function ClaimAction({ person }: { person: Person }) {
   // 6. Claim pending: sirf usi profile pe status, baqi sab pe kuch nahi
   const pending = myClaims.data?.find((claim) => isOpenClaim(claim.status))
   if (pending) {
-    return pending.person._id === person._id ? (
+    return pending.person?._id === person._id ? (
       <span className="rounded-lg bg-amber-50 px-4 py-2 text-center text-sm text-amber-800">
         <FontAwesomeIcon icon={faHourglassHalf} className="me-1.5" />
         {t('claimAction.underReview')}

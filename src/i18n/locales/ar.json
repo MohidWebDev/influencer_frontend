@@ -109,7 +109,10 @@
     "approved": "تمت الموافقة على المطالبة",
     "rejected": "تم رفض المطالبة",
     "rejectionReason": "السبب: {{reason}}",
-    "reviewed": "راجعها {{name}} في {{date}}"
+    "reviewed": "راجعها {{name}} في {{date}}",
+    "deletedProfile": "ملف محذوف",
+    "deletedProfileHint": "تمت إزالة هذا الملف. يمكنك رفض هذه المطالبة فقط.",
+    "deletedUser": "مستخدم محذوف"
   },
   "users": {
     "title": "المستخدمون",

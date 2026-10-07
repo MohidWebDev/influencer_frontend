@@ -33,6 +33,7 @@ export interface AuditLogEntry {
 export interface ClaimDetail {
   _id: string
   status: ClaimStatus
+  // null = profile delete ho chuki hai
   person: {
     _id: string
     name: string
@@ -40,8 +41,8 @@ export interface ClaimDetail {
     headline?: string
     photoUrl?: string
     visibility: string
-  }
-  user: { _id: string; name: string; email: string; role: Role; status: string; createdAt: string }
+  } | null
+  user: { _id: string; name: string; email: string; role: Role; status: string; createdAt: string } | null
   evidence: { contactEmail?: string; links: string[]; note?: string }
   verification?: {
     channelUrl?: string

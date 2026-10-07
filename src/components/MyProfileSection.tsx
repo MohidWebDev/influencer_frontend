@@ -66,7 +66,7 @@ function MyProfileSection() {
     <section className={`${box} border-gray-200`}>
       {latest?.status === 'rejected' && (
         <p className="mb-4 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
-          {t('myProfile.rejected', { name: latest.person.name, reason: latest.rejectionReason })}
+          {t('myProfile.rejected', { name: latest.person?.name ?? t('claims.deletedProfile'), reason: latest.rejectionReason })}
         </p>
       )}
       <p className="text-xs font-medium uppercase tracking-wide text-gray-500">

@@ -98,11 +98,13 @@ function AdminClaimsPage() {
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
                         <Avatar
-                          name={claim.person.name}
-                          photoUrl={claim.person.photoUrl}
+                          name={claim.person?.name ?? '?'}
+                          photoUrl={claim.person?.photoUrl}
                           size="sm"
                         />
-                        <span className="font-medium">{claim.person.name}</span>
+                        <span className={`font-medium ${claim.person ? '' : 'text-gray-500'}`}>
+                          {claim.person?.name ?? t('claims.deletedProfile')}
+                        </span>
                       </div>
                     </td>
                     <td className="px-4 py-3">

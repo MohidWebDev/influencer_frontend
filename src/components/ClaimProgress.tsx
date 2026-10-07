@@ -70,9 +70,13 @@ function ClaimProgress({ claim }: { claim: Claim }) {
       </p>
       <p className="mt-2">
         {t('claimProgress.claiming')}{' '}
-        <Link to={`/people/${claim.person.slug}`} className="font-semibold underline">
-          {claim.person.name}
-        </Link>
+        {claim.person ? (
+          <Link to={`/people/${claim.person.slug}`} className="font-semibold underline">
+            {claim.person.name}
+          </Link>
+        ) : (
+          <span className="font-semibold">{t('claims.deletedProfile')}</span>
+        )}
       </p>
 
       {/* 4 qadam wali progress line */}

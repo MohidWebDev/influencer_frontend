@@ -68,7 +68,7 @@ function AdminClaimDetailPage() {
     onSuccess: (claim) => {
       toast.success(t('claimOtp.manualDone'))
       setDialog(null)
-      queryClient.invalidateQueries({ queryKey: ['person', claim.person.slug] })
+      if (claim.person) queryClient.invalidateQueries({ queryKey: ['person', claim.person.slug] })
       refresh()
     },
     onError: (error) => toast.error(adminErrorMessage(error)),
@@ -81,7 +81,7 @@ function AdminClaimDetailPage() {
       toast.success(claim.status === 'approved' ? t('claims.approved') : t('claims.rejected'))
       setDialog(null)
       setReason('')
-      queryClient.invalidateQueries({ queryKey: ['person', claim.person.slug] })
+      if (claim.person) queryClient.invalidateQueries({ queryKey: ['person', claim.person.slug] })
       refresh()
     },
     onError: (error) => toast.error(adminErrorMessage(error)),
@@ -97,6 +97,9 @@ function AdminClaimDetailPage() {
   }
 
   const claim = data?.claim
+  // Profile ya user delete ho chuka ho to bhi page chale
+  const personName = claim?.person?.name ?? t('claims.deletedProfile')
+  const claimantName = claim?.user?.name ?? t('claims.deletedUser')
   const selectedUrl =
     channelUrl || claim?.verification?.channelUrl || claim?.evidence.links[0] || ''
 
@@ -117,7 +120,7 @@ function AdminClaimDetailPage() {
           <div className="space-y-5">
             <div className="flex flex-wrap items-center gap-3">
               <h1 className="text-2xl font-bold">
-                {t('claims.detailTitle', { name: claim.person.name })}
+                {t('claims.detailTitle', { name: personName })}
               </h1>
               <ClaimStatusPill status={claim.status} />
             </div>
@@ -126,34 +129,42 @@ function AdminClaimDetailPage() {
               <section className={card}>
                 <h2 className="text-sm font-medium text-gray-500">{t('claims.colPerson')}</h2>
                 <div className="mt-3 flex items-center gap-3">
-                  <Avatar name={claim.person.name} photoUrl={claim.person.photoUrl} />
+                  <Avatar name={personName} photoUrl={claim.person?.photoUrl} />
                   <div className="min-w-0">
-                    <p className="font-semibold">{claim.person.name}</p>
-                    {claim.person.headline && (
+                    <p className="font-semibold">{personName}</p>
+                    {claim.person?.headline && (
                       <p className="truncate text-sm text-gray-600">{claim.person.headline}</p>
                     )}
                   </div>
                 </div>
-                <Link
-                  to={`/people/${claim.person.slug}`}
-                  className="mt-3 inline-flex items-center gap-2 text-sm underline"
-                >
-                  {t('common.openPublicProfile')}
-                  <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="text-xs" />
-                </Link>
+                {claim.person ? (
+                  <Link
+                    to={`/people/${claim.person.slug}`}
+                    className="mt-3 inline-flex items-center gap-2 text-sm underline"
+                  >
+                    {t('common.openPublicProfile')}
+                    <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="text-xs" />
+                  </Link>
+                ) : (
+                  <p className="mt-3 text-sm text-gray-500">{t('claims.deletedProfileHint')}</p>
+                )}
               </section>
 
               <section className={card}>
                 <h2 className="text-sm font-medium text-gray-500">{t('claims.claimant')}</h2>
                 <div className="mt-3 flex items-center gap-3">
-                  <Avatar name={claim.user.name} />
+                  <Avatar name={claimantName} />
                   <div className="min-w-0">
-                    <p className="font-semibold">{claim.user.name}</p>
-                    <p className="break-all text-sm text-gray-600">{claim.user.email}</p>
-                    <p className="text-xs text-gray-500">
-                      {t(`roles.${claim.user.role}`)} ·{' '}
-                      {t('claims.joined', { date: formatDate(claim.user.createdAt) })}
-                    </p>
+                    <p className="font-semibold">{claimantName}</p>
+                    {claim.user && (
+                      <>
+                        <p className="break-all text-sm text-gray-600">{claim.user.email}</p>
+                        <p className="text-xs text-gray-500">
+                          {t(`roles.${claim.user.role}`)} ·{' '}
+                          {t('claims.joined', { date: formatDate(claim.user.createdAt) })}
+                        </p>
+                      </>
+                    )}
                   </div>
                 </div>
               </section>
@@ -296,7 +307,7 @@ function AdminClaimDetailPage() {
               ) : (
                 isOpenClaim(claim.status) && (
                   <div className="mt-4 space-y-3">
-                    {claim.status !== 'verified' && (
+                    {claim.status !== 'verified' && claim.person && (
                       <div className="flex flex-wrap items-end gap-2">
                         <label className="min-w-0 flex-1 basis-56">
                           <span className="mb-1 block text-sm font-medium">
@@ -329,7 +340,7 @@ function AdminClaimDetailPage() {
                       </div>
                     )}
                     <div className="flex flex-wrap gap-2 border-t border-gray-100 pt-4">
-                      {claim.status === 'verified' && (
+                      {claim.status === 'verified' && claim.person && (
                         <button
                           onClick={() => setDialog('approve')}
                           className={`${button} bg-green-600 text-white hover:bg-green-700`}
@@ -338,7 +349,8 @@ function AdminClaimDetailPage() {
                           {t('claims.approve')}
                         </button>
                       )}
-                      {(claim.status === 'waiting_for_talent' || claim.status === 'otp_failed') && (
+                      {claim.person &&
+                        (claim.status === 'waiting_for_talent' || claim.status === 'otp_failed') && (
                         <button
                           onClick={() => setDialog('verify')}
                           className={`${button} border border-green-300 text-green-700 hover:bg-green-50`}
@@ -374,7 +386,7 @@ function AdminClaimDetailPage() {
               onConfirm={() => review.mutate({ action: 'approve' })}
               onCancel={() => setDialog(null)}
             >
-              {t('claims.approveBody', { claimant: claim.user.name, person: claim.person.name })}
+              {t('claims.approveBody', { claimant: claimantName, person: personName })}
             </ConfirmDialog>
             <ConfirmDialog
               open={dialog === 'verify'}
@@ -385,7 +397,7 @@ function AdminClaimDetailPage() {
               onConfirm={() => verifyManual.mutate()}
               onCancel={() => setDialog(null)}
             >
-              {t('claimOtp.verifyBody', { claimant: claim.user.name, person: claim.person.name })}
+              {t('claimOtp.verifyBody', { claimant: claimantName, person: personName })}
             </ConfirmDialog>
             <ConfirmDialog
               open={dialog === 'reject'}

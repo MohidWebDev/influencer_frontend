@@ -53,7 +53,7 @@ function ClaimProfile() {
   const blockMessage = myProfile.data
     ? t('claimForm.ownsProfile')
     : pending
-      ? t('claimForm.pendingFor', { name: pending.person.name })
+      ? t('claimForm.pendingFor', { name: pending.person?.name ?? t('claims.deletedProfile') })
       : null
   if (blockMessage) {
     return (
