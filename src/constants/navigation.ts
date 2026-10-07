@@ -5,6 +5,7 @@ import {
   faCompass,
   faEnvelope,
   faGear,
+  faHouse,
   faIdCard,
   faLayerGroup,
   faShieldHalved,
@@ -25,6 +26,13 @@ export interface NavItem {
 
 // Navbar ke beech wale links (document ke saare pages)
 export const MAIN_NAV: NavItem[] = [
+  {
+    to: '/',
+    get label() {
+      return tr('site.nav.home')
+    },
+    icon: faHouse,
+  },
   {
     to: '/search',
     get label() {

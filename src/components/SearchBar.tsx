@@ -7,10 +7,12 @@ import { useNavigate } from 'react-router-dom'
 interface SearchBarProps {
   initialValue?: string
   size?: 'md' | 'lg'
+  // 'onDark' = andheri tasveer (hero) pe: button safed taake saaf dikhe
+  tone?: 'default' | 'onDark'
 }
 
 // Enter dabane pe /search?q=... pe le jata hai
-function SearchBar({ initialValue = '', size = 'md' }: SearchBarProps) {
+function SearchBar({ initialValue = '', size = 'md', tone = 'default' }: SearchBarProps) {
   const { t } = useTranslation()
   const [value, setValue] = useState(initialValue)
   const navigate = useNavigate()
@@ -36,7 +38,11 @@ function SearchBar({ initialValue = '', size = 'md' }: SearchBarProps) {
       <button
         type="submit"
         aria-label={t('common.search')}
-        className={`rounded-xl bg-gray-900 px-5 font-medium text-white hover:bg-gray-800 ${padding}`}
+        className={`rounded-xl px-5 font-medium ${
+          tone === 'onDark'
+            ? 'bg-white text-gray-900 hover:bg-gray-100'
+            : 'bg-gray-900 text-white hover:bg-gray-800'
+        } ${padding}`}
       >
         <FontAwesomeIcon icon={faMagnifyingGlass} className="sm:me-2" />
         <span className="hidden sm:inline">{t('common.search')}</span>

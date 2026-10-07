@@ -366,7 +366,8 @@
       "openMenu": "Open menu",
       "closeMenu": "Close menu",
       "accountMenu": "Account menu",
-      "language": "Language"
+      "language": "Language",
+      "home": "Home"
     },
     "search": {
       "placeholder": "Search by name or what they do...",
@@ -419,7 +420,32 @@
     "mostFollowed": "Most followed",
     "seeAll": "See all",
     "loadError": "Could not load people right now. Please refresh the page or try again later.",
-    "noProfiles": "No profiles yet."
+    "noProfiles": "No profiles yet.",
+    "heroLabel": "Featured",
+    "badge": "Real people. Real reach.",
+    "popular": "Popular:",
+    "goToSlide": "Go to slide {{n}}",
+    "pauseSlides": "Pause slideshow",
+    "playSlides": "Play slideshow",
+    "statProfiles": "Public profiles",
+    "statIndustries": "Industries",
+    "statProfessions": "Professions",
+    "statLanguages": "Languages supported",
+    "howTitle": "How it works",
+    "howSubtitle": "From search to a signed deal in three simple steps.",
+    "step1Title": "Discover",
+    "step1Body": "Search by name, profession, industry, topic or city to find the right people.",
+    "step2Title": "Check real reach",
+    "step2Body": "See followers and engagement on every platform, with sources shown openly.",
+    "step3Title": "Connect or hire",
+    "step3Body": "Send an inquiry to the talent or their manager and work together.",
+    "ctaTalentTitle": "Is your profile here?",
+    "ctaTalentBody": "Claim it to keep your details correct, show a verified badge and receive work inquiries.",
+    "ctaTalentButton": "Create a free account",
+    "ctaDashboard": "Go to your dashboard",
+    "ctaBusinessTitle": "Looking for the right voice?",
+    "ctaBusinessBody": "Brands, agencies and organizations find speakers, creators and experts here.",
+    "ctaBusinessButton": "Start exploring"
   },
   "login": {
     "title": "Log in",
