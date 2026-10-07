@@ -246,7 +246,8 @@
       "verifiedAt": "تصدیق کی تاریخ",
       "sentBy": "بھیجنے والا"
     },
-    "close": "بند کریں"
+    "close": "بند کریں",
+    "allActions": "تمام کارروائیاں"
   },
   "auditTarget": {
     "person": "پروفائل",

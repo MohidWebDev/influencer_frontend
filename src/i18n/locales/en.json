@@ -246,7 +246,8 @@
       "verifiedAt": "Verified on",
       "sentBy": "Sent by"
     },
-    "close": "Close"
+    "close": "Close",
+    "allActions": "All actions"
   },
   "auditTarget": {
     "person": "Profile",

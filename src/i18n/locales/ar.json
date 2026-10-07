@@ -246,7 +246,8 @@
       "verifiedAt": "تاريخ التحقق",
       "sentBy": "أرسله"
     },
-    "close": "إغلاق"
+    "close": "إغلاق",
+    "allActions": "كل الإجراءات"
   },
   "auditTarget": {
     "person": "ملف",

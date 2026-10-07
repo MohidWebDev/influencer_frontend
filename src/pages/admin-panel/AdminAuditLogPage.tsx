@@ -1,9 +1,7 @@
-import { Fragment, useState, type FormEvent } from 'react'
+import { Fragment, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { listAuditLogs } from '../../api/adminPanel'
 import ChangesDialog from '../../components/admin-panel/ChangesDialog'
 import type { AuditLogEntry } from '../../types/adminPanel'
@@ -15,11 +13,18 @@ import { formatDateTime } from '../../utils/adminFormat'
 const TARGETS = ['person', 'claim', 'user', 'report'] as const
 const PAGE_SIZE = 25
 
+// Har target ke actions (auditAction.* mein inke naam hain)
+const ACTIONS: Record<(typeof TARGETS)[number], string[]> = {
+  person: ['create', 'update', 'delete', 'hide'],
+  claim: ['send_code', 'approve', 'reject'],
+  user: ['suspend', 'unsuspend', 'role_change'],
+  report: ['update'],
+}
+
 // Sirf parhne ke liye: koi button yahan kuch badalta nahi
 function AdminAuditLogPage() {
   const { t } = useTranslation()
   const [params, setParams] = useSearchParams()
-  const [action, setAction] = useState(params.get('action') ?? '')
   const [open, setOpen] = useState<AuditLogEntry | null>(null)
   const page = Number(params.get('page')) || 1
 
@@ -44,10 +49,6 @@ function AdminAuditLogPage() {
     setParams(next)
   }
 
-  function handleAction(e: FormEvent) {
-    e.preventDefault()
-    setParam('action', action.trim())
-  }
 
   const input = 'rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm'
 
@@ -56,23 +57,23 @@ function AdminAuditLogPage() {
       <PageHeader title={t('audit.title')} subtitle={t('audit.subtitle')} />
 
       <div className="mb-4 flex flex-wrap items-end gap-2">
-        <form onSubmit={handleAction} className="flex w-full min-w-0 gap-2 sm:w-auto sm:min-w-[220px] sm:flex-1">
-          <input
-            value={action}
-            onChange={(e) => setAction(e.target.value)}
-            placeholder={t('audit.actionFilter')}
-            aria-label={t('audit.actionFilter')}
-            dir="ltr"
-            className={`${input} min-w-0 flex-1`}
-          />
-          <button
-            type="submit"
-            aria-label={t('common.search')}
-            className="rounded-lg bg-gray-900 px-4 py-2 text-sm text-white"
-          >
-            <FontAwesomeIcon icon={faMagnifyingGlass} />
-          </button>
-        </form>
+        <select
+          aria-label={t('audit.colAction')}
+          value={params.get('action') ?? ''}
+          onChange={(e) => setParam('action', e.target.value)}
+          className={`${input} w-full sm:w-auto sm:min-w-[200px] sm:flex-1`}
+        >
+          <option value="">{t('audit.allActions')}</option>
+          {TARGETS.map((target) => (
+            <optgroup key={target} label={t(`auditTarget.${target}`)}>
+              {ACTIONS[target].map((name) => (
+                <option key={name} value={`${target}.${name}`}>
+                  {t(`auditAction.${target}.${name}`)}
+                </option>
+              ))}
+            </optgroup>
+          ))}
+        </select>
         <select
           aria-label={t('audit.colTarget')}
           value={params.get('targetType') ?? ''}
@@ -135,10 +136,7 @@ function AdminAuditLogPage() {
                     </td>
                     <td className="px-4 py-3">{log.actor?.email ?? log.actorEmail}</td>
                     <td className="px-4 py-3">
-                      <p>{t(`auditAction.${log.action}`, { defaultValue: log.action })}</p>
-                      <p dir="ltr" className="text-start font-mono text-xs text-gray-400">
-                        {log.action}
-                      </p>
+                      {t(`auditAction.${log.action}`, { defaultValue: log.action })}
                     </td>
                     <td className="px-4 py-3">
                       <p className="text-xs text-gray-500">{t(`auditTarget.${log.targetType}`)}</p>
