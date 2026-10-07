@@ -424,7 +424,6 @@
     "heroLabel": "Featured",
     "badge": "Real people. Real reach.",
     "popular": "Popular:",
-    "goToSlide": "Go to slide {{n}}",
     "statProfiles": "Public profiles",
     "statIndustries": "Industries",
     "statProfessions": "Professions",
@@ -837,5 +836,28 @@
     "manualDone": "Talent verified and claim approved",
     "talentLocked": "Too many wrong attempts. Your claim is under review by the admin.",
     "wrongCode": "Wrong code. Attempts left: {{count}}"
+  },
+  "footer": {
+    "tagline": "Discover journalists, creators, speakers and experts. See their real reach, then connect or hire with confidence.",
+    "trust": "Transparent metrics · Verified owners",
+    "followUs": "Follow us",
+    "siteLinks": "Site links",
+    "discover": "Discover",
+    "explorePeople": "Explore people",
+    "browseIndustries": "Browse industries",
+    "mostFollowed": "Most followed",
+    "forTalent": "For talent",
+    "claimProfile": "Claim your profile",
+    "findYourProfile": "Find your profile",
+    "createAccount": "Create an account",
+    "login": "Log in",
+    "dashboard": "Your dashboard",
+    "support": "Support",
+    "contact": "Contact us",
+    "reportProblem": "Report a problem",
+    "contactTitle": "Have a question or want to work with us?",
+    "contactBody": "Write to us and our team will get back to you within 1–2 working days.",
+    "rights": "All rights reserved.",
+    "backToTop": "Back to top"
   }
 }

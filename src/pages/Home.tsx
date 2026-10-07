@@ -49,7 +49,6 @@ function Home() {
 
   const [slide, setSlide] = useState(0)
   const [autoPlay] = useState(() => !prefersReducedMotion())
-  const [hovered, setHovered] = useState(false)
 
   const {
     data: featured,
@@ -59,16 +58,16 @@ function Home() {
     peopleQuery(new URLSearchParams({ limit: String(FEATURED_COUNT), sort: 'followers' })),
   )
 
-  // Har 4 second baad agli tasveer. Mouse/focus hero pe ho ya tab chhupa ho to ruk jao
+  // Har 4 second baad agli tasveer, mouse upar ho tab bhi. Sirf tab chhupa ho to ruk jao
   useEffect(() => {
-    if (!autoPlay || hovered) return
+    if (!autoPlay) return
     const id = window.setInterval(() => {
       if (document.visibilityState === 'visible') {
         setSlide((prev) => (prev + 1) % HERO_IMAGES.length)
       }
     }, SLIDE_MS)
     return () => window.clearInterval(id)
-  }, [autoPlay, hovered])
+  }, [autoPlay])
 
   const stats: { icon: IconDefinition; value: string; label: string }[] = [
     {
@@ -103,10 +102,6 @@ function Home() {
       {/* Hero: tasveeron ka carousel, search aur platform ke numbers */}
       <section
         aria-label={t('home.heroLabel')}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        onFocus={() => setHovered(true)}
-        onBlur={() => setHovered(false)}
         className="relative isolate overflow-hidden bg-gray-950"
       >
         {/* Tasveerein peeche; dheere zoom ke saath badalti hain */}
@@ -182,22 +177,6 @@ function Home() {
               </div>
             ))}
           </dl>
-
-          {/* Slide ke dots: upar end wale kone mein (phone pe chhupe, wahan jagah kam hai) */}
-          <div className="absolute end-4 top-6 hidden items-center gap-1.5 sm:flex md:top-8">
-            {HERO_IMAGES.map((_, i) => (
-              <button
-                key={i}
-                type="button"
-                onClick={() => setSlide(i)}
-                aria-label={t('home.goToSlide', { n: i + 1 })}
-                aria-current={i === slide}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  i === slide ? 'w-6 bg-white' : 'w-1.5 bg-white/50 hover:bg-white/80'
-                }`}
-              />
-            ))}
-          </div>
         </div>
       </section>
 
