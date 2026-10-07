@@ -470,7 +470,16 @@
     "industries": "Industries",
     "professions": "Professions",
     "topics": "Topics",
-    "countries": "Countries"
+    "countries": "Countries",
+    "eyebrow": "Browse by category",
+    "filterLabel": "Filter categories",
+    "filterPlaceholder": "Filter industries, professions, topics…",
+    "clearFilter": "Clear",
+    "jumpTo": "Jump to section",
+    "nothingFound": "Nothing matches “{{term}}”.",
+    "ctaTitle": "Know who you're looking for?",
+    "ctaBody": "Search by name and combine filters on the Explore page.",
+    "ctaButton": "Go to Explore"
   },
   "claimAction": {
     "yourProfile": "This is your profile",

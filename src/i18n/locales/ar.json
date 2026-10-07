@@ -470,7 +470,16 @@
     "industries": "القطاعات",
     "professions": "المهن",
     "topics": "المواضيع",
-    "countries": "الدول"
+    "countries": "الدول",
+    "eyebrow": "تصفح حسب الفئة",
+    "filterLabel": "تصفية الفئات",
+    "filterPlaceholder": "صفِّ القطاعات والمهن والمواضيع…",
+    "clearFilter": "مسح",
+    "jumpTo": "انتقل إلى القسم",
+    "nothingFound": "لا شيء يطابق “{{term}}”.",
+    "ctaTitle": "تعرف من تبحث عنه؟",
+    "ctaBody": "ابحث بالاسم واجمع الفلاتر في صفحة الاستكشاف.",
+    "ctaButton": "انتقل إلى الاستكشاف"
   },
   "claimAction": {
     "yourProfile": "هذا ملفك",

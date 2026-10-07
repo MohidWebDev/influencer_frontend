@@ -470,7 +470,16 @@
     "industries": "شعبے",
     "professions": "پیشے",
     "topics": "موضوعات",
-    "countries": "ممالک"
+    "countries": "ممالک",
+    "eyebrow": "زمرے کے لحاظ سے دیکھیں",
+    "filterLabel": "زمرے فلٹر کریں",
+    "filterPlaceholder": "شعبے، پیشے، موضوعات فلٹر کریں…",
+    "clearFilter": "صاف کریں",
+    "jumpTo": "حصے پر جائیں",
+    "nothingFound": "“{{term}}” سے کچھ نہیں ملا۔",
+    "ctaTitle": "معلوم ہے آپ کسے ڈھونڈ رہے ہیں؟",
+    "ctaBody": "ایکسپلور صفحے پر نام سے تلاش کریں اور فلٹرز ملائیں۔",
+    "ctaButton": "ایکسپلور پر جائیں"
   },
   "claimAction": {
     "yourProfile": "یہ آپ کی پروفائل ہے",
