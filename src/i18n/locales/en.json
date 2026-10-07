@@ -513,7 +513,6 @@
     "noResults": "No people match your search.",
     "clearFilters": "Clear filters",
     "clearAllFilters": "Clear all filters",
-    "found": "{{count}} found",
     "filters": "Filters",
     "sortBy": "Sort by",
     "profession": "Profession",
@@ -523,7 +522,13 @@
     "city": "City",
     "language": "Language",
     "followers": "Followers",
-    "availability": "Availability"
+    "availability": "Availability",
+    "eyebrow": "Explore",
+    "title": "Find the right people",
+    "subtitle": "Search journalists, creators, speakers and experts, then narrow down with filters.",
+    "noResultsHint": "Try another word or remove some filters.",
+    "removeFilter": "Remove filter {{name}}",
+    "peopleFound": "people found"
   },
   "profile": {
     "notFound": "Profile not found",

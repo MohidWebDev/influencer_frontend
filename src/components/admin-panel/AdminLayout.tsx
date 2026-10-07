@@ -37,7 +37,7 @@ function AdminLayout() {
       lang={i18n.language}
       className="grid grid-cols-1 gap-6 lg:grid-cols-[220px_minmax(0,1fr)]"
     >
-      <aside className="min-w-0 space-y-4 lg:sticky lg:top-6 lg:self-start">
+      <aside className="min-w-0 space-y-4 lg:sticky lg:top-24 lg:self-start">
         <div className="rounded-2xl bg-white p-3 shadow-sm">
           <p className="px-3 pb-2 pt-1 text-xs font-semibold uppercase tracking-wide text-gray-500">
             {t('nav.title')}

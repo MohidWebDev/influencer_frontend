@@ -60,8 +60,9 @@ function Navbar() {
   const dashboardItem = ACCOUNT_NAV[0]
   const showDashboard = canSee(dashboardItem, role)
 
+  // Sticky: scroll karne pe bhi navbar upar chipka rahe
   return (
-    <header className="relative border-b border-gray-200 bg-white">
+    <header className="sticky top-0 z-40 border-b border-gray-200 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/80">
       {/* Desktop (xl, 1280px+): brand bilkul start pe, links beech mein, baqi sab bilkul end pe.
           Chhoti screen pe ☰ menu, kyun ke talent ke zyada links 1024px pe brand se takrate hain */}
       <nav className="flex items-center gap-3 px-4 py-3 sm:px-6 xl:grid xl:grid-cols-[1fr_auto_1fr] lg:px-8">

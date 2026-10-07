@@ -513,7 +513,6 @@
     "noResults": "آپ کی تلاش سے کوئی میل نہیں کھاتا۔",
     "clearFilters": "فلٹر ہٹائیں",
     "clearAllFilters": "تمام فلٹر ہٹائیں",
-    "found": "{{count}} ملے",
     "filters": "فلٹرز",
     "sortBy": "ترتیب",
     "profession": "پیشہ",
@@ -523,7 +522,13 @@
     "city": "شہر",
     "language": "زبان",
     "followers": "فالوورز",
-    "availability": "دستیابی"
+    "availability": "دستیابی",
+    "eyebrow": "تلاش",
+    "title": "صحیح لوگ تلاش کریں",
+    "subtitle": "صحافی، کریئیٹرز، مقررین اور ماہرین تلاش کریں، پھر فلٹرز سے نتائج محدود کریں۔",
+    "noResultsHint": "کوئی اور لفظ آزمائیں یا کچھ فلٹرز ہٹا دیں۔",
+    "removeFilter": "فلٹر ہٹائیں: {{name}}",
+    "peopleFound": "لوگ ملے"
   },
   "profile": {
     "notFound": "پروفائل نہیں ملی",

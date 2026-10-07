@@ -33,7 +33,7 @@ function SearchBar({ initialValue = '', size = 'md', tone = 'default' }: SearchB
         onChange={(e) => setValue(e.target.value)}
         placeholder={t('site.search.placeholder')}
         aria-label={t('site.search.label')}
-        className={`min-w-0 flex-1 rounded-xl border border-gray-300 bg-white px-4 outline-none focus:ring-2 focus:ring-gray-900 ${padding}`}
+        className={`min-w-0 flex-1 rounded-xl border border-gray-300 bg-white px-4 text-gray-900 outline-none placeholder:text-gray-400 focus:ring-2 focus:ring-gray-900 ${padding}`}
       />
       <button
         type="submit"
