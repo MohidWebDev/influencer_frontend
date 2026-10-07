@@ -30,7 +30,7 @@ const HERO_IMAGES = [
   'https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=1600&q=80',
   'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1600&q=80',
 ]
-const SLIDE_MS = 6000
+const SLIDE_MS = 4000
 const FEATURED_COUNT = 6
 const INDUSTRY_LIMIT = 8
 
@@ -59,7 +59,7 @@ function Home() {
     peopleQuery(new URLSearchParams({ limit: String(FEATURED_COUNT), sort: 'followers' })),
   )
 
-  // Har 6 second baad agli tasveer. Mouse/focus hero pe ho ya tab chhupa ho to ruk jao
+  // Har 4 second baad agli tasveer. Mouse/focus hero pe ho ya tab chhupa ho to ruk jao
   useEffect(() => {
     if (!autoPlay || hovered) return
     const id = window.setInterval(() => {
@@ -107,7 +107,7 @@ function Home() {
         onMouseLeave={() => setHovered(false)}
         onFocus={() => setHovered(true)}
         onBlur={() => setHovered(false)}
-        className="relative isolate overflow-hidden rounded-3xl bg-gray-950 shadow-xl"
+        className="relative isolate overflow-hidden bg-gray-950"
       >
         {/* Tasveerein peeche; dheere zoom ke saath badalti hain */}
         <div className="absolute inset-0 -z-10">
@@ -118,7 +118,7 @@ function Home() {
               alt=""
               loading={i === 0 ? 'eager' : 'lazy'}
               decoding="async"
-              className={`absolute inset-0 h-full w-full object-cover transition-[opacity,transform] duration-[2000ms] ease-out ${
+              className={`absolute inset-0 h-full w-full object-cover transition-[opacity,transform] duration-[1200ms] ease-out ${
                 i === slide ? 'scale-100 opacity-100' : 'scale-110 opacity-0'
               }`}
             />
@@ -128,7 +128,8 @@ function Home() {
           <div className="absolute inset-0 bg-gradient-to-t from-gray-950/80 via-transparent to-transparent" />
         </div>
 
-        <div className="flex min-h-[34rem] flex-col justify-between gap-10 p-6 sm:p-10 md:min-h-[36rem] md:p-14">
+        {/* Likhai navbar ki seedh mein: andar max-w-6xl, tasveer poori chaurai */}
+        <div className="relative mx-auto flex min-h-[34rem] max-w-6xl flex-col justify-between gap-10 px-4 py-12 sm:py-14 md:min-h-[38rem] md:py-20">
           <div className="max-w-2xl text-center md:text-start">
             <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white ring-1 ring-white/20 backdrop-blur">
               <FontAwesomeIcon icon={faWandMagicSparkles} className="text-[10px] text-amber-300" />
@@ -181,121 +182,125 @@ function Home() {
               </div>
             ))}
           </dl>
-        </div>
 
-        {/* Slide ke dots: upar end wale kone mein (phone pe chhupe, wahan jagah kam hai) */}
-        <div className="absolute end-5 top-5 hidden items-center gap-1.5 sm:flex md:end-8 md:top-8">
-          {HERO_IMAGES.map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={() => setSlide(i)}
-              aria-label={t('home.goToSlide', { n: i + 1 })}
-              aria-current={i === slide}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === slide ? 'w-6 bg-white' : 'w-1.5 bg-white/50 hover:bg-white/80'
-              }`}
-            />
-          ))}
+          {/* Slide ke dots: upar end wale kone mein (phone pe chhupe, wahan jagah kam hai) */}
+          <div className="absolute end-4 top-6 hidden items-center gap-1.5 sm:flex md:top-8">
+            {HERO_IMAGES.map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => setSlide(i)}
+                aria-label={t('home.goToSlide', { n: i + 1 })}
+                aria-current={i === slide}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  i === slide ? 'w-6 bg-white' : 'w-1.5 bg-white/50 hover:bg-white/80'
+                }`}
+              />
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* Industry ke hisaab se */}
-      <section>
-        <SectionHeader title={t('home.browseByIndustry')} to="/browse" />
-        <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-          {industries
-            ? industries.slice(0, INDUSTRY_LIMIT).map((industry) => (
-                <Link
-                  key={industry._id}
-                  to={`/search?industry=${industry.slug}`}
-                  className="group flex items-center justify-between gap-2 rounded-2xl border border-gray-200 bg-white px-3 py-3.5 text-sm font-medium shadow-sm transition hover:-translate-y-0.5 hover:border-gray-900 hover:shadow-md sm:px-4 sm:py-4"
-                >
-                  <span className="flex min-w-0 items-center gap-2.5 sm:gap-3">
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gray-100 text-gray-700 group-hover:bg-gray-900 group-hover:text-white">
-                      <FontAwesomeIcon icon={faLayerGroup} className="text-xs" />
+      <div className="mx-auto max-w-6xl space-y-16 px-4">
+        {/* Industry ke hisaab se */}
+        <section>
+          <SectionHeader title={t('home.browseByIndustry')} to="/browse" />
+          <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            {industries
+              ? industries.slice(0, INDUSTRY_LIMIT).map((industry) => (
+                  <Link
+                    key={industry._id}
+                    to={`/search?industry=${industry.slug}`}
+                    className="group flex items-center justify-between gap-2 rounded-2xl border border-gray-200 bg-white px-3 py-3.5 text-sm font-medium shadow-sm transition hover:-translate-y-0.5 hover:border-gray-900 hover:shadow-md sm:px-4 sm:py-4"
+                  >
+                    <span className="flex min-w-0 items-center gap-2.5 sm:gap-3">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gray-100 text-gray-700 group-hover:bg-gray-900 group-hover:text-white">
+                        <FontAwesomeIcon icon={faLayerGroup} className="text-xs" />
+                      </span>
+                      <span className="leading-snug">{industry.name}</span>
                     </span>
-                    <span className="leading-snug">{industry.name}</span>
-                  </span>
-                  <span className="hidden sm:inline">
-                    <FontAwesomeIcon
-                      icon={faArrowRight}
-                      className="text-xs text-gray-400 transition group-hover:text-gray-900 rtl:rotate-180"
-                    />
-                  </span>
-                </Link>
-              ))
-            : Array.from({ length: INDUSTRY_LIMIT }, (_, i) => (
-                <div key={i} className="h-16 animate-pulse rounded-2xl bg-gray-200/70" />
-              ))}
-        </div>
-      </section>
+                    <span className="hidden sm:inline">
+                      <FontAwesomeIcon
+                        icon={faArrowRight}
+                        className="text-xs text-gray-400 transition group-hover:text-gray-900 rtl:rotate-180"
+                      />
+                    </span>
+                  </Link>
+                ))
+              : Array.from({ length: INDUSTRY_LIMIT }, (_, i) => (
+                  <div key={i} className="h-16 animate-pulse rounded-2xl bg-gray-200/70" />
+                ))}
+          </div>
+        </section>
 
-      {/* Sab se zyada followers wale log */}
-      <section>
-        <SectionHeader title={t('home.mostFollowed')} to="/search?sort=followers" />
-        {isError && (
-          <p className="mt-5 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
-            {t('home.loadError')}
+        {/* Sab se zyada followers wale log */}
+        <section>
+          <SectionHeader title={t('home.mostFollowed')} to="/search?sort=followers" />
+          {isError && (
+            <p className="mt-5 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
+              {t('home.loadError')}
+            </p>
+          )}
+          {featured && featured.people.length === 0 && (
+            <p className="mt-5 text-gray-500">{t('home.noProfiles')}</p>
+          )}
+          <div className="mt-5 grid gap-4 md:grid-cols-2">
+            {isLoading
+              ? Array.from({ length: FEATURED_COUNT }, (_, i) => (
+                  <div key={i} className="h-32 animate-pulse rounded-2xl bg-gray-200/70" />
+                ))
+              : featured?.people.map((person) => <PersonCard key={person._id} person={person} />)}
+          </div>
+        </section>
+
+        {/* Kaise kaam karta hai */}
+        <section className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-gray-100 md:p-10">
+          <h2 className="text-center text-2xl font-bold">{t('home.howTitle')}</h2>
+          <p className="mx-auto mt-2 max-w-xl text-center text-sm text-gray-500">
+            {t('home.howSubtitle')}
           </p>
-        )}
-        {featured && featured.people.length === 0 && (
-          <p className="mt-5 text-gray-500">{t('home.noProfiles')}</p>
-        )}
-        <div className="mt-5 grid gap-4 md:grid-cols-2">
-          {isLoading
-            ? Array.from({ length: FEATURED_COUNT }, (_, i) => (
-                <div key={i} className="h-32 animate-pulse rounded-2xl bg-gray-200/70" />
-              ))
-            : featured?.people.map((person) => <PersonCard key={person._id} person={person} />)}
-        </div>
-      </section>
+          <ol className="mt-8 grid gap-6 md:grid-cols-3">
+            {steps.map((step, i) => (
+              <li key={step.title} className="relative rounded-2xl bg-gray-50 p-5">
+                <span className="absolute end-4 top-4 text-3xl font-bold text-gray-200">
+                  {i + 1}
+                </span>
+                <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-900 text-white">
+                  <FontAwesomeIcon icon={step.icon} />
+                </span>
+                <h3 className="mt-4 font-semibold">{step.title}</h3>
+                <p className="mt-1 text-sm text-gray-600">{step.body}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
 
-      {/* Kaise kaam karta hai */}
-      <section className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-gray-100 md:p-10">
-        <h2 className="text-center text-2xl font-bold">{t('home.howTitle')}</h2>
-        <p className="mx-auto mt-2 max-w-xl text-center text-sm text-gray-500">
-          {t('home.howSubtitle')}
-        </p>
-        <ol className="mt-8 grid gap-6 md:grid-cols-3">
-          {steps.map((step, i) => (
-            <li key={step.title} className="relative rounded-2xl bg-gray-50 p-5">
-              <span className="absolute end-4 top-4 text-3xl font-bold text-gray-200">{i + 1}</span>
-              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-900 text-white">
-                <FontAwesomeIcon icon={step.icon} />
-              </span>
-              <h3 className="mt-4 font-semibold">{step.title}</h3>
-              <p className="mt-1 text-sm text-gray-600">{step.body}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      {/* Aakhri dawat: guest ke liye sign up, login wale ke liye dashboard */}
-      <section className="grid gap-4 md:grid-cols-2">
-        <div className="rounded-3xl bg-gray-900 p-6 text-white md:p-8">
-          <h2 className="text-xl font-semibold">{t('home.ctaTalentTitle')}</h2>
-          <p className="mt-2 text-sm text-white/75">{t('home.ctaTalentBody')}</p>
-          <Link
-            to={user ? '/dashboard' : '/register'}
-            className="mt-5 inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100"
-          >
-            {user ? t('home.ctaDashboard') : t('home.ctaTalentButton')}
-            <FontAwesomeIcon icon={faArrowRight} className="text-xs rtl:rotate-180" />
-          </Link>
-        </div>
-        <div className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-gray-100 md:p-8">
-          <h2 className="text-xl font-semibold">{t('home.ctaBusinessTitle')}</h2>
-          <p className="mt-2 text-sm text-gray-600">{t('home.ctaBusinessBody')}</p>
-          <Link
-            to="/search"
-            className="mt-5 inline-flex items-center gap-2 rounded-xl bg-gray-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-gray-800"
-          >
-            {t('home.ctaBusinessButton')}
-            <FontAwesomeIcon icon={faArrowRight} className="text-xs rtl:rotate-180" />
-          </Link>
-        </div>
-      </section>
+        {/* Aakhri dawat: guest ke liye sign up, login wale ke liye dashboard */}
+        <section className="grid gap-4 md:grid-cols-2">
+          <div className="rounded-3xl bg-gray-900 p-6 text-white md:p-8">
+            <h2 className="text-xl font-semibold">{t('home.ctaTalentTitle')}</h2>
+            <p className="mt-2 text-sm text-white/75">{t('home.ctaTalentBody')}</p>
+            <Link
+              to={user ? '/dashboard' : '/register'}
+              className="mt-5 inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100"
+            >
+              {user ? t('home.ctaDashboard') : t('home.ctaTalentButton')}
+              <FontAwesomeIcon icon={faArrowRight} className="text-xs rtl:rotate-180" />
+            </Link>
+          </div>
+          <div className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-gray-100 md:p-8">
+            <h2 className="text-xl font-semibold">{t('home.ctaBusinessTitle')}</h2>
+            <p className="mt-2 text-sm text-gray-600">{t('home.ctaBusinessBody')}</p>
+            <Link
+              to="/search"
+              className="mt-5 inline-flex items-center gap-2 rounded-xl bg-gray-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-gray-800"
+            >
+              {t('home.ctaBusinessButton')}
+              <FontAwesomeIcon icon={faArrowRight} className="text-xs rtl:rotate-180" />
+            </Link>
+          </div>
+        </section>
+      </div>
     </div>
   )
 }
