@@ -11,6 +11,7 @@ import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import NotFound from './pages/NotFound'
 import Browse from './pages/Browse'
+import About from './pages/About'
 import ComingSoon from './pages/ComingSoon'
 import MyProfileRedirect from './pages/MyProfileRedirect'
 import {
@@ -39,6 +40,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/search" element={<Search />} />
         <Route path="/browse" element={<Browse />} />
+        <Route path="/about" element={<About />} />
         <Route
           path="/my-profile"
           element={

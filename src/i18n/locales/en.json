@@ -367,7 +367,8 @@
       "closeMenu": "Close menu",
       "accountMenu": "Account menu",
       "language": "Language",
-      "home": "Home"
+      "home": "Home",
+      "about": "About"
     },
     "search": {
       "placeholder": "Search by name or what they do...",
@@ -863,6 +864,47 @@
     "contactTitle": "Have a question or want to work with us?",
     "contactBody": "Write to us and our team will get back to you within 1–2 working days.",
     "rights": "All rights reserved.",
-    "backToTop": "Back to top"
+    "backToTop": "Back to top",
+    "about": "About us"
+  },
+  "about": {
+    "eyebrow": "About us",
+    "title": "We help the world find the people who move it",
+    "subtitle": "One trusted place to discover journalists, creators, speakers, experts and public figures, with real numbers and verified owners.",
+    "missionTitle": "Our mission",
+    "mission1": "Finding the right voice for a campaign, event or story is slow and full of guesswork. Follower counts are scattered across apps, and it is hard to know who to contact.",
+    "mission2": "We bring it together: clear profiles, transparent reach on every platform, and a simple way to send an inquiry to the talent or their manager.",
+    "valuesTitle": "What we stand for",
+    "valuesSubtitle": "The rules every profile on the platform follows.",
+    "value1Title": "Transparent metrics",
+    "value1Body": "Followers and engagement are shown per platform, and we show where the information came from.",
+    "value2Title": "Verified owners",
+    "value2Body": "A person can claim their profile. We confirm it with a code sent to their official account before they can edit it.",
+    "value3Title": "Public information only",
+    "value3Body": "Profiles start from public sources. Anyone can report a mistake or ask for a profile to be removed.",
+    "value4Title": "Built for our region",
+    "value4Body": "The whole site works in English, Urdu and Arabic, including right-to-left layouts.",
+    "forTalentTitle": "For talent and managers",
+    "forTalent1": "Claim your profile and keep your details and numbers correct.",
+    "forTalent2": "Show a verified badge so brands know it is really you.",
+    "forTalent3": "Receive work and speaking inquiries in one place.",
+    "forBusinessTitle": "For brands, agencies and organizations",
+    "forBusiness1": "Search by profession, industry, topic, city and language.",
+    "forBusiness2": "Compare real reach before you reach out.",
+    "forBusiness3": "Contact the person or their representative directly.",
+    "faqTitle": "Questions people ask",
+    "faq1Q": "Where does the profile information come from?",
+    "faq1A": "From public sources such as official websites and social accounts. After a person claims their profile, they keep it up to date themselves.",
+    "faq2Q": "How do I claim my profile?",
+    "faq2A": "Create a talent account, open your profile and press \"Is this you? Claim it\". We send a code to one of your official accounts; enter it on your dashboard.",
+    "faq3Q": "What does the verified badge mean?",
+    "faq3A": "It means the profile has been claimed by the real person and confirmed by our team.",
+    "faq4Q": "Something on a profile is wrong. What can I do?",
+    "faq4A": "Open the profile and use \"Report an error or request removal\". Our team reviews every report.",
+    "ctaEyebrow": "Start now",
+    "ctaTitle": "Find your next voice today",
+    "ctaBody": "Browse public profiles for free. Create an account to claim your profile or send inquiries.",
+    "ctaExplore": "Explore people",
+    "ctaJoin": "Create a free account"
   }
 }

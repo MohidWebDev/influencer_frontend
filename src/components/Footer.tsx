@@ -61,6 +61,7 @@ function Footer() {
     {
       title: t('footer.support'),
       links: [
+        { label: t('footer.about'), to: '/about' },
         { label: t('footer.contact'), href: `mailto:${CONTACT_EMAIL}` },
         { label: t('footer.reportProblem'), href: `mailto:${CONTACT_EMAIL}?subject=Report` },
       ],
