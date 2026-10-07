@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
@@ -34,21 +34,22 @@ function AdminAuditLogPage() {
   const to = params.get('to')
   if (to) apiParams.set('to', `${to}T23:59:59.999`)
 
-  const { data, isLoading, isError, isFetching, refetch } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['admin', 'audit-logs', apiParams.toString()],
     queryFn: () => listAuditLogs(apiParams),
     placeholderData: keepPreviousData,
-    staleTime: 0,
   })
 
+  // Functional update: hamesha taaza URL params se shuru karo, purane snapshot se nahi
   function setParam(name: string, value: string) {
-    const next = new URLSearchParams(params)
-    if (value) next.set(name, value)
-    else next.delete(name)
-    if (name !== 'page') next.delete('page')
-    setParams(next)
+    setParams((prev) => {
+      const next = new URLSearchParams(prev)
+      if (value) next.set(name, value)
+      else next.delete(name)
+      if (name !== 'page') next.delete('page')
+      return next
+    })
   }
-
 
   const input = 'rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm'
 
@@ -114,9 +115,7 @@ function AdminAuditLogPage() {
         emptyText={t('audit.empty')}
         onRetry={() => refetch()}
       >
-        <div
-          className={`overflow-x-auto rounded-2xl bg-white shadow-sm ${isFetching ? 'opacity-70' : ''}`}
-        >
+        <div className="overflow-x-auto rounded-2xl bg-white shadow-sm">
           <table className="w-full min-w-[720px] text-sm">
             <thead className="border-b border-gray-100 text-xs uppercase text-gray-500">
               <tr>
@@ -129,32 +128,30 @@ function AdminAuditLogPage() {
             </thead>
             <tbody className="divide-y divide-gray-100">
               {data?.logs.map((log) => (
-                <Fragment key={log._id}>
-                  <tr className="hover:bg-gray-50">
-                    <td className="whitespace-nowrap px-4 py-3 text-gray-600">
-                      {formatDateTime(log.createdAt)}
-                    </td>
-                    <td className="px-4 py-3">
-                      <p className="font-medium">{log.actor?.name ?? log.actorEmail}</p>
-                      {log.actor && <p className="text-xs text-gray-500">{log.actor.email}</p>}
-                    </td>
-                    <td className="px-4 py-3">
-                      {t(`auditAction.${log.action}`, { defaultValue: log.action })}
-                    </td>
-                    <td className="px-4 py-3">
-                      <p className="text-xs text-gray-500">{t(`auditTarget.${log.targetType}`)}</p>
-                      <p>{log.targetLabel ?? log.targetId}</p>
-                    </td>
-                    <td className="px-4 py-3 text-end">
-                      <button
-                        onClick={() => setOpen(log)}
-                        className="whitespace-nowrap rounded-lg border border-gray-300 px-3 py-1.5 text-xs hover:bg-gray-100"
-                      >
-                        {t('audit.showChanges')}
-                      </button>
-                    </td>
-                  </tr>
-                </Fragment>
+                <tr key={log._id} className="hover:bg-gray-50">
+                  <td className="whitespace-nowrap px-4 py-3 text-gray-600">
+                    {formatDateTime(log.createdAt)}
+                  </td>
+                  <td className="px-4 py-3">
+                    <p className="font-medium">{log.actor?.name ?? log.actorEmail}</p>
+                    {log.actor && <p className="text-xs text-gray-500">{log.actor.email}</p>}
+                  </td>
+                  <td className="px-4 py-3">
+                    {t(`auditAction.${log.action}`, { defaultValue: log.action })}
+                  </td>
+                  <td className="px-4 py-3">
+                    <p className="text-xs text-gray-500">{t(`auditTarget.${log.targetType}`)}</p>
+                    <p>{log.targetLabel ?? log.targetId}</p>
+                  </td>
+                  <td className="px-4 py-3 text-end">
+                    <button
+                      onClick={() => setOpen(log)}
+                      className="whitespace-nowrap rounded-lg border border-gray-300 px-3 py-1.5 text-xs hover:bg-gray-100"
+                    >
+                      {t('audit.showChanges')}
+                    </button>
+                  </td>
+                </tr>
               ))}
             </tbody>
           </table>

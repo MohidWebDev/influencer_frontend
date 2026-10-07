@@ -40,7 +40,6 @@ function AdminClaimDetailPage() {
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['admin', 'claim', id],
     queryFn: () => getAdminClaim(id),
-    staleTime: 0,
   })
 
   const refresh = () => queryClient.invalidateQueries({ queryKey: ['admin'] })

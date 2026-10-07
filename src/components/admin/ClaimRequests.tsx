@@ -336,7 +336,6 @@ function ClaimRequests() {
     queryKey: ['admin', 'claims', filter, page],
     queryFn: () => adminListClaims(filter, page),
     placeholderData: keepPreviousData,
-    staleTime: 0,
   })
 
   const total = data?.meta.total ?? 0

@@ -27,7 +27,6 @@ function AdminPersonEditor() {
     queryKey: ['admin', 'person', id],
     queryFn: () => adminGetPerson(id!),
     enabled: !isNew,
-    staleTime: 0,
   })
 
   const save = useMutation({

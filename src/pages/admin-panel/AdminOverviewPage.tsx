@@ -46,7 +46,6 @@ function AdminOverviewPage() {
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['admin', 'stats'],
     queryFn: getAdminStats,
-    staleTime: 0,
   })
 
   return (

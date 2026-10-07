@@ -10,7 +10,6 @@ export function useAdminAlerts() {
     queryKey: ['admin', 'stats'],
     queryFn: getAdminStats,
     enabled: user?.role === 'admin',
-    staleTime: 0,
   })
   const claims = data?.claims.needsAction ?? 0
   const reports = data?.reports.open ?? 0

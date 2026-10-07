@@ -125,7 +125,6 @@ function AdminReportDetailPage() {
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['admin', 'report', id],
     queryFn: () => getAdminReport(id),
-    staleTime: 0,
   })
   const report = data?.report
 

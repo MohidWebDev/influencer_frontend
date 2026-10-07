@@ -27,12 +27,22 @@ function AdminClaimsPage() {
   const status = (params.get('status') as ClaimFilter) || 'open'
   const page = Number(params.get('page')) || 1
 
-  const { data, isLoading, isError, isFetching, refetch } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['admin', 'claims', status, page],
     queryFn: () => adminListClaims(status, page),
     placeholderData: keepPreviousData,
-    staleTime: 0,
   })
+
+  // Functional update: hamesha taaza URL params se shuru karo, purane snapshot se nahi
+  function setParam(name: string, value: string) {
+    setParams((prev) => {
+      const next = new URLSearchParams(prev)
+      if (value) next.set(name, value)
+      else next.delete(name)
+      if (name !== 'page') next.delete('page')
+      return next
+    })
+  }
 
   const filterLabel = (f: ClaimFilter) =>
     f === 'open' || f === 'needs_action' ? t(`claimFilter.${f}`) : t(`claimStatus.${f}`)
@@ -43,7 +53,7 @@ function AdminClaimsPage() {
         <select
           aria-label={t('claims.colStatus')}
           value={status}
-          onChange={(e) => setParams({ status: e.target.value })}
+          onChange={(e) => setParam('status', e.target.value)}
           className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm"
         >
           {FILTERS.map((f) => (
@@ -62,7 +72,7 @@ function AdminClaimsPage() {
         onRetry={() => refetch()}
       >
         <div
-          className={`overflow-x-auto rounded-2xl bg-white shadow-sm ${isFetching ? 'opacity-70' : ''}`}
+          className="overflow-x-auto rounded-2xl bg-white shadow-sm"
         >
           <table className="w-full min-w-[640px] text-sm">
             <thead className="border-b border-gray-100 text-xs uppercase text-gray-500">
@@ -116,7 +126,7 @@ function AdminClaimsPage() {
             page={page}
             limit={PAGE_SIZE}
             total={data.meta.total}
-            onChange={(p) => setParams({ status, page: String(p) })}
+            onChange={(p) => setParam('page', String(p))}
           />
         )}
       </DataState>

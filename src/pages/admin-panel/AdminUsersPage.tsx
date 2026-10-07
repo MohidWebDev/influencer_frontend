@@ -36,11 +36,10 @@ function AdminUsersPage() {
   const apiParams = new URLSearchParams(params)
   apiParams.set('limit', String(PAGE_SIZE))
 
-  const { data, isLoading, isError, isFetching, refetch } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['admin', 'users', apiParams.toString()],
     queryFn: () => listAdminUsers(apiParams),
     placeholderData: keepPreviousData,
-    staleTime: 0,
   })
 
   const mutation = useMutation({
@@ -65,12 +64,15 @@ function AdminUsersPage() {
     },
   })
 
+  // Functional update: hamesha taaza URL params se shuru karo, purane snapshot se nahi
   function setParam(name: string, value: string) {
-    const next = new URLSearchParams(params)
-    if (value) next.set(name, value)
-    else next.delete(name)
-    if (name !== 'page') next.delete('page')
-    setParams(next)
+    setParams((prev) => {
+      const next = new URLSearchParams(prev)
+      if (value) next.set(name, value)
+      else next.delete(name)
+      if (name !== 'page') next.delete('page')
+      return next
+    })
   }
 
   function handleSearch(e: FormEvent) {
@@ -140,7 +142,7 @@ function AdminUsersPage() {
           </p>
         )}
         <div
-          className={`overflow-x-auto rounded-2xl bg-white shadow-sm ${isFetching ? 'opacity-70' : ''}`}
+          className="overflow-x-auto rounded-2xl bg-white shadow-sm"
         >
           <table className="w-full min-w-[720px] text-sm">
             <thead className="border-b border-gray-100 text-xs uppercase text-gray-500">

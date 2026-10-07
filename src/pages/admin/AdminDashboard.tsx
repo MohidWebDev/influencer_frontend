@@ -26,12 +26,10 @@ function AdminDashboard() {
   const params = new URLSearchParams(searchParams)
   params.set('limit', String(PAGE_SIZE))
 
-  // Admin data hamesha taaza chahiye, is liye staleTime 0
-  const { data, isLoading, isFetching } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['admin', 'people', params.toString()],
     queryFn: () => adminListPeople(params),
     placeholderData: keepPreviousData,
-    staleTime: 0,
   })
 
   // Verify / Hide jaise chhote kaam ek click mein
@@ -58,12 +56,15 @@ function AdminDashboard() {
     onError: (error) => toast.error(getApiError(error).message),
   })
 
+  // Functional update: hamesha taaza URL params se shuru karo, purane snapshot se nahi
   function setParam(name: string, value: string) {
-    const next = new URLSearchParams(searchParams)
-    if (value) next.set(name, value)
-    else next.delete(name)
-    if (name !== 'page') next.delete('page')
-    setSearchParams(next)
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev)
+      if (value) next.set(name, value)
+      else next.delete(name)
+      if (name !== 'page') next.delete('page')
+      return next
+    })
   }
 
   function handleSearch(e: FormEvent) {
@@ -75,7 +76,6 @@ function AdminDashboard() {
   const { data: pendingClaims } = useQuery({
     queryKey: ['admin', 'claims', 'needs_action', 1],
     queryFn: () => adminListClaims('needs_action', 1),
-    staleTime: 0,
   })
   const pendingCount = pendingClaims?.meta.total ?? 0
 
@@ -167,7 +167,7 @@ function AdminDashboard() {
             </p>
           )}
 
-          <div className={`grid gap-4 lg:grid-cols-2 ${isFetching ? 'opacity-70' : ''}`}>
+          <div className="grid gap-4 lg:grid-cols-2">
             {data?.people.map((person) => (
               <AdminPersonCard
                 key={person._id}

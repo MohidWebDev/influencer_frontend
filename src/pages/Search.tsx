@@ -103,7 +103,7 @@ function Search() {
   if (!params.get('sort')) params.set('sort', 'followers')
 
   const queryClient = useQueryClient()
-  const { data, isLoading, isError, isFetching } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     ...peopleQuery(params),
     // Naya page load hote waqt purane results dikhate raho (khali screen nahi)
     placeholderData: keepPreviousData,
@@ -119,26 +119,33 @@ function Search() {
     queryClient.prefetchQuery(peopleQuery(nextParams))
   }, [hasNextPage, paramsKey, page, queryClient])
 
+  // Functional updates: hamesha taaza URL params se shuru karo
   function setFilter(name: string, value: string) {
-    const next = new URLSearchParams(searchParams)
-    if (value) next.set(name, value)
-    else next.delete(name)
-    next.delete('page') // filter badla to pehle page pe wapas
-    setSearchParams(next)
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev)
+      if (value) next.set(name, value)
+      else next.delete(name)
+      next.delete('page') // filter badla to pehle page pe wapas
+      return next
+    })
   }
 
   function setPage(nextPage: number) {
-    const next = new URLSearchParams(searchParams)
-    next.set('page', String(nextPage))
-    setSearchParams(next)
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev)
+      next.set('page', String(nextPage))
+      return next
+    })
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   function clearFilters() {
-    const next = new URLSearchParams()
-    const q = searchParams.get('q')
-    if (q) next.set('q', q)
-    setSearchParams(next)
+    setSearchParams((prev) => {
+      const next = new URLSearchParams()
+      const q = prev.get('q')
+      if (q) next.set('q', q)
+      return next
+    })
   }
 
   const get = (name: string) => searchParams.get(name) ?? ''
@@ -165,7 +172,7 @@ function Search() {
   } else {
     results = (
       <>
-        <div className={`grid gap-4 lg:grid-cols-2 ${isFetching ? 'opacity-60' : ''}`}>
+        <div className="grid gap-4 lg:grid-cols-2">
           {data?.people.map((person) => (
             <PersonCard key={person._id} person={person} />
           ))}
