@@ -37,7 +37,7 @@ function LanguageMenu({ variant = 'dropdown' }: LanguageMenuProps) {
         aria-expanded={open}
         aria-haspopup="true"
         className={`inline-flex items-center gap-1.5 rounded-lg px-2.5 text-sm text-gray-700 hover:bg-gray-100 ${
-          inline ? 'min-h-11 border border-gray-300 px-3' : 'min-h-11 lg:min-h-0 lg:py-1.5'
+          inline ? 'min-h-11 border border-gray-300 px-3' : 'min-h-11 xl:min-h-0 xl:py-1.5'
         }`}
       >
         <FontAwesomeIcon icon={faGlobe} />

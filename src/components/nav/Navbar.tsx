@@ -62,13 +62,15 @@ function Navbar() {
 
   return (
     <header className="relative border-b border-gray-200 bg-white">
-      <nav className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3">
-        <Link to="/" className="me-2 truncate text-base font-bold sm:text-xl">
+      {/* Desktop (xl, 1280px+): brand bilkul start pe, links beech mein, baqi sab bilkul end pe.
+          Chhoti screen pe ☰ menu, kyun ke talent ke zyada links 1024px pe brand se takrate hain */}
+      <nav className="flex items-center gap-3 px-4 py-3 sm:px-6 xl:grid xl:grid-cols-[1fr_auto_1fr] lg:px-8">
+        <Link to="/" className="me-2 truncate text-base font-bold sm:text-xl xl:justify-self-start">
           {PLATFORM_NAME}
         </Link>
 
         {/* Desktop: beech wale links */}
-        <div className="hidden flex-1 items-center gap-1 lg:flex">
+        <div className="hidden items-center justify-center gap-1 xl:flex">
           {mainItems.map((item) => (
             <Link key={item.to} to={item.to} className={linkClass(active(item))}>
               <FontAwesomeIcon icon={item.icon} />
@@ -79,7 +81,7 @@ function Navbar() {
         </div>
 
         {/* Desktop: right side */}
-        <div className="ms-auto hidden items-center gap-1 lg:flex">
+        <div className="ms-auto hidden items-center gap-1 xl:flex xl:justify-self-end">
           <LanguageMenu />
           {!isLoading &&
             (user ? (
@@ -123,7 +125,7 @@ function Navbar() {
         </div>
 
         {/* Mobile: notifications + menu button */}
-        <div className="ms-auto flex items-center gap-1 lg:hidden">
+        <div className="ms-auto flex items-center gap-1 xl:hidden">
           {user && (
             <Link
               to="/notifications"
@@ -147,7 +149,7 @@ function Navbar() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="absolute inset-x-0 top-full z-30 max-h-[calc(100vh-60px)] overflow-y-auto border-b border-gray-200 bg-white shadow-lg lg:hidden">
+        <div className="absolute inset-x-0 top-full z-30 max-h-[calc(100vh-60px)] overflow-y-auto border-b border-gray-200 bg-white shadow-lg xl:hidden">
           <div className="mx-auto max-w-6xl space-y-4 px-4 py-4">
             {user && (
               <div className="flex items-center gap-3 rounded-xl bg-gray-50 p-3">
