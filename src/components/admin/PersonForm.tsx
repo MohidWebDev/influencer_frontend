@@ -38,7 +38,6 @@ interface FormState {
   topics: string[]
   socialAccounts: SocialRow[]
   status: ProfileStatus
-  verified: boolean
   visibility: 'visible' | 'hidden'
   sourceType: string
   sourceUrl: string
@@ -67,7 +66,6 @@ function toFormState(person?: Person): FormState {
         engagementRate: a.engagementRate?.toString() ?? '',
       })) ?? [],
     status: person?.status ?? 'public',
-    verified: person?.verified ?? false,
     visibility: person?.visibility ?? 'visible',
     sourceType: 'public_web',
     sourceUrl: '',
@@ -97,12 +95,12 @@ function toInput(form: FormState, isNew: boolean, isOwner: boolean): PersonInput
   }
   if (form.country) input.country = form.country
 
-  // Owner sirf apne fields bhejta hai. Naam, state, verified admin ka kaam hai
+  // Owner sirf apne fields bhejta hai. Naam aur state admin ka kaam hai.
+  // Verified yahan nahi: woh sirf claim ke baad card ke button se hota hai
   if (isOwner) return input
 
   input.name = form.name
   input.status = form.status
-  input.verified = form.verified
 
   if (isNew) {
     input.sourceRecords = [
@@ -414,15 +412,6 @@ function PersonForm({ person, mode = 'admin', isSaving, errors, onSubmit }: Pers
               </label>
             )}
           </div>
-          <label className="flex items-center gap-2 text-sm">
-            <input
-              type="checkbox"
-              checked={form.verified}
-              onChange={(e) => update('verified', e.target.checked)}
-              className="h-4 w-4"
-            />
-            {t('personForm.verified')}
-          </label>
         </section>
       )}
 

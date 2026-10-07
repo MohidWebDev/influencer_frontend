@@ -41,6 +41,10 @@ function AdminPersonCard({
   const { t } = useTranslation()
   const isHidden = person.visibility === 'hidden'
   const isClaimed = Boolean(person.claimedBy)
+  // Verify sirf claimed profile pe. Unclaimed pe button hi nahi (purana badge ho to hata sakte hain)
+  const canToggleVerified = isClaimed || person.verified
+  const actionCount = (isClaimed ? 0 : 1) + (canToggleVerified ? 1 : 0) + 3
+  const smCols = { 3: 'sm:grid-cols-3', 4: 'sm:grid-cols-4', 5: 'sm:grid-cols-5' }[actionCount]
   // Delete se pehle card ke andar hi "Are you sure?" poochte hain
   const [confirmDelete, setConfirmDelete] = useState(false)
   const button =
@@ -112,7 +116,7 @@ function AdminPersonCard({
         </div>
       ) : (
         <div
-          className={`mt-auto grid grid-cols-2 gap-2 p-5 ${isClaimed ? 'sm:grid-cols-4' : 'sm:grid-cols-5'}`}
+          className={`mt-auto grid grid-cols-2 gap-2 p-5 ${smCols}`}
         >
           {/* Claimed profile sirf uska maalik edit kar sakta hai: Edit button hi nahi */}
           {!isClaimed && (
@@ -123,18 +127,20 @@ function AdminPersonCard({
               <FontAwesomeIcon icon={faPen} /> {t('oldAdmin.edit')}
             </Link>
           )}
-          <button
-            onClick={onToggleVerified}
-            disabled={isBusy}
-            className={`${button} ${
-              person.verified
-                ? 'border border-blue-200 text-blue-700 hover:bg-blue-50'
-                : 'bg-blue-600 text-white hover:bg-blue-700'
-            }`}
-          >
-            <FontAwesomeIcon icon={person.verified ? faBan : faCircleCheck} />
-            {person.verified ? t('oldAdmin.unverify') : t('oldAdmin.verify')}
-          </button>
+          {canToggleVerified && (
+            <button
+              onClick={onToggleVerified}
+              disabled={isBusy}
+              className={`${button} ${
+                person.verified
+                  ? 'border border-blue-200 text-blue-700 hover:bg-blue-50'
+                  : 'bg-blue-600 text-white hover:bg-blue-700'
+              }`}
+            >
+              <FontAwesomeIcon icon={person.verified ? faBan : faCircleCheck} />
+              {person.verified ? t('oldAdmin.unverify') : t('oldAdmin.verify')}
+            </button>
+          )}
           <button
             onClick={onToggleHidden}
             disabled={isBusy}
@@ -165,10 +171,13 @@ function AdminPersonCard({
           <button
             onClick={() => setConfirmDelete(true)}
             disabled={isBusy}
-            className={`${button} ${isClaimed ? '' : 'col-span-2 sm:col-span-1'} border border-red-200 text-red-600 hover:bg-red-600 hover:text-white`}
+            className={`${button} ${actionCount % 2 === 1 ? 'col-span-2 sm:col-span-1' : ''} border border-red-200 text-red-600 hover:bg-red-600 hover:text-white`}
           >
             <FontAwesomeIcon icon={faTrash} /> {t('oldAdmin.delete')}
           </button>
+          {!isClaimed && (
+            <p className="col-span-full text-xs text-gray-500">{t('oldAdmin.verifyAfterClaim')}</p>
+          )}
         </div>
       )}
     </article>

@@ -480,7 +480,8 @@
     "CODE_NOT_VERIFIED": "The talent has not entered the correct code yet",
     "ALREADY_REVIEWED": "This claim was already reviewed",
     "OTP_LOCKED": "Too many wrong attempts. Your claim is under review by the admin.",
-    "INVALID_STATE": "This action is not allowed for the claim's current status."
+    "INVALID_STATE": "This action is not allowed for the claim's current status.",
+    "PROFILE_NOT_CLAIMED": "A profile can only be verified after a talent has claimed it."
   },
   "search": {
     "any": "Any",
@@ -719,7 +720,8 @@
     "hiddenNotPublic": "Hidden profiles are not public",
     "delete": "Delete",
     "remove": "Remove {{name}}",
-    "add": "+ Add {{what}}"
+    "add": "+ Add {{what}}",
+    "verifyAfterClaim": "You can verify this profile after a talent claims it."
   },
   "personForm": {
     "identity": "Identity",
