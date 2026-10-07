@@ -479,7 +479,11 @@
     "nothingFound": "Nothing matches “{{term}}”.",
     "ctaTitle": "Know who you're looking for?",
     "ctaBody": "Search by name and combine filters on the Explore page.",
-    "ctaButton": "Go to Explore"
+    "ctaButton": "Go to Explore",
+    "industriesDesc": "The fields people work in, from technology to sports.",
+    "professionsDesc": "What people do: journalists, creators, speakers and more.",
+    "countriesDesc": "Find people by where they are based.",
+    "topicsDesc": "Subjects people talk and write about."
   },
   "claimAction": {
     "yourProfile": "This is your profile",

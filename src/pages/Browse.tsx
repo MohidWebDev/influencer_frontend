@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faArrowRight,
   faBriefcase,
+  faChevronRight,
   faBuilding,
   faCar,
   faChartLine,
@@ -69,16 +70,6 @@ const INDUSTRY_ICONS: [string, IconDefinition][] = [
 const iconFor = (slug: string) =>
   INDUSTRY_ICONS.find(([key]) => slug.includes(key))?.[1] ?? faLayerGroup
 
-// Har card ka apna halka rang (baari baari)
-const TINTS = [
-  'bg-sky-50 text-sky-700',
-  'bg-violet-50 text-violet-700',
-  'bg-amber-50 text-amber-700',
-  'bg-emerald-50 text-emerald-700',
-  'bg-rose-50 text-rose-700',
-  'bg-indigo-50 text-indigo-700',
-]
-
 // "PK" -> 🇵🇰
 const flag = (code: string) =>
   String.fromCodePoint(...[...code.toUpperCase()].map((c) => 0x1f1a5 + c.charCodeAt(0)))
@@ -92,27 +83,60 @@ interface Item {
 const SECTIONS = ['industries', 'professions', 'topics', 'countries'] as const
 type SectionId = (typeof SECTIONS)[number]
 
-function SectionHeader({
+// Har hissa ek safed panel: upar icon, naam, chhoti tafseel aur ginti
+function Panel({
   id,
   icon,
   title,
+  description,
   count,
+  children,
 }: {
   id: SectionId
   icon: IconDefinition
   title: string
+  description: string
   count: number
+  children: ReactNode
 }) {
   return (
-    <div id={id} className="flex scroll-mt-24 items-center gap-3">
-      <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gray-900 text-white">
-        <FontAwesomeIcon icon={icon} />
+    <section
+      id={id}
+      className="scroll-mt-24 overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-gray-200/70"
+    >
+      <header className="flex items-start gap-4 border-b border-gray-100 px-5 py-5 sm:px-6">
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gray-900 text-sm text-white">
+          <FontAwesomeIcon icon={icon} />
+        </span>
+        <div className="min-w-0 flex-1">
+          <h2 className="text-lg font-semibold tracking-tight">{title}</h2>
+          <p className="mt-0.5 text-sm text-gray-500">{description}</p>
+        </div>
+        <span className="shrink-0 rounded-full bg-gray-100 px-2.5 py-1 text-xs font-semibold tabular-nums text-gray-600">
+          {count}
+        </span>
+      </header>
+      <div className="p-3 sm:p-4">{children}</div>
+    </section>
+  )
+}
+
+// Ek qatar wala link: icon/jhanda, naam, aur hover pe teer
+function RowLink({ item, lead }: { item: Item; lead: ReactNode }) {
+  return (
+    <Link
+      to={item.to}
+      className="group flex items-center gap-3 rounded-xl px-3 py-3 transition hover:bg-gray-50"
+    >
+      {lead}
+      <span className="min-w-0 flex-1 text-sm font-medium text-gray-800 group-hover:text-gray-950">
+        {item.label}
       </span>
-      <h2 className="text-xl font-bold md:text-2xl">{title}</h2>
-      <span className="rounded-full bg-gray-200/70 px-2.5 py-0.5 text-xs font-semibold text-gray-700">
-        {count}
-      </span>
-    </div>
+      <FontAwesomeIcon
+        icon={faChevronRight}
+        className="text-[10px] text-gray-300 transition group-hover:translate-x-0.5 group-hover:text-gray-900 rtl:rotate-180 rtl:group-hover:-translate-x-0.5"
+      />
+    </Link>
   )
 }
 
@@ -152,8 +176,7 @@ function Browse() {
     topics: topicItems.length,
     countries: countryItems.length,
   }
-  const nothingFound =
-    !!term && Object.values(counts).every((count) => count === 0)
+  const nothingFound = !!term && Object.values(counts).every((count) => count === 0)
 
   return (
     <div className="space-y-12">
@@ -221,120 +244,117 @@ function Browse() {
         </p>
       )}
 
-      {/* Industries: icon wale cards */}
-      {(loadingIndustries || industryItems.length > 0) && (
-        <section className="space-y-5">
-          <SectionHeader
+      <div className="space-y-6">
+        {/* Industries: icon ke saath qataarein */}
+        {(loadingIndustries || industryItems.length > 0) && (
+          <Panel
             id="industries"
             icon={faIndustry}
             title={t('browse.industries')}
+            description={t('browse.industriesDesc')}
             count={counts.industries}
-          />
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-            {loadingIndustries
-              ? skeleton(8, 'h-28')
-              : industryItems.map((item, i) => (
-                  <Link
-                    key={item.key}
-                    to={item.to}
-                    className="group flex flex-col justify-between gap-4 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-gray-100 transition hover:-translate-y-0.5 hover:shadow-lg hover:ring-gray-900 sm:p-5"
-                  >
-                    <span
-                      className={`flex h-11 w-11 items-center justify-center rounded-xl ${TINTS[i % TINTS.length]} transition group-hover:bg-gray-900 group-hover:text-white`}
-                    >
-                      <FontAwesomeIcon icon={iconFor(item.key)} />
-                    </span>
-                    <span className="flex items-end justify-between gap-2">
-                      <span className="font-semibold leading-snug">{item.label}</span>
-                      <span className="hidden shrink-0 sm:inline">
-                        <FontAwesomeIcon
-                          icon={faArrowRight}
-                          className="text-xs text-gray-300 transition group-hover:text-gray-900 rtl:rotate-180"
-                        />
-                      </span>
-                    </span>
-                  </Link>
-                ))}
-          </div>
-        </section>
-      )}
+          >
+            <div className="grid gap-x-2 sm:grid-cols-2 lg:grid-cols-3">
+              {loadingIndustries
+                ? skeleton(9, 'm-1 h-12')
+                : industryItems.map((item) => (
+                    <RowLink
+                      key={item.key}
+                      item={item}
+                      lead={
+                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gray-100 text-sm text-gray-700 transition group-hover:bg-gray-900 group-hover:text-white">
+                          <FontAwesomeIcon icon={iconFor(item.key)} />
+                        </span>
+                      }
+                    />
+                  ))}
+            </div>
+          </Panel>
+        )}
 
-      {/* Professions: saaf chips */}
-      {(loadingProfessions || professionItems.length > 0) && (
-        <section className="space-y-5">
-          <SectionHeader
-            id="professions"
-            icon={faBriefcase}
-            title={t('browse.professions')}
-            count={counts.professions}
-          />
-          <div className="flex flex-wrap gap-2 rounded-3xl bg-white p-5 shadow-sm ring-1 ring-gray-100 md:p-6">
-            {loadingProfessions
-              ? skeleton(12, 'h-10 w-28 rounded-full')
-              : professionItems.map((item) => (
-                  <Link
-                    key={item.key}
-                    to={item.to}
-                    className="rounded-full border border-gray-200 bg-gray-50 px-4 py-2 text-sm font-medium text-gray-800 transition hover:border-gray-900 hover:bg-gray-900 hover:text-white"
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-          </div>
-        </section>
-      )}
+        <div className="grid gap-6 lg:grid-cols-5">
+          {/* Professions: directory jaisi columns */}
+          {(loadingProfessions || professionItems.length > 0) && (
+            <div className="lg:col-span-3">
+              <Panel
+                id="professions"
+                icon={faBriefcase}
+                title={t('browse.professions')}
+                description={t('browse.professionsDesc')}
+                count={counts.professions}
+              >
+                <ul className="columns-2 gap-x-4 px-2 py-1 sm:columns-3">
+                  {loadingProfessions
+                    ? skeleton(12, 'mb-2 h-6 break-inside-avoid')
+                    : professionItems.map((item) => (
+                        <li key={item.key} className="break-inside-avoid">
+                          <Link
+                            to={item.to}
+                            className="block rounded-lg px-2 py-1.5 text-sm text-gray-600 transition hover:bg-gray-50 hover:text-gray-950"
+                          >
+                            {item.label}
+                          </Link>
+                        </li>
+                      ))}
+                </ul>
+              </Panel>
+            </div>
+          )}
 
-      {/* Topics: #hashtag andaaz */}
-      {(loadingTopics || topicItems.length > 0) && (
-        <section className="space-y-5">
-          <SectionHeader
+          {/* Mulk: jhande ke saath */}
+          {countryItems.length > 0 && (
+            <div className="lg:col-span-2">
+              <Panel
+                id="countries"
+                icon={faEarthAsia}
+                title={t('browse.countries')}
+                description={t('browse.countriesDesc')}
+                count={counts.countries}
+              >
+                <div className="grid sm:grid-cols-2 lg:grid-cols-1">
+                  {countryItems.map((item) => (
+                    <RowLink
+                      key={item.key}
+                      item={item}
+                      lead={
+                        <span className="text-xl leading-none" aria-hidden="true">
+                          {flag(item.key)}
+                        </span>
+                      }
+                    />
+                  ))}
+                </div>
+              </Panel>
+            </div>
+          )}
+        </div>
+
+        {/* Topics: halke tag */}
+        {(loadingTopics || topicItems.length > 0) && (
+          <Panel
             id="topics"
             icon={faHashtag}
             title={t('browse.topics')}
+            description={t('browse.topicsDesc')}
             count={counts.topics}
-          />
-          <div className="flex flex-wrap gap-2">
-            {loadingTopics
-              ? skeleton(10, 'h-9 w-24 rounded-full')
-              : topicItems.map((item) => (
-                  <Link
-                    key={item.key}
-                    to={item.to}
-                    className="rounded-full bg-gray-900 px-4 py-2 text-sm text-white/90 transition hover:bg-gray-700 hover:text-white"
-                  >
-                    <span className="text-white/50">#</span>
-                    {item.label}
-                  </Link>
-                ))}
-          </div>
-        </section>
-      )}
-
-      {/* Mulk: jhande ke saath */}
-      {countryItems.length > 0 && (
-        <section className="space-y-5">
-          <SectionHeader
-            id="countries"
-            icon={faEarthAsia}
-            title={t('browse.countries')}
-            count={counts.countries}
-          />
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-            {countryItems.map((item) => (
-              <Link
-                key={item.key}
-                to={item.to}
-                className="group flex items-center gap-3 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-gray-100 transition hover:-translate-y-0.5 hover:shadow-lg hover:ring-gray-900"
-              >
-                <span className="text-2xl leading-none" aria-hidden="true">
-                  {flag(item.key)}
-                </span>
-                <span className="min-w-0 font-medium leading-snug">{item.label}</span>
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
+          >
+            <div className="flex flex-wrap gap-2 px-2 py-1">
+              {loadingTopics
+                ? skeleton(12, 'h-8 w-24 rounded-full')
+                : topicItems.map((item) => (
+                    <Link
+                      key={item.key}
+                      to={item.to}
+                      className="rounded-full border border-gray-200 px-3.5 py-1.5 text-sm text-gray-700 transition hover:border-gray-900 hover:bg-gray-900 hover:text-white"
+                    >
+                      <span className="me-0.5 text-gray-400">#</span>
+                      {item.label}
+                    </Link>
+                  ))}
+            </div>
+          </Panel>
+        )}
+      </div>
 
       {/* Aakhir mein: seedha Explore */}
       <section className="flex flex-col items-start justify-between gap-4 rounded-3xl bg-gray-900 p-6 text-white sm:flex-row sm:items-center md:p-8">
