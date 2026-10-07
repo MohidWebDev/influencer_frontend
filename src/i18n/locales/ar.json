@@ -59,14 +59,16 @@
   },
   "claimStatus": {
     "pending": "إرسال الرمز",
-    "code_sent": "بانتظار الموهبة",
-    "code_verified": "جاهز للموافقة",
     "approved": "مقبول",
-    "rejected": "مرفوض"
+    "rejected": "مرفوض",
+    "waiting_for_talent": "بانتظار الموهبة",
+    "otp_failed": "فشل الرمز",
+    "verified": "موثّق"
   },
   "claimFilter": {
     "open": "كل المفتوحة",
-    "needs_action": "بحاجة إلى إجرائي"
+    "needs_action": "بحاجة إلى إجرائي",
+    "all": "كل المطالبات"
   },
   "claims": {
     "title": "المطالبات",
@@ -204,7 +206,9 @@
       "visible": "ظاهر",
       "hidden": "مخفي",
       "empty": "(فارغ)",
-      "fromReport": "بسبب بلاغ من مستخدم"
+      "fromReport": "بسبب بلاغ من مستخدم",
+      "otp": "رمز التحقق",
+      "admin_manual": "مشرف (يدوي)"
     },
     "fields": {
       "name": "الاسم",
@@ -244,7 +248,12 @@
       "expiresAt": "انتهاء الرمز",
       "attempts": "المحاولات الخاطئة",
       "verifiedAt": "تاريخ التحقق",
-      "sentBy": "أرسله"
+      "sentBy": "أرسله",
+      "otpAttempts": "محاولات الرمز الخاطئة",
+      "otpLockedAt": "وقت القفل",
+      "lastOtpAttemptAt": "آخر محاولة للرمز",
+      "verifiedBy": "وثّقه",
+      "verificationMethod": "طريقة التوثيق"
     },
     "close": "إغلاق",
     "allActions": "كل الإجراءات",
@@ -269,7 +278,10 @@
       "claim": {
         "send_code": "أرسل {{actor}} رمز تحقق لمطالبة {{target}}.",
         "approve": "وافق {{actor}} على مطالبة {{target}}.",
-        "reject": "رفض {{actor}} مطالبة {{target}}."
+        "reject": "رفض {{actor}} مطالبة {{target}}.",
+        "reset_otp": "أعاد {{actor}} تعيين الرمز وأرسل رمزاً جديداً لمطالبة {{target}}.",
+        "otp_locked": "أدخل {{actor}} رمزاً خاطئاً 5 مرات، فأُقفلت مطالبة {{target}}.",
+        "verify_manual": "وثّق {{actor}} مطالبة {{target}} يدوياً ووافق عليها."
       },
       "user": {
         "suspend": "علّق {{actor}} المستخدم {{target}}.",
@@ -300,7 +312,10 @@
     "claim": {
       "send_code": "أرسل رمز المطالبة",
       "approve": "قبل مطالبة",
-      "reject": "رفض مطالبة"
+      "reject": "رفض مطالبة",
+      "reset_otp": "أعاد تعيين رمز المطالبة",
+      "otp_locked": "قُفل الرمز",
+      "verify_manual": "وثّق المطالبة يدوياً"
     },
     "user": {
       "suspend": "أوقف مستخدماً",
@@ -460,7 +475,9 @@
     "CANNOT_MODIFY_SELF": "لا يمكنك تغيير حسابك هنا",
     "LAST_ADMIN": "يجب أن يبقى مسؤول نشط واحد على الأقل",
     "CODE_NOT_VERIFIED": "لم تُدخل الموهبة الرمز الصحيح بعد",
-    "ALREADY_REVIEWED": "تمت مراجعة هذه المطالبة مسبقاً"
+    "ALREADY_REVIEWED": "تمت مراجعة هذه المطالبة مسبقاً",
+    "OTP_LOCKED": "محاولات خاطئة كثيرة. مطالبتك قيد مراجعة المشرف.",
+    "INVALID_STATE": "هذا الإجراء غير مسموح في حالة المطالبة الحالية."
   },
   "search": {
     "any": "الكل",
@@ -769,5 +786,27 @@
     "codeSent": "أُرسل رمز تحقق لـ{{name}} إلى {{url}}. أدخله في لوحة التحكم.",
     "approved": "تمت الموافقة على مطالبتك بـ{{name}}. الملف أصبح لك.",
     "rejected": "تم رفض مطالبتك بـ{{name}}."
+  },
+  "claimOtp": {
+    "attemptsUsed": "{{count}} / {{max}} محاولات خاطئة",
+    "lastAttempt": "آخر محاولة {{date}}",
+    "lockedShort": "مقفل {{date}}",
+    "lockedTitle": "أدخلت الموهبة رمزاً خاطئاً 5 مرات",
+    "lockedBody": "المحاولات الخاطئة: {{count}} / {{max}}. أُقفل في {{date}}. لا يمكن للموهبة المحاولة مجدداً.",
+    "lockedHint": "أعد تعيين الرمز لإرسال رمز جديد، أو وثّق الموهبة يدوياً، أو ارفض المطالبة.",
+    "adminLocked": "أدخلت الموهبة رمزاً خاطئاً {{count}} / {{max}} مرات. أُقفل في {{date}}.",
+    "byOtpShort": "موثّق بالرمز",
+    "byAdminShort": "وثّقه {{name}}",
+    "anAdmin": "مشرف",
+    "verifiedByOtp": "وثّقت الموهبة بالرمز الصحيح في {{date}}.",
+    "verifiedByAdmin": "وثّقه {{name}} (مشرف) يدوياً في {{date}}.",
+    "resetAndResend": "إعادة تعيين الرمز وإرساله",
+    "resetDone": "تمت إعادة التعيين. أرسل الرمز الجديد للموهبة.",
+    "verifyManually": "توثيق يدوي",
+    "verifyTitle": "توثيق هذه الموهبة يدوياً؟",
+    "verifyBody": "افعل ذلك فقط إذا تأكدت بطريقة أخرى. سيتم توثيق {{claimant}} وسيمتلك الملف {{person}} فوراً.",
+    "manualDone": "تم توثيق الموهبة وقبول المطالبة",
+    "talentLocked": "محاولات خاطئة كثيرة. مطالبتك قيد مراجعة المشرف.",
+    "wrongCode": "رمز خاطئ. المحاولات المتبقية: {{count}}"
   }
 }

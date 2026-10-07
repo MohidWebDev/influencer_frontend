@@ -1,7 +1,5 @@
 const STYLES: Record<string, string> = {
   pending: 'bg-amber-50 text-amber-800',
-  code_sent: 'bg-blue-50 text-blue-700',
-  code_verified: 'bg-green-100 text-green-800',
   approved: 'bg-green-50 text-green-700',
   rejected: 'bg-red-50 text-red-700',
   open: 'bg-amber-50 text-amber-800',

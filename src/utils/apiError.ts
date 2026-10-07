@@ -6,12 +6,14 @@ import type { ApiError } from '../types/api'
 // Jaane-pehchaane error codes ka message chuni hui zaban mein
 export function getApiError(error: unknown) {
   if (axios.isAxiosError<ApiError>(error) && error.response?.data?.error) {
-    const { code, message, fields } = error.response.data.error
+    const { code, message, fields, details } = error.response.data.error
     const translated = i18n.exists(`apiErrors.${code}`) ? i18n.t(`apiErrors.${code}`) : message
     return {
       message: code === 'VALIDATION_ERROR' ? i18n.t('site.fixFields') : translated,
       fields: fields ?? {},
+      code,
+      details: details ?? {},
     }
   }
-  return { message: i18n.t('site.somethingWrong'), fields: {} }
+  return { message: i18n.t('site.somethingWrong'), fields: {}, code: '', details: {} }
 }

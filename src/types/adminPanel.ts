@@ -1,5 +1,5 @@
 import type { Role } from './user'
-import type { ClaimStatus } from './claim'
+import type { ClaimStatus, VerificationMethod } from './claim'
 
 export interface AdminStats {
   people: { total: number; hidden: number; claimed: number; verified: number }
@@ -47,9 +47,13 @@ export interface ClaimDetail {
     channelUrl?: string
     codeSentAt?: string
     expiresAt?: string
-    attempts: number
-    verifiedAt?: string
   }
+  otpAttempts?: number
+  otpLockedAt?: string
+  lastOtpAttemptAt?: string
+  verifiedAt?: string
+  verifiedBy?: { _id: string; name: string; email: string } | null
+  verificationMethod?: VerificationMethod
   rejectionReason?: string
   reviewedBy?: { name: string; email: string }
   reviewedAt?: string

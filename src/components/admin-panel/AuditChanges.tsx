@@ -82,7 +82,9 @@ function useFormatter(targetType: AuditLogEntry['targetType'], names: Map<string
       reason: targetType === 'report' ? 'reportReason' : undefined,
     }
     if (last === 'country') return countryName(value)
-    if (last === 'visibility') return t(`audit.values.${value}`, { defaultValue: value })
+    if (last === 'visibility' || last === 'verificationMethod') {
+      return t(`audit.values.${value}`, { defaultValue: value })
+    }
     const group = last ? groups[last] : undefined
     if (group) return t(`${group}.${value}`, { defaultValue: value })
     if (names.has(value)) return names.get(value)!

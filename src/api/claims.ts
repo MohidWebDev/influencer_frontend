@@ -48,3 +48,18 @@ export async function sendClaimCode(id: string, channelUrl: string) {
   )
   return res.data.data
 }
+
+// Lock khol kar naya code (otp_failed / waiting_for_talent). Link na do to pichla link
+export async function resetClaimOtp(id: string, channelUrl?: string) {
+  const res = await api.post<ApiSuccess<{ claim: Claim; code: string }>>(
+    `/admin/claims/${id}/reset-otp`,
+    channelUrl ? { channelUrl } : {},
+  )
+  return res.data.data
+}
+
+// Admin khud tasdeeq kare (OTP ke baghair). Is se claim approve bhi ho jata hai
+export async function verifyClaimManually(id: string) {
+  const res = await api.post<ApiSuccess<{ claim: Claim }>>(`/admin/claims/${id}/verify-manual`, {})
+  return res.data.data.claim
+}

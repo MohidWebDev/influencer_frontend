@@ -59,14 +59,16 @@
   },
   "claimStatus": {
     "pending": "Send code",
-    "code_sent": "Waiting for talent",
-    "code_verified": "Ready to approve",
     "approved": "Approved",
-    "rejected": "Rejected"
+    "rejected": "Rejected",
+    "waiting_for_talent": "Waiting for talent",
+    "otp_failed": "OTP failed",
+    "verified": "Verified"
   },
   "claimFilter": {
     "open": "All open",
-    "needs_action": "Needs my action"
+    "needs_action": "Needs my action",
+    "all": "All claims"
   },
   "claims": {
     "title": "Claims",
@@ -204,7 +206,9 @@
       "visible": "Visible",
       "hidden": "Hidden",
       "empty": "(empty)",
-      "fromReport": "Because of a user report"
+      "fromReport": "Because of a user report",
+      "otp": "OTP code",
+      "admin_manual": "Admin (manual)"
     },
     "fields": {
       "name": "Name",
@@ -244,7 +248,12 @@
       "expiresAt": "Code expires",
       "attempts": "Wrong attempts",
       "verifiedAt": "Verified on",
-      "sentBy": "Sent by"
+      "sentBy": "Sent by",
+      "otpAttempts": "Wrong OTP attempts",
+      "otpLockedAt": "Locked on",
+      "lastOtpAttemptAt": "Last OTP attempt",
+      "verifiedBy": "Verified by",
+      "verificationMethod": "Verification method"
     },
     "close": "Close",
     "allActions": "All actions",
@@ -269,7 +278,10 @@
       "claim": {
         "send_code": "{{actor}} sent a verification code for the claim on {{target}}.",
         "approve": "{{actor}} approved the claim on {{target}}.",
-        "reject": "{{actor}} rejected the claim on {{target}}."
+        "reject": "{{actor}} rejected the claim on {{target}}.",
+        "reset_otp": "{{actor}} reset the OTP and sent a new code for the claim on {{target}}.",
+        "otp_locked": "{{actor}} entered a wrong OTP 5 times, so the claim on {{target}} was locked.",
+        "verify_manual": "{{actor}} verified the claim on {{target}} manually and approved it."
       },
       "user": {
         "suspend": "{{actor}} suspended the user {{target}}.",
@@ -300,7 +312,10 @@
     "claim": {
       "send_code": "Sent claim code",
       "approve": "Approved claim",
-      "reject": "Rejected claim"
+      "reject": "Rejected claim",
+      "reset_otp": "Reset claim OTP",
+      "otp_locked": "OTP locked",
+      "verify_manual": "Verified claim manually"
     },
     "user": {
       "suspend": "Suspended user",
@@ -460,7 +475,9 @@
     "CANNOT_MODIFY_SELF": "You cannot change your own account here",
     "LAST_ADMIN": "At least one active admin must remain",
     "CODE_NOT_VERIFIED": "The talent has not entered the correct code yet",
-    "ALREADY_REVIEWED": "This claim was already reviewed"
+    "ALREADY_REVIEWED": "This claim was already reviewed",
+    "OTP_LOCKED": "Too many wrong attempts. Your claim is under review by the admin.",
+    "INVALID_STATE": "This action is not allowed for the claim's current status."
   },
   "search": {
     "any": "Any",
@@ -769,5 +786,27 @@
     "codeSent": "A verification code for {{name}} was sent to {{url}}. Enter it on your dashboard.",
     "approved": "Your claim for {{name}} was approved. The profile is now yours.",
     "rejected": "Your claim for {{name}} was rejected."
+  },
+  "claimOtp": {
+    "attemptsUsed": "{{count}} / {{max}} wrong attempts",
+    "lastAttempt": "last try {{date}}",
+    "lockedShort": "Locked {{date}}",
+    "lockedTitle": "Talent entered the wrong OTP 5 times",
+    "lockedBody": "Wrong attempts: {{count}} / {{max}}. Locked on {{date}}. The talent cannot try again.",
+    "lockedHint": "Reset the OTP to send a new code, verify the talent manually, or reject the claim.",
+    "adminLocked": "Talent entered the wrong OTP {{count}} / {{max}} times. Locked on {{date}}.",
+    "byOtpShort": "Verified by OTP",
+    "byAdminShort": "Verified by {{name}}",
+    "anAdmin": "an admin",
+    "verifiedByOtp": "The talent verified with the correct OTP on {{date}}.",
+    "verifiedByAdmin": "Verified manually by {{name}} (admin) on {{date}}.",
+    "resetAndResend": "Reset OTP and resend",
+    "resetDone": "OTP reset. Send the new code to the talent.",
+    "verifyManually": "Verify manually",
+    "verifyTitle": "Verify this talent manually?",
+    "verifyBody": "Only do this if you confirmed it another way. {{claimant}} will be verified and will own the profile {{person}} right away.",
+    "manualDone": "Talent verified and claim approved",
+    "talentLocked": "Too many wrong attempts. Your claim is under review by the admin.",
+    "wrongCode": "Wrong code. Attempts left: {{count}}"
   }
 }

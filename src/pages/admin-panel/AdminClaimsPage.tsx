@@ -6,16 +6,20 @@ import Avatar from '../../components/Avatar'
 import AdminPager from '../../components/admin-panel/AdminPager'
 import DataState from '../../components/admin-panel/DataState'
 import PageHeader from '../../components/admin-panel/PageHeader'
-import StatusPill from '../../components/admin-panel/StatusPill'
+import ClaimStatusPill from '../../components/ClaimStatusPill'
+import ClaimVerificationNote from '../../components/ClaimVerificationNote'
 import type { ClaimFilter } from '../../types/claim'
 import { formatDateTime } from '../../utils/adminFormat'
 
+// "all" pehle: verified / approved claims list se gayab na hon
 const FILTERS: ClaimFilter[] = [
+  'all',
   'open',
   'needs_action',
   'pending',
-  'code_sent',
-  'code_verified',
+  'waiting_for_talent',
+  'otp_failed',
+  'verified',
   'approved',
   'rejected',
 ]
@@ -24,7 +28,7 @@ const PAGE_SIZE = 20
 function AdminClaimsPage() {
   const { t } = useTranslation()
   const [params, setParams] = useSearchParams()
-  const status = (params.get('status') as ClaimFilter) || 'open'
+  const status = (params.get('status') as ClaimFilter) || 'all'
   const page = Number(params.get('page')) || 1
 
   const { data, isLoading, isError, refetch } = useQuery({
@@ -45,7 +49,9 @@ function AdminClaimsPage() {
   }
 
   const filterLabel = (f: ClaimFilter) =>
-    f === 'open' || f === 'needs_action' ? t(`claimFilter.${f}`) : t(`claimStatus.${f}`)
+    f === 'all' || f === 'open' || f === 'needs_action'
+      ? t(`claimFilter.${f}`)
+      : t(`claimStatus.${f}`)
 
   return (
     <>
@@ -104,7 +110,8 @@ function AdminClaimsPage() {
                       <p className="text-xs text-gray-500">{user?.email}</p>
                     </td>
                     <td className="px-4 py-3">
-                      <StatusPill status={claim.status} label={t(`claimStatus.${claim.status}`)} />
+                      <ClaimStatusPill status={claim.status} />
+                      <ClaimVerificationNote claim={claim} />
                     </td>
                     <td className="px-4 py-3 text-gray-600">{formatDateTime(claim.createdAt)}</td>
                     <td className="px-4 py-3 text-end">

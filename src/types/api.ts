@@ -18,6 +18,8 @@ export interface ApiError {
     code: string
     message: string
     fields?: Record<string, string>
+    // Extra maloomat, jaise { attemptsLeft: 3 }
+    details?: Record<string, unknown>
   }
 }
 

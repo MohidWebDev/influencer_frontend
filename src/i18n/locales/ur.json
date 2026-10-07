@@ -59,14 +59,16 @@
   },
   "claimStatus": {
     "pending": "کوڈ بھیجیں",
-    "code_sent": "ٹیلنٹ کا انتظار",
-    "code_verified": "منظوری کے لیے تیار",
     "approved": "منظور",
-    "rejected": "مسترد"
+    "rejected": "مسترد",
+    "waiting_for_talent": "ٹیلنٹ کا انتظار",
+    "otp_failed": "OTP ناکام",
+    "verified": "تصدیق شدہ"
   },
   "claimFilter": {
     "open": "تمام کھلے",
-    "needs_action": "میری کارروائی درکار"
+    "needs_action": "میری کارروائی درکار",
+    "all": "تمام کلیمز"
   },
   "claims": {
     "title": "دعوے",
@@ -204,7 +206,9 @@
       "visible": "نظر آنے والی",
       "hidden": "چھپی ہوئی",
       "empty": "(خالی)",
-      "fromReport": "صارف کی رپورٹ کی وجہ سے"
+      "fromReport": "صارف کی رپورٹ کی وجہ سے",
+      "otp": "OTP کوڈ",
+      "admin_manual": "ایڈمن (خود)"
     },
     "fields": {
       "name": "نام",
@@ -244,7 +248,12 @@
       "expiresAt": "کوڈ کی میعاد",
       "attempts": "غلط کوششیں",
       "verifiedAt": "تصدیق کی تاریخ",
-      "sentBy": "بھیجنے والا"
+      "sentBy": "بھیجنے والا",
+      "otpAttempts": "غلط OTP کوششیں",
+      "otpLockedAt": "لاک ہونے کا وقت",
+      "lastOtpAttemptAt": "آخری OTP کوشش",
+      "verifiedBy": "تصدیق کرنے والا",
+      "verificationMethod": "تصدیق کا طریقہ"
     },
     "close": "بند کریں",
     "allActions": "تمام کارروائیاں",
@@ -269,7 +278,10 @@
       "claim": {
         "send_code": "{{actor}} نے {{target}} کے کلیم کے لیے تصدیقی کوڈ بھیجا۔",
         "approve": "{{actor}} نے {{target}} کا کلیم منظور کیا۔",
-        "reject": "{{actor}} نے {{target}} کا کلیم مسترد کیا۔"
+        "reject": "{{actor}} نے {{target}} کا کلیم مسترد کیا۔",
+        "reset_otp": "{{actor}} نے {{target}} کے کلیم کا OTP ری سیٹ کر کے نیا کوڈ بھیجا۔",
+        "otp_locked": "{{actor}} نے 5 بار غلط OTP درج کیا، اس لیے {{target}} کا کلیم لاک ہو گیا۔",
+        "verify_manual": "{{actor}} نے {{target}} کے کلیم کی خود تصدیق کر کے منظور کیا۔"
       },
       "user": {
         "suspend": "{{actor}} نے صارف {{target}} کو معطل کیا۔",
@@ -300,7 +312,10 @@
     "claim": {
       "send_code": "دعوے کا کوڈ بھیجا",
       "approve": "دعویٰ منظور کیا",
-      "reject": "دعویٰ مسترد کیا"
+      "reject": "دعویٰ مسترد کیا",
+      "reset_otp": "کلیم OTP ری سیٹ کیا",
+      "otp_locked": "OTP لاک ہو گیا",
+      "verify_manual": "کلیم کی خود تصدیق کی"
     },
     "user": {
       "suspend": "صارف معطل کیا",
@@ -460,7 +475,9 @@
     "CANNOT_MODIFY_SELF": "آپ یہاں اپنا اکاؤنٹ تبدیل نہیں کر سکتے",
     "LAST_ADMIN": "کم از کم ایک فعال ایڈمن ہونا ضروری ہے",
     "CODE_NOT_VERIFIED": "ٹیلنٹ نے ابھی تک درست کوڈ درج نہیں کیا",
-    "ALREADY_REVIEWED": "اس دعوے کا پہلے ہی جائزہ ہو چکا ہے"
+    "ALREADY_REVIEWED": "اس دعوے کا پہلے ہی جائزہ ہو چکا ہے",
+    "OTP_LOCKED": "بہت زیادہ غلط کوششیں۔ آپ کا کلیم اب ایڈمن کے جائزے میں ہے۔",
+    "INVALID_STATE": "کلیم کی موجودہ حالت میں یہ کارروائی ممکن نہیں۔"
   },
   "search": {
     "any": "کوئی بھی",
@@ -769,5 +786,27 @@
     "codeSent": "{{name}} کے لیے تصدیقی کوڈ {{url}} پر بھیج دیا گیا ہے۔ اسے اپنے ڈیش بورڈ پر درج کریں۔",
     "approved": "{{name}} کے لیے آپ کا کلیم منظور ہو گیا۔ پروفائل اب آپ کی ہے۔",
     "rejected": "{{name}} کے لیے آپ کا کلیم مسترد ہو گیا۔"
+  },
+  "claimOtp": {
+    "attemptsUsed": "{{count}} / {{max}} غلط کوششیں",
+    "lastAttempt": "آخری کوشش {{date}}",
+    "lockedShort": "لاک {{date}}",
+    "lockedTitle": "ٹیلنٹ نے 5 بار غلط OTP درج کیا",
+    "lockedBody": "غلط کوششیں: {{count}} / {{max}}۔ {{date}} کو لاک ہوا۔ ٹیلنٹ دوبارہ کوشش نہیں کر سکتا۔",
+    "lockedHint": "نیا کوڈ بھیجنے کے لیے OTP ری سیٹ کریں، ٹیلنٹ کی خود تصدیق کریں، یا کلیم مسترد کریں۔",
+    "adminLocked": "ٹیلنٹ نے {{count}} / {{max}} بار غلط OTP درج کیا۔ {{date}} کو لاک ہوا۔",
+    "byOtpShort": "OTP سے تصدیق",
+    "byAdminShort": "{{name}} نے تصدیق کی",
+    "anAdmin": "ایک ایڈمن",
+    "verifiedByOtp": "ٹیلنٹ نے {{date}} کو درست OTP سے تصدیق کی۔",
+    "verifiedByAdmin": "{{name}} (ایڈمن) نے {{date}} کو خود تصدیق کی۔",
+    "resetAndResend": "OTP ری سیٹ کر کے دوبارہ بھیجیں",
+    "resetDone": "OTP ری سیٹ ہو گیا۔ نیا کوڈ ٹیلنٹ کو بھیجیں۔",
+    "verifyManually": "خود تصدیق کریں",
+    "verifyTitle": "کیا اس ٹیلنٹ کی خود تصدیق کریں؟",
+    "verifyBody": "یہ صرف تب کریں جب آپ نے کسی اور طریقے سے تصدیق کر لی ہو۔ {{claimant}} کی تصدیق ہو جائے گی اور پروفائل {{person}} فوراً ان کی ہو جائے گی۔",
+    "manualDone": "ٹیلنٹ کی تصدیق ہو گئی اور کلیم منظور",
+    "talentLocked": "بہت زیادہ غلط کوششیں۔ آپ کا کلیم اب ایڈمن کے جائزے میں ہے۔",
+    "wrongCode": "غلط کوڈ۔ باقی کوششیں: {{count}}"
   }
 }

@@ -14,33 +14,28 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
-import { adminListClaims, reviewClaim, sendClaimCode } from '../../api/claims'
-import { isOpenClaim, type Claim, type ClaimFilter, type ClaimStatus } from '../../types/claim'
+import { adminListClaims, resetClaimOtp, reviewClaim, sendClaimCode } from '../../api/claims'
+import { MAX_OTP_ATTEMPTS, isOpenClaim, type Claim, type ClaimFilter } from '../../types/claim'
+import ClaimStatusPill from '../ClaimStatusPill'
 import { getApiError } from '../../utils/apiError'
 import Avatar from '../Avatar'
 import Pagination from '../Pagination'
 
-const STATUS_STYLES: Record<ClaimStatus, string> = {
-  pending: 'bg-amber-50 text-amber-800',
-  code_sent: 'bg-blue-50 text-blue-700',
-  code_verified: 'bg-green-100 text-green-800',
-  approved: 'bg-green-50 text-green-700',
-  rejected: 'bg-red-50 text-red-700',
-}
-
 const FILTERS: ClaimFilter[] = [
+  'all',
   'open',
   'needs_action',
   'pending',
-  'code_sent',
-  'code_verified',
+  'waiting_for_talent',
+  'otp_failed',
+  'verified',
   'approved',
   'rejected',
 ]
 
 // 'open' / 'needs_action' claimFilter mein, baqi claimStatus mein
 const filterKey = (f: ClaimFilter) =>
-  f === 'open' || f === 'needs_action' ? `claimFilter.${f}` : `claimStatus.${f}`
+  f === 'all' || f === 'open' || f === 'needs_action' ? `claimFilter.${f}` : `claimStatus.${f}`
 
 const button = 'rounded-lg px-4 py-2 text-sm font-medium transition disabled:opacity-50'
 
@@ -121,10 +116,17 @@ function ClaimCard({ claim }: { claim: Claim }) {
   const [reason, setReason] = useState('')
   const requester = typeof claim.user === 'string' ? null : claim.user
 
-  const refresh = () => queryClient.invalidateQueries({ queryKey: ['admin'] })
+  const refresh = () => {
+    queryClient.invalidateQueries({ queryKey: ['admin'] })
+    queryClient.invalidateQueries({ queryKey: ['claims'] })
+  }
 
   const sendCode = useMutation({
-    mutationFn: () => sendClaimCode(claim._id, channelUrl),
+    // Lock wale claim pe reset (lock khol kar naya code), warna naya code
+    mutationFn: () =>
+      claim.status === 'otp_failed'
+        ? resetClaimOtp(claim._id, channelUrl)
+        : sendClaimCode(claim._id, channelUrl),
     onSuccess: ({ code, claim: updated }) => {
       setGenerated({ code, channelUrl: updated.verification?.channelUrl ?? channelUrl })
     },
@@ -158,11 +160,7 @@ function ClaimCard({ claim }: { claim: Claim }) {
             <Link to={`/people/${claim.person.slug}`} className="font-semibold hover:underline">
               {claim.person.name}
             </Link>
-            <span
-              className={`rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_STYLES[claim.status]}`}
-            >
-              {t(`claimStatus.${claim.status}`)}
-            </span>
+            <ClaimStatusPill status={claim.status} />
           </div>
           <p className="mt-0.5 text-sm text-gray-600">
             {t('claims.colClaimant')} <strong>{requester?.name}</strong>{' '}
@@ -215,9 +213,22 @@ function ClaimCard({ claim }: { claim: Claim }) {
         />
       ) : (
         <>
-          {(claim.status === 'pending' || claim.status === 'code_sent') && (
+          {(claim.status === 'pending' ||
+            claim.status === 'waiting_for_talent' ||
+            claim.status === 'otp_failed') && (
             <div className="mt-4 space-y-2">
-              {claim.status === 'code_sent' && v && (
+              {claim.status === 'otp_failed' && (
+                <p className="rounded-lg bg-red-50 p-3 text-sm text-red-800">
+                  {t('claimOtp.adminLocked', {
+                    count: claim.otpAttempts ?? MAX_OTP_ATTEMPTS,
+                    max: MAX_OTP_ATTEMPTS,
+                    date: claim.otpLockedAt
+                      ? new Date(claim.otpLockedAt).toLocaleString(i18n.language)
+                      : '',
+                  })}
+                </p>
+              )}
+              {claim.status === 'waiting_for_talent' && v && (
                 <p className="rounded-lg bg-blue-50 p-3 text-sm text-blue-800">
                   <span className="break-all">
                     {t('claims.codeSentTo', {
@@ -225,8 +236,10 @@ function ClaimCard({ claim }: { claim: Claim }) {
                       date: v.codeSentAt ? new Date(v.codeSentAt).toLocaleString(i18n.language) : '',
                     })}
                   </span>{' '}
-                  {t('claims.attempts', { count: v.attempts })}
-                  {v.attempts >= 5 && ` ${t('oldClaims.locked')}`}
+                  {t('claimOtp.attemptsUsed', {
+                    count: claim.otpAttempts ?? 0,
+                    max: MAX_OTP_ATTEMPTS,
+                  })}
                 </p>
               )}
               <label className="block">
@@ -256,7 +269,7 @@ function ClaimCard({ claim }: { claim: Claim }) {
             </div>
           )}
 
-          {claim.status === 'code_verified' && (
+          {claim.status === 'verified' && (
             <div className="mt-4 space-y-2">
               <p className="rounded-lg bg-green-50 p-3 text-sm text-green-800">
                 <FontAwesomeIcon icon={faCircleCheck} className="me-1.5" />
@@ -329,7 +342,7 @@ function ClaimCard({ claim }: { claim: Claim }) {
 
 function ClaimRequests() {
   const { t } = useTranslation()
-  const [filter, setFilter] = useState<ClaimFilter>('open')
+  const [filter, setFilter] = useState<ClaimFilter>('all')
   const [page, setPage] = useState(1)
 
   const { data, isLoading } = useQuery({

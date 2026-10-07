@@ -1,9 +1,35 @@
-// pending       -> admin ko code bhejna hai
-// code_sent     -> talent ko code daalna hai
-// code_verified -> admin ko final approve karna hai
-export type ClaimStatus = 'pending' | 'code_sent' | 'code_verified' | 'approved' | 'rejected'
+// pending            -> admin ko code bhejna hai
+// waiting_for_talent -> talent ko code (OTP) daalna hai
+// otp_failed         -> talent ne 5 dafa ghalat code daala, claim lock (admin dekhega)
+// verified           -> tasdeeq ho gayi (OTP ya admin), admin final approve karega
+// approved / rejected
+export type ClaimStatus =
+  | 'pending'
+  | 'waiting_for_talent'
+  | 'otp_failed'
+  | 'verified'
+  | 'approved'
+  | 'rejected'
 
-export const OPEN_CLAIM_STATUSES: ClaimStatus[] = ['pending', 'code_sent', 'code_verified']
+export const CLAIM_STATUSES: ClaimStatus[] = [
+  'pending',
+  'waiting_for_talent',
+  'otp_failed',
+  'verified',
+  'approved',
+  'rejected',
+]
+
+export const OPEN_CLAIM_STATUSES: ClaimStatus[] = [
+  'pending',
+  'waiting_for_talent',
+  'otp_failed',
+  'verified',
+]
+
+export const MAX_OTP_ATTEMPTS = 5
+
+export type VerificationMethod = 'otp' | 'admin_manual'
 
 export function isOpenClaim(status: ClaimStatus) {
   return OPEN_CLAIM_STATUSES.includes(status)
@@ -29,9 +55,15 @@ export interface Claim {
     channelUrl?: string
     codeSentAt?: string
     expiresAt?: string
-    attempts: number
-    verifiedAt?: string
   }
+  // Purane claims mein na ho to 0 samjho
+  otpAttempts?: number
+  otpLockedAt?: string
+  lastOtpAttemptAt?: string
+  verifiedAt?: string
+  // null = talent ne OTP se khud tasdeeq ki
+  verifiedBy?: { _id: string; name: string; email: string } | string | null
+  verificationMethod?: VerificationMethod
   rejectionReason?: string
   reviewedAt?: string
   createdAt: string
@@ -45,4 +77,4 @@ export interface ClaimInput {
 }
 
 // Admin list ke filters
-export type ClaimFilter = ClaimStatus | 'open' | 'needs_action'
+export type ClaimFilter = ClaimStatus | 'open' | 'needs_action' | 'all'

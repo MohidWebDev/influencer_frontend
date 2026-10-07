@@ -11,19 +11,22 @@ import {
   faCheck,
   faCopy,
   faKey,
+  faLock,
   faPaperPlane,
+  faRotateRight,
+  faUserCheck,
   faTriangleExclamation,
 } from '@fortawesome/free-solid-svg-icons'
 import { getAdminClaim } from '../../api/adminPanel'
-import { reviewClaim, sendClaimCode } from '../../api/claims'
+import { resetClaimOtp, reviewClaim, sendClaimCode, verifyClaimManually } from '../../api/claims'
 import Avatar from '../../components/Avatar'
 import ConfirmDialog from '../../components/admin-panel/ConfirmDialog'
 import DataState from '../../components/admin-panel/DataState'
 import HistoryList from '../../components/admin-panel/HistoryList'
-import StatusPill from '../../components/admin-panel/StatusPill'
+import ClaimStatusPill from '../../components/ClaimStatusPill'
+import { MAX_OTP_ATTEMPTS, isOpenClaim } from '../../types/claim'
 import { adminErrorMessage, formatDate, formatDateTime } from '../../utils/adminFormat'
 
-const OPEN = ['pending', 'code_sent', 'code_verified']
 const card = 'rounded-2xl bg-white p-5 shadow-sm'
 const button =
   'inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition disabled:opacity-50'
@@ -34,7 +37,7 @@ function AdminClaimDetailPage() {
   const queryClient = useQueryClient()
   const [channelUrl, setChannelUrl] = useState('')
   const [code, setCode] = useState<{ value: string; url: string } | null>(null)
-  const [dialog, setDialog] = useState<'approve' | 'reject' | null>(null)
+  const [dialog, setDialog] = useState<'approve' | 'reject' | 'verify' | null>(null)
   const [reason, setReason] = useState('')
 
   const { data, isLoading, isError, refetch } = useQuery({
@@ -42,12 +45,32 @@ function AdminClaimDetailPage() {
     queryFn: () => getAdminClaim(id),
   })
 
-  const refresh = () => queryClient.invalidateQueries({ queryKey: ['admin'] })
+  // Har action ke baad admin aur talent dono ke claims taaza
+  const refresh = () => {
+    queryClient.invalidateQueries({ queryKey: ['admin'] })
+    queryClient.invalidateQueries({ queryKey: ['claims'] })
+  }
 
+  // pending pe naya code; waiting_for_talent / otp_failed pe reset (lock khol kar naya code)
   const sendCode = useMutation({
-    mutationFn: (url: string) => sendClaimCode(id, url),
-    onSuccess: ({ code: value, claim }) =>
-      setCode({ value, url: claim.verification?.channelUrl ?? '' }),
+    mutationFn: ({ url, reset }: { url: string; reset: boolean }) =>
+      reset ? resetClaimOtp(id, url) : sendClaimCode(id, url),
+    onSuccess: ({ code: value, claim }, { reset }) => {
+      setCode({ value, url: claim.verification?.channelUrl ?? '' })
+      if (reset) toast.success(t('claimOtp.resetDone'))
+      refresh()
+    },
+    onError: (error) => toast.error(adminErrorMessage(error)),
+  })
+
+  const verifyManual = useMutation({
+    mutationFn: () => verifyClaimManually(id),
+    onSuccess: (claim) => {
+      toast.success(t('claimOtp.manualDone'))
+      setDialog(null)
+      queryClient.invalidateQueries({ queryKey: ['person', claim.person.slug] })
+      refresh()
+    },
     onError: (error) => toast.error(adminErrorMessage(error)),
   })
 
@@ -96,7 +119,7 @@ function AdminClaimDetailPage() {
               <h1 className="text-2xl font-bold">
                 {t('claims.detailTitle', { name: claim.person.name })}
               </h1>
-              <StatusPill status={claim.status} label={t(`claimStatus.${claim.status}`)} />
+              <ClaimStatusPill status={claim.status} />
             </div>
 
             <div className="grid gap-5 lg:grid-cols-2">
@@ -172,20 +195,54 @@ function AdminClaimDetailPage() {
             {/* Code verification aur faisla */}
             <section className={card}>
               <h2 className="font-semibold">{t('claims.verification')}</h2>
-              {claim.verification?.codeSentAt && claim.status === 'code_sent' && (
-                <p className="mt-3 rounded-lg bg-blue-50 p-3 text-sm text-blue-800">
-                  {t('claims.codeSentTo', {
-                    url: claim.verification.channelUrl,
-                    date: formatDateTime(claim.verification.codeSentAt),
-                  })}{' '}
-                  {t('claims.attempts', { count: claim.verification.attempts })}
-                </p>
+              {claim.verification?.codeSentAt && claim.status === 'waiting_for_talent' && (
+                <div className="mt-3 rounded-lg bg-yellow-50 p-3 text-sm text-yellow-900">
+                  <p className="break-words">
+                    {t('claims.codeSentTo', {
+                      url: claim.verification.channelUrl,
+                      date: formatDateTime(claim.verification.codeSentAt),
+                    })}
+                  </p>
+                  {(claim.otpAttempts ?? 0) > 0 && (
+                    <p className="mt-1 font-medium">
+                      {t('claimOtp.attemptsUsed', {
+                        count: claim.otpAttempts,
+                        max: MAX_OTP_ATTEMPTS,
+                      })}
+                      {claim.lastOtpAttemptAt &&
+                        ` · ${t('claimOtp.lastAttempt', { date: formatDateTime(claim.lastOtpAttemptAt) })}`}
+                    </p>
+                  )}
+                </div>
               )}
-              {claim.status === 'code_verified' && (
+              {claim.status === 'otp_failed' && (
+                <div
+                  role="alert"
+                  className="mt-3 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800"
+                >
+                  <p className="font-semibold">
+                    <FontAwesomeIcon icon={faLock} className="me-1.5" />
+                    {t('claimOtp.lockedTitle')}
+                  </p>
+                  <p className="mt-1">
+                    {t('claimOtp.lockedBody', {
+                      count: claim.otpAttempts ?? MAX_OTP_ATTEMPTS,
+                      max: MAX_OTP_ATTEMPTS,
+                      date: formatDateTime(claim.otpLockedAt),
+                    })}
+                  </p>
+                  <p className="mt-1 text-xs">{t('claimOtp.lockedHint')}</p>
+                </div>
+              )}
+              {(claim.status === 'verified' || claim.status === 'approved') && claim.verifiedAt && (
                 <p className="mt-3 rounded-lg bg-green-50 p-3 text-sm text-green-800">
-                  {t('claims.codeVerified', {
-                    date: formatDateTime(claim.verification?.verifiedAt),
-                  })}
+                  <FontAwesomeIcon icon={faUserCheck} className="me-1.5" />
+                  {claim.verificationMethod === 'admin_manual'
+                    ? t('claimOtp.verifiedByAdmin', {
+                        name: claim.verifiedBy?.name ?? t('claimOtp.anAdmin'),
+                        date: formatDateTime(claim.verifiedAt),
+                      })
+                    : t('claimOtp.verifiedByOtp', { date: formatDateTime(claim.verifiedAt) })}
                 </p>
               )}
               {claim.status === 'rejected' && claim.rejectionReason && (
@@ -237,11 +294,11 @@ function AdminClaimDetailPage() {
                   </p>
                 </div>
               ) : (
-                OPEN.includes(claim.status) && (
+                isOpenClaim(claim.status) && (
                   <div className="mt-4 space-y-3">
-                    {(claim.status === 'pending' || claim.status === 'code_sent') && (
+                    {claim.status !== 'verified' && (
                       <div className="flex flex-wrap items-end gap-2">
-                        <label className="min-w-0 flex-1">
+                        <label className="min-w-0 flex-1 basis-56">
                           <span className="mb-1 block text-sm font-medium">
                             {t('claims.sendCodeTo')}
                           </span>
@@ -258,31 +315,38 @@ function AdminClaimDetailPage() {
                           </select>
                         </label>
                         <button
-                          onClick={() => sendCode.mutate(selectedUrl)}
+                          onClick={() =>
+                            sendCode.mutate({ url: selectedUrl, reset: claim.status !== 'pending' })
+                          }
                           disabled={sendCode.isPending || !selectedUrl}
                           className={`${button} bg-gray-900 text-white hover:bg-gray-800`}
                         >
-                          <FontAwesomeIcon icon={faKey} />
+                          <FontAwesomeIcon icon={claim.status === 'pending' ? faKey : faRotateRight} />
                           {claim.status === 'pending'
                             ? t('claims.generateCode')
-                            : t('claims.generateNewCode')}
+                            : t('claimOtp.resetAndResend')}
                         </button>
                       </div>
                     )}
                     <div className="flex flex-wrap gap-2 border-t border-gray-100 pt-4">
-                      <button
-                        onClick={() => setDialog('approve')}
-                        disabled={claim.status !== 'code_verified'}
-                        title={
-                          claim.status !== 'code_verified'
-                            ? t('claims.approveOnlyAfterCode')
-                            : undefined
-                        }
-                        className={`${button} bg-green-600 text-white hover:bg-green-700`}
-                      >
-                        <FontAwesomeIcon icon={faCheck} />
-                        {t('claims.approve')}
-                      </button>
+                      {claim.status === 'verified' && (
+                        <button
+                          onClick={() => setDialog('approve')}
+                          className={`${button} bg-green-600 text-white hover:bg-green-700`}
+                        >
+                          <FontAwesomeIcon icon={faCheck} />
+                          {t('claims.approve')}
+                        </button>
+                      )}
+                      {(claim.status === 'waiting_for_talent' || claim.status === 'otp_failed') && (
+                        <button
+                          onClick={() => setDialog('verify')}
+                          className={`${button} border border-green-300 text-green-700 hover:bg-green-50`}
+                        >
+                          <FontAwesomeIcon icon={faUserCheck} />
+                          {t('claimOtp.verifyManually')}
+                        </button>
+                      )}
                       <button
                         onClick={() => setDialog('reject')}
                         className={`${button} border border-red-200 text-red-600 hover:bg-red-50`}
@@ -291,7 +355,7 @@ function AdminClaimDetailPage() {
                         {t('claims.reject')}
                       </button>
                     </div>
-                    {claim.status !== 'code_verified' && (
+                    {claim.status === 'pending' && (
                       <p className="text-xs text-gray-500">{t('claims.approveOnlyAfterCode')}</p>
                     )}
                   </div>
@@ -311,6 +375,17 @@ function AdminClaimDetailPage() {
               onCancel={() => setDialog(null)}
             >
               {t('claims.approveBody', { claimant: claim.user.name, person: claim.person.name })}
+            </ConfirmDialog>
+            <ConfirmDialog
+              open={dialog === 'verify'}
+              title={t('claimOtp.verifyTitle')}
+              tone="success"
+              confirmLabel={t('claimOtp.verifyManually')}
+              isBusy={verifyManual.isPending}
+              onConfirm={() => verifyManual.mutate()}
+              onCancel={() => setDialog(null)}
+            >
+              {t('claimOtp.verifyBody', { claimant: claim.user.name, person: claim.person.name })}
             </ConfirmDialog>
             <ConfirmDialog
               open={dialog === 'reject'}

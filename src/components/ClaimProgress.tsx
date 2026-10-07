@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircleCheck } from '@fortawesome/free-solid-svg-icons'
+import { faCircleCheck, faLock } from '@fortawesome/free-solid-svg-icons'
 import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
@@ -12,7 +12,15 @@ import { getApiError } from '../utils/apiError'
 const STEPS = ['claimProgress.step1', 'claimProgress.step2', 'claimProgress.step3', 'claimProgress.step4']
 
 function stepIndex(status: Claim['status']) {
-  return { pending: 0, code_sent: 1, code_verified: 2, approved: 3, rejected: 0 }[status]
+  const steps: Record<Claim['status'], number> = {
+    pending: 0,
+    waiting_for_talent: 1,
+    otp_failed: 1,
+    verified: 2,
+    approved: 3,
+    rejected: 0,
+  }
+  return steps[status]
 }
 
 // Talent dashboard pe khule claim ki halat + code daalne ka box
@@ -35,8 +43,18 @@ function ClaimProgress({ claim }: { claim: Claim }) {
       queryClient.invalidateQueries({ queryKey: ['claims'] })
     },
     onError: (err) => {
-      const { message, fields } = getApiError(err)
-      setError(fields.code ?? message)
+      const { message, code: errorCode, details } = getApiError(err)
+      if (errorCode === 'OTP_LOCKED') {
+        // Claim lock ho gaya: input hata kar lock wala paigham dikhao
+        setError('')
+        queryClient.invalidateQueries({ queryKey: ['claims'] })
+        return
+      }
+      if (errorCode === 'INVALID_CODE' && typeof details.attemptsLeft === 'number') {
+        setError(t('claimOtp.wrongCode', { count: details.attemptsLeft }))
+        return
+      }
+      setError(message)
     },
   })
 
@@ -79,7 +97,7 @@ function ClaimProgress({ claim }: { claim: Claim }) {
         </p>
       )}
 
-      {claim.status === 'code_sent' && (
+      {claim.status === 'waiting_for_talent' && (
         <div className="mt-4 rounded-xl bg-amber-50 p-4">
           <p className="text-sm text-gray-800">
             {t('claimProgress.sentBefore')}{' '}
@@ -127,7 +145,15 @@ function ClaimProgress({ claim }: { claim: Claim }) {
         </div>
       )}
 
-      {claim.status === 'code_verified' && (
+      {/* 5 ghalat koshishein: ab koi input nahi, admin dekhega */}
+      {claim.status === 'otp_failed' && (
+        <p role="alert" className="mt-4 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+          <FontAwesomeIcon icon={faLock} className="me-1.5" />
+          {t('claimOtp.talentLocked')}
+        </p>
+      )}
+
+      {claim.status === 'verified' && (
         <p className="mt-4 rounded-xl bg-green-50 p-4 text-sm text-green-800">
           <FontAwesomeIcon icon={faCircleCheck} className="me-1.5" />
           {t('claimProgress.verifiedBody')}

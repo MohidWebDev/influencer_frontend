@@ -81,7 +81,7 @@ function TalentNotifier() {
       const old = before.get(claim._id)
       if (!old || old === claim.status) continue
       const name = claim.person.name
-      if (claim.status === 'code_sent') {
+      if (claim.status === 'waiting_for_talent') {
         toast(t('live.codeSent', { name, url: claim.verification?.channelUrl ?? '' }), {
           icon: '🔑',
           duration: 8000,
