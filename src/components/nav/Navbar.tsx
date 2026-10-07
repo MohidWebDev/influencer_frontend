@@ -180,8 +180,9 @@ function Navbar() {
               ))}
             </ul>
 
-            <div className="flex items-center justify-between border-t border-gray-100 pt-4">
-              <LanguageMenu />
+            {/* flex-wrap: zaban ki list khule to is row ke neeche poori chaurai mein aati hai */}
+            <div className="flex flex-wrap items-center justify-between gap-y-3 border-t border-gray-100 pt-4">
+              <LanguageMenu variant="inline" />
               {user ? (
                 <button
                   onClick={handleLogout}
