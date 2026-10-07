@@ -14,7 +14,6 @@ import {
   faLayerGroup,
   faMagnifyingGlass,
   faUsers,
-  faWandMagicSparkles,
 } from '@fortawesome/free-solid-svg-icons'
 import { peopleQuery } from '../api/queries'
 import PersonCard from '../components/PersonCard'
@@ -126,12 +125,8 @@ function Home() {
         {/* Likhai navbar ki seedh mein: andar max-w-6xl, tasveer poori chaurai */}
         <div className="relative mx-auto flex min-h-[34rem] max-w-6xl flex-col justify-between gap-10 px-4 py-12 sm:py-14 md:min-h-[38rem] md:py-20">
           <div className="max-w-2xl text-center md:text-start">
-            <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white ring-1 ring-white/20 backdrop-blur">
-              <FontAwesomeIcon icon={faWandMagicSparkles} className="text-[10px] text-amber-300" />
-              {t('home.badge')}
-            </span>
 
-            <h1 className="mt-5 text-3xl font-extrabold leading-[1.1] tracking-tight text-white sm:text-4xl md:text-6xl">
+            <h1 className="text-3xl font-extrabold leading-[1.1] tracking-tight text-white sm:text-4xl md:text-6xl">
               {t('home.title')}
             </h1>
             <p className="mt-4 max-w-xl text-sm leading-relaxed text-white/80 md:mx-0 md:text-lg mx-auto">
