@@ -194,9 +194,9 @@
     "empty": "لا توجد إجراءات مطابقة.",
     "noChanges": "لم يتغير أي حقل في هذا الإجراء.",
     "mode": {
-      "changed": "الحقول المتغيرة: {{count}}",
+      "changed": "ما الذي تغيّر ({{count}})",
       "created": "أُنشئ بهذه التفاصيل",
-      "deleted": "تم الحذف. آخر التفاصيل كانت:"
+      "deleted": "التفاصيل قبل الحذف"
     },
     "values": {
       "yes": "نعم",
@@ -247,7 +247,39 @@
       "sentBy": "أرسله"
     },
     "close": "إغلاق",
-    "allActions": "كل الإجراءات"
+    "allActions": "كل الإجراءات",
+    "change": {
+      "changed": "غيّر {{field}} من {{from}} إلى {{to}}.",
+      "added": "عيّن {{field}} إلى {{to}}.",
+      "removed": "أزال {{field}} (كان {{from}}).",
+      "created": "{{field}}: {{to}}",
+      "deleted": "{{field}}: {{from}}"
+    },
+    "sentence": {
+      "fallback": "قام {{actor}} بـ“{{action}}” على {{target}}.",
+      "person": {
+        "create": "أنشأ {{actor}} الملف {{target}}.",
+        "update": "عدّل {{actor}} الملف {{target}} وحفظ التغييرات.",
+        "delete": "حذف {{actor}} الملف {{target}}.",
+        "hide": "أزال {{actor}} الملف {{target}} (مخفي عن العامة).",
+        "unhide": "أعاد {{actor}} إظهار الملف {{target}}.",
+        "verify": "وثّق {{actor}} الملف {{target}}.",
+        "unverify": "أزال {{actor}} شارة التوثيق من {{target}}."
+      },
+      "claim": {
+        "send_code": "أرسل {{actor}} رمز تحقق لمطالبة {{target}}.",
+        "approve": "وافق {{actor}} على مطالبة {{target}}.",
+        "reject": "رفض {{actor}} مطالبة {{target}}."
+      },
+      "user": {
+        "suspend": "علّق {{actor}} المستخدم {{target}}.",
+        "unsuspend": "رفع {{actor}} تعليق {{target}}.",
+        "role_change": "غيّر {{actor}} دور {{target}}."
+      },
+      "report": {
+        "update": "حدّث {{actor}} بلاغاً عن {{target}}."
+      }
+    }
   },
   "auditTarget": {
     "person": "ملف",
@@ -260,7 +292,10 @@
       "create": "أنشأ ملفاً",
       "update": "عدّل ملفاً",
       "delete": "حذف ملفاً",
-      "hide": "أزال ملفاً"
+      "hide": "أزال ملفاً",
+      "verify": "وثّق الملف",
+      "unverify": "أزال التوثيق",
+      "unhide": "أعاد الملف"
     },
     "claim": {
       "send_code": "أرسل رمز المطالبة",

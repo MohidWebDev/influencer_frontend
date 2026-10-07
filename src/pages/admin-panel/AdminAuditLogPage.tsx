@@ -15,7 +15,7 @@ const PAGE_SIZE = 25
 
 // Har target ke actions (auditAction.* mein inke naam hain)
 const ACTIONS: Record<(typeof TARGETS)[number], string[]> = {
-  person: ['create', 'update', 'delete', 'hide'],
+  person: ['create', 'update', 'verify', 'unverify', 'hide', 'unhide', 'delete'],
   claim: ['send_code', 'approve', 'reject'],
   user: ['suspend', 'unsuspend', 'role_change'],
   report: ['update'],
@@ -134,7 +134,10 @@ function AdminAuditLogPage() {
                     <td className="whitespace-nowrap px-4 py-3 text-gray-600">
                       {formatDateTime(log.createdAt)}
                     </td>
-                    <td className="px-4 py-3">{log.actor?.email ?? log.actorEmail}</td>
+                    <td className="px-4 py-3">
+                      <p className="font-medium">{log.actor?.name ?? log.actorEmail}</p>
+                      {log.actor && <p className="text-xs text-gray-500">{log.actor.email}</p>}
+                    </td>
                     <td className="px-4 py-3">
                       {t(`auditAction.${log.action}`, { defaultValue: log.action })}
                     </td>

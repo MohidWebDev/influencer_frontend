@@ -194,9 +194,9 @@
     "empty": "No admin actions match.",
     "noChanges": "No field changed in this action.",
     "mode": {
-      "changed": "Changed fields: {{count}}",
+      "changed": "What changed ({{count}})",
       "created": "Created with these details",
-      "deleted": "Deleted. Last details were:"
+      "deleted": "Details before it was deleted"
     },
     "values": {
       "yes": "Yes",
@@ -247,7 +247,39 @@
       "sentBy": "Sent by"
     },
     "close": "Close",
-    "allActions": "All actions"
+    "allActions": "All actions",
+    "change": {
+      "changed": "Changed {{field}} from {{from}} to {{to}}.",
+      "added": "Set {{field}} to {{to}}.",
+      "removed": "Removed {{field}} (it was {{from}}).",
+      "created": "{{field}}: {{to}}",
+      "deleted": "{{field}} was {{from}}"
+    },
+    "sentence": {
+      "fallback": "{{actor}} did “{{action}}” on {{target}}.",
+      "person": {
+        "create": "{{actor}} created the profile {{target}}.",
+        "update": "{{actor}} edited the profile {{target}} and saved the changes.",
+        "delete": "{{actor}} deleted the profile {{target}}.",
+        "hide": "{{actor}} took down the profile {{target}} (hidden from the public).",
+        "unhide": "{{actor}} made the profile {{target}} visible again.",
+        "verify": "{{actor}} marked the profile {{target}} as verified.",
+        "unverify": "{{actor}} removed the verified badge from {{target}}."
+      },
+      "claim": {
+        "send_code": "{{actor}} sent a verification code for the claim on {{target}}.",
+        "approve": "{{actor}} approved the claim on {{target}}.",
+        "reject": "{{actor}} rejected the claim on {{target}}."
+      },
+      "user": {
+        "suspend": "{{actor}} suspended the user {{target}}.",
+        "unsuspend": "{{actor}} lifted the suspension of {{target}}.",
+        "role_change": "{{actor}} changed the role of {{target}}."
+      },
+      "report": {
+        "update": "{{actor}} updated a report about {{target}}."
+      }
+    }
   },
   "auditTarget": {
     "person": "Profile",
@@ -260,7 +292,10 @@
       "create": "Created profile",
       "update": "Edited profile",
       "delete": "Deleted profile",
-      "hide": "Took profile down"
+      "hide": "Took profile down",
+      "verify": "Verified profile",
+      "unverify": "Removed verification",
+      "unhide": "Restored profile"
     },
     "claim": {
       "send_code": "Sent claim code",

@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import type { AuditLogEntry } from '../../types/adminPanel'
 import { formatDateTime } from '../../utils/adminFormat'
 import { countryName, formatCount, languageName } from '../../utils/format'
+import Sentence from './Sentence'
+import { SLOTS } from './sentenceSlots'
 
 type Plain = Record<string, unknown>
 
@@ -160,19 +160,6 @@ function useFormatter(targetType: AuditLogEntry['targetType'], names: Map<string
   return { one, fieldName }
 }
 
-const TONES = {
-  old: 'bg-red-50 text-red-700 line-through decoration-red-300',
-  new: 'bg-green-50 text-green-800',
-  plain: 'bg-gray-100 text-gray-700',
-}
-
-// Khali value ko halka sa "—" dikhao, rang wala dabba nahi
-function Value({ text, empty, tone }: { text: string; empty: boolean; tone: keyof typeof TONES }) {
-  const { t } = useTranslation()
-  if (empty) return <span className="text-xs italic text-gray-400">{t('audit.values.empty')}</span>
-  return <span className={`break-words rounded-md px-2 py-0.5 ${TONES[tone]}`}>{text}</span>
-}
-
 // "Show changes": sirf badle hue fields, pehle -> baad, saaf andaaz mein
 function AuditChanges({ log }: { log: AuditLogEntry }) {
   const { t } = useTranslation()
@@ -208,38 +195,51 @@ function AuditChanges({ log }: { log: AuditLogEntry }) {
   }
 
   const mode = !hasBefore ? 'created' : !hasAfter ? 'deleted' : 'changed'
+  // Har field ke liye ek jumla: "City ko Lahore se badal kar Karachi kiya"
+  const kindOf = (old: Shown, now: Shown) => {
+    if (mode !== 'changed') return mode
+    if (!old.key) return 'added'
+    if (!now.key) return 'removed'
+    return 'changed'
+  }
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-white">
-      <p className="border-b border-gray-100 px-4 py-2 text-xs font-medium text-gray-500">
+    <div>
+      <p className="mb-2 text-xs font-medium uppercase tracking-wide text-gray-500">
         {t(`audit.mode.${mode}`, { count: rows.length })}
       </p>
-      <dl className="divide-y divide-gray-100">
+      <ul className="space-y-2">
         {rows.map(({ field, old, now }) => (
-          <div
+          <li
             key={field}
-            className="grid gap-1 px-4 py-3 sm:grid-cols-[180px_minmax(0,1fr)] sm:gap-4"
+            className="flex gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm leading-7 text-gray-700"
           >
-            <dt className="text-sm font-medium text-gray-700">{fieldName(field)}</dt>
-            <dd className="flex min-w-0 flex-wrap items-center gap-2 text-sm">
-              {mode !== 'created' && (
-                <Value
-                  text={old.text}
-                  empty={!old.key}
-                  tone={mode === 'deleted' ? 'plain' : 'old'}
-                />
-              )}
-              {mode === 'changed' && (
-                <FontAwesomeIcon
-                  icon={faArrowRight}
-                  className="text-xs text-gray-400 rtl:rotate-180"
-                />
-              )}
-              {mode !== 'deleted' && <Value text={now.text} empty={!now.key} tone="new" />}
-            </dd>
-          </div>
+            <span className="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-gray-400" />
+            <p className="min-w-0 break-words">
+              <Sentence
+                template={t(`audit.change.${kindOf(old, now)}`, SLOTS)}
+                parts={{
+                  field: (
+                    <strong className="font-semibold text-gray-900">{fieldName(field)}</strong>
+                  ),
+                  from: (
+                    <span
+                      className={`rounded px-1.5 py-0.5 ${mode === 'deleted' ? 'bg-gray-100 text-gray-800' : 'bg-red-50 text-red-700 line-through decoration-red-300'}`}
+                    >
+                      {old.text}
+                    </span>
+                  ),
+                  to: (
+                    <span className="rounded bg-green-50 px-1.5 py-0.5 text-green-800">
+                      {now.text}
+                    </span>
+                  ),
+                }}
+              />
+            </p>
+          </li>
         ))}
-      </dl>
+      </ul>
     </div>
   )
 }

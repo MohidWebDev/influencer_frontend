@@ -194,9 +194,9 @@
     "empty": "کوئی کارروائی نہیں ملی۔",
     "noChanges": "اس کارروائی میں کوئی فیلڈ نہیں بدلی۔",
     "mode": {
-      "changed": "بدلی ہوئی فیلڈز: {{count}}",
+      "changed": "کیا بدلا ({{count}})",
       "created": "ان تفصیلات کے ساتھ بنایا گیا",
-      "deleted": "حذف کر دیا گیا۔ آخری تفصیلات یہ تھیں:"
+      "deleted": "حذف ہونے سے پہلے کی تفصیلات"
     },
     "values": {
       "yes": "ہاں",
@@ -247,7 +247,39 @@
       "sentBy": "بھیجنے والا"
     },
     "close": "بند کریں",
-    "allActions": "تمام کارروائیاں"
+    "allActions": "تمام کارروائیاں",
+    "change": {
+      "changed": "{{field}} کو {{from}} سے بدل کر {{to}} کر دیا۔",
+      "added": "{{field}} میں {{to}} شامل کیا۔",
+      "removed": "{{field}} ہٹا دیا (پہلے {{from}} تھا)۔",
+      "created": "{{field}}: {{to}}",
+      "deleted": "{{field}}: {{from}}"
+    },
+    "sentence": {
+      "fallback": "{{actor}} نے {{target}} پر “{{action}}” کیا۔",
+      "person": {
+        "create": "{{actor}} نے پروفائل {{target}} بنائی۔",
+        "update": "{{actor}} نے پروفائل {{target}} میں ترمیم کر کے تبدیلیاں محفوظ کیں۔",
+        "delete": "{{actor}} نے پروفائل {{target}} حذف کر دی۔",
+        "hide": "{{actor}} نے پروفائل {{target}} ہٹا دی (عوام سے چھپا دی)۔",
+        "unhide": "{{actor}} نے پروفائل {{target}} دوبارہ نظر آنے والی کر دی۔",
+        "verify": "{{actor}} نے پروفائل {{target}} کو تصدیق شدہ کیا۔",
+        "unverify": "{{actor}} نے {{target}} سے تصدیق کا نشان ہٹا دیا۔"
+      },
+      "claim": {
+        "send_code": "{{actor}} نے {{target}} کے کلیم کے لیے تصدیقی کوڈ بھیجا۔",
+        "approve": "{{actor}} نے {{target}} کا کلیم منظور کیا۔",
+        "reject": "{{actor}} نے {{target}} کا کلیم مسترد کیا۔"
+      },
+      "user": {
+        "suspend": "{{actor}} نے صارف {{target}} کو معطل کیا۔",
+        "unsuspend": "{{actor}} نے صارف {{target}} کی معطلی ختم کی۔",
+        "role_change": "{{actor}} نے {{target}} کا رول بدلا۔"
+      },
+      "report": {
+        "update": "{{actor}} نے {{target}} کے بارے میں رپورٹ اپ ڈیٹ کی۔"
+      }
+    }
   },
   "auditTarget": {
     "person": "پروفائل",
@@ -260,7 +292,10 @@
       "create": "پروفائل بنائی",
       "update": "پروفائل میں ترمیم کی",
       "delete": "پروفائل حذف کی",
-      "hide": "پروفائل ہٹائی"
+      "hide": "پروفائل ہٹائی",
+      "verify": "پروفائل کی تصدیق کی",
+      "unverify": "تصدیق ہٹائی",
+      "unhide": "پروفائل بحال کی"
     },
     "claim": {
       "send_code": "دعوے کا کوڈ بھیجا",
