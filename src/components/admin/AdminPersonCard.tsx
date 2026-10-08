@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faArrowUpRightFromSquare,
-  faBan,
   faCircleCheck,
   faEye,
   faEyeSlash,
@@ -22,7 +21,6 @@ import { formatCount } from '../../utils/format'
 interface AdminPersonCardProps {
   person: AdminPersonRow
   isBusy: boolean
-  onToggleVerified: () => void
   onToggleHidden: () => void
   onDelete: () => void
 }
@@ -33,19 +31,12 @@ function Badge({ className, children }: { className: string; children: ReactNode
   )
 }
 
-function AdminPersonCard({
-  person,
-  isBusy,
-  onToggleVerified,
-  onToggleHidden,
-  onDelete,
-}: AdminPersonCardProps) {
+function AdminPersonCard({ person, isBusy, onToggleHidden, onDelete }: AdminPersonCardProps) {
   const { t } = useTranslation()
   const isHidden = person.visibility === 'hidden'
   const isClaimed = Boolean(person.claimedBy)
-  // Verify sirf claimed profile pe. Unclaimed pe button hi nahi (purana badge ho to hata sakte hain)
-  const canToggleVerified = isClaimed || person.verified
-  const actionCount = (isClaimed ? 0 : 1) + (canToggleVerified ? 1 : 0) + 3
+  // Verified haath se nahi: claim approve hote hi khud lagta hai
+  const actionCount = (isClaimed ? 0 : 1) + 3
   const smCols = { 3: 'sm:grid-cols-3', 4: 'sm:grid-cols-4', 5: 'sm:grid-cols-5' }[actionCount]
   // Malikana haalat: unclaimed -> claimed (tasdeeq baqi) -> verified
   const ownership = person.verified
@@ -146,20 +137,6 @@ function AdminPersonCard({
               <FontAwesomeIcon icon={faPen} /> {t('oldAdmin.edit')}
             </Link>
           )}
-          {canToggleVerified && (
-            <button
-              onClick={onToggleVerified}
-              disabled={isBusy}
-              className={`${button} ${
-                person.verified
-                  ? 'border border-blue-200 text-blue-700 hover:bg-blue-50'
-                  : 'bg-blue-600 text-white hover:bg-blue-700'
-              }`}
-            >
-              <FontAwesomeIcon icon={person.verified ? faBan : faCircleCheck} />
-              {person.verified ? t('oldAdmin.unverify') : t('oldAdmin.verify')}
-            </button>
-          )}
           {/* Talent ki bheji hui profile claim approve hone pe hi public hoti hai */}
           {person.isDraft ? (
             <span
@@ -206,7 +183,7 @@ function AdminPersonCard({
             <FontAwesomeIcon icon={faTrash} /> {t('oldAdmin.delete')}
           </button>
           {!isClaimed && (
-            <p className="col-span-full text-xs text-gray-500">{t('oldAdmin.verifyAfterClaim')}</p>
+            <p className="col-span-full text-xs text-gray-500">{t('oldAdmin.autoVerifyHint')}</p>
           )}
         </div>
       )}

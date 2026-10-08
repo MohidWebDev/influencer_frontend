@@ -129,7 +129,9 @@ function AdminDashboard() {
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
               <h2 className="text-lg font-semibold">{t('oldAdmin.peopleProfiles')}</h2>
-              <p className="text-sm text-gray-500">{data ? t('oldAdmin.profilesCount', { count: total }) : ' '}</p>
+              <p className="text-sm text-gray-500">
+                {data ? t('oldAdmin.profilesCount', { count: total }) : ' '}
+              </p>
             </div>
           </div>
 
@@ -173,9 +175,6 @@ function AdminDashboard() {
                 key={person._id}
                 person={person}
                 isBusy={quickUpdate.isPending || remove.isPending}
-                onToggleVerified={() =>
-                  quickUpdate.mutate({ id: person._id, input: { verified: !person.verified } })
-                }
                 onToggleHidden={() =>
                   quickUpdate.mutate({
                     id: person._id,

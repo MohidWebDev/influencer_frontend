@@ -19,6 +19,7 @@ import PersonForm from '../../components/admin/PersonForm'
 import type { PersonInput } from '../../types/admin'
 import { isOpenClaim, type ProfileMatch } from '../../types/claim'
 import { getApiError } from '../../utils/apiError'
+import AccountEmailField from '../../components/AccountEmailField'
 
 // /my-profile/new -> talent ko apni profile na mile to khud bheje.
 // Profile chhupi rehti hai; official account pe code se tasdeeq ke baad public hoti hai
@@ -27,7 +28,6 @@ function CreateMyProfile() {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const [errors, setErrors] = useState<Record<string, string>>({})
-  const [contactEmail, setContactEmail] = useState('')
   const [note, setNote] = useState('')
   // Milti julti profiles mili to yahan; talent "nayi hi banao" bhi chun sakta hai
   const [pending, setPending] = useState<{ input: PersonInput; matches: ProfileMatch[] } | null>(
@@ -41,7 +41,6 @@ function CreateMyProfile() {
     mutationFn: ({ input, force }: { input: PersonInput; force?: boolean }) =>
       createNewProfileClaim({
         ...input,
-        contactEmail: contactEmail.trim() || undefined,
         note: note.trim() || undefined,
         force,
       }),
@@ -170,18 +169,7 @@ function CreateMyProfile() {
         <section className="space-y-4 rounded-2xl bg-white p-6 shadow-sm">
           <h2 className="text-lg font-semibold">{t('newProfile.forReview')}</h2>
           <p className="text-sm text-gray-500">{t('newProfile.forReviewHelp')}</p>
-          <label className="block">
-            <span className="mb-1 block text-sm font-medium">{t('newProfile.contactEmail')}</span>
-            <input
-              type="email"
-              value={contactEmail}
-              onChange={(e) => setContactEmail(e.target.value)}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2"
-            />
-            {errors.contactEmail && (
-              <p className="mt-1 text-sm text-red-600">{errors.contactEmail}</p>
-            )}
-          </label>
+          <AccountEmailField />
           <label className="block">
             <span className="mb-1 block text-sm font-medium">{t('newProfile.note')}</span>
             <textarea

@@ -84,7 +84,7 @@
     "joined": "Joined {{date}}",
     "evidence": "Evidence",
     "officialAccounts": "Official accounts",
-    "officialEmail": "Official email",
+    "officialEmail": "Account email (login)",
     "note": "Note",
     "verification": "Code verification",
     "codeSentTo": "Code sent to {{url}} on {{date}}.",
@@ -606,7 +606,9 @@
     "noteLabel": "Anything else we should know? (optional)",
     "notePlaceholder": "e.g. My manager can also confirm. Their email is ...",
     "submit": "Send claim",
-    "sending": "Sending..."
+    "sending": "Sending...",
+    "accountEmail": "Your account email",
+    "accountEmailHint": "This is the email you're signed in with. It's sent with your claim so our team can reach you, and it can't be changed here."
   },
   "claimProgress": {
     "step1": "Claim sent",
@@ -779,12 +781,13 @@
     "verifyAfterClaim": "You can verify this profile after a talent claims it.",
     "ownership": {
       "unclaimed": "Unclaimed",
-      "unclaimedHint": "No owner yet, not verified",
+      "unclaimedHint": "No owner yet. Verified automatically once claimed",
       "claimed": "Claimed",
       "claimedHint": "Owned by a talent, awaiting verification",
       "verified": "Verified",
-      "verifiedHint": "Claimed and verified by an admin"
-    }
+      "verifiedHint": "Claimed by the talent, verified automatically"
+    },
+    "autoVerifyHint": "This profile becomes verified automatically when a talent's claim is approved."
   },
   "personForm": {
     "identity": "Identity",

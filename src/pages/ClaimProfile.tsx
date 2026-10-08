@@ -9,7 +9,7 @@ import { createClaim } from '../api/claims'
 import { myClaimsQuery, myProfileQuery, personQuery } from '../api/queries'
 import { claimPersonName, isOpenClaim } from '../types/claim'
 import Avatar from '../components/Avatar'
-import FormField from '../components/FormField'
+import AccountEmailField from '../components/AccountEmailField'
 import { getApiError } from '../utils/apiError'
 
 // /people/:slug/claim -> talent saboot ke saath claim bhejta hai
@@ -23,7 +23,6 @@ function ClaimProfile() {
   const myProfile = useQuery(myProfileQuery)
   const myClaims = useQuery(myClaimsQuery)
 
-  const [contactEmail, setContactEmail] = useState('')
   const [links, setLinks] = useState(['', '', ''])
   const [note, setNote] = useState('')
   const [errors, setErrors] = useState<Record<string, string>>({})
@@ -81,7 +80,6 @@ function ClaimProfile() {
     e.preventDefault()
     submit.mutate({
       personId: person!._id,
-      contactEmail: contactEmail.trim(),
       links: links.map((l) => l.trim()).filter(Boolean),
       note,
     })
@@ -120,21 +118,11 @@ function ClaimProfile() {
           </ol>
         </div>
 
-        <FormField
-          id="contactEmail"
-          label={t('claimForm.officialEmail')}
-          type="email"
-          placeholder={t('claimForm.emailPlaceholder')}
-          value={contactEmail}
-          onChange={(e) => setContactEmail(e.target.value)}
-          error={errors.contactEmail}
-        />
+        <AccountEmailField />
 
         <div className="space-y-2">
           <span className="block text-sm font-medium">{t('claimForm.linksLabel')}</span>
-          <p className="text-xs text-gray-500">
-            {t('claimForm.linksHelp')}
-          </p>
+          <p className="text-xs text-gray-500">{t('claimForm.linksHelp')}</p>
           {links.map((link, index) => (
             <input
               key={index}
