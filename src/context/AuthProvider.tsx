@@ -11,7 +11,6 @@ import {
   registerUser,
   resetPasswordRequest,
 } from '../api/auth'
-import { applyTheme, getStoredTheme, saveTheme, type ThemePreference } from '../utils/theme'
 import type { LoginInput, RegisterInput } from '../api/auth'
 import type { User } from '../types/user'
 import { AuthContext } from './authContext'
@@ -93,23 +92,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     queryClient.removeQueries({ predicate: (query) => query.queryKey[0] !== ME_KEY[0] })
   }, [leavingAfterDelete, pathname, queryClient])
 
-  // Theme: localStorage mein yaad, "system" ho to device ki setting ke saath badle
-  const [theme, setThemeState] = useState<ThemePreference>(getStoredTheme)
-  useEffect(() => {
-    applyTheme(theme)
-    if (theme !== 'system') return
-    const media = window.matchMedia('(prefers-color-scheme: dark)')
-    const onChange = () => applyTheme('system', true)
-    media.addEventListener('change', onChange)
-    return () => media.removeEventListener('change', onChange)
-  }, [theme])
-
-  function setTheme(next: ThemePreference) {
-    saveTheme(next)
-    applyTheme(next, true)
-    setThemeState(next)
-  }
-
   return (
     <AuthContext.Provider
       value={{
@@ -121,8 +103,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         changePassword,
         deleteAccount,
         resetPassword,
-        theme,
-        setTheme,
       }}
     >
       {children}

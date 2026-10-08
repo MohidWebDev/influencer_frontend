@@ -18,6 +18,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import PasswordField from '../components/PasswordField'
 import { useAuth } from '../hooks/useAuth'
+import { useTheme } from '../hooks/useTheme'
 import { getApiError } from '../utils/apiError'
 import type { ThemePreference } from '../utils/theme'
 
@@ -71,7 +72,7 @@ const THEMES: { value: ThemePreference; icon: IconDefinition }[] = [
 
 function AppearanceSection() {
   const { t } = useTranslation()
-  const { theme, setTheme } = useAuth()
+  const { theme, setTheme } = useTheme()
   return (
     <Section icon={faPalette} title={t('settings.appearance')} text={t('settings.appearanceText')}>
       <div
@@ -374,7 +375,7 @@ function DangerSection() {
   )
 }
 
-// /settings -> password, theme aur account delete. Sab AuthContext se
+// /settings -> password (AuthContext), theme (ThemeContext) aur account delete
 function Settings() {
   const { t } = useTranslation()
   const { user } = useAuth()

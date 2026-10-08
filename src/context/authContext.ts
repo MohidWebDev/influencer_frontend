@@ -1,7 +1,6 @@
 import { createContext } from 'react'
 import type { LoginInput, RegisterInput } from '../api/auth'
 import type { User } from '../types/user'
-import type { ThemePreference } from '../utils/theme'
 
 export interface AuthContextValue {
   user: User | null
@@ -14,9 +13,6 @@ export interface AuthContextValue {
   resetPassword: (email: string, resetToken: string, newPassword: string) => Promise<User>
   // confirm = "delete <naam>"
   deleteAccount: (confirm: string) => Promise<void>
-  // Light / dark / system: har user (aur guest) ki apni pasand, is device pe
-  theme: ThemePreference
-  setTheme: (theme: ThemePreference) => void
 }
 
 export const AuthContext = createContext<AuthContextValue | null>(null)

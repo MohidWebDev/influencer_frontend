@@ -119,11 +119,17 @@
   --color-gray-950: oklch(13% 0.028 261.692);
 }
 
-/* Theme badalte waqt rang aaraam se badlein */
-html.theme-transition,
-html.theme-transition * {
-  transition:
-    background-color 200ms ease,
-    border-color 200ms ease,
-    color 200ms ease !important;
+/* Theme badalte lamhe har transition band: rang ek saath, foran (purane browsers) */
+html.theme-switching,
+html.theme-switching *,
+html.theme-switching *::before,
+html.theme-switching *::after {
+  transition: none !important;
+}
+
+/* Naye browsers: poori screen ka halka fade (sirf do tasveerein, GPU pe) */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 220ms;
+  animation-timing-function: ease-out;
 }
