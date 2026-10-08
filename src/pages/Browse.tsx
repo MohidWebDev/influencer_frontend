@@ -181,7 +181,7 @@ function Browse() {
   return (
     <div className="space-y-12">
       {/* Upar: tasveer, heading aur categories mein dhoondne ka box */}
-      <section className="relative isolate overflow-hidden rounded-3xl bg-gray-900 px-5 py-12 text-white sm:px-10 md:py-16">
+      <section className="keep-dark relative isolate overflow-hidden rounded-3xl bg-gray-900 px-5 py-12 text-white sm:px-10 md:py-16">
         <img
           src={HEADER_IMAGE}
           alt=""
@@ -357,7 +357,7 @@ function Browse() {
       </div>
 
       {/* Aakhir mein: seedha Explore */}
-      <section className="flex flex-col items-start justify-between gap-4 rounded-3xl bg-gray-900 p-6 text-white sm:flex-row sm:items-center md:p-8">
+      <section className="keep-dark flex flex-col items-start justify-between gap-4 rounded-3xl bg-gray-900 p-6 text-white sm:flex-row sm:items-center md:p-8">
         <div>
           <h2 className="text-xl font-semibold">{t('browse.ctaTitle')}</h2>
           <p className="mt-1 text-sm text-white/70">{t('browse.ctaBody')}</p>

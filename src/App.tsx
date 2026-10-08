@@ -15,14 +15,9 @@ import About from './pages/About'
 import Notifications from './pages/Notifications'
 import CreateMyProfile from './pages/dashboards/CreateMyProfile'
 import ComingSoon from './pages/ComingSoon'
+import Settings from './pages/Settings'
 import MyProfileRedirect from './pages/MyProfileRedirect'
-import {
-  faBriefcase,
-  faEnvelope,
-  faGear,
-  faStar,
-  faUsers,
-} from '@fortawesome/free-solid-svg-icons'
+import { faBriefcase, faEnvelope, faStar, faUsers } from '@fortawesome/free-solid-svg-icons'
 import AdminPersonEditor from './pages/admin/AdminPersonEditor'
 import AdminLayout from './components/admin-panel/AdminLayout'
 import AdminOverviewPage from './pages/admin-panel/AdminOverviewPage'
@@ -103,7 +98,7 @@ function App() {
           path="/settings"
           element={
             <ProtectedRoute>
-              <ComingSoon page="settings" icon={faGear} />
+              <Settings />
             </ProtectedRoute>
           }
         />

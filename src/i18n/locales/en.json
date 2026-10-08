@@ -521,7 +521,9 @@
     "INVALID_STATE": "This action is not allowed for the claim's current status.",
     "PROFILE_NOT_CLAIMED": "A profile can only be verified after a talent has claimed it.",
     "POSSIBLE_DUPLICATE": "A profile like this already exists",
-    "PROFILE_PENDING_REVIEW": "This profile is waiting for its claim to be approved"
+    "PROFILE_PENDING_REVIEW": "This profile is waiting for its claim to be approved",
+    "WRONG_PASSWORD": "Current password is incorrect",
+    "CONFIRMATION_MISMATCH": "The confirmation text doesn't match"
   },
   "search": {
     "any": "Any",
@@ -1005,5 +1007,50 @@
     "usersEmptyText": "People who sign up will be listed here.",
     "auditEmptyTitle": "No admin activity yet",
     "auditEmptyText": "Every admin action, like approving a claim or editing a profile, will be recorded here."
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your password, appearance and account.",
+    "close": "Close",
+    "appearance": "Appearance",
+    "appearanceText": "Choose how the site looks on this device.",
+    "theme": {
+      "light": "Light",
+      "lightText": "Bright and clean",
+      "dark": "Dark",
+      "darkText": "Easy on the eyes",
+      "system": "System",
+      "systemText": "Match your device"
+    },
+    "password": "Change password",
+    "passwordText": "You'll stay signed in here. Other devices will be signed out.",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm new password",
+    "passwordHint": "Use at least {{count}} characters.",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "updatePassword": "Update password",
+    "saving": "Saving...",
+    "passwordChanged": "Password updated",
+    "errors": {
+      "currentRequired": "Enter your current password",
+      "tooShort": "Password must be at least {{count}} characters",
+      "sameAsCurrent": "New password must be different from the current one",
+      "mismatch": "Passwords don't match"
+    },
+    "dangerZone": "Danger zone",
+    "dangerText": "Actions here can't be undone.",
+    "deleteAccount": "Delete account",
+    "deleteAccountText": "Permanently remove your account and data.",
+    "deleteTitle": "Delete your account?",
+    "deleteWarning": "This is permanent. Once deleted:",
+    "deletePoint1": "You'll be signed out and can't sign in again with this account.",
+    "deletePoint2": "Your claims and notifications are removed.",
+    "deletePoint3": "A profile you own stays public but becomes unclaimed.",
+    "typeToConfirm": "To confirm, type",
+    "deleteForever": "Delete my account",
+    "deleting": "Deleting...",
+    "deleted": "Your account has been deleted"
   }
 }

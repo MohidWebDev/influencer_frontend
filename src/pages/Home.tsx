@@ -101,7 +101,7 @@ function Home() {
       {/* Hero: tasveeron ka carousel, search aur platform ke numbers */}
       <section
         aria-label={t('home.heroLabel')}
-        className="relative isolate overflow-hidden bg-gray-950"
+        className="keep-dark relative isolate overflow-hidden bg-gray-950"
       >
         {/* Tasveerein peeche; dheere zoom ke saath badalti hain */}
         <div className="absolute inset-0 -z-10">
@@ -248,7 +248,7 @@ function Home() {
 
         {/* Aakhri dawat: guest ke liye sign up, login wale ke liye dashboard */}
         <section className="grid gap-4 md:grid-cols-2">
-          <div className="rounded-3xl bg-gray-900 p-6 text-white md:p-8">
+          <div className="keep-dark rounded-3xl bg-gray-900 p-6 text-white md:p-8">
             <h2 className="text-xl font-semibold">{t('home.ctaTalentTitle')}</h2>
             <p className="mt-2 text-sm text-white/75">{t('home.ctaTalentBody')}</p>
             <Link

@@ -521,7 +521,9 @@
     "INVALID_STATE": "هذا الإجراء غير مسموح في حالة المطالبة الحالية.",
     "PROFILE_NOT_CLAIMED": "لا يمكن توثيق الملف إلا بعد أن تطالب به موهبة.",
     "POSSIBLE_DUPLICATE": "يوجد ملف مشابه مسبقاً",
-    "PROFILE_PENDING_REVIEW": "هذا الملف بانتظار قبول مطالبته"
+    "PROFILE_PENDING_REVIEW": "هذا الملف بانتظار قبول مطالبته",
+    "WRONG_PASSWORD": "كلمة المرور الحالية غير صحيحة",
+    "CONFIRMATION_MISMATCH": "نص التأكيد غير مطابق"
   },
   "search": {
     "any": "الكل",
@@ -1005,5 +1007,50 @@
     "usersEmptyText": "سيظهر هنا الأشخاص الذين يسجلون.",
     "auditEmptyTitle": "لا يوجد نشاط للمشرفين بعد",
     "auditEmptyText": "سيُسجّل هنا كل إجراء للمشرف، مثل قبول مطالبة أو تعديل ملف."
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "subtitle": "أدر كلمة المرور والمظهر وحسابك.",
+    "close": "إغلاق",
+    "appearance": "المظهر",
+    "appearanceText": "اختر شكل الموقع على هذا الجهاز.",
+    "theme": {
+      "light": "فاتح",
+      "lightText": "ساطع ونظيف",
+      "dark": "داكن",
+      "darkText": "مريح للعينين",
+      "system": "النظام",
+      "systemText": "مطابق لجهازك"
+    },
+    "password": "تغيير كلمة المرور",
+    "passwordText": "ستبقى مسجلاً هنا، وسيتم تسجيل خروجك من الأجهزة الأخرى.",
+    "currentPassword": "كلمة المرور الحالية",
+    "newPassword": "كلمة المرور الجديدة",
+    "confirmPassword": "تأكيد كلمة المرور الجديدة",
+    "passwordHint": "استخدم {{count}} أحرف على الأقل.",
+    "showPassword": "إظهار كلمة المرور",
+    "hidePassword": "إخفاء كلمة المرور",
+    "updatePassword": "تحديث كلمة المرور",
+    "saving": "جارٍ الحفظ...",
+    "passwordChanged": "تم تحديث كلمة المرور",
+    "errors": {
+      "currentRequired": "أدخل كلمة المرور الحالية",
+      "tooShort": "يجب أن تتكون كلمة المرور من {{count}} أحرف على الأقل",
+      "sameAsCurrent": "يجب أن تختلف كلمة المرور الجديدة عن الحالية",
+      "mismatch": "كلمتا المرور غير متطابقتين"
+    },
+    "dangerZone": "منطقة الخطر",
+    "dangerText": "لا يمكن التراجع عن الإجراءات هنا.",
+    "deleteAccount": "حذف الحساب",
+    "deleteAccountText": "إزالة حسابك وبياناتك نهائياً.",
+    "deleteTitle": "حذف حسابك؟",
+    "deleteWarning": "هذا نهائي. بعد الحذف:",
+    "deletePoint1": "سيتم تسجيل خروجك ولن تتمكن من الدخول بهذا الحساب مجدداً.",
+    "deletePoint2": "ستُحذف مطالباتك وإشعاراتك.",
+    "deletePoint3": "يبقى ملفك عاماً لكنه يصبح غير مُطالَب به.",
+    "typeToConfirm": "للتأكيد، اكتب",
+    "deleteForever": "احذف حسابي",
+    "deleting": "جارٍ الحذف...",
+    "deleted": "تم حذف حسابك"
   }
 }

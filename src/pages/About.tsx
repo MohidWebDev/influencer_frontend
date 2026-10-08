@@ -76,7 +76,7 @@ function About() {
   return (
     <div className="space-y-16">
       {/* Upar: tasveer wala card, Explore jaisa andaaz */}
-      <section className="relative isolate overflow-hidden rounded-3xl bg-gray-900 px-5 py-14 text-white sm:px-10 md:py-20">
+      <section className="keep-dark relative isolate overflow-hidden rounded-3xl bg-gray-900 px-5 py-14 text-white sm:px-10 md:py-20">
         <img
           src={ABOUT_IMAGE}
           alt=""
@@ -148,7 +148,7 @@ function About() {
           <div
             key={audience.title}
             className={`rounded-3xl p-6 md:p-8 ${
-              i === 0 ? 'bg-gray-900 text-white' : 'bg-white shadow-sm ring-1 ring-gray-100'
+              i === 0 ? 'keep-dark bg-gray-900 text-white' : 'bg-white shadow-sm ring-1 ring-gray-100'
             }`}
           >
             <h2 className="text-xl font-semibold">{audience.title}</h2>
@@ -190,7 +190,7 @@ function About() {
       </section>
 
       {/* Aakhri dawat */}
-      <section className="flex flex-col items-start justify-between gap-6 rounded-3xl bg-gray-900 p-6 text-white md:flex-row md:items-center md:p-10">
+      <section className="keep-dark flex flex-col items-start justify-between gap-6 rounded-3xl bg-gray-900 p-6 text-white md:flex-row md:items-center md:p-10">
         <div className="max-w-xl">
           <p className="flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-white/60">
             <FontAwesomeIcon icon={faEye} />

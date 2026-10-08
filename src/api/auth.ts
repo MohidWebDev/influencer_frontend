@@ -32,3 +32,11 @@ export async function getMe() {
   const res = await api.get<ApiSuccess<{ user: User }>>('/auth/me')
   return res.data.data.user
 }
+
+export async function changePasswordRequest(input: { currentPassword: string; newPassword: string }) {
+  await api.patch('/auth/password', input)
+}
+
+export async function deleteAccountRequest(confirm: string) {
+  await api.delete('/auth/account', { data: { confirm } })
+}

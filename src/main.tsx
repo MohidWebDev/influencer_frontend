@@ -40,7 +40,13 @@ createRoot(document.getElementById('root')!).render(
           </LanguageRoot>
         </AuthProvider>
       </BrowserRouter>
-      <Toaster position="bottom-right" />
+      <Toaster
+        position="bottom-right"
+        // Dark mode mein bhi theme ke rang (CSS variables)
+        toastOptions={{
+          style: { background: 'var(--color-white)', color: 'var(--color-gray-900)' },
+        }}
+      />
       {/* Sirf development mein dikhta hai: cache ke andar kya hai */}
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>

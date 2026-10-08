@@ -71,7 +71,7 @@ function Footer() {
   const linkClass = 'text-sm text-gray-400 transition hover:text-white'
 
   return (
-    <footer className="bg-gray-950 text-gray-300">
+    <footer className="keep-dark bg-gray-950 text-gray-300">
       <div className="mx-auto max-w-6xl px-4 pb-8 pt-14">
         <div className="grid gap-10 md:grid-cols-12">
           {/* Brand + paigham + social */}

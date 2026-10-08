@@ -275,7 +275,7 @@ function Search() {
   return (
     <div className="space-y-6">
       {/* Upar: heading + search */}
-      <section className="relative isolate overflow-hidden rounded-3xl bg-gray-900 px-5 py-10 text-white sm:px-8 md:py-14">
+      <section className="keep-dark relative isolate overflow-hidden rounded-3xl bg-gray-900 px-5 py-10 text-white sm:px-8 md:py-14">
         {/* Peeche tasveer; likhai wali taraf gehra parda taake text saaf parha jaye */}
         <img
           src={HEADER_IMAGE}
