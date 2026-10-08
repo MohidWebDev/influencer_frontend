@@ -8,6 +8,7 @@ import { personQuery } from '../api/queries'
 import Avatar from '../components/Avatar'
 import ClaimAction from '../components/ClaimAction'
 import ReportProfileLink from '../components/ReportProfileLink'
+import UnclaimedBadge from '../components/UnclaimedBadge'
 import VerifiedBadge from '../components/VerifiedBadge'
 import { PLATFORM_ICONS, PLATFORM_LABELS, STATUS_LABELS } from '../constants/people'
 import type { TaxonomyItem } from '../types/person'
@@ -56,6 +57,9 @@ function Profile() {
   }
 
   const location = [person.city, countryName(person.country)].filter(Boolean).join(', ')
+  const wikipedia = person.sourceRecords.find((record) => record.sourceType === 'wikipedia')?.url
+  // Photo ka credit sirf jab wohi photo laga ho jis ka credit hai
+  const credit = person.photoUrl ? person.photoCredit : undefined
 
   return (
     <div className="space-y-6">
@@ -73,6 +77,7 @@ function Profile() {
             <div className="flex flex-wrap items-center gap-2">
               <h1 className="text-2xl font-bold md:text-3xl">{person.name}</h1>
               {person.verified && <VerifiedBadge />}
+              {!person.claimedBy && <UnclaimedBadge />}
             </div>
             {person.headline && <p className="mt-1 text-gray-600">{person.headline}</p>}
             <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-500">
@@ -122,7 +127,11 @@ function Profile() {
           )}
 
           <section className="space-y-4 rounded-2xl bg-white p-6 shadow-sm">
-            <TagList title={t('profile.professions')} items={person.professions} param="profession" />
+            <TagList
+              title={t('profile.professions')}
+              items={person.professions}
+              param="profession"
+            />
             <TagList title={t('profile.industries')} items={person.industries} param="industry" />
             <TagList title={t('profile.topics')} items={person.topics} param="topic" />
           </section>
@@ -132,8 +141,15 @@ function Profile() {
         <aside className="space-y-6">
           <section className="rounded-2xl bg-white p-6 shadow-sm">
             <h2 className="text-lg font-semibold">{t('profile.influence')}</h2>
-            <p className="mt-3 text-3xl font-bold">{formatCount(person.totalFollowers)}</p>
-            <p className="text-sm text-gray-500">{t('profile.totalFollowers')}</p>
+            {person.totalFollowers > 0 || person.socialAccounts.length > 0 ? (
+              <>
+                <p className="mt-3 text-3xl font-bold">{formatCount(person.totalFollowers)}</p>
+                <p className="text-sm text-gray-500">{t('profile.totalFollowers')}</p>
+              </>
+            ) : (
+              // Koi number ghar ke nahi likhte: claim / verify ke baad aate hain
+              <p className="mt-3 text-sm text-gray-500">{t('profile.noMetrics')}</p>
+            )}
 
             {person.socialAccounts.length > 0 && (
               <ul className="mt-5 divide-y divide-gray-100">
@@ -181,8 +197,50 @@ function Profile() {
 
           <section className="text-xs text-gray-500">
             <p>
-              {t('profile.sources', { date: new Date(person.updatedAt).toLocaleDateString(i18n.language) })}
+              {t('profile.sources', {
+                date: new Date(person.updatedAt).toLocaleDateString(i18n.language),
+              })}
             </p>
+            {wikipedia && (
+              <p className="mt-2">
+                {t('profile.sourceLabel')}{' '}
+                <a
+                  href={wikipedia}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-gray-700"
+                >
+                  Wikipedia
+                </a>
+              </p>
+            )}
+            {credit && (
+              <p className="mt-2">
+                {t('profile.photoLabel')}{' '}
+                <a
+                  href={credit.sourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-gray-700"
+                >
+                  {credit.provider}
+                </a>
+                {credit.author && <> · {credit.author}</>}
+                {' · '}
+                {credit.licenseUrl ? (
+                  <a
+                    href={credit.licenseUrl}
+                    target="_blank"
+                    rel="noopener noreferrer license"
+                    className="underline hover:text-gray-700"
+                  >
+                    {credit.license}
+                  </a>
+                ) : (
+                  credit.license
+                )}
+              </p>
+            )}
             <ReportProfileLink slug={person.slug} />
           </section>
         </aside>

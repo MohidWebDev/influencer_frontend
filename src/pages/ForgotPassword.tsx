@@ -37,9 +37,10 @@ function ForgotPassword() {
   const { resetPassword } = useAuth()
 
   const [step, setStep] = useState<Step>('email')
-  const [email, setEmail] = useState(
-    () => (location.state as { email?: string } | null)?.email ?? '',
-  )
+  const fromState = location.state as { email?: string; from?: string } | null
+  const [email, setEmail] = useState(() => fromState?.email ?? '')
+  // Settings se aaye (login hai) to wapas Settings, warna login page
+  const backTo = fromState?.from === '/settings' ? '/settings' : '/login'
   const [code, setCode] = useState('')
   const [resetToken, setResetToken] = useState('')
   const [password, setPassword] = useState('')
@@ -285,11 +286,11 @@ function ForgotPassword() {
 
       <p className="mt-6 text-center text-sm">
         <Link
-          to="/login"
+          to={backTo}
           className="inline-flex items-center gap-2 font-medium text-gray-600 hover:text-gray-900"
         >
           <FontAwesomeIcon icon={faArrowLeft} className="text-xs rtl:rotate-180" />
-          {t('forgot.backToLogin')}
+          {backTo === '/settings' ? t('forgot.backToSettings') : t('forgot.backToLogin')}
         </Link>
       </p>
     </section>

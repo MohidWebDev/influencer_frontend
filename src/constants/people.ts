@@ -36,7 +36,24 @@ export const PLATFORM_LABELS: Record<SocialPlatform, string> = translatedLabels(
 )
 
 // Pakistan pehle, phir Gulf (document Section 1)
-export const COUNTRY_OPTIONS = ['PK', 'AE', 'SA', 'QA', 'KW', 'BH', 'OM', 'GB', 'US']
+export const COUNTRY_OPTIONS = [
+  'PK',
+  'AE',
+  'SA',
+  'QA',
+  'KW',
+  'BH',
+  'OM',
+  'IN',
+  'EG',
+  'GB',
+  'IT',
+  'PT',
+  'US',
+  'CA',
+  'AR',
+  'BB',
+]
 
 export const LANGUAGE_OPTIONS = ['en', 'ur', 'ar', 'pa', 'sd', 'ps', 'hi', 'fa', 'tr', 'fr']
 

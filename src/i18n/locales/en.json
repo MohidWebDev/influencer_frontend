@@ -383,7 +383,9 @@
     "fixFields": "Please fix the highlighted fields",
     "noPermission": "You do not have permission to view this page.",
     "backToDashboard": "Back to dashboard",
-    "goToDashboard": "Go to dashboard"
+    "goToDashboard": "Go to dashboard",
+    "unclaimed": "Unclaimed profile",
+    "unclaimedTitle": "Built from public sources. The person hasn't claimed it yet."
   },
   "roleDesc": {
     "talent": "Creator, journalist, speaker, expert or public figure",
@@ -567,7 +569,10 @@
     "totalFollowers": "total followers across platforms",
     "engagement": "{{value}}% eng.",
     "website": "Website",
-    "sources": "Information on unclaimed profiles comes from public sources. Last updated {{date}}."
+    "sources": "Information on unclaimed profiles comes from public sources. Last updated {{date}}.",
+    "noMetrics": "Audience numbers appear once the person claims and verifies this profile.",
+    "sourceLabel": "Source:",
+    "photoLabel": "Photo:"
   },
   "register": {
     "title": "Create your account",
@@ -1056,7 +1061,10 @@
     "deleting": "Deleting...",
     "deleted": "Your account has been deleted",
     "switchToDark": "Switch to dark mode",
-    "switchToLight": "Switch to light mode"
+    "switchToLight": "Switch to light mode",
+    "forgotTitle": "Forgot your current password?",
+    "forgotText": "We'll email a 6-digit code to",
+    "forgotButton": "Reset with email code"
   },
   "forgot": {
     "link": "Forgot password?",
@@ -1085,6 +1093,7 @@
     "passwordText": "Code verified. Choose a strong password you haven't used before. You'll be signed out on other devices.",
     "savePassword": "Save and sign in",
     "done": "Password reset. Welcome back, {{name}}!",
-    "backToLogin": "Back to sign in"
+    "backToLogin": "Back to sign in",
+    "backToSettings": "Back to settings"
   }
 }

@@ -7,6 +7,7 @@ import { personQuery } from '../api/queries'
 import type { PersonSummary } from '../types/person'
 import { countryName, formatCount } from '../utils/format'
 import Avatar from './Avatar'
+import UnclaimedBadge from './UnclaimedBadge'
 import VerifiedBadge from './VerifiedBadge'
 
 function PersonCard({ person }: { person: PersonSummary }) {
@@ -34,6 +35,7 @@ function PersonCard({ person }: { person: PersonSummary }) {
         <div className="flex flex-wrap items-center gap-2">
           <h3 className="font-semibold">{person.name}</h3>
           {person.verified && <VerifiedBadge />}
+          {person.claimedBy === null && <UnclaimedBadge />}
         </div>
         {person.headline && (
           <p className="mt-0.5 line-clamp-2 text-sm text-gray-600">{person.headline}</p>

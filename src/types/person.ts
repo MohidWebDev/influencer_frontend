@@ -41,6 +41,8 @@ export interface PersonSummary {
   totalFollowers: number
   verified: boolean
   isDemo: boolean
+  // null = abhi kisi ne claim nahi kiya
+  claimedBy?: string | null
 }
 
 // Profile page ka poora version
@@ -52,6 +54,14 @@ export interface Person extends PersonSummary {
   websiteUrl?: string
   socialAccounts: SocialAccount[]
   claimedBy: string | null
+  // Photo kahan se aayi (jaise Wikimedia Commons) aur license
+  photoCredit?: {
+    provider: string
+    author?: string
+    license: string
+    licenseUrl?: string
+    sourceUrl: string
+  }
   visibility: 'visible' | 'hidden'
   sourceRecords: { sourceType: string; url?: string; note?: string; retrievedAt: string }[]
   createdAt: string

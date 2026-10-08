@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
+  faEnvelopeOpenText,
   faDisplay,
   faKey,
   faMoon,
@@ -118,7 +120,7 @@ function AppearanceSection() {
 
 function PasswordSection() {
   const { t } = useTranslation()
-  const { changePassword } = useAuth()
+  const { user, changePassword } = useAuth()
   const [current, setCurrent] = useState('')
   const [next, setNext] = useState('')
   const [confirm, setConfirm] = useState('')
@@ -193,6 +195,29 @@ function PasswordSection() {
           {isSubmitting ? t('settings.saving') : t('settings.updatePassword')}
         </button>
       </form>
+
+      {/* Purana password yaad nahi: email pe code se naya password */}
+      <div className="mt-6 flex flex-col gap-3 rounded-xl bg-gray-50 p-4 ring-1 ring-gray-200/70 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-start gap-3">
+          <FontAwesomeIcon icon={faEnvelopeOpenText} className="mt-0.5 text-gray-500" />
+          <div>
+            <p className="text-sm font-semibold text-gray-900">{t('settings.forgotTitle')}</p>
+            <p className="text-sm text-gray-500">
+              {t('settings.forgotText')}{' '}
+              <span dir="ltr" className="font-medium break-all text-gray-700">
+                {user?.email}
+              </span>
+            </p>
+          </div>
+        </div>
+        <Link
+          to="/forgot-password"
+          state={{ email: user?.email, from: '/settings' }}
+          className="shrink-0 rounded-xl border border-gray-300 bg-white px-4 py-2 text-center text-sm font-medium hover:bg-gray-100"
+        >
+          {t('settings.forgotButton')}
+        </Link>
+      </div>
     </Section>
   )
 }
