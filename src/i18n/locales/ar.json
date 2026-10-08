@@ -126,7 +126,6 @@
     "colStatus": "الحالة",
     "colJoined": "تاريخ الانضمام",
     "colActions": "الإجراءات",
-    "you": "أنت",
     "active": "نشط",
     "suspended": "موقوف",
     "suspend": "إيقاف",
@@ -140,8 +139,7 @@
     "roleBody": "{{from}} ← {{to}}. سيحتاجون إلى تسجيل الدخول مجدداً.",
     "suspendedToast": "تم إيقاف المستخدم",
     "unsuspendedToast": "تمت إعادة تفعيل المستخدم",
-    "roleToast": "تم تحديث الدور",
-    "selfHint": "لا يمكنك تغيير حسابك."
+    "roleToast": "تم تحديث الدور"
   },
   "reportStatus": {
     "open": "مفتوح",

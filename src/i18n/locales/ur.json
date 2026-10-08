@@ -126,7 +126,6 @@
     "colStatus": "حالت",
     "colJoined": "شمولیت",
     "colActions": "کارروائیاں",
-    "you": "آپ",
     "active": "فعال",
     "suspended": "معطل",
     "suspend": "معطل کریں",
@@ -140,8 +139,7 @@
     "roleBody": "{{from}} → {{to}}۔ انہیں دوبارہ لاگ ان کرنا ہوگا۔",
     "suspendedToast": "صارف معطل ہو گیا",
     "unsuspendedToast": "صارف بحال ہو گیا",
-    "roleToast": "کردار تبدیل ہو گیا",
-    "selfHint": "آپ اپنا اکاؤنٹ تبدیل نہیں کر سکتے۔"
+    "roleToast": "کردار تبدیل ہو گیا"
   },
   "reportStatus": {
     "open": "کھلی",

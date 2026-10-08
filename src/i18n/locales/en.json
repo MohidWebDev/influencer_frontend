@@ -126,7 +126,6 @@
     "colStatus": "Status",
     "colJoined": "Joined",
     "colActions": "Actions",
-    "you": "You",
     "active": "Active",
     "suspended": "Suspended",
     "suspend": "Suspend",
@@ -140,8 +139,7 @@
     "roleBody": "{{from}} → {{to}}. They will need to log in again.",
     "suspendedToast": "User suspended",
     "unsuspendedToast": "User unsuspended",
-    "roleToast": "Role updated",
-    "selfHint": "You cannot change your own account."
+    "roleToast": "Role updated"
   },
   "reportStatus": {
     "open": "Open",

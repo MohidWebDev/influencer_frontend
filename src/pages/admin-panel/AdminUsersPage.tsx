@@ -12,7 +12,6 @@ import ConfirmDialog from '../../components/admin-panel/ConfirmDialog'
 import DataState from '../../components/admin-panel/DataState'
 import PageHeader from '../../components/admin-panel/PageHeader'
 import StatusPill from '../../components/admin-panel/StatusPill'
-import { useAuth } from '../../hooks/useAuth'
 import type { AdminUser } from '../../types/adminPanel'
 import type { Role } from '../../types/user'
 import { adminErrorMessage, formatDate } from '../../utils/adminFormat'
@@ -26,7 +25,6 @@ type Pending =
 
 function AdminUsersPage() {
   const { t } = useTranslation()
-  const { user: me } = useAuth()
   const queryClient = useQueryClient()
   const [params, setParams] = useSearchParams()
   const [search, setSearch] = useState(params.get('q') ?? '')
@@ -164,22 +162,15 @@ function AdminUsersPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
+              {/* Login wala admin backend se hi list mein nahi aata */}
               {data?.users.map((user) => {
-                const isMe = user._id === me?._id
                 return (
                   <tr key={user._id} className="hover:bg-gray-50">
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
                         <Avatar name={user.name} size="sm" />
                         <div className="min-w-0">
-                          <p className="font-medium">
-                            {user.name}
-                            {isMe && (
-                              <span className="ms-2 rounded-full bg-gray-900 px-2 py-0.5 text-xs text-white">
-                                {t('users.you')}
-                              </span>
-                            )}
-                          </p>
+                          <p className="font-medium">{user.name}</p>
                           <p className="truncate text-xs text-gray-500">{user.email}</p>
                         </div>
                       </div>
@@ -188,8 +179,6 @@ function AdminUsersPage() {
                       <select
                         aria-label={t('users.colRole')}
                         value={user.role}
-                        disabled={isMe}
-                        title={isMe ? t('users.selfHint') : undefined}
                         onChange={(e) =>
                           setPending({ kind: 'role', user, role: e.target.value as Role })
                         }
@@ -207,9 +196,7 @@ function AdminUsersPage() {
                     </td>
                     <td className="px-4 py-3 text-gray-600">{formatDate(user.createdAt)}</td>
                     <td className="px-4 py-3 text-end">
-                      {isMe ? (
-                        <span className="text-xs text-gray-400">{t('users.selfHint')}</span>
-                      ) : user.status === 'active' ? (
+                      {user.status === 'active' ? (
                         <button
                           onClick={() => setPending({ kind: 'status', user, status: 'suspended' })}
                           className="inline-flex items-center gap-2 rounded-lg border border-red-200 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50"
