@@ -66,6 +66,15 @@ function Login() {
           error={errors.password}
           required
         />
+        <div className="-mt-2 text-end">
+          <Link
+            to="/forgot-password"
+            state={{ email }}
+            className="text-sm font-medium text-gray-600 underline-offset-4 hover:text-gray-900 hover:underline"
+          >
+            {t('forgot.link')}
+          </Link>
+        </div>
         <button
           type="submit"
           disabled={isSubmitting}

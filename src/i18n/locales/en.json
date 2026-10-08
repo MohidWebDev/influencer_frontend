@@ -523,7 +523,10 @@
     "POSSIBLE_DUPLICATE": "A profile like this already exists",
     "PROFILE_PENDING_REVIEW": "This profile is waiting for its claim to be approved",
     "WRONG_PASSWORD": "Current password is incorrect",
-    "CONFIRMATION_MISMATCH": "The confirmation text doesn't match"
+    "CONFIRMATION_MISMATCH": "The confirmation text doesn't match",
+    "RESET_EXPIRED": "This reset session has expired. Please start again.",
+    "EMAIL_FAILED": "We couldn't send the email. Please try again.",
+    "EMAIL_NOT_CONFIGURED": "Password reset by email isn't available right now. Please contact support."
   },
   "search": {
     "any": "Any",
@@ -1051,6 +1054,37 @@
     "typeToConfirm": "To confirm, type",
     "deleteForever": "Delete my account",
     "deleting": "Deleting...",
-    "deleted": "Your account has been deleted"
+    "deleted": "Your account has been deleted",
+    "switchToDark": "Switch to dark mode",
+    "switchToLight": "Switch to light mode"
+  },
+  "forgot": {
+    "link": "Forgot password?",
+    "step": "Step {{current}} of {{total}}",
+    "emailTitle": "Forgot your password?",
+    "emailText": "Enter the email you signed up with. Our support team will email you a 6-digit code to reset it.",
+    "sendCode": "Send code",
+    "sending": "Sending...",
+    "codeSent": "Check your inbox for the code",
+    "codeTitle": "Check your email",
+    "codeText": "If an account exists, we sent a {{count}}-digit code to",
+    "codeLabel": "Verification code digit",
+    "spamHint": "The code expires in 10 minutes. Can't find it? Check your spam folder.",
+    "verify": "Verify code",
+    "verifying": "Checking...",
+    "changeEmail": "Use a different email",
+    "resend": "Resend code",
+    "resendIn": "Resend in {{seconds}}s",
+    "attemptsLeft": "That code is not correct. {{count}} attempt(s) left.",
+    "errors": {
+      "email": "Enter a valid email",
+      "expired": "This code has expired. Tap “Resend code” to get a new one.",
+      "locked": "Too many wrong attempts. Tap “Resend code” to get a new one."
+    },
+    "passwordTitle": "Set a new password",
+    "passwordText": "Code verified. Choose a strong password you haven't used before. You'll be signed out on other devices.",
+    "savePassword": "Save and sign in",
+    "done": "Password reset. Welcome back, {{name}}!",
+    "backToLogin": "Back to sign in"
   }
 }

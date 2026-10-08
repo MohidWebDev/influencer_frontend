@@ -10,6 +10,8 @@ export interface AuthContextValue {
   register: (input: RegisterInput) => Promise<User>
   logout: () => Promise<void>
   changePassword: (currentPassword: string, newPassword: string) => Promise<void>
+  // Email wale code ke baad naya password; user khud login ho jata hai
+  resetPassword: (email: string, resetToken: string, newPassword: string) => Promise<User>
   // confirm = "delete <naam>"
   deleteAccount: (confirm: string) => Promise<void>
   // Light / dark / system: har user (aur guest) ki apni pasand, is device pe

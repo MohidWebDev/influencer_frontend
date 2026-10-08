@@ -9,6 +9,7 @@ import {
   loginUser,
   logoutUser,
   registerUser,
+  resetPasswordRequest,
 } from '../api/auth'
 import { applyTheme, getStoredTheme, saveTheme, type ThemePreference } from '../utils/theme'
 import type { LoginInput, RegisterInput } from '../api/auth'
@@ -68,6 +69,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await changePasswordRequest({ currentPassword, newPassword })
   }
 
+  async function resetPassword(email: string, resetToken: string, newPassword: string) {
+    const loggedIn = await resetPasswordRequest({ email, resetToken, newPassword })
+    // Kisi aur account ka purana data na reh jaye
+    queryClient.removeQueries({ predicate: (query) => query.queryKey[0] !== ME_KEY[0] })
+    queryClient.setQueryData<User | null>(ME_KEY, loggedIn)
+    return loggedIn
+  }
+
   async function deleteAccount(confirm: string) {
     await deleteAccountRequest(confirm)
     // Pehle Home pe jao, session wahan pohanch kar saaf hoga (neeche effect).
@@ -111,6 +120,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         logout,
         changePassword,
         deleteAccount,
+        resetPassword,
         theme,
         setTheme,
       }}

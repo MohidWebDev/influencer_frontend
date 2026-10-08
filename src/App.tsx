@@ -16,6 +16,7 @@ import Notifications from './pages/Notifications'
 import CreateMyProfile from './pages/dashboards/CreateMyProfile'
 import ComingSoon from './pages/ComingSoon'
 import Settings from './pages/Settings'
+import ForgotPassword from './pages/ForgotPassword'
 import MyProfileRedirect from './pages/MyProfileRedirect'
 import { faBriefcase, faEnvelope, faStar, faUsers } from '@fortawesome/free-solid-svg-icons'
 import AdminPersonEditor from './pages/admin/AdminPersonEditor'
@@ -121,6 +122,7 @@ function App() {
         />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route
           path="/dashboard"
           element={

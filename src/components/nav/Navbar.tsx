@@ -28,6 +28,7 @@ import CountBadge from '../CountBadge'
 import Avatar from '../Avatar'
 import AccountMenu from './AccountMenu'
 import LanguageMenu from './LanguageMenu'
+import ThemeToggle from './ThemeToggle'
 
 // Bell ke kone pe laal ginti (0 ho to kuch nahi)
 function BellCount({ count }: { count: number }) {
@@ -77,7 +78,10 @@ function Navbar() {
       {/* Desktop (xl, 1280px+): brand bilkul start pe, links beech mein, baqi sab bilkul end pe.
           Chhoti screen pe ☰ menu, kyun ke talent ke zyada links 1024px pe brand se takrate hain */}
       <nav className="flex items-center gap-3 px-4 py-3 sm:px-6 xl:grid xl:grid-cols-[1fr_auto_1fr] lg:px-8">
-        <TopLink to="/" className="me-2 truncate text-base font-bold sm:text-xl xl:justify-self-start">
+        <TopLink
+          to="/"
+          className="me-2 truncate text-base font-bold sm:text-xl xl:justify-self-start"
+        >
           {PLATFORM_NAME}
         </TopLink>
 
@@ -93,6 +97,7 @@ function Navbar() {
 
         {/* Desktop: right side */}
         <div className="ms-auto hidden items-center gap-1 xl:flex xl:justify-self-end">
+          <ThemeToggle />
           <LanguageMenu />
           {!isLoading &&
             (user ? (
@@ -138,6 +143,7 @@ function Navbar() {
 
         {/* Mobile: notifications + menu button */}
         <div className="ms-auto flex items-center gap-1 xl:hidden">
+          <ThemeToggle />
           {user && (
             <TopLink
               to="/notifications"

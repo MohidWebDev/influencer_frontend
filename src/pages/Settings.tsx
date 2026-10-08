@@ -6,8 +6,6 @@ import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faDisplay,
-  faEye,
-  faEyeSlash,
   faKey,
   faMoon,
   faPalette,
@@ -16,6 +14,7 @@ import {
   faTriangleExclamation,
   faXmark,
 } from '@fortawesome/free-solid-svg-icons'
+import PasswordField from '../components/PasswordField'
 import { useAuth } from '../hooks/useAuth'
 import { getApiError } from '../utils/apiError'
 import type { ThemePreference } from '../utils/theme'
@@ -59,54 +58,6 @@ function Section({
       </div>
       <div className="mt-5">{children}</div>
     </section>
-  )
-}
-
-function PasswordField({
-  id,
-  label,
-  value,
-  onChange,
-  error,
-  autoComplete,
-}: {
-  id: string
-  label: string
-  value: string
-  onChange: (value: string) => void
-  error?: string
-  autoComplete: string
-}) {
-  const { t } = useTranslation()
-  const [visible, setVisible] = useState(false)
-  return (
-    <div>
-      <label htmlFor={id} className="mb-1 block text-sm font-medium">
-        {label}
-      </label>
-      <div className="relative">
-        <input
-          id={id}
-          type={visible ? 'text' : 'password'}
-          autoComplete={autoComplete}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          aria-invalid={Boolean(error)}
-          className={`w-full rounded-lg border bg-white py-2 ps-3 pe-10 outline-none focus:ring-2 focus:ring-gray-900 ${
-            error ? 'border-red-500' : 'border-gray-300'
-          }`}
-        />
-        <button
-          type="button"
-          onClick={() => setVisible((v) => !v)}
-          aria-label={visible ? t('settings.hidePassword') : t('settings.showPassword')}
-          className="absolute inset-y-0 end-0 flex w-10 items-center justify-center text-gray-400 hover:text-gray-700"
-        >
-          <FontAwesomeIcon icon={visible ? faEyeSlash : faEye} />
-        </button>
-      </div>
-      {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
-    </div>
   )
 }
 
