@@ -1,0 +1,249 @@
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import toast from 'react-hot-toast'
+import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faBell,
+  faCheckDouble,
+  faCircleCheck,
+  faCircleXmark,
+  faFlag,
+  faKey,
+  faLock,
+  faUserCheck,
+  faUserPlus,
+  faIdCard,
+} from '@fortawesome/free-solid-svg-icons'
+import {
+  NOTIFICATIONS_PAGE_SIZE,
+  listNotifications,
+  markAllNotificationsRead,
+  markNotificationRead,
+} from '../api/notifications'
+import type { AppNotification, NotificationType } from '../types/notification'
+import { getApiError } from '../utils/apiError'
+
+// Har type ka icon aur rang
+const LOOK: Record<NotificationType, { icon: IconDefinition; tint: string }> = {
+  'claim.new': { icon: faUserCheck, tint: 'bg-blue-50 text-blue-700' },
+  'claim.new_profile': { icon: faUserPlus, tint: 'bg-violet-50 text-violet-700' },
+  'claim.code_verified': { icon: faCircleCheck, tint: 'bg-green-50 text-green-700' },
+  'claim.otp_locked': { icon: faLock, tint: 'bg-red-50 text-red-700' },
+  'report.new': { icon: faFlag, tint: 'bg-amber-50 text-amber-700' },
+  'claim.code_sent': { icon: faKey, tint: 'bg-yellow-50 text-yellow-800' },
+  'claim.approved': { icon: faIdCard, tint: 'bg-green-50 text-green-700' },
+  'claim.rejected': { icon: faCircleXmark, tint: 'bg-gray-100 text-gray-600' },
+}
+
+// "5 minutes ago" chuni hui zaban mein
+function timeAgo(iso: string, lang: string) {
+  const seconds = Math.round((new Date(iso).getTime() - Date.now()) / 1000)
+  const rtf = new Intl.RelativeTimeFormat(lang, { numeric: 'auto' })
+  const steps: [Intl.RelativeTimeFormatUnit, number][] = [
+    ['year', 31536000],
+    ['month', 2592000],
+    ['week', 604800],
+    ['day', 86400],
+    ['hour', 3600],
+    ['minute', 60],
+  ]
+  for (const [unit, size] of steps) {
+    if (Math.abs(seconds) >= size) return rtf.format(Math.round(seconds / size), unit)
+  }
+  return rtf.format(0, 'second')
+}
+
+// /notifications -> har user ki apni notifications. Click pe parh li + us page pe
+function Notifications() {
+  const { t, i18n } = useTranslation()
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
+  const [unreadOnly, setUnreadOnly] = useState(false)
+
+  const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ['notifications', 'list', unreadOnly],
+      queryFn: ({ pageParam }) => listNotifications(pageParam, unreadOnly),
+      initialPageParam: 1,
+      getNextPageParam: (last) =>
+        last.meta.page * NOTIFICATIONS_PAGE_SIZE < last.meta.total ? last.meta.page + 1 : undefined,
+    })
+
+  const items = data?.pages.flatMap((page) => page.notifications) ?? []
+  const unread = data?.pages[0]?.unread ?? 0
+
+  const refresh = () => queryClient.invalidateQueries({ queryKey: ['notifications'] })
+
+  const open = useMutation({
+    mutationFn: async (notification: AppNotification) => {
+      if (!notification.readAt) await markNotificationRead(notification._id)
+      return notification
+    },
+    onSuccess: (notification) => {
+      refresh()
+      navigate(notification.link)
+    },
+    onError: (error) => toast.error(getApiError(error).message),
+  })
+
+  const readAll = useMutation({
+    mutationFn: markAllNotificationsRead,
+    onSuccess: () => {
+      toast.success(t('notifications.allRead'))
+      refresh()
+    },
+    onError: (error) => toast.error(getApiError(error).message),
+  })
+
+  const tab = (active: boolean) =>
+    `rounded-lg px-3 py-1.5 text-sm font-medium transition ${
+      active ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-900'
+    }`
+
+  return (
+    <div className="mx-auto max-w-3xl space-y-6">
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight md:text-3xl">
+            {t('notifications.title')}
+          </h1>
+          <p className="mt-1 text-sm text-gray-500">
+            {unread > 0
+              ? t('notifications.unreadCount', { count: unread })
+              : t('notifications.allCaughtUp')}
+          </p>
+        </div>
+        {unread > 0 && (
+          <button
+            type="button"
+            onClick={() => readAll.mutate()}
+            disabled={readAll.isPending}
+            className="inline-flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-medium hover:bg-gray-100 disabled:opacity-60"
+          >
+            <FontAwesomeIcon icon={faCheckDouble} />
+            {t('notifications.markAllRead')}
+          </button>
+        )}
+      </div>
+
+      <div className="inline-flex rounded-xl bg-gray-100 p-1" role="tablist">
+        <button
+          type="button"
+          role="tab"
+          aria-selected={!unreadOnly}
+          onClick={() => setUnreadOnly(false)}
+          className={tab(!unreadOnly)}
+        >
+          {t('notifications.all')}
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={unreadOnly}
+          onClick={() => setUnreadOnly(true)}
+          className={tab(unreadOnly)}
+        >
+          {t('notifications.unread')}
+          {unread > 0 && (
+            <span className="ms-1.5 rounded-full bg-red-600 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+              {unread}
+            </span>
+          )}
+        </button>
+      </div>
+
+      {isLoading && (
+        <div className="space-y-2">
+          {Array.from({ length: 5 }, (_, i) => (
+            <div key={i} className="h-20 animate-pulse rounded-2xl bg-gray-200/70" />
+          ))}
+        </div>
+      )}
+      {isError && (
+        <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
+          {t('common.error')}
+        </p>
+      )}
+
+      {!isLoading && !isError && items.length === 0 && (
+        <div className="rounded-3xl border border-dashed border-gray-300 bg-white px-6 py-14 text-center">
+          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 text-gray-500">
+            <FontAwesomeIcon icon={faBell} />
+          </span>
+          <p className="mt-4 font-semibold">
+            {unreadOnly ? t('notifications.noUnread') : t('notifications.empty')}
+          </p>
+          <p className="mt-1 text-sm text-gray-500">{t('notifications.emptyHint')}</p>
+        </div>
+      )}
+
+      {items.length > 0 && (
+        <ul className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-gray-200/70">
+          {items.map((notification) => {
+            const look = LOOK[notification.type] ?? LOOK['claim.new']
+            const isUnread = !notification.readAt
+            return (
+              <li key={notification._id} className="border-b border-gray-100 last:border-b-0">
+                <button
+                  type="button"
+                  onClick={() => open.mutate(notification)}
+                  className={`flex w-full items-start gap-4 px-4 py-4 text-start transition hover:bg-gray-50 sm:px-5 ${
+                    isUnread ? 'bg-blue-50/40' : ''
+                  }`}
+                >
+                  <span
+                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${look.tint}`}
+                  >
+                    <FontAwesomeIcon icon={look.icon} />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span
+                      className={`block text-sm leading-relaxed ${isUnread ? 'font-semibold text-gray-900' : 'text-gray-700'}`}
+                    >
+                      {t(`notifications.types.${notification.type.replace('.', '_')}`, {
+                        person: notification.data.person ?? t('claims.deletedProfile'),
+                        claimant: notification.data.claimant ?? t('claims.deletedUser'),
+                        reason: notification.data.reason
+                          ? t(`reportReason.${notification.data.reason}`, {
+                              defaultValue: notification.data.reason,
+                            })
+                          : '',
+                      })}
+                    </span>
+                    <span className="mt-1 block text-xs text-gray-500">
+                      {timeAgo(notification.createdAt, i18n.language)}
+                    </span>
+                  </span>
+                  {isUnread && (
+                    <span
+                      className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-blue-600"
+                      aria-label={t('notifications.unread')}
+                    />
+                  )}
+                </button>
+              </li>
+            )
+          })}
+        </ul>
+      )}
+
+      {hasNextPage && (
+        <div className="text-center">
+          <button
+            type="button"
+            onClick={() => fetchNextPage()}
+            disabled={isFetchingNextPage}
+            className="rounded-xl border border-gray-300 bg-white px-5 py-2 text-sm font-medium hover:bg-gray-100 disabled:opacity-60"
+          >
+            {isFetchingNextPage ? t('common.loading') : t('notifications.loadMore')}
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default Notifications

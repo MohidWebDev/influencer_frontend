@@ -21,12 +21,22 @@ import {
   type NavItem,
 } from '../../constants/navigation'
 import { ROLE_LABELS } from '../../constants/roles'
-import { useAdminAlerts } from '../../hooks/useAdminAlerts'
+import { useUnreadNotifications } from '../../hooks/useUnreadNotifications'
 import { useAuth } from '../../hooks/useAuth'
 import CountBadge from '../CountBadge'
 import Avatar from '../Avatar'
 import AccountMenu from './AccountMenu'
 import LanguageMenu from './LanguageMenu'
+
+// Bell ke kone pe laal ginti (0 ho to kuch nahi)
+function BellCount({ count }: { count: number }) {
+  if (count <= 0) return null
+  return (
+    <span className="absolute -end-0.5 -top-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-bold leading-none text-white ring-2 ring-white">
+      {count > 99 ? '99+' : count}
+    </span>
+  )
+}
 
 function Navbar() {
   const { t } = useTranslation()
@@ -43,7 +53,7 @@ function Navbar() {
   }
 
   const role = user?.role
-  const alerts = useAdminAlerts()
+  const unread = useUnreadNotifications()
   const mainItems = MAIN_NAV.filter((item) => canSee(item, role))
   const utilityItems = UTILITY_NAV.filter((item) => canSee(item, role))
   const active = (item: NavItem) => isNavActive(item, pathname, search)
@@ -76,7 +86,6 @@ function Navbar() {
             <Link key={item.to} to={item.to} className={linkClass(active(item))}>
               <FontAwesomeIcon icon={item.icon} />
               {item.label}
-              {item.to === '/admin' && <CountBadge count={alerts.total} />}
             </Link>
           ))}
         </div>
@@ -93,9 +102,10 @@ function Navbar() {
                     to={item.to}
                     title={item.label}
                     aria-label={item.label}
-                    className={iconButton(active(item))}
+                    className={`relative ${iconButton(active(item))}`}
                   >
                     <FontAwesomeIcon icon={item.icon} />
+                    {item.to === '/notifications' && <BellCount count={unread} />}
                   </Link>
                 ))}
                 {showDashboard && (
@@ -131,10 +141,11 @@ function Navbar() {
             <Link
               to="/notifications"
               aria-label={t('site.nav.notifications')}
-              className={iconButton(pathname === '/notifications')}
+              className={`relative ${iconButton(pathname === '/notifications')}`}
               onClick={() => setMobileOpen(false)}
             >
               <FontAwesomeIcon icon={UTILITY_NAV[1].icon} />
+              <BellCount count={unread} />
             </Link>
           )}
           <button
@@ -177,7 +188,7 @@ function Navbar() {
                   >
                     <FontAwesomeIcon icon={item.icon} className="w-4" />
                     {item.label}
-                    {item.to === '/admin' && <CountBadge count={alerts.total} />}
+                    {item.to === '/notifications' && <CountBadge count={unread} />}
                   </Link>
                 </li>
               ))}

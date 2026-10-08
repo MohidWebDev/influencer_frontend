@@ -3,7 +3,8 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import { myClaimsQuery } from '../api/queries'
-import { useAdminAlerts } from '../hooks/useAdminAlerts'
+import { useNavigate } from 'react-router-dom'
+import { useUnreadNotifications } from '../hooks/useUnreadNotifications'
 import { useAuth } from '../hooks/useAuth'
 import { claimPersonName, type ClaimStatus } from '../types/claim'
 
@@ -22,7 +23,10 @@ function LiveUpdates() {
     // Admin ko admin ka sara data, baqi users ko apne claims aur profile
     const refresh = () => {
       if (document.visibilityState !== 'visible') return
-      const keys = role === 'admin' ? [['admin'], ['claims']] : [['claims']]
+      const keys =
+        role === 'admin'
+          ? [['admin'], ['claims'], ['notifications']]
+          : [['claims'], ['notifications']]
       // Sirf screen pe maujood (active) queries dobara chalti hain
       keys.forEach((queryKey) => queryClient.invalidateQueries({ queryKey, refetchType: 'active' }))
     }
@@ -41,25 +45,35 @@ function LiveUpdates() {
   return null
 }
 
-// Naya claim ya report aaye to admin ko batao
+// Nayi notification aaye (unread ginti badhe) to admin ko toast; click pe Notifications page
 function AdminNotifier() {
   const { t } = useTranslation()
-  const { claims, reports, isReady } = useAdminAlerts()
-  const previous = useRef<{ claims: number; reports: number } | null>(null)
+  const navigate = useNavigate()
+  const unread = useUnreadNotifications()
+  const previous = useRef<number | null>(null)
 
   useEffect(() => {
-    if (!isReady) return
     const before = previous.current
-    previous.current = { claims, reports }
+    previous.current = unread
     // Pehli dafa sirf yaad rakho, toast nahi
-    if (!before) return
-    if (claims > before.claims) {
-      toast(t('live.claimsNeedAction', { count: claims }), { icon: '🔔', id: 'live-claims' })
-    }
-    if (reports > before.reports) {
-      toast(t('live.newReport', { count: reports }), { icon: '🚩', id: 'live-reports' })
-    }
-  }, [claims, reports, isReady, t])
+    if (before === null || unread <= before) return
+    toast(
+      (toastItem) => (
+        <button
+          type="button"
+          className="text-start"
+          onClick={() => {
+            toast.dismiss(toastItem.id)
+            navigate('/notifications')
+          }}
+        >
+          {t('live.newNotifications', { count: unread - before })}
+          <span className="mt-0.5 block text-xs font-medium underline">{t('live.openNotifications')}</span>
+        </button>
+      ),
+      { icon: '🔔', id: 'live-notifications', duration: 6000 },
+    )
+  }, [unread, t, navigate])
 
   return null
 }

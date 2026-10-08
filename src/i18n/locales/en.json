@@ -833,11 +833,11 @@
     "rejectClaim": "Reject claim"
   },
   "live": {
-    "claimsNeedAction": "New claim activity: {{count}} claim(s) need your action.",
-    "newReport": "New report received. Open reports: {{count}}.",
     "codeSent": "A verification code for {{name}} was sent to {{url}}. Enter it on your dashboard.",
     "approved": "Your claim for {{name}} was approved. The profile is now yours.",
-    "rejected": "Your claim for {{name}} was rejected."
+    "rejected": "Your claim for {{name}} was rejected.",
+    "newNotifications": "You have {{count}} new notification(s)",
+    "openNotifications": "Open notifications"
   },
   "claimOtp": {
     "attemptsUsed": "{{count}} / {{max}} wrong attempts",
@@ -961,5 +961,28 @@
     "draftBadge": "New profile · pending",
     "draftPending": "Pending claim",
     "draftHint": "Goes public when its claim is approved"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "unreadCount": "You have {{count}} unread notification(s).",
+    "allCaughtUp": "You're all caught up.",
+    "markAllRead": "Mark all as read",
+    "allRead": "All notifications marked as read",
+    "all": "All",
+    "unread": "Unread",
+    "empty": "No notifications yet",
+    "noUnread": "No unread notifications",
+    "emptyHint": "We'll let you know when something needs your attention.",
+    "loadMore": "Load more",
+    "types": {
+      "claim_new": "{{claimant}} claimed the profile {{person}}. Send them a verification code.",
+      "claim_new_profile": "{{claimant}} couldn't find their profile and submitted a new one: {{person}}.",
+      "claim_code_verified": "{{claimant}} entered the correct code for {{person}}. The claim is ready to approve.",
+      "claim_otp_locked": "{{claimant}} entered a wrong code 5 times for {{person}}. The claim is locked.",
+      "report_new": "New report about {{person}}: {{reason}}.",
+      "claim_code_sent": "We sent a verification code for {{person}} to your official account. Enter it on your dashboard.",
+      "claim_approved": "Your claim for {{person}} was approved. The profile is now yours.",
+      "claim_rejected": "Your claim for {{person}} was rejected."
+    }
   }
 }

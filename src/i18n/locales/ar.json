@@ -833,11 +833,11 @@
     "rejectClaim": "رفض المطالبة"
   },
   "live": {
-    "claimsNeedAction": "نشاط جديد: {{count}} مطالبة بانتظار إجرائك.",
-    "newReport": "وصل بلاغ جديد. البلاغات المفتوحة: {{count}}.",
     "codeSent": "أُرسل رمز تحقق لـ{{name}} إلى {{url}}. أدخله في لوحة التحكم.",
     "approved": "تمت الموافقة على مطالبتك بـ{{name}}. الملف أصبح لك.",
-    "rejected": "تم رفض مطالبتك بـ{{name}}."
+    "rejected": "تم رفض مطالبتك بـ{{name}}.",
+    "newNotifications": "لديك {{count}} إشعار جديد",
+    "openNotifications": "افتح الإشعارات"
   },
   "claimOtp": {
     "attemptsUsed": "{{count}} / {{max}} محاولات خاطئة",
@@ -961,5 +961,28 @@
     "draftBadge": "ملف جديد · قيد المراجعة",
     "draftPending": "بانتظار المطالبة",
     "draftHint": "يُنشر عند قبول المطالبة"
+  },
+  "notifications": {
+    "title": "الإشعارات",
+    "unreadCount": "لديك {{count}} إشعار غير مقروء.",
+    "allCaughtUp": "لقد اطلعت على كل شيء.",
+    "markAllRead": "تحديد الكل كمقروء",
+    "allRead": "تم تحديد كل الإشعارات كمقروءة",
+    "all": "الكل",
+    "unread": "غير مقروءة",
+    "empty": "لا توجد إشعارات بعد",
+    "noUnread": "لا توجد إشعارات غير مقروءة",
+    "emptyHint": "سنخبرك عندما يحتاج شيء إلى انتباهك.",
+    "loadMore": "عرض المزيد",
+    "types": {
+      "claim_new": "طالب {{claimant}} بالملف {{person}}. أرسل له رمز التحقق.",
+      "claim_new_profile": "لم يجد {{claimant}} ملفه فأرسل ملفاً جديداً: {{person}}.",
+      "claim_code_verified": "أدخل {{claimant}} الرمز الصحيح لـ{{person}}. المطالبة جاهزة للموافقة.",
+      "claim_otp_locked": "أدخل {{claimant}} رمزاً خاطئاً 5 مرات لـ{{person}}. المطالبة مقفلة.",
+      "report_new": "بلاغ جديد عن {{person}}: {{reason}}.",
+      "claim_code_sent": "أرسلنا رمز التحقق لـ{{person}} إلى حسابك الرسمي. أدخله في لوحة التحكم.",
+      "claim_approved": "تمت الموافقة على مطالبتك بـ{{person}}. الملف أصبح لك.",
+      "claim_rejected": "تم رفض مطالبتك بـ{{person}}."
+    }
   }
 }

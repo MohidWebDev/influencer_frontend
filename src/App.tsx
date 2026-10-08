@@ -12,11 +12,11 @@ import Dashboard from './pages/Dashboard'
 import NotFound from './pages/NotFound'
 import Browse from './pages/Browse'
 import About from './pages/About'
+import Notifications from './pages/Notifications'
 import CreateMyProfile from './pages/dashboards/CreateMyProfile'
 import ComingSoon from './pages/ComingSoon'
 import MyProfileRedirect from './pages/MyProfileRedirect'
 import {
-  faBell,
   faBriefcase,
   faEnvelope,
   faGear,
@@ -79,7 +79,7 @@ function App() {
           path="/notifications"
           element={
             <ProtectedRoute>
-              <ComingSoon page="notifications" icon={faBell} />
+              <Notifications />
             </ProtectedRoute>
           }
         />
