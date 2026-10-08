@@ -16,9 +16,10 @@ import Notifications from './pages/Notifications'
 import CreateMyProfile from './pages/dashboards/CreateMyProfile'
 import ComingSoon from './pages/ComingSoon'
 import Settings from './pages/Settings'
+import ServicesPage from './pages/dashboards/ServicesPage'
 import ForgotPassword from './pages/ForgotPassword'
 import MyProfileRedirect from './pages/MyProfileRedirect'
-import { faBriefcase, faEnvelope, faStar, faUsers } from '@fortawesome/free-solid-svg-icons'
+import { faEnvelope, faStar, faUsers } from '@fortawesome/free-solid-svg-icons'
 import AdminPersonEditor from './pages/admin/AdminPersonEditor'
 import AdminLayout from './components/admin-panel/AdminLayout'
 import AdminOverviewPage from './pages/admin-panel/AdminOverviewPage'
@@ -59,7 +60,7 @@ function App() {
           path="/dashboard/services"
           element={
             <ProtectedRoute roles={['talent']}>
-              <ComingSoon page="services" icon={faBriefcase} />
+              <ServicesPage />
             </ProtectedRoute>
           }
         />

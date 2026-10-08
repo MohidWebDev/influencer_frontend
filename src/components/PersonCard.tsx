@@ -36,6 +36,12 @@ function PersonCard({ person }: { person: PersonSummary }) {
           <h3 className="font-semibold">{person.name}</h3>
           {person.verified && <VerifiedBadge />}
           {person.claimedBy === null && <UnclaimedBadge />}
+          {person.availability?.isOpen && (
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700">
+              <span className="h-1.5 w-1.5 rounded-full bg-green-500" aria-hidden="true" />
+              {t('services.availableShort')}
+            </span>
+          )}
         </div>
         {person.headline && (
           <p className="mt-0.5 line-clamp-2 text-sm text-gray-600">{person.headline}</p>

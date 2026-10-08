@@ -9,6 +9,8 @@ import Avatar from '../components/Avatar'
 import ClaimAction from '../components/ClaimAction'
 import ReportProfileLink from '../components/ReportProfileLink'
 import UnclaimedBadge from '../components/UnclaimedBadge'
+import PublicAvailability from '../components/services/PublicAvailability'
+import PublicServices from '../components/services/PublicServices'
 import VerifiedBadge from '../components/VerifiedBadge'
 import { PLATFORM_ICONS, PLATFORM_LABELS, STATUS_LABELS } from '../constants/people'
 import type { TaxonomyItem } from '../types/person'
@@ -126,6 +128,8 @@ function Profile() {
             </section>
           )}
 
+          <PublicServices services={person.services ?? []} />
+
           <section className="space-y-4 rounded-2xl bg-white p-6 shadow-sm">
             <TagList
               title={t('profile.professions')}
@@ -139,6 +143,7 @@ function Profile() {
 
         {/* Influence: har number alag, koi "mystery score" nahi */}
         <aside className="space-y-6">
+          <PublicAvailability availability={person.availability} />
           <section className="rounded-2xl bg-white p-6 shadow-sm">
             <h2 className="text-lg font-semibold">{t('profile.influence')}</h2>
             {person.totalFollowers > 0 || person.socialAccounts.length > 0 ? (
@@ -148,7 +153,9 @@ function Profile() {
               </>
             ) : (
               // Koi number ghar ke nahi likhte: claim / verify ke baad aate hain
-              <p className="mt-3 text-sm text-gray-500">{t('profile.noMetrics')}</p>
+              <p className="mt-3 text-sm text-gray-500">
+                {person.claimedBy ? t('profile.noMetricsClaimed') : t('profile.noMetrics')}
+              </p>
             )}
 
             {person.socialAccounts.length > 0 && (

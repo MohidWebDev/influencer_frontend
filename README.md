@@ -57,7 +57,7 @@ src/
 
 ## Navigation
 
-All navbar links live in `src/constants/navigation.ts` (`MAIN_NAV`, `UTILITY_NAV`, `ACCOUNT_NAV`), each with the roles that can see it. Pages that are planned but not built yet (`/inbox`, `/notifications`, `/shortlists`, `/talents`, `/settings`, `/dashboard/services`) show a "Coming soon" page.
+All navbar links live in `src/constants/navigation.ts` (`MAIN_NAV`, `UTILITY_NAV`, `ACCOUNT_NAV`), each with the roles that can see it. Pages that are planned but not built yet (`/inbox`, `/shortlists`, `/talents`) show a "Coming soon" page.
 
 ## Admin panel (`/admin`)
 

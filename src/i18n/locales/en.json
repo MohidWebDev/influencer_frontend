@@ -528,7 +528,9 @@
     "CONFIRMATION_MISMATCH": "The confirmation text doesn't match",
     "RESET_EXPIRED": "This reset session has expired. Please start again.",
     "EMAIL_FAILED": "We couldn't send the email. Please try again.",
-    "EMAIL_NOT_CONFIGURED": "Password reset by email isn't available right now. Please contact support."
+    "EMAIL_NOT_CONFIGURED": "Password reset by email isn't available right now. Please contact support.",
+    "NO_PROFILE": "Claim your profile first to add services",
+    "TOO_MANY_SERVICES": "You've reached the maximum number of services"
   },
   "search": {
     "any": "Any",
@@ -552,7 +554,8 @@
     "subtitle": "Search journalists, creators, speakers and experts, then narrow down with filters.",
     "noResultsHint": "Try another word or remove some filters.",
     "removeFilter": "Remove filter {{name}}",
-    "peopleFound": "people found"
+    "peopleFound": "people found",
+    "openTo": "Open to"
   },
   "profile": {
     "notFound": "Profile not found",
@@ -572,7 +575,8 @@
     "sources": "Information on unclaimed profiles comes from public sources. Last updated {{date}}.",
     "noMetrics": "Audience numbers appear once the person claims and verifies this profile.",
     "sourceLabel": "Source:",
-    "photoLabel": "Photo:"
+    "photoLabel": "Photo:",
+    "noMetricsClaimed": "Audience numbers haven't been added yet."
   },
   "register": {
     "title": "Create your account",
@@ -1106,5 +1110,127 @@
     "done": "Password reset. Welcome back, {{name}}!",
     "backToLogin": "Back to sign in",
     "backToSettings": "Back to settings"
+  },
+  "services": {
+    "title": "Services & availability",
+    "subtitle": "Tell businesses what you offer, what it costs and when you're free.",
+    "viewPublic": "View public profile",
+    "statWork": "Work status",
+    "statServices": "Services",
+    "statProfile": "Profile status",
+    "activeOf": "{{active}} live of {{total}}",
+    "hireableHint": "Turn on “Open for work” and keep at least one service live to show as Available for hire.",
+    "yourServices": "Your services",
+    "limit": "{{count}} of {{max}} services",
+    "limitReached": "You've reached the maximum number of services",
+    "addService": "Add service",
+    "editService": "Edit service",
+    "saveChanges": "Save changes",
+    "edit": "Edit",
+    "delete": "Delete",
+    "hidden": "Hidden",
+    "deliveryIn": "{{count}}-day delivery",
+    "emptyTitle": "No services yet",
+    "emptyText": "Add what you offer so businesses can see your prices. Start from a template:",
+    "template": {
+      "keynote": "Keynote talk",
+      "brand_campaign": "Brand campaign",
+      "podcast_guest": "Podcast guest"
+    },
+    "added": "Service added",
+    "updated": "Service updated",
+    "shown": "Service is live on your profile",
+    "hiddenToast": "Service hidden from your profile",
+    "deleted": "Service deleted",
+    "deleteTitle": "Delete this service?",
+    "deleteBody": "“{{title}}” will be removed from your profile. This can't be undone.",
+    "noProfileTitle": "Claim your profile first",
+    "noProfileText": "Services and availability appear on your public profile, so you need one. Find your profile and claim it, or create a new one.",
+    "findProfile": "Find my profile",
+    "createProfile": "Create my profile",
+    "category": {
+      "keynote": "Keynote / talk",
+      "brand_campaign": "Brand campaign",
+      "sponsored_post": "Sponsored post",
+      "podcast_guest": "Podcast guest",
+      "event_appearance": "Event appearance",
+      "workshop": "Workshop",
+      "consulting": "Consulting",
+      "other": "Other"
+    },
+    "fields": {
+      "title": "Service name",
+      "titlePlaceholder": "e.g. 45-minute keynote on leadership",
+      "category": "Type",
+      "description": "What's included (optional)",
+      "descriptionPlaceholder": "Format, length, deliverables, travel...",
+      "pricing": "Price",
+      "currency": "Currency",
+      "amount": "Amount",
+      "min": "From",
+      "max": "To",
+      "unit": "Priced per",
+      "delivery": "Delivery time in days (optional)",
+      "deliveryPlaceholder": "e.g. 7",
+      "active": "Show on my profile",
+      "activeHint": "Hidden services are saved but not shown to businesses."
+    },
+    "pricingType": {
+      "fixed": "Fixed price",
+      "range": "Price range",
+      "quote": "Ask for a quote"
+    },
+    "quoteHint": "Businesses will see “Price on request” and contact you for a quote.",
+    "priceOnRequest": "Price on request",
+    "unit": {
+      "project": "Project",
+      "event": "Event",
+      "post": "Post",
+      "hour": "Hour",
+      "day": "Day"
+    },
+    "unitShort": {
+      "project": "project",
+      "event": "event",
+      "post": "post",
+      "hour": "hour",
+      "day": "day"
+    },
+    "errors": {
+      "title": "Give the service a name (at least 3 characters)",
+      "amount": "Enter an amount",
+      "max": "Must be more than the starting price"
+    },
+    "availability": "Availability",
+    "availabilityText": "Let businesses know if you're taking new work.",
+    "openForWork": "Open for work",
+    "notTakingWork": "Not taking work",
+    "openHint": "Your profile shows you're available for hire.",
+    "closedHint": "Businesses can still see your profile and services.",
+    "openTo": "Open to",
+    "openToOption": {
+      "speaking": "Speaking",
+      "campaigns": "Brand campaigns",
+      "podcasts": "Podcasts",
+      "events": "Events"
+    },
+    "responseTime": "Usually replies",
+    "response": {
+      "24h": "Within 24 hours",
+      "3d": "Within 3 days",
+      "1w": "Within a week"
+    },
+    "notSet": "Not set",
+    "availableFrom": "Available from (optional)",
+    "note": "Note for businesses (optional)",
+    "notePlaceholder": "e.g. Booking events for March onwards. Based in Lahore, can travel.",
+    "unsaved": "You have unsaved changes",
+    "saveAvailability": "Save availability",
+    "availabilitySaved": "Availability saved",
+    "publicTitle": "Services",
+    "availableForHire": "Available for hire",
+    "availableShort": "Available",
+    "notAvailable": "Not taking new work right now",
+    "fromDate": "Available from {{date}}"
   }
 }

@@ -25,6 +25,7 @@ import {
 } from '../constants/people'
 import { useTaxonomy } from '../hooks/useTaxonomy'
 import { countryName, languageName } from '../utils/format'
+import { OPEN_TO_OPTIONS } from '../constants/services'
 
 const PAGE_SIZE = 12
 // Explore ke upar wale card ki tasveer (Unsplash)
@@ -39,6 +40,7 @@ const FILTER_KEYS = [
   'language',
   'minFollowers',
   'status',
+  'openTo',
 ]
 
 interface Option {
@@ -182,6 +184,11 @@ function Search() {
     label: languageName(code),
   }))
   const statusOptions = Object.entries(STATUS_LABELS).map(([value, label]) => ({ value, label }))
+  // Jo log abhi is kaam ke liye khule hain
+  const openToOptions = OPEN_TO_OPTIONS.map((o) => ({
+    value: o.value,
+    label: t(`services.openToOption.${o.value}`),
+  }))
   const filterDefs: { key: string; label: string; options?: Option[] }[] = [
     { key: 'profession', label: t('search.profession'), options: toOptions(professions) },
     { key: 'industry', label: t('search.industry'), options: toOptions(industries) },
@@ -191,6 +198,7 @@ function Search() {
     { key: 'language', label: t('search.language'), options: languageOptions },
     { key: 'minFollowers', label: t('search.followers'), options: FOLLOWER_OPTIONS },
     { key: 'status', label: t('search.availability'), options: statusOptions },
+    { key: 'openTo', label: t('search.openTo'), options: openToOptions },
   ]
   const chips = filterDefs
     .filter((f) => get(f.key))
@@ -334,7 +342,7 @@ function Search() {
         </div>
 
         <div
-          className={`${showFilters ? 'grid' : 'hidden'} mt-4 grid-cols-2 gap-3 sm:grid-cols-3 md:grid lg:grid-cols-4 xl:grid-cols-8`}
+          className={`${showFilters ? 'grid' : 'hidden'} mt-4 grid-cols-2 gap-3 sm:grid-cols-3 md:grid lg:grid-cols-5`}
         >
           <FilterSelect
             label={t('search.profession')}
@@ -388,6 +396,13 @@ function Search() {
             name="status"
             value={get('status')}
             options={statusOptions}
+            onChange={setFilter}
+          />
+          <FilterSelect
+            label={t('search.openTo')}
+            name="openTo"
+            value={get('openTo')}
+            options={openToOptions}
             onChange={setFilter}
           />
         </div>

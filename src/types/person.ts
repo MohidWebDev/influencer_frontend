@@ -1,3 +1,5 @@
+import type { Availability, Service } from './services'
+
 export type ProfileStatus = 'public' | 'contactable' | 'represented' | 'hireable'
 
 export type SocialPlatform =
@@ -43,6 +45,8 @@ export interface PersonSummary {
   isDemo: boolean
   // null = abhi kisi ne claim nahi kiya
   claimedBy?: string | null
+  // Card pe "Available" dikhane ke liye
+  availability?: Pick<Availability, 'isOpen' | 'openTo'>
 }
 
 // Profile page ka poora version
@@ -54,6 +58,9 @@ export interface Person extends PersonSummary {
   websiteUrl?: string
   socialAccounts: SocialAccount[]
   claimedBy: string | null
+  // Sirf chalti services (public)
+  services?: Service[]
+  availability?: Availability
   // Photo kahan se aayi (jaise Wikimedia Commons) aur license
   photoCredit?: {
     provider: string
