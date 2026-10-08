@@ -77,3 +77,7 @@ The older admin dashboard at `/dashboard` (profile cards, create/edit) is unchan
 ## i18n
 
 `react-i18next` with English, Urdu and Arabic in `src/i18n/locales/*.json`. The admin panel has a language switch; Urdu and Arabic set `dir="rtl"` on the admin area. Use `t('key')` for new strings and add the key to all three files.
+
+## Author
+
+Built and maintained by [Hammad Toufeeq](https://github.com/hammadtoufeeq).
