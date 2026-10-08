@@ -2,17 +2,29 @@ import { StrictMode } from 'react'
 import axios from 'axios'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { MutationCache, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { Toaster } from 'react-hot-toast'
 import { AuthProvider } from './context/AuthProvider.tsx'
 import { ThemeProvider } from './context/ThemeContext.tsx'
 import './index.css'
 import './i18n'
 import App from './App.tsx'
 import LanguageRoot from './components/LanguageRoot'
+import AppToaster from './components/AppToaster'
+
+// Koi bhi kaam (claim approve, profile edit, hide, delete...) kaamyab ho to profiles ka
+// data har jagah taaza: Explore, Home, profile page, admin cards. Jo screen pe hai foran
+// dobara aata hai, baqi agli dafa khulne pe
+const mutationCache = new MutationCache({
+  onSuccess: () => {
+    for (const queryKey of [['people'], ['person'], ['admin'], ['claims']]) {
+      queryClient.invalidateQueries({ queryKey })
+    }
+  },
+})
 
 const queryClient = new QueryClient({
+  mutationCache,
   defaultOptions: {
     queries: {
       // 5 minute tak data "fresh" hai: dobara API call nahi hogi, cache se foran dikhega
@@ -43,13 +55,7 @@ createRoot(document.getElementById('root')!).render(
           </AuthProvider>
         </ThemeProvider>
       </BrowserRouter>
-      <Toaster
-        position="bottom-right"
-        // Dark mode mein bhi theme ke rang (CSS variables)
-        toastOptions={{
-          style: { background: 'var(--color-white)', color: 'var(--color-gray-900)' },
-        }}
-      />
+      <AppToaster />
       {/* Sirf development mein dikhta hai: cache ke andar kya hai */}
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>

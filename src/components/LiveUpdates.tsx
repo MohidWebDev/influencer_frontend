@@ -2,6 +2,8 @@ import { useEffect, useRef } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBell, faKey } from '@fortawesome/free-solid-svg-icons'
 import { myClaimsQuery } from '../api/queries'
 import { useNavigate } from 'react-router-dom'
 import { useUnreadNotifications } from '../hooks/useUnreadNotifications'
@@ -25,8 +27,8 @@ function LiveUpdates() {
       if (document.visibilityState !== 'visible') return
       const keys =
         role === 'admin'
-          ? [['admin'], ['claims'], ['notifications']]
-          : [['claims'], ['notifications']]
+          ? [['admin'], ['claims'], ['notifications'], ['people'], ['person']]
+          : [['claims'], ['notifications'], ['people'], ['person']]
       // Sirf screen pe maujood (active) queries dobara chalti hain
       keys.forEach((queryKey) => queryClient.invalidateQueries({ queryKey, refetchType: 'active' }))
     }
@@ -68,10 +70,12 @@ function AdminNotifier() {
           }}
         >
           {t('live.newNotifications', { count: unread - before })}
-          <span className="mt-0.5 block text-xs font-medium underline">{t('live.openNotifications')}</span>
+          <span className="mt-0.5 block text-xs font-medium underline">
+            {t('live.openNotifications')}
+          </span>
         </button>
       ),
-      { icon: '🔔', id: 'live-notifications', duration: 6000 },
+      { icon: <FontAwesomeIcon icon={faBell} />, id: 'live-notifications', duration: 6000 },
     )
   }, [unread, t, navigate])
 
@@ -97,7 +101,7 @@ function TalentNotifier() {
       const name = claimPersonName(claim, t('claims.deletedProfile'))
       if (claim.status === 'waiting_for_talent') {
         toast(t('live.codeSent', { name, url: claim.verification?.channelUrl ?? '' }), {
-          icon: '🔑',
+          icon: <FontAwesomeIcon icon={faKey} />,
           duration: 8000,
         })
       } else if (claim.status === 'approved') {

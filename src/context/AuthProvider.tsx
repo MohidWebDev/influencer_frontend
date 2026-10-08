@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { setBypassCdn } from '../api/freshness'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   changePasswordRequest,
@@ -37,6 +38,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     retry: false,
     staleTime: Infinity,
   })
+  // Login user ko public lists bhi seedha server se (CDN ka purana jawab nahi)
+  setBypassCdn(Boolean(user))
 
   async function login(input: LoginInput) {
     const loggedIn = await loginUser(input)

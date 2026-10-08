@@ -10,6 +10,8 @@ export function peopleQuery(params: URLSearchParams) {
   return queryOptions({
     queryKey: ['people', params.toString()],
     queryFn: () => listPeople(params),
+    // Verified / claimed jaisi tabdeeli jaldi dikhe
+    staleTime: 30 * 1000,
   })
 }
 
@@ -17,6 +19,7 @@ export function personQuery(slug: string) {
   return queryOptions({
     queryKey: ['person', slug],
     queryFn: () => getPerson(slug),
+    staleTime: 30 * 1000,
   })
 }
 
