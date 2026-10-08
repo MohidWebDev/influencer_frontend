@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import TopLink from './TopLink'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faBars,
@@ -76,17 +77,17 @@ function Navbar() {
       {/* Desktop (xl, 1280px+): brand bilkul start pe, links beech mein, baqi sab bilkul end pe.
           Chhoti screen pe ☰ menu, kyun ke talent ke zyada links 1024px pe brand se takrate hain */}
       <nav className="flex items-center gap-3 px-4 py-3 sm:px-6 xl:grid xl:grid-cols-[1fr_auto_1fr] lg:px-8">
-        <Link to="/" className="me-2 truncate text-base font-bold sm:text-xl xl:justify-self-start">
+        <TopLink to="/" className="me-2 truncate text-base font-bold sm:text-xl xl:justify-self-start">
           {PLATFORM_NAME}
-        </Link>
+        </TopLink>
 
         {/* Desktop: beech wale links */}
         <div className="hidden items-center justify-center gap-1 xl:flex">
           {mainItems.map((item) => (
-            <Link key={item.to} to={item.to} className={linkClass(active(item))}>
+            <TopLink key={item.to} to={item.to} className={linkClass(active(item))}>
               <FontAwesomeIcon icon={item.icon} />
               {item.label}
-            </Link>
+            </TopLink>
           ))}
         </div>
 
@@ -97,7 +98,7 @@ function Navbar() {
             (user ? (
               <>
                 {utilityItems.map((item) => (
-                  <Link
+                  <TopLink
                     key={item.to}
                     to={item.to}
                     title={item.label}
@@ -106,13 +107,13 @@ function Navbar() {
                   >
                     <FontAwesomeIcon icon={item.icon} />
                     {item.to === '/notifications' && <BellCount count={unread} />}
-                  </Link>
+                  </TopLink>
                 ))}
                 {showDashboard && (
-                  <Link to="/dashboard" className={`${linkClass(active(dashboardItem))} ms-1`}>
+                  <TopLink to="/dashboard" className={`${linkClass(active(dashboardItem))} ms-1`}>
                     <FontAwesomeIcon icon={faTableColumns} />
                     {t('site.nav.dashboard')}
-                  </Link>
+                  </TopLink>
                 )}
                 <div className="ms-1">
                   <AccountMenu onLogout={handleLogout} />
@@ -120,17 +121,17 @@ function Navbar() {
               </>
             ) : (
               <>
-                <Link to="/login" className={linkClass(pathname === '/login')}>
+                <TopLink to="/login" className={linkClass(pathname === '/login')}>
                   <FontAwesomeIcon icon={faRightToBracket} />
                   {t('site.nav.login')}
-                </Link>
-                <Link
+                </TopLink>
+                <TopLink
                   to="/register"
                   className="inline-flex items-center gap-2 rounded-lg bg-gray-900 px-3 py-1.5 text-sm text-white hover:bg-gray-800"
                 >
                   <FontAwesomeIcon icon={faUserPlus} />
                   {t('site.nav.signup')}
-                </Link>
+                </TopLink>
               </>
             ))}
         </div>
@@ -138,7 +139,7 @@ function Navbar() {
         {/* Mobile: notifications + menu button */}
         <div className="ms-auto flex items-center gap-1 xl:hidden">
           {user && (
-            <Link
+            <TopLink
               to="/notifications"
               aria-label={t('site.nav.notifications')}
               className={`relative ${iconButton(pathname === '/notifications')}`}
@@ -146,7 +147,7 @@ function Navbar() {
             >
               <FontAwesomeIcon icon={UTILITY_NAV[1].icon} />
               <BellCount count={unread} />
-            </Link>
+            </TopLink>
           )}
           <button
             onClick={() => setMobileOpen((o) => !o)}
@@ -181,7 +182,7 @@ function Navbar() {
                   : []),
               ].map((item) => (
                 <li key={item.to}>
-                  <Link
+                  <TopLink
                     to={item.to}
                     onClick={() => setMobileOpen(false)}
                     className={`flex w-full ${linkClass(active(item))} py-2.5`}
@@ -189,7 +190,7 @@ function Navbar() {
                     <FontAwesomeIcon icon={item.icon} className="w-4" />
                     {item.label}
                     {item.to === '/notifications' && <CountBadge count={unread} />}
-                  </Link>
+                  </TopLink>
                 </li>
               ))}
             </ul>
@@ -207,22 +208,22 @@ function Navbar() {
                 </button>
               ) : (
                 <div className="flex gap-2">
-                  <Link
+                  <TopLink
                     to="/login"
                     onClick={() => setMobileOpen(false)}
                     className="inline-flex items-center gap-2 rounded-lg border border-gray-300 px-3 py-1.5 text-sm"
                   >
                     <FontAwesomeIcon icon={faRightToBracket} />
                     {t('site.nav.login')}
-                  </Link>
-                  <Link
+                  </TopLink>
+                  <TopLink
                     to="/register"
                     onClick={() => setMobileOpen(false)}
                     className="inline-flex items-center gap-2 rounded-lg bg-gray-900 px-3 py-1.5 text-sm text-white"
                   >
                     <FontAwesomeIcon icon={faUserPlus} />
                     {t('site.nav.signup')}
-                  </Link>
+                  </TopLink>
                 </div>
               )}
             </div>

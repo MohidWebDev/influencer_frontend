@@ -1,1 +1,16 @@
 @import "tailwindcss";
+
+/* Naya page aane pe halka fade + thoda sa upar sarakna ("kam animation" wale users ke liye band) */
+@theme {
+  --animate-page-in: page-in 280ms ease-out both;
+  @keyframes page-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}

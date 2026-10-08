@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { useCallback, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import TopLink from './TopLink'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 import { ACCOUNT_NAV, canSee } from '../../constants/navigation'
@@ -39,7 +39,7 @@ function AccountMenu({ onLogout }: { onLogout: () => void }) {
             </p>
           </div>
           {ACCOUNT_NAV.filter((item) => canSee(item, user.role)).map((item) => (
-            <Link
+            <TopLink
               key={item.to}
               to={item.to}
               onClick={close}
@@ -47,7 +47,7 @@ function AccountMenu({ onLogout }: { onLogout: () => void }) {
             >
               <FontAwesomeIcon icon={item.icon} className="w-4 text-gray-500" />
               {item.label}
-            </Link>
+            </TopLink>
           ))}
           <button
             onClick={() => {

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import TopLink from './nav/TopLink'
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -76,9 +76,9 @@ function Footer() {
         <div className="grid gap-10 md:grid-cols-12">
           {/* Brand + paigham + social */}
           <div className="md:col-span-5">
-            <Link to="/" className="text-xl font-bold text-white">
+            <TopLink to="/" className="text-xl font-bold text-white">
               {PLATFORM_NAME}
-            </Link>
+            </TopLink>
             <p className="mt-3 max-w-sm text-sm leading-relaxed text-gray-400">
               {t('footer.tagline')}
             </p>
@@ -119,9 +119,9 @@ function Footer() {
                   {column.links.map((link) => (
                     <li key={link.label}>
                       {link.to ? (
-                        <Link to={link.to} className={linkClass}>
+                        <TopLink to={link.to} className={linkClass}>
                           {link.label}
-                        </Link>
+                        </TopLink>
                       ) : (
                         <a href={link.href} className={linkClass}>
                           {link.label}
