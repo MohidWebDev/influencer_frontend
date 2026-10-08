@@ -1,4 +1,5 @@
 import { StrictMode } from 'react'
+import axios from 'axios'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -19,6 +20,12 @@ const queryClient = new QueryClient({
       gcTime: 30 * 60 * 1000,
       // Tab badal kar wapas aane pe har dafa dobara fetch mat karo
       refetchOnWindowFocus: false,
+      // 4xx (jaise 404 "nahi mila") pe dobara koshish faltu hai; network/server pe 2 dafa
+      retry: (failureCount, error) => {
+        const status = axios.isAxiosError(error) ? error.response?.status : undefined
+        if (status && status >= 400 && status < 500) return false
+        return failureCount < 2
+      },
     },
   },
 })

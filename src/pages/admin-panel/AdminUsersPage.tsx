@@ -4,7 +4,7 @@ import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tansta
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBan, faMagnifyingGlass, faRotateLeft } from '@fortawesome/free-solid-svg-icons'
+import { faUsers, faBan, faMagnifyingGlass, faRotateLeft } from '@fortawesome/free-solid-svg-icons'
 import { listAdminUsers, setUserRole, setUserStatus } from '../../api/adminPanel'
 import Avatar from '../../components/Avatar'
 import AdminPager from '../../components/admin-panel/AdminPager'
@@ -36,7 +36,7 @@ function AdminUsersPage() {
   const apiParams = new URLSearchParams(params)
   apiParams.set('limit', String(PAGE_SIZE))
 
-  const { data, isLoading, isError, refetch } = useQuery({
+  const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['admin', 'users', apiParams.toString()],
     queryFn: () => listAdminUsers(apiParams),
     placeholderData: keepPreviousData,
@@ -132,8 +132,19 @@ function AdminUsersPage() {
       <DataState
         isLoading={isLoading}
         isError={isError}
+        error={error}
         isEmpty={!!data && data.users.length === 0}
-        emptyText={t('users.empty')}
+        emptyIcon={faUsers}
+        emptyTitle={
+          [...params.keys()].some((key) => key !== 'page')
+            ? t('dataState.filteredTitle')
+            : t('dataState.usersEmptyTitle')
+        }
+        emptyText={
+          [...params.keys()].some((key) => key !== 'page')
+            ? t('dataState.filteredText')
+            : t('dataState.usersEmptyText')
+        }
         onRetry={() => refetch()}
       >
         {data && (
@@ -141,9 +152,7 @@ function AdminUsersPage() {
             {t('common.total', { count: data.meta.total })}
           </p>
         )}
-        <div
-          className="overflow-x-auto rounded-2xl bg-white shadow-sm"
-        >
+        <div className="overflow-x-auto rounded-2xl bg-white shadow-sm">
           <table className="w-full min-w-[720px] text-sm">
             <thead className="border-b border-gray-100 text-xs uppercase text-gray-500">
               <tr>

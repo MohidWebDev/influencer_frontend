@@ -122,7 +122,7 @@ function ReportUpdateForm({ report }: { report: AdminReport }) {
 function AdminReportDetailPage() {
   const { id = '' } = useParams()
   const { t } = useTranslation()
-  const { data, isLoading, isError, refetch } = useQuery({
+  const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['admin', 'report', id],
     queryFn: () => getAdminReport(id),
   })
@@ -137,8 +137,9 @@ function AdminReportDetailPage() {
       <DataState
         isLoading={isLoading}
         isError={isError}
+        error={error}
         isEmpty={!report}
-        emptyText={t('common.notFound')}
+        backTo="/admin/reports"
         onRetry={() => refetch()}
       >
         {report && (

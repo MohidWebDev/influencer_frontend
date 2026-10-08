@@ -1,6 +1,7 @@
 import { Link, useSearchParams } from 'react-router-dom'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
+import { faFlag } from '@fortawesome/free-solid-svg-icons'
 import { listAdminReports } from '../../api/adminPanel'
 import AdminPager from '../../components/admin-panel/AdminPager'
 import DataState from '../../components/admin-panel/DataState'
@@ -19,7 +20,7 @@ function AdminReportsPage() {
   const apiParams = new URLSearchParams(params)
   apiParams.set('limit', String(PAGE_SIZE))
 
-  const { data, isLoading, isError, refetch } = useQuery({
+  const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['admin', 'reports', apiParams.toString()],
     queryFn: () => listAdminReports(apiParams),
     placeholderData: keepPreviousData,
@@ -74,13 +75,22 @@ function AdminReportsPage() {
       <DataState
         isLoading={isLoading}
         isError={isError}
+        error={error}
         isEmpty={!!data && data.reports.length === 0}
-        emptyText={t('reports.empty')}
+        emptyIcon={faFlag}
+        emptyTitle={
+          [...params.keys()].some((key) => key !== 'page')
+            ? t('dataState.filteredTitle')
+            : t('dataState.reportsEmptyTitle')
+        }
+        emptyText={
+          [...params.keys()].some((key) => key !== 'page')
+            ? t('dataState.filteredText')
+            : t('dataState.reportsEmptyText')
+        }
         onRetry={() => refetch()}
       >
-        <div
-          className="overflow-x-auto rounded-2xl bg-white shadow-sm"
-        >
+        <div className="overflow-x-auto rounded-2xl bg-white shadow-sm">
           <table className="w-full min-w-[720px] text-sm">
             <thead className="border-b border-gray-100 text-xs uppercase text-gray-500">
               <tr>

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
+import { faClipboardList } from '@fortawesome/free-solid-svg-icons'
 import { listAuditLogs } from '../../api/adminPanel'
 import ChangesDialog from '../../components/admin-panel/ChangesDialog'
 import type { AuditLogEntry } from '../../types/adminPanel'
@@ -16,7 +17,15 @@ const PAGE_SIZE = 25
 // Har target ke actions (auditAction.* mein inke naam hain)
 const ACTIONS: Record<(typeof TARGETS)[number], string[]> = {
   person: ['create', 'update', 'verify', 'unverify', 'hide', 'unhide', 'delete'],
-  claim: ['new_profile', 'send_code', 'reset_otp', 'otp_locked', 'verify_manual', 'approve', 'reject'],
+  claim: [
+    'new_profile',
+    'send_code',
+    'reset_otp',
+    'otp_locked',
+    'verify_manual',
+    'approve',
+    'reject',
+  ],
   user: ['suspend', 'unsuspend', 'role_change'],
   report: ['update'],
 }
@@ -34,7 +43,7 @@ function AdminAuditLogPage() {
   const to = params.get('to')
   if (to) apiParams.set('to', `${to}T23:59:59.999`)
 
-  const { data, isLoading, isError, refetch } = useQuery({
+  const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['admin', 'audit-logs', apiParams.toString()],
     queryFn: () => listAuditLogs(apiParams),
     placeholderData: keepPreviousData,
@@ -111,8 +120,19 @@ function AdminAuditLogPage() {
       <DataState
         isLoading={isLoading}
         isError={isError}
+        error={error}
         isEmpty={!!data && data.logs.length === 0}
-        emptyText={t('audit.empty')}
+        emptyIcon={faClipboardList}
+        emptyTitle={
+          [...params.keys()].some((key) => key !== 'page')
+            ? t('dataState.filteredTitle')
+            : t('dataState.auditEmptyTitle')
+        }
+        emptyText={
+          [...params.keys()].some((key) => key !== 'page')
+            ? t('dataState.filteredText')
+            : t('dataState.auditEmptyText')
+        }
         onRetry={() => refetch()}
       >
         <div className="overflow-x-auto rounded-2xl bg-white shadow-sm">

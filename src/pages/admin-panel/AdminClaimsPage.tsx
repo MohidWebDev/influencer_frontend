@@ -1,6 +1,7 @@
 import { Link, useSearchParams } from 'react-router-dom'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
+import { faUserCheck } from '@fortawesome/free-solid-svg-icons'
 import { adminListClaims } from '../../api/claims'
 import Avatar from '../../components/Avatar'
 import AdminPager from '../../components/admin-panel/AdminPager'
@@ -32,7 +33,7 @@ function AdminClaimsPage() {
   const status = (params.get('status') as ClaimFilter) || 'all'
   const page = Number(params.get('page')) || 1
 
-  const { data, isLoading, isError, refetch } = useQuery({
+  const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['admin', 'claims', status, page],
     queryFn: () => adminListClaims(status, page),
     placeholderData: keepPreviousData,
@@ -74,8 +75,13 @@ function AdminClaimsPage() {
       <DataState
         isLoading={isLoading}
         isError={isError}
+        error={error}
         isEmpty={!!data && data.claims.length === 0}
-        emptyText={t('claims.empty')}
+        emptyIcon={faUserCheck}
+        emptyTitle={
+          status === 'all' ? t('dataState.claimsEmptyTitle') : t('dataState.filteredTitle')
+        }
+        emptyText={status === 'all' ? t('dataState.claimsEmptyText') : t('dataState.filteredText')}
         onRetry={() => refetch()}
       >
         <div className="overflow-x-auto rounded-2xl bg-white shadow-sm">

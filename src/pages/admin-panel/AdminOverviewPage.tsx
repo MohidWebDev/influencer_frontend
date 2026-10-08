@@ -43,7 +43,7 @@ function StatCard(props: {
 
 function AdminOverviewPage() {
   const { t } = useTranslation()
-  const { data, isLoading, isError, refetch } = useQuery({
+  const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['admin', 'stats'],
     queryFn: getAdminStats,
   })
@@ -51,7 +51,13 @@ function AdminOverviewPage() {
   return (
     <>
       <PageHeader title={t('overview.title')} subtitle={t('overview.subtitle')} />
-      <DataState isLoading={isLoading} isError={isError} isEmpty={!data} onRetry={() => refetch()}>
+      <DataState
+        isLoading={isLoading}
+        isError={isError}
+        error={error}
+        isEmpty={!data}
+        onRetry={() => refetch()}
+      >
         {data && (
           <div className="space-y-6">
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

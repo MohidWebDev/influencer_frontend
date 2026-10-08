@@ -984,5 +984,28 @@
       "claim_approved": "Your claim for {{person}} was approved. The profile is now yours.",
       "claim_rejected": "Your claim for {{person}} was rejected."
     }
+  },
+  "dataState": {
+    "backToList": "Back to the list",
+    "notFoundTitle": "We couldn't find this",
+    "notFoundText": "It may have been removed, or the link is no longer valid.",
+    "forbiddenTitle": "You don't have access to this",
+    "forbiddenText": "Your session may have ended. Please log in again with an admin account.",
+    "offlineTitle": "You seem to be offline",
+    "offlineText": "Check your internet connection, then try again.",
+    "serverTitle": "We couldn't load this right now",
+    "serverText": "This is usually temporary. Please try again in a moment.",
+    "emptyTitle": "Nothing here yet",
+    "emptyText": "New items will appear here as soon as they arrive.",
+    "filteredTitle": "No results for these filters",
+    "filteredText": "Try a different filter or clear the search to see everything.",
+    "claimsEmptyTitle": "No claims yet",
+    "claimsEmptyText": "When a talent claims a profile or submits a new one, it will appear here and in your notifications.",
+    "reportsEmptyTitle": "No reports yet",
+    "reportsEmptyText": "Reports about wrong information or removal requests will show up here.",
+    "usersEmptyTitle": "No users yet",
+    "usersEmptyText": "People who sign up will be listed here.",
+    "auditEmptyTitle": "No admin activity yet",
+    "auditEmptyText": "Every admin action, like approving a claim or editing a profile, will be recorded here."
   }
 }

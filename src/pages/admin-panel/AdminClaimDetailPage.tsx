@@ -41,7 +41,7 @@ function AdminClaimDetailPage() {
   const [dialog, setDialog] = useState<'approve' | 'reject' | 'verify' | null>(null)
   const [reason, setReason] = useState('')
 
-  const { data, isLoading, isError, refetch } = useQuery({
+  const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['admin', 'claim', id],
     queryFn: () => getAdminClaim(id),
   })
@@ -113,8 +113,9 @@ function AdminClaimDetailPage() {
       <DataState
         isLoading={isLoading}
         isError={isError}
+        error={error}
         isEmpty={!claim}
-        emptyText={t('common.notFound')}
+        backTo="/admin/claims"
         onRetry={() => refetch()}
       >
         {claim && (
