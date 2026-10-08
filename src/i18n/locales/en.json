@@ -482,7 +482,23 @@
     "industriesDesc": "The fields people work in, from technology to sports.",
     "professionsDesc": "What people do: journalists, creators, speakers and more.",
     "countriesDesc": "Find people by where they are based.",
-    "topicsDesc": "Subjects people talk and write about."
+    "topicsDesc": "Subjects people talk and write about.",
+    "pickHint": "Pick as many as you like, then press Show results.",
+    "selectedCount": "{{count}} selected",
+    "selectedTotal": "{{count}} selected",
+    "selectionBar": "Your selection",
+    "matchLabel": "How to match",
+    "match": {
+      "all": "Match all",
+      "any": "Match any",
+      "allHint": "People who match every selected item (countries: any of them)",
+      "anyHint": "People who match at least one selected item"
+    },
+    "clearSelection": "Clear",
+    "showResults": "Show results",
+    "showPeople": "Show {{count}} people",
+    "noMatches": "No matches",
+    "tryAny": "Nobody matches all of these. Try “Match any” or remove an item."
   },
   "claimAction": {
     "yourProfile": "This is your profile",
@@ -555,7 +571,12 @@
     "noResultsHint": "Try another word or remove some filters.",
     "removeFilter": "Remove filter {{name}}",
     "peopleFound": "people found",
-    "openTo": "Open to"
+    "openTo": "Open to",
+    "multiSelected": "{{count}} selected",
+    "matchChip": {
+      "all": "Matching all selected",
+      "any": "Matching any selected"
+    }
   },
   "profile": {
     "notFound": "Profile not found",

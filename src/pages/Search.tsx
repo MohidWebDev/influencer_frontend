@@ -73,6 +73,12 @@ function FilterSelect({
         }`}
       >
         <option value="">{t('search.any')}</option>
+        {/* Browse se kai cheezen chuni hon (a,b): ek option "2 selected" */}
+        {value.includes(',') && (
+          <option value={value}>
+            {t('search.multiSelected', { count: value.split(',').length })}
+          </option>
+        )}
         {options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}
@@ -150,6 +156,12 @@ function Search() {
     })
   }
 
+  // "industry=a,b" mein se sirf "a" hatao
+  function removeValue(name: string, value: string) {
+    const rest = (searchParams.get(name) ?? '').split(',').filter((v) => v && v !== value)
+    setFilter(name, rest.join(','))
+  }
+
   function setPage(nextPage: number) {
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev)
@@ -200,12 +212,27 @@ function Search() {
     { key: 'status', label: t('search.availability'), options: statusOptions },
     { key: 'openTo', label: t('search.openTo'), options: openToOptions },
   ]
+  // Har chuni value ka alag chip (Browse se kai aa sakti hain), alag se hatane ke liye
   const chips = filterDefs
     .filter((f) => get(f.key))
-    .map((f) => ({
-      key: f.key,
-      text: `${f.label}: ${f.options ? optionLabel(f.options, get(f.key)) : get(f.key)}`,
-    }))
+    .flatMap((f) =>
+      get(f.key)
+        .split(',')
+        .filter(Boolean)
+        .map((value) => ({
+          key: `${f.key}:${value}`,
+          text: `${f.label}: ${f.options ? optionLabel(f.options, value) : value}`,
+          remove: () => removeValue(f.key, value),
+        })),
+    )
+  const match = get('match')
+  if ((match === 'all' || match === 'any') && chips.length > 1) {
+    chips.push({
+      key: 'match',
+      text: t(`search.matchChip.${match}`),
+      remove: () => setFilter('match', ''),
+    })
+  }
 
   // Sirf guest (login ke baad) aur talent khud profile bhej sakte hain
   const canCreateProfile = !user || user.role === 'talent'
@@ -413,7 +440,7 @@ function Search() {
               <li key={chip.key}>
                 <button
                   type="button"
-                  onClick={() => setFilter(chip.key, '')}
+                  onClick={chip.remove}
                   aria-label={t('search.removeFilter', { name: chip.text })}
                   className="inline-flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-800 transition hover:bg-gray-900 hover:text-white"
                 >
