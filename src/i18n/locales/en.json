@@ -776,7 +776,15 @@
     "delete": "Delete",
     "remove": "Remove {{name}}",
     "add": "+ Add {{what}}",
-    "verifyAfterClaim": "You can verify this profile after a talent claims it."
+    "verifyAfterClaim": "You can verify this profile after a talent claims it.",
+    "ownership": {
+      "unclaimed": "Unclaimed",
+      "unclaimedHint": "No owner yet, not verified",
+      "claimed": "Claimed",
+      "claimedHint": "Owned by a talent, awaiting verification",
+      "verified": "Verified",
+      "verifiedHint": "Claimed and verified by an admin"
+    }
   },
   "personForm": {
     "identity": "Identity",

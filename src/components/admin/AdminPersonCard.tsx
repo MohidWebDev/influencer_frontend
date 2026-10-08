@@ -9,6 +9,8 @@ import {
   faPen,
   faTrash,
   faTriangleExclamation,
+  faUserCheck,
+  faUserClock,
 } from '@fortawesome/free-solid-svg-icons'
 import { useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
@@ -45,6 +47,12 @@ function AdminPersonCard({
   const canToggleVerified = isClaimed || person.verified
   const actionCount = (isClaimed ? 0 : 1) + (canToggleVerified ? 1 : 0) + 3
   const smCols = { 3: 'sm:grid-cols-3', 4: 'sm:grid-cols-4', 5: 'sm:grid-cols-5' }[actionCount]
+  // Malikana haalat: unclaimed -> claimed (tasdeeq baqi) -> verified
+  const ownership = person.verified
+    ? { key: 'verified', icon: faCircleCheck, tone: 'bg-blue-50 text-blue-800 border-blue-100' }
+    : isClaimed
+      ? { key: 'claimed', icon: faUserCheck, tone: 'bg-amber-50 text-amber-800 border-amber-100' }
+      : { key: 'unclaimed', icon: faUserClock, tone: 'bg-gray-50 text-gray-600 border-gray-100' }
   // Delete se pehle card ke andar hi "Are you sure?" poochte hain
   const [confirmDelete, setConfirmDelete] = useState(false)
   const button =
@@ -56,6 +64,18 @@ function AdminPersonCard({
         isHidden ? 'border-red-200 bg-red-50/30' : 'border-gray-200'
       }`}
     >
+      {/* Card ke upar: profile kis ki hai aur tasdeeq hui ya nahi */}
+      <div
+        className={`flex items-center gap-2 rounded-t-2xl border-b px-5 py-2 text-xs ${ownership.tone}`}
+        title={t(`oldAdmin.ownership.${ownership.key}Hint`)}
+      >
+        <FontAwesomeIcon icon={ownership.icon} />
+        <span className="font-semibold">{t(`oldAdmin.ownership.${ownership.key}`)}</span>
+        <span className="truncate opacity-80">
+          · {t(`oldAdmin.ownership.${ownership.key}Hint`)}
+        </span>
+      </div>
+
       <div className="flex gap-4 p-5">
         <Avatar name={person.name} photoUrl={person.photoUrl} />
         <div className="min-w-0 flex-1">
@@ -64,21 +84,20 @@ function AdminPersonCard({
           {person.headline && (
             <p className="mt-1 line-clamp-2 text-sm text-gray-600">{person.headline}</p>
           )}
-          <div className="mt-3 flex flex-wrap gap-1.5">
-            {person.verified && (
-              <Badge className="bg-blue-50 text-blue-700">
-                <FontAwesomeIcon icon={faCircleCheck} className="me-1" />
-                {t('site.verified')}
-              </Badge>
-            )}
-            {person.isDraft ? (
-              <Badge className="bg-violet-50 text-violet-700">{t('newProfile.draftBadge')}</Badge>
-            ) : (
-              isHidden && <Badge className="bg-red-100 text-red-700">{t('oldAdmin.hidden')}</Badge>
-            )}
-            {person.claimedBy && <Badge className="bg-green-50 text-green-700">{t('oldAdmin.claimed')}</Badge>}
-            {person.isDemo && <Badge className="bg-amber-50 text-amber-800">{t('oldAdmin.demo')}</Badge>}
-          </div>
+          {(person.isDraft || isHidden || person.isDemo) && (
+            <div className="mt-3 flex flex-wrap gap-1.5">
+              {person.isDraft ? (
+                <Badge className="bg-violet-50 text-violet-700">{t('newProfile.draftBadge')}</Badge>
+              ) : (
+                isHidden && (
+                  <Badge className="bg-red-100 text-red-700">{t('oldAdmin.hidden')}</Badge>
+                )
+              )}
+              {person.isDemo && (
+                <Badge className="bg-amber-50 text-amber-800">{t('oldAdmin.demo')}</Badge>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
@@ -99,9 +118,7 @@ function AdminPersonCard({
             <FontAwesomeIcon icon={faTriangleExclamation} className="me-1.5" />
             {t('oldAdmin.deleteConfirm', { name: person.name })}
           </p>
-          <p className="mt-1 text-xs text-red-700">
-            {t('oldAdmin.deleteWarning')}
-          </p>
+          <p className="mt-1 text-xs text-red-700">{t('oldAdmin.deleteWarning')}</p>
           <div className="mt-3 flex gap-2">
             <button
               onClick={() => setConfirmDelete(false)}
@@ -119,9 +136,7 @@ function AdminPersonCard({
           </div>
         </div>
       ) : (
-        <div
-          className={`mt-auto grid grid-cols-2 gap-2 p-5 ${smCols}`}
-        >
+        <div className={`mt-auto grid grid-cols-2 gap-2 p-5 ${smCols}`}>
           {/* Claimed profile sirf uska maalik edit kar sakta hai: Edit button hi nahi */}
           {!isClaimed && (
             <Link
@@ -179,7 +194,8 @@ function AdminPersonCard({
               to={`/people/${person.slug}`}
               className={`${button} border border-gray-300 text-gray-700 hover:bg-gray-100`}
             >
-              {t('oldAdmin.view')} <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="text-[10px]" />
+              {t('oldAdmin.view')}{' '}
+              <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="text-[10px]" />
             </Link>
           )}
           <button

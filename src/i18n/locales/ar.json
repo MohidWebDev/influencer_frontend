@@ -776,7 +776,15 @@
     "delete": "حذف",
     "remove": "إزالة {{name}}",
     "add": "+ إضافة {{what}}",
-    "verifyAfterClaim": "يمكنك توثيق هذا الملف بعد أن تطالب به موهبة."
+    "verifyAfterClaim": "يمكنك توثيق هذا الملف بعد أن تطالب به موهبة.",
+    "ownership": {
+      "unclaimed": "غير مُطالَب به",
+      "unclaimedHint": "لا مالك بعد، غير موثّق",
+      "claimed": "مُطالَب به",
+      "claimedHint": "يملكه موهوب، بانتظار التوثيق",
+      "verified": "موثّق",
+      "verifiedHint": "مُطالَب به وموثّق من المشرف"
+    }
   },
   "personForm": {
     "identity": "الهوية",
