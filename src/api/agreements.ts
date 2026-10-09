@@ -10,18 +10,32 @@ import type {
 } from '../types/agreement'
 
 type One = ApiSuccess<{ agreement: Agreement }>
-const one = (res: { data: One }) => res.data.data.agreement
+
+// Backend khali cheezen chhod sakta hai (purana server, ya koi sign / review abhi nahi hua):
+// pages hamesha poora object paayen, warna agreement.signatures.business pe crash
+export function normalizeAgreement(agreement: Agreement): Agreement {
+  return {
+    ...agreement,
+    terms: { ...agreement.terms, milestones: agreement.terms?.milestones ?? [] },
+    signatures: agreement.signatures ?? {},
+    reviews: agreement.reviews ?? {},
+    work: agreement.work ?? [],
+    revisionsUsed: agreement.revisionsUsed ?? 0,
+  }
+}
+
+const one = (res: { data: One }) => normalizeAgreement(res.data.data.agreement)
 
 export async function listMyAgreements() {
   const res = await api.get<ApiSuccess<{ agreements: Agreement[] }>>('/agreements')
-  return res.data.data.agreements
+  return res.data.data.agreements.map(normalizeAgreement)
 }
 
 export async function getAgreement(id: string) {
   const res = await api.get<ApiSuccess<{ agreement: Agreement; side: AgreementParty }>>(
     `/agreements/${id}`,
   )
-  return res.data.data
+  return { ...res.data.data, agreement: normalizeAgreement(res.data.data.agreement) }
 }
 
 // Business: accept hui hire request se muahida shuru
@@ -78,14 +92,14 @@ export async function getPersonReviews(slug: string) {
 // Admin
 export async function adminListAgreements(params: URLSearchParams) {
   const res = await api.get<ApiSuccess<{ agreements: Agreement[] }>>('/admin/agreements', { params })
-  return { agreements: res.data.data.agreements, meta: res.data.meta! }
+  return { agreements: res.data.data.agreements.map(normalizeAgreement), meta: res.data.meta! }
 }
 
 export async function adminGetAgreement(id: string) {
   const res = await api.get<ApiSuccess<{ agreement: Agreement; history: AuditLogEntry[] }>>(
     `/admin/agreements/${id}`,
   )
-  return res.data.data
+  return { ...res.data.data, agreement: normalizeAgreement(res.data.data.agreement) }
 }
 
 export async function adminResolveDispute(id: string, outcome: DisputeOutcome, note: string) {
