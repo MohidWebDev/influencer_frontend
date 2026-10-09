@@ -5,6 +5,7 @@ import {
   faArrowRight,
   faCalendarCheck,
   faEnvelopeOpenText,
+  faFileContract,
   faFileInvoiceDollar,
   faMagnifyingGlass,
   faMicrophone,
@@ -87,6 +88,12 @@ const ROLE_DASHBOARDS: Record<SignupRole, RoleConfig> = {
         description: 'dash.shortlists.businessDescription',
         action: { label: 'dash.shortlists.action', to: '/shortlists' },
       },
+      {
+        icon: faFileContract,
+        title: 'dash.agreements.title',
+        description: 'dash.agreements.businessDescription',
+        action: { label: 'dash.agreements.action', to: '/agreements' },
+      },
     ],
   },
   agency: {
@@ -145,7 +152,7 @@ function RoleDashboard({ role }: { role: SignupRole }) {
         <p className="text-sm text-gray-500">{t(config.subtitle)}</p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className={`grid gap-4 sm:grid-cols-2 ${config.cards.length === 3 ? 'lg:grid-cols-3' : ''}`}>
         {config.cards.map((card) => (
           <article
             key={card.title}

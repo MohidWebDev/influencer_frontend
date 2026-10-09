@@ -799,7 +799,7 @@
     },
     "shortlists": {
       "title": "Shortlists",
-      "businessDescription": "Save people you like into lists and share them with your team.",
+      "businessDescription": "Save people into a list for each campaign, add private notes and compare them.",
       "agencyDescription": "Build talent lists for each client or campaign.",
       "orgDescription": "Keep lists of people for upcoming events.",
       "action": "Open shortlists"
@@ -820,6 +820,11 @@
     "eventRequests": {
       "title": "Event requests",
       "description": "Invite speakers and experts and follow up on replies."
+    },
+    "agreements": {
+      "title": "Agreements",
+      "businessDescription": "Signed agreements with the talents you hired: terms, milestones and deliveries.",
+      "action": "Open agreements"
     }
   },
   "oldAdmin": {
