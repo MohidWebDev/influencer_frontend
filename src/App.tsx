@@ -17,6 +17,8 @@ import CreateMyProfile from './pages/dashboards/CreateMyProfile'
 import ComingSoon from './pages/ComingSoon'
 import Settings from './pages/Settings'
 import ServicesPage from './pages/dashboards/ServicesPage'
+import HireRequestsPage from './pages/dashboards/HireRequestsPage'
+import DashboardLayout from './components/dashboard-panel/DashboardLayout'
 import BusinessProfileForm from './pages/dashboards/BusinessProfileForm'
 import ForgotPassword from './pages/ForgotPassword'
 import MyProfileRedirect from './pages/MyProfileRedirect'
@@ -49,60 +51,102 @@ function App() {
         <Route path="/search" element={<Search />} />
         <Route path="/browse" element={<Browse />} />
         <Route path="/about" element={<About />} />
-        <Route
-          path="/my-profile/new"
-          element={
-            <ProtectedRoute roles={['talent']}>
-              <CreateMyProfile />
-            </ProtectedRoute>
-          }
-        />
+        {/* Talent / business dashboard ke pages: admin panel jaisa sidebar */}
+        <Route element={<DashboardLayout />}>
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/profile/edit"
+            element={
+              <ProtectedRoute roles={['talent']}>
+                <EditMyProfile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/my-profile/new"
+            element={
+              <ProtectedRoute roles={['talent']}>
+                <CreateMyProfile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/services"
+            element={
+              <ProtectedRoute roles={['talent']}>
+                <ServicesPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/business"
+            element={
+              <ProtectedRoute roles={['business']}>
+                <BusinessProfileForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/hire-requests"
+            element={
+              <ProtectedRoute roles={['talent', 'business']}>
+                <HireRequestsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/agreements"
+            element={
+              <ProtectedRoute roles={['business', 'talent']}>
+                <AgreementsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/agreements/new"
+            element={
+              <ProtectedRoute roles={['business']}>
+                <AgreementNewPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/agreements/:id"
+            element={
+              <ProtectedRoute roles={['business', 'talent']}>
+                <AgreementDetailPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/shortlists"
+            element={
+              <ProtectedRoute roles={['business', 'agency', 'organization']}>
+                <ShortlistsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/shortlists/:id"
+            element={
+              <ProtectedRoute roles={['business', 'agency', 'organization']}>
+                <ShortlistDetailPage />
+              </ProtectedRoute>
+            }
+          />
+        </Route>
         <Route
           path="/my-profile"
           element={
             <ProtectedRoute roles={['talent']}>
               <MyProfileRedirect />
-            </ProtectedRoute>
-          }
-        />
-        {/* Ye pages document mein hain, abhi "Coming soon" */}
-        <Route
-          path="/dashboard/services"
-          element={
-            <ProtectedRoute roles={['talent']}>
-              <ServicesPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/dashboard/business"
-          element={
-            <ProtectedRoute roles={['business']}>
-              <BusinessProfileForm />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/agreements"
-          element={
-            <ProtectedRoute roles={['business', 'talent']}>
-              <AgreementsPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/agreements/new"
-          element={
-            <ProtectedRoute roles={['business']}>
-              <AgreementNewPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/agreements/:id"
-          element={
-            <ProtectedRoute roles={['business', 'talent']}>
-              <AgreementDetailPage />
             </ProtectedRoute>
           }
         />
@@ -119,22 +163,6 @@ function App() {
           element={
             <ProtectedRoute>
               <Notifications />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/shortlists"
-          element={
-            <ProtectedRoute roles={['business', 'agency', 'organization']}>
-              <ShortlistsPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/shortlists/:id"
-          element={
-            <ProtectedRoute roles={['business', 'agency', 'organization']}>
-              <ShortlistDetailPage />
             </ProtectedRoute>
           }
         />
@@ -163,25 +191,9 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/dashboard/profile/edit"
-          element={
-            <ProtectedRoute roles={['talent']}>
-              <EditMyProfile />
-            </ProtectedRoute>
-          }
-        />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
         <Route
           path="/dashboard/people/new"
           element={

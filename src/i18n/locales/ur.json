@@ -1787,5 +1787,20 @@
       "note": "آپ کا نوٹ",
       "hiring": "ہائرنگ"
     }
+  },
+  "dashNav": {
+    "talentTitle": "ٹیلنٹ ڈیش بورڈ",
+    "businessTitle": "بزنس ڈیش بورڈ",
+    "overview": "جائزہ",
+    "myProfile": "میری پروفائل",
+    "services": "خدمات اور دستیابی",
+    "hireRequests": "ہائر درخواستیں",
+    "agreements": "معاہدے",
+    "businessDetails": "بزنس کی تفصیلات",
+    "shortlists": "شارٹ لسٹس",
+    "viewPublicProfile": "پبلک پروفائل دیکھیں",
+    "pendingHires": "نئی ہائر درخواستیں آپ کے جواب کی منتظر ہیں: {{count}}",
+    "acceptedHires": "ٹیلنٹ نے آپ کی درخواست قبول کر لی۔ معاہدہ تیار کریں: {{count}}",
+    "review": "دیکھیں"
   }
 }

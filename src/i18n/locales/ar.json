@@ -1787,5 +1787,20 @@
       "note": "ملاحظتك",
       "hiring": "التوظيف"
     }
+  },
+  "dashNav": {
+    "talentTitle": "لوحة الموهبة",
+    "businessTitle": "لوحة الشركة",
+    "overview": "نظرة عامة",
+    "myProfile": "ملفي",
+    "services": "الخدمات والتوفر",
+    "hireRequests": "طلبات التوظيف",
+    "agreements": "الاتفاقيات",
+    "businessDetails": "تفاصيل الشركة",
+    "shortlists": "القوائم المختصرة",
+    "viewPublicProfile": "عرض الملف العام",
+    "pendingHires": "طلبات توظيف جديدة بانتظار ردك: {{count}}",
+    "acceptedHires": "قبلت المواهب طلبك. جهّز الاتفاقية: {{count}}",
+    "review": "مراجعة"
   }
 }

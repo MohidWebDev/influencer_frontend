@@ -16,8 +16,7 @@ import { Link } from 'react-router-dom'
 import DashboardHeader from '../../components/DashboardHeader'
 import MyProfileSection from '../../components/MyProfileSection'
 import BusinessVerificationSection from '../../components/business/BusinessVerificationSection'
-import IncomingHireRequests from '../../components/business/IncomingHireRequests'
-import SentHireRequests from '../../components/business/SentHireRequests'
+import HireRequestsNotice from '../../components/dashboard-panel/HireRequestsNotice'
 import type { SignupRole } from '../../types/user'
 
 interface DashboardCard {
@@ -151,9 +150,9 @@ function RoleDashboard({ role }: { role: SignupRole }) {
     <div className="space-y-6">
       <DashboardHeader />
 
+      {/* Jin hire requests pe kaam baqi hai (poori list sidebar ke "Hire requests" mein) */}
+      {(role === 'talent' || role === 'business') && <HireRequestsNotice role={role} />}
       {role === 'talent' && <MyProfileSection />}
-      {/* Hire requests jaldi dikhen: talent ko jawab dena hota hai */}
-      {role === 'talent' && <IncomingHireRequests />}
       {role === 'business' && <BusinessVerificationSection />}
 
       <div>
@@ -191,9 +190,6 @@ function RoleDashboard({ role }: { role: SignupRole }) {
           </article>
         ))}
       </div>
-
-      {/* Business ki bheji hui hire requests */}
-      {role === 'business' && <SentHireRequests />}
     </div>
   )
 }

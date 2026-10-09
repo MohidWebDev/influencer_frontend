@@ -1787,5 +1787,20 @@
       "note": "Your note",
       "hiring": "Hiring"
     }
+  },
+  "dashNav": {
+    "talentTitle": "Talent dashboard",
+    "businessTitle": "Business dashboard",
+    "overview": "Overview",
+    "myProfile": "My profile",
+    "services": "Services & availability",
+    "hireRequests": "Hire requests",
+    "agreements": "Agreements",
+    "businessDetails": "Business details",
+    "shortlists": "Shortlists",
+    "viewPublicProfile": "View public profile",
+    "pendingHires": "New hire requests waiting for your reply: {{count}}",
+    "acceptedHires": "Talents accepted your request. Draft the agreement: {{count}}",
+    "review": "Review"
   }
 }
