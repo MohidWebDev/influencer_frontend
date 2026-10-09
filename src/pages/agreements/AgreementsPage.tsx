@@ -25,7 +25,7 @@ function AgreementsPage() {
       </div>
       <DataState
         isLoading={isLoading}
-        isError={isError}
+        isError={isError && !data}
         error={error}
         isEmpty={!!data && data.length === 0}
         emptyIcon={faFileContract}

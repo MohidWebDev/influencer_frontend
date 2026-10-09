@@ -132,7 +132,7 @@ function AdminBusinessDetailPage() {
       </Link>
       <DataState
         isLoading={isLoading}
-        isError={isError}
+        isError={isError && !data}
         error={error}
         isEmpty={!business}
         backTo="/admin/businesses"

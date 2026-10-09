@@ -234,7 +234,7 @@ function AgreementDetailPage() {
       </Link>
       <DataState
         isLoading={isLoading}
-        isError={isError}
+        isError={isError && !data}
         error={error}
         isEmpty={!agreement}
         backTo="/agreements"

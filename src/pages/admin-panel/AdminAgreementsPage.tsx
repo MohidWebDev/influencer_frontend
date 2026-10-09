@@ -60,7 +60,7 @@ function AdminAgreementsPage() {
 
       <DataState
         isLoading={isLoading}
-        isError={isError}
+        isError={isError && !data}
         error={error}
         isEmpty={!!data && data.agreements.length === 0}
         emptyIcon={faFileContract}

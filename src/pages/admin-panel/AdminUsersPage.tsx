@@ -129,7 +129,7 @@ function AdminUsersPage() {
 
       <DataState
         isLoading={isLoading}
-        isError={isError}
+        isError={isError && !data}
         error={error}
         isEmpty={!!data && data.users.length === 0}
         emptyIcon={faUsers}

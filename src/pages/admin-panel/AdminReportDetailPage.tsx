@@ -166,7 +166,7 @@ function AdminReportDetailPage() {
       </Link>
       <DataState
         isLoading={isLoading}
-        isError={isError}
+        isError={isError && !data}
         error={error}
         isEmpty={!report}
         backTo="/admin/reports"

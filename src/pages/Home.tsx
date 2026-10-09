@@ -210,7 +210,7 @@ function Home() {
         {/* Sab se zyada followers wale log */}
         <section>
           <SectionHeader title={t('home.mostFollowed')} to="/search?sort=followers" />
-          {isError && (
+          {isError && !featured && (
             <p className="mt-5 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
               {t('home.loadError')}
             </p>

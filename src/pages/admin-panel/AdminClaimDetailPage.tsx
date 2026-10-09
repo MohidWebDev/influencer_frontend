@@ -112,7 +112,7 @@ function AdminClaimDetailPage() {
       </Link>
       <DataState
         isLoading={isLoading}
-        isError={isError}
+        isError={isError && !data}
         error={error}
         isEmpty={!claim}
         backTo="/admin/claims"

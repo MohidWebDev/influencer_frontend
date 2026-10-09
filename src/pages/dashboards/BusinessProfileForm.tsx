@@ -275,10 +275,10 @@ function BusinessProfileForm() {
         <p className="mt-1 text-sm text-gray-500">{t('business.formSubtitle')}</p>
       </div>
       {isLoading && <div className="h-96 animate-pulse rounded-2xl bg-white shadow-sm" />}
-      {isError && (
+      {isError && business === undefined && (
         <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{t('common.error')}</p>
       )}
-      {!isLoading && !isError && <BusinessForm business={business ?? null} />}
+      {!isLoading && business !== undefined && <BusinessForm business={business ?? null} />}
     </div>
   )
 }

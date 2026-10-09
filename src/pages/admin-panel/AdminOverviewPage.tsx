@@ -55,7 +55,7 @@ function AdminOverviewPage() {
       <PageHeader title={t('overview.title')} subtitle={t('overview.subtitle')} />
       <DataState
         isLoading={isLoading}
-        isError={isError}
+        isError={isError && !data}
         error={error}
         isEmpty={!data}
         onRetry={() => refetch()}

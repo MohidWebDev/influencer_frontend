@@ -15,6 +15,8 @@ import {
 
 interface DataStateProps {
   isLoading: boolean
+  // Sirf tab jab dikhane ko kuch nahi (pehli dafa load fail). Pages "isError && !data" dete hain:
+  // peeche ka refresh fail ho to purana data dikhta rahe, error box se jhapakta nahi
   isError: boolean
   isEmpty: boolean
   // Error kis qism ka hai (404, 403, network) ye dekhne ke liye

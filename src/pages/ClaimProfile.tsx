@@ -19,7 +19,7 @@ function ClaimProfile() {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   // Claim se pehle hamesha taaza data (cache wala purana ho sakta hai)
-  const { data: person, isLoading } = useQuery({ ...personQuery(slug), retry: false, staleTime: 0 })
+  const { data: person, isLoading } = useQuery({ ...personQuery(slug), retry: false })
   const myProfile = useQuery(myProfileQuery)
   const myClaims = useQuery(myClaimsQuery)
 

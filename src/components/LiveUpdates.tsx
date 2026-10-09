@@ -5,7 +5,7 @@ import toast from 'react-hot-toast'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBell, faHandshake, faKey } from '@fortawesome/free-solid-svg-icons'
 import { incomingHiresQuery, myBusinessQuery, myClaimsQuery, myHiresQuery } from '../api/queries'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useUnreadNotifications } from '../hooks/useUnreadNotifications'
 import { useAuth } from '../hooks/useAuth'
 import { claimPersonName, type ClaimStatus } from '../types/claim'
@@ -13,26 +13,61 @@ import type { BusinessStatus, HireStatus } from '../types/business'
 
 // Itne second baad khula hua data dobara mangwao (sirf jab tab samne ho)
 const LIVE_INTERVAL_MS = 8000
+// Tab / DevTools ke beech aate jaate focus baar baar aata hai: itni der mein dobara refresh nahi
+const MIN_GAP_MS = 3000
 
 // Page refresh ke baghair naya data: har thodi der baad aur tab pe wapas aane pe
 // jo queries screen pe hain unko taaza karo. Naya kaam aaye to toast bhi dikhao.
+// Taaza karna "khamosh" hai: jo dikh raha hai woh rehta hai, sirf badli cheez badalti hai
 function LiveUpdates() {
   const { user } = useAuth()
   const queryClient = useQueryClient()
+  const { pathname } = useLocation()
   const role = user?.role
+  // Aakhri refresh ka waqt (interval, focus aur page badalna sab yahi dekhte hain)
+  const lastRun = useRef(0)
+
+  // Naya page khula: cache wala data foran dikhta hai, peeche se ek dafa taaza
+  useEffect(() => {
+    if (!role) return
+    const timer = window.setTimeout(() => {
+      lastRun.current = Date.now()
+      queryClient.invalidateQueries(
+        {
+          refetchType: 'active',
+          // Login aur categories (taxonomy) ko har page pe dobara mangwane ki zaroorat nahi
+          predicate: (query) => !['auth', 'taxonomy'].includes(String(query.queryKey[0])),
+        },
+        { cancelRefetch: false },
+      )
+    }, 0)
+    return () => window.clearTimeout(timer)
+  }, [pathname, role, queryClient])
 
   useEffect(() => {
     if (!role) return
     // Admin ko admin ka sara data, baqi users ko apne claims, profile, business
-    // verification aur hire requests
+    // verification, hire requests aur muahide
+    const keys =
+      role === 'admin'
+        ? [['admin'], ['claims'], ['notifications'], ['people'], ['person']]
+        : [['claims'], ['notifications'], ['people'], ['person'], ['business'], ['me'], ['agreements']]
+
     const refresh = () => {
       if (document.visibilityState !== 'visible') return
-      const keys =
-        role === 'admin'
-          ? [['admin'], ['claims'], ['notifications'], ['people'], ['person']]
-          : [['claims'], ['notifications'], ['people'], ['person'], ['business'], ['me'], ['agreements']]
-      // Sirf screen pe maujood (active) queries dobara chalti hain
-      keys.forEach((queryKey) => queryClient.invalidateQueries({ queryKey, refetchType: 'active' }))
+      // User ka koi kaam (accept, sign, save) chal raha hai: us ka jawab aane do,
+      // warna purana data us ke naye nateeje ko ek pal ke liye palat deta hai
+      if (queryClient.isMutating() > 0) return
+      if (Date.now() - lastRun.current < MIN_GAP_MS) return
+      lastRun.current = Date.now()
+      for (const queryKey of keys) {
+        queryClient.invalidateQueries(
+          // Sirf screen pe maujood (active) queries; jo request abhi chal rahi hai use
+          // kaat kar dobara shuru mat karo (dheemi network pe data kabhi pohanchta hi nahi)
+          { queryKey, refetchType: 'active' },
+          { cancelRefetch: false },
+        )
+      }
     }
     const timer = window.setInterval(refresh, LIVE_INTERVAL_MS)
     document.addEventListener('visibilitychange', refresh)

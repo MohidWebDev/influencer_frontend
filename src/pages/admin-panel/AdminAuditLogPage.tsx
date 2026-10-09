@@ -121,7 +121,7 @@ function AdminAuditLogPage() {
 
       <DataState
         isLoading={isLoading}
-        isError={isError}
+        isError={isError && !data}
         error={error}
         isEmpty={!!data && data.logs.length === 0}
         emptyIcon={faClipboardList}

@@ -46,7 +46,8 @@ function Profile() {
 
   if (isLoading) return <p className="text-center text-gray-500">{t('common.loading')}</p>
 
-  if (error || !person) {
+  // Peeche ka refresh fail ho to purani profile dikhti rahe (jhapakti nahi)
+  if (!person) {
     const notFound = axios.isAxiosError(error) && error.response?.status === 404
     return (
       <section className="text-center">

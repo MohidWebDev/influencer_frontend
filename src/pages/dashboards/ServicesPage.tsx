@@ -49,7 +49,6 @@ function ServicesPage() {
   const { data, isLoading, error } = useQuery({
     queryKey: MY_SERVICES_KEY,
     queryFn: getMyServices,
-    staleTime: 0,
     retry: false,
   })
   const [dialog, setDialog] = useState<DialogState | null>(null)
