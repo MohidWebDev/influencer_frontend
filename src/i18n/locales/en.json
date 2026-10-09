@@ -7,7 +7,8 @@
     "reports": "Reports",
     "auditLog": "Audit log",
     "manageProfiles": "Manage profiles",
-    "language": "Language"
+    "language": "Language",
+    "businesses": "Businesses"
   },
   "common": {
     "loading": "Loading...",
@@ -55,7 +56,9 @@
     "people": "Profiles",
     "peopleDetail": "{{claimed}} claimed · {{verified}} verified · {{hidden}} hidden",
     "usersByRole": "Users by role",
-    "open": "Open"
+    "open": "Open",
+    "businessesPending": "Businesses to verify",
+    "businessesApproved": "{{count}} verified"
   },
   "claimStatus": {
     "pending": "Send code",
@@ -256,7 +259,8 @@
       "lastOtpAttemptAt": "Last OTP attempt",
       "verifiedBy": "Verified by",
       "verificationMethod": "Verification method",
-      "isNewProfile": "New profile"
+      "isNewProfile": "New profile",
+      "companyName": "Company"
     },
     "close": "Close",
     "allActions": "All actions",
@@ -294,6 +298,10 @@
       },
       "report": {
         "update": "{{actor}} updated a report about {{target}}."
+      },
+      "business": {
+        "approve": "{{actor}} verified the business {{target}}.",
+        "reject": "{{actor}} rejected the business {{target}}."
       }
     }
   },
@@ -301,7 +309,8 @@
     "person": "Profile",
     "claim": "Claim",
     "user": "User",
-    "report": "Report"
+    "report": "Report",
+    "business": "Business"
   },
   "auditAction": {
     "person": {
@@ -329,6 +338,10 @@
     },
     "report": {
       "update": "Updated report"
+    },
+    "business": {
+      "approve": "Verified business",
+      "reject": "Rejected business"
     }
   },
   "reportForm": {
@@ -370,7 +383,8 @@
       "accountMenu": "Account menu",
       "language": "Language",
       "home": "Home",
-      "about": "About"
+      "about": "About",
+      "myBusiness": "My business"
     },
     "search": {
       "placeholder": "Search by name or what they do...",
@@ -546,7 +560,10 @@
     "EMAIL_FAILED": "We couldn't send the email. Please try again.",
     "EMAIL_NOT_CONFIGURED": "Password reset by email isn't available right now. Please contact support.",
     "NO_PROFILE": "Claim your profile first to add services",
-    "TOO_MANY_SERVICES": "You've reached the maximum number of services"
+    "TOO_MANY_SERVICES": "You've reached the maximum number of services",
+    "BUSINESS_NOT_VERIFIED": "Your business must be verified before you can hire talents",
+    "TALENT_NOT_VERIFIED": "You can only hire verified talents",
+    "HIRE_PENDING": "You already sent this talent a request"
   },
   "search": {
     "any": "Any",
@@ -1026,7 +1043,14 @@
       "report_new": "New report about {{person}}: {{reason}}.",
       "claim_code_sent": "We sent a verification code for {{person}} to your official account. Enter it on your dashboard.",
       "claim_approved": "Your claim for {{person}} was approved. The profile is now yours.",
-      "claim_rejected": "Your claim for {{person}} was rejected."
+      "claim_rejected": "Your claim for {{person}} was rejected.",
+      "business_new": "{{claimant}} submitted the business {{business}} for verification.",
+      "business_approved": "Your business {{business}} is verified. You can now hire verified talents.",
+      "business_rejected": "Your business {{business}} was not verified: {{reason}}",
+      "hire_new": "{{business}} wants to hire you. Reply from your dashboard.",
+      "hire_cancelled": "{{business}} cancelled their hire request.",
+      "hire_accepted": "{{person}} accepted your hire request.",
+      "hire_declined": "{{person}} declined your hire request."
     }
   },
   "dataState": {
@@ -1253,5 +1277,135 @@
     "availableShort": "Available",
     "notAvailable": "Not taking new work right now",
     "fromDate": "Available from {{date}}"
+  },
+  "businessStatus": {
+    "pending": "Pending review",
+    "approved": "Verified",
+    "rejected": "Rejected"
+  },
+  "hireStatus": {
+    "pending": "Waiting for reply",
+    "accepted": "Accepted",
+    "declined": "Declined",
+    "cancelled": "Cancelled"
+  },
+  "business": {
+    "label": "Business verification",
+    "startTitle": "Verify your business to start hiring",
+    "startBody": "Tell us about your company. Once an admin verifies it, you can send hire requests to verified talents.",
+    "startButton": "Add business details",
+    "edit": "Edit details",
+    "fixAndResubmit": "Fix and resubmit",
+    "verifiedLabel": "Verified business",
+    "verifiedBody": "Your business is verified. You can hire any talent with the verified badge.",
+    "findTalents": "Find talents to hire",
+    "pendingLabel": "Under review",
+    "pendingBody": "Sent on {{date}}. An admin is checking your details. You can hire talents once it is verified.",
+    "rejected": "Your business was not verified: {{reason}}",
+    "formTitle": "Verify your business",
+    "editTitle": "Business details",
+    "formSubtitle": "Only verified businesses can hire talents. An admin checks these details before verifying you.",
+    "identityWarning": "Changing the company name, registration number, website or country sends your business for review again. You can't hire until it is verified again.",
+    "submit": "Submit for verification",
+    "submitted": "Sent for verification",
+    "saved": "Business details saved",
+    "fields": {
+      "companyName": "Company name",
+      "industry": "Industry",
+      "industryPlaceholder": "e.g. Food & beverage",
+      "companySize": "Company size",
+      "chooseSize": "Choose size",
+      "employees": "{{size}} employees",
+      "description": "About the company",
+      "descriptionPlaceholder": "What does your company do?",
+      "websiteUrl": "Website",
+      "registrationNumber": "Registration number",
+      "registrationPlaceholder": "e.g. NTN or company number",
+      "country": "Country",
+      "city": "City",
+      "contactPhone": "Contact phone",
+      "proofLinks": "Proof links",
+      "proofLinksHint": "LinkedIn page, registration certificate, press coverage: anything that helps us verify you.",
+      "addLink": "Add link",
+      "removeLink": "Remove link"
+    }
+  },
+  "hire": {
+    "button": "Hire",
+    "onlyVerifiedTalents": "Only verified talents can be hired.",
+    "verifyBusinessFirst": "Verify your business to hire",
+    "businessPending": "Your business is under review",
+    "requestSent": "Request sent",
+    "alreadyAccepted": "Hired before",
+    "dialogTitle": "Hire {{name}}",
+    "service": "Service",
+    "noService": "Something else (describe below)",
+    "title": "Project title",
+    "titlePlaceholder": "e.g. Spring product launch",
+    "message": "Message",
+    "messagePlaceholder": "What do you need, when, and where?",
+    "budget": "Budget (optional)",
+    "budgetPlaceholder": "e.g. 150000",
+    "currency": "Currency",
+    "startDate": "Start date (optional)",
+    "send": "Send request",
+    "sent": "Hire request sent",
+    "errors": {
+      "title": "Use at least 3 characters",
+      "message": "Tell the talent a bit more (at least 20 characters)",
+      "amount": "Enter an amount"
+    },
+    "from": "From {{business}}",
+    "startsOn": "Starts {{date}}",
+    "sentOn": "Sent {{date}}",
+    "responseNote": "Reply: {{note}}",
+    "sentTitle": "Hire requests",
+    "sentSubtitle": "Requests you sent to talents and their replies.",
+    "sentEmpty": "You haven't sent any hire requests yet.",
+    "cancel": "Cancel request",
+    "cancelTitle": "Cancel this request?",
+    "cancelBody": "{{name}} will no longer be able to reply to it.",
+    "cancelled": "Request cancelled",
+    "incomingTitle": "Hire requests",
+    "incomingSubtitle": "Verified businesses that want to work with you.",
+    "incomingEmpty": "No hire requests yet. Add services and open your availability so businesses can find you.",
+    "accept": "Accept",
+    "decline": "Decline",
+    "acceptTitle": "Accept this request?",
+    "declineTitle": "Decline this request?",
+    "acceptBody": "{{business}} will be told that you accepted.",
+    "declineBody": "{{business}} will be told that you declined.",
+    "noteLabel": "Note (optional)",
+    "notePlaceholder": "Add a short message for the business",
+    "acceptedToast": "Request accepted",
+    "declinedToast": "Request declined"
+  },
+  "businesses": {
+    "title": "Business verification",
+    "subtitle": "Check company details. Only verified businesses can hire talents.",
+    "searchPlaceholder": "Company or website",
+    "allStatuses": "All statuses",
+    "colCompany": "Company",
+    "colOwner": "Account",
+    "colCountry": "Country",
+    "colStatus": "Status",
+    "colSubmitted": "Submitted",
+    "emptyTitle": "No businesses yet",
+    "emptyText": "Businesses appear here when they send their details for verification.",
+    "details": "Company details",
+    "owner": "Account",
+    "joined": "Joined {{date}}",
+    "submittedOn": "Submitted {{date}}",
+    "decision": "Decision",
+    "approve": "Verify business",
+    "reject": "Reject",
+    "revoke": "Revoke verification",
+    "approveTitle": "Verify this business?",
+    "approveBody": "{{name}} will be able to hire verified talents.",
+    "rejectTitle": "Reject this business?",
+    "rejectReason": "Reason (the business will see it)",
+    "rejectPlaceholder": "e.g. The website doesn't match the company name",
+    "approved": "Business verified",
+    "rejected": "Business rejected"
   }
 }

@@ -6,6 +6,7 @@ export interface AdminStats {
   users: { total: number; suspended: number; byRole: Partial<Record<Role, number>> }
   claims: { needsAction: number; open: number }
   reports: { open: number; reviewing: number }
+  businesses: { pending: number; approved: number }
 }
 
 export interface AdminUser {
@@ -22,7 +23,7 @@ export interface AuditLogEntry {
   actor: { _id: string; name: string; email: string } | null
   actorEmail: string
   action: string
-  targetType: 'person' | 'claim' | 'user' | 'report'
+  targetType: 'person' | 'claim' | 'user' | 'report' | 'business'
   targetId?: string
   targetLabel?: string
   before?: unknown

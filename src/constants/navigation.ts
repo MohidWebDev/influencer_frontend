@@ -2,6 +2,7 @@ import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 import {
   faBell,
   faBriefcase,
+  faBuilding,
   faCircleInfo,
   faCompass,
   faEnvelope,
@@ -70,6 +71,14 @@ export const MAIN_NAV: NavItem[] = [
     },
     icon: faBriefcase,
     roles: ['talent'],
+  },
+  {
+    to: '/dashboard/business',
+    get label() {
+      return tr('site.nav.myBusiness')
+    },
+    icon: faBuilding,
+    roles: ['business'],
   },
   {
     to: '/talents',

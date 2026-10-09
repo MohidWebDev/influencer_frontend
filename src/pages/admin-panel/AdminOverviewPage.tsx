@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
+  faBuilding,
   faFlag,
   faIdCard,
   faUserCheck,
@@ -76,6 +77,14 @@ function AdminOverviewPage() {
                 value={data.reports.open}
                 detail={t('overview.reviewingReports', { count: data.reports.reviewing })}
                 highlight={data.reports.open > 0}
+              />
+              <StatCard
+                to="/admin/businesses?status=pending"
+                icon={faBuilding}
+                label={t('overview.businessesPending')}
+                value={data.businesses.pending}
+                detail={t('overview.businessesApproved', { count: data.businesses.approved })}
+                highlight={data.businesses.pending > 0}
               />
               <StatCard
                 to="/admin/users"

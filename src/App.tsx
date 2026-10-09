@@ -17,6 +17,7 @@ import CreateMyProfile from './pages/dashboards/CreateMyProfile'
 import ComingSoon from './pages/ComingSoon'
 import Settings from './pages/Settings'
 import ServicesPage from './pages/dashboards/ServicesPage'
+import BusinessProfileForm from './pages/dashboards/BusinessProfileForm'
 import ForgotPassword from './pages/ForgotPassword'
 import MyProfileRedirect from './pages/MyProfileRedirect'
 import { faEnvelope, faStar, faUsers } from '@fortawesome/free-solid-svg-icons'
@@ -29,6 +30,8 @@ import AdminUsersPage from './pages/admin-panel/AdminUsersPage'
 import AdminReportsPage from './pages/admin-panel/AdminReportsPage'
 import AdminReportDetailPage from './pages/admin-panel/AdminReportDetailPage'
 import AdminAuditLogPage from './pages/admin-panel/AdminAuditLogPage'
+import AdminBusinessesPage from './pages/admin-panel/AdminBusinessesPage'
+import AdminBusinessDetailPage from './pages/admin-panel/AdminBusinessDetailPage'
 import ReportProfile from './pages/ReportProfile'
 
 function App() {
@@ -61,6 +64,14 @@ function App() {
           element={
             <ProtectedRoute roles={['talent']}>
               <ServicesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/business"
+          element={
+            <ProtectedRoute roles={['business']}>
+              <BusinessProfileForm />
             </ProtectedRoute>
           }
         />
@@ -163,6 +174,8 @@ function App() {
           <Route path="users" element={<AdminUsersPage />} />
           <Route path="reports" element={<AdminReportsPage />} />
           <Route path="reports/:id" element={<AdminReportDetailPage />} />
+          <Route path="businesses" element={<AdminBusinessesPage />} />
+          <Route path="businesses/:id" element={<AdminBusinessDetailPage />} />
           <Route path="audit-logs" element={<AdminAuditLogPage />} />
         </Route>
         <Route path="/people/:slug/report" element={<ReportProfile />} />

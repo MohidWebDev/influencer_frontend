@@ -6,11 +6,14 @@ import toast from 'react-hot-toast'
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
+  faBan,
   faBell,
+  faBuilding,
   faCheckDouble,
   faCircleCheck,
   faCircleXmark,
   faFlag,
+  faHandshake,
   faKey,
   faLock,
   faUserCheck,
@@ -36,6 +39,13 @@ const LOOK: Record<NotificationType, { icon: IconDefinition; tint: string }> = {
   'claim.code_sent': { icon: faKey, tint: 'bg-yellow-50 text-yellow-800' },
   'claim.approved': { icon: faIdCard, tint: 'bg-green-50 text-green-700' },
   'claim.rejected': { icon: faCircleXmark, tint: 'bg-gray-100 text-gray-600' },
+  'business.new': { icon: faBuilding, tint: 'bg-blue-50 text-blue-700' },
+  'business.approved': { icon: faCircleCheck, tint: 'bg-green-50 text-green-700' },
+  'business.rejected': { icon: faCircleXmark, tint: 'bg-gray-100 text-gray-600' },
+  'hire.new': { icon: faHandshake, tint: 'bg-violet-50 text-violet-700' },
+  'hire.accepted': { icon: faHandshake, tint: 'bg-green-50 text-green-700' },
+  'hire.declined': { icon: faCircleXmark, tint: 'bg-gray-100 text-gray-600' },
+  'hire.cancelled': { icon: faBan, tint: 'bg-gray-100 text-gray-600' },
 }
 
 // "5 minutes ago" chuni hui zaban mein
@@ -206,6 +216,7 @@ function Notifications() {
                       {t(`notifications.types.${notification.type.replace('.', '_')}`, {
                         person: notification.data.person ?? t('claims.deletedProfile'),
                         claimant: notification.data.claimant ?? t('claims.deletedUser'),
+                        business: notification.data.business ?? '—',
                         reason: notification.data.reason
                           ? t(`reportReason.${notification.data.reason}`, {
                               defaultValue: notification.data.reason,

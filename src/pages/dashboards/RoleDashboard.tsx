@@ -14,6 +14,9 @@ import {
 import { Link } from 'react-router-dom'
 import DashboardHeader from '../../components/DashboardHeader'
 import MyProfileSection from '../../components/MyProfileSection'
+import BusinessVerificationSection from '../../components/business/BusinessVerificationSection'
+import IncomingHireRequests from '../../components/business/IncomingHireRequests'
+import SentHireRequests from '../../components/business/SentHireRequests'
 import type { SignupRole } from '../../types/user'
 
 interface DashboardCard {
@@ -54,11 +57,6 @@ const ROLE_DASHBOARDS: Record<SignupRole, RoleConfig> = {
         title: 'dash.availability.title',
         description: 'dash.availability.description',
       },
-      {
-        icon: faEnvelopeOpenText,
-        title: 'dash.inquiries.title',
-        description: 'dash.inquiries.description',
-      },
     ],
   },
   representative: {
@@ -87,11 +85,6 @@ const ROLE_DASHBOARDS: Record<SignupRole, RoleConfig> = {
         icon: faStar,
         title: 'dash.shortlists.title',
         description: 'dash.shortlists.businessDescription',
-      },
-      {
-        icon: faEnvelopeOpenText,
-        title: 'dash.sentInquiries.title',
-        description: 'dash.sentInquiries.businessDescription',
       },
     ],
   },
@@ -140,6 +133,7 @@ function RoleDashboard({ role }: { role: SignupRole }) {
       <DashboardHeader />
 
       {role === 'talent' && <MyProfileSection />}
+      {role === 'business' && <BusinessVerificationSection />}
 
       <div>
         <h2 className="text-lg font-semibold">{t(config.title)}</h2>
@@ -176,6 +170,10 @@ function RoleDashboard({ role }: { role: SignupRole }) {
           </article>
         ))}
       </div>
+
+      {/* Hire requests: talent ko aayi hui, business ki bheji hui */}
+      {role === 'talent' && <IncomingHireRequests />}
+      {role === 'business' && <SentHireRequests />}
     </div>
   )
 }

@@ -7,7 +7,8 @@
     "reports": "رپورٹس",
     "auditLog": "آڈٹ لاگ",
     "manageProfiles": "پروفائلز کا انتظام",
-    "language": "زبان"
+    "language": "زبان",
+    "businesses": "کاروبار"
   },
   "common": {
     "loading": "لوڈ ہو رہا ہے...",
@@ -55,7 +56,9 @@
     "people": "پروفائلز",
     "peopleDetail": "{{claimed}} دعویٰ شدہ · {{verified}} تصدیق شدہ · {{hidden}} پوشیدہ",
     "usersByRole": "کردار کے لحاظ سے صارفین",
-    "open": "کھولیں"
+    "open": "کھولیں",
+    "businessesPending": "تصدیق کے منتظر کاروبار",
+    "businessesApproved": "{{count}} تصدیق شدہ"
   },
   "claimStatus": {
     "pending": "کوڈ بھیجیں",
@@ -256,7 +259,8 @@
       "lastOtpAttemptAt": "آخری OTP کوشش",
       "verifiedBy": "تصدیق کرنے والا",
       "verificationMethod": "تصدیق کا طریقہ",
-      "isNewProfile": "نئی پروفائل"
+      "isNewProfile": "نئی پروفائل",
+      "companyName": "کمپنی"
     },
     "close": "بند کریں",
     "allActions": "تمام کارروائیاں",
@@ -294,6 +298,10 @@
       },
       "report": {
         "update": "{{actor}} نے {{target}} کے بارے میں رپورٹ اپ ڈیٹ کی۔"
+      },
+      "business": {
+        "approve": "{{actor}} نے کاروبار {{target}} کی تصدیق کی۔",
+        "reject": "{{actor}} نے کاروبار {{target}} کو مسترد کیا۔"
       }
     }
   },
@@ -301,7 +309,8 @@
     "person": "پروفائل",
     "claim": "دعویٰ",
     "user": "صارف",
-    "report": "رپورٹ"
+    "report": "رپورٹ",
+    "business": "کاروبار"
   },
   "auditAction": {
     "person": {
@@ -329,6 +338,10 @@
     },
     "report": {
       "update": "رپورٹ اپ ڈیٹ کی"
+    },
+    "business": {
+      "approve": "کاروبار کی تصدیق کی",
+      "reject": "کاروبار مسترد کیا"
     }
   },
   "reportForm": {
@@ -370,7 +383,8 @@
       "accountMenu": "اکاؤنٹ مینو",
       "language": "زبان",
       "home": "ہوم",
-      "about": "ہمارے بارے میں"
+      "about": "ہمارے بارے میں",
+      "myBusiness": "میرا کاروبار"
     },
     "search": {
       "placeholder": "نام یا کام سے تلاش کریں...",
@@ -546,7 +560,10 @@
     "EMAIL_FAILED": "ای میل نہیں بھیجی جا سکی۔ دوبارہ کوشش کریں۔",
     "EMAIL_NOT_CONFIGURED": "ای میل سے پاس ورڈ ری سیٹ ابھی دستیاب نہیں۔ سپورٹ سے رابطہ کریں۔",
     "NO_PROFILE": "سروسز کے لیے پہلے اپنی پروفائل کلیم کریں",
-    "TOO_MANY_SERVICES": "سروسز کی حد پوری ہو گئی"
+    "TOO_MANY_SERVICES": "سروسز کی حد پوری ہو گئی",
+    "BUSINESS_NOT_VERIFIED": "ٹیلنٹ کو ہائر کرنے سے پہلے آپ کے کاروبار کی تصدیق ضروری ہے",
+    "TALENT_NOT_VERIFIED": "آپ صرف تصدیق شدہ ٹیلنٹ کو ہائر کر سکتے ہیں",
+    "HIRE_PENDING": "آپ اس ٹیلنٹ کو پہلے ہی درخواست بھیج چکے ہیں"
   },
   "search": {
     "any": "کوئی بھی",
@@ -1026,7 +1043,14 @@
       "report_new": "{{person}} کے بارے میں نئی رپورٹ: {{reason}}۔",
       "claim_code_sent": "ہم نے {{person}} کا تصدیقی کوڈ آپ کے آفیشل اکاؤنٹ پر بھیج دیا ہے۔ اسے اپنے ڈیش بورڈ پر درج کریں۔",
       "claim_approved": "{{person}} کے لیے آپ کا کلیم منظور ہو گیا۔ پروفائل اب آپ کی ہے۔",
-      "claim_rejected": "{{person}} کے لیے آپ کا کلیم مسترد ہو گیا۔"
+      "claim_rejected": "{{person}} کے لیے آپ کا کلیم مسترد ہو گیا۔",
+      "business_new": "{{claimant}} نے کاروبار {{business}} تصدیق کے لیے بھیجا ہے۔",
+      "business_approved": "آپ کے کاروبار {{business}} کی تصدیق ہو گئی۔ اب آپ تصدیق شدہ ٹیلنٹ کو ہائر کر سکتے ہیں۔",
+      "business_rejected": "آپ کے کاروبار {{business}} کی تصدیق نہیں ہوئی: {{reason}}",
+      "hire_new": "{{business}} آپ کو ہائر کرنا چاہتا ہے۔ اپنے ڈیش بورڈ سے جواب دیں۔",
+      "hire_cancelled": "{{business}} نے اپنی ہائر درخواست منسوخ کر دی۔",
+      "hire_accepted": "{{person}} نے آپ کی ہائر درخواست قبول کر لی۔",
+      "hire_declined": "{{person}} نے آپ کی ہائر درخواست سے انکار کر دیا۔"
     }
   },
   "dataState": {
@@ -1253,5 +1277,135 @@
     "availableShort": "دستیاب",
     "notAvailable": "ابھی نیا کام نہیں لے رہے",
     "fromDate": "{{date}} سے دستیاب"
+  },
+  "businessStatus": {
+    "pending": "جائزے میں",
+    "approved": "تصدیق شدہ",
+    "rejected": "مسترد"
+  },
+  "hireStatus": {
+    "pending": "جواب کا انتظار",
+    "accepted": "قبول",
+    "declined": "انکار",
+    "cancelled": "منسوخ"
+  },
+  "business": {
+    "label": "کاروبار کی تصدیق",
+    "startTitle": "ہائر کرنے کے لیے اپنے کاروبار کی تصدیق کروائیں",
+    "startBody": "اپنی کمپنی کے بارے میں بتائیں۔ ایڈمن کی تصدیق کے بعد آپ تصدیق شدہ ٹیلنٹ کو ہائر درخواستیں بھیج سکیں گے۔",
+    "startButton": "کاروبار کی تفصیلات شامل کریں",
+    "edit": "تفصیلات میں ترمیم",
+    "fixAndResubmit": "درست کر کے دوبارہ بھیجیں",
+    "verifiedLabel": "تصدیق شدہ کاروبار",
+    "verifiedBody": "آپ کا کاروبار تصدیق شدہ ہے۔ آپ تصدیق کے نشان والے کسی بھی ٹیلنٹ کو ہائر کر سکتے ہیں۔",
+    "findTalents": "ہائر کرنے کے لیے ٹیلنٹ تلاش کریں",
+    "pendingLabel": "جائزے میں",
+    "pendingBody": "{{date}} کو بھیجا گیا۔ ایڈمن آپ کی تفصیلات دیکھ رہا ہے۔ تصدیق کے بعد آپ ٹیلنٹ کو ہائر کر سکیں گے۔",
+    "rejected": "آپ کے کاروبار کی تصدیق نہیں ہوئی: {{reason}}",
+    "formTitle": "اپنے کاروبار کی تصدیق کروائیں",
+    "editTitle": "کاروبار کی تفصیلات",
+    "formSubtitle": "صرف تصدیق شدہ کاروبار ٹیلنٹ کو ہائر کر سکتے ہیں۔ تصدیق سے پہلے ایڈمن یہ تفصیلات چیک کرتا ہے۔",
+    "identityWarning": "کمپنی کا نام، رجسٹریشن نمبر، ویب سائٹ یا ملک بدلنے سے آپ کا کاروبار دوبارہ جائزے میں چلا جائے گا۔ دوبارہ تصدیق تک آپ ہائر نہیں کر سکیں گے۔",
+    "submit": "تصدیق کے لیے بھیجیں",
+    "submitted": "تصدیق کے لیے بھیج دیا گیا",
+    "saved": "کاروبار کی تفصیلات محفوظ ہو گئیں",
+    "fields": {
+      "companyName": "کمپنی کا نام",
+      "industry": "صنعت",
+      "industryPlaceholder": "مثلاً کھانے پینے کی اشیاء",
+      "companySize": "کمپنی کا سائز",
+      "chooseSize": "سائز منتخب کریں",
+      "employees": "{{size}} ملازمین",
+      "description": "کمپنی کے بارے میں",
+      "descriptionPlaceholder": "آپ کی کمپنی کیا کرتی ہے؟",
+      "websiteUrl": "ویب سائٹ",
+      "registrationNumber": "رجسٹریشن نمبر",
+      "registrationPlaceholder": "مثلاً NTN یا کمپنی نمبر",
+      "country": "ملک",
+      "city": "شہر",
+      "contactPhone": "رابطہ نمبر",
+      "proofLinks": "ثبوت کے لنکس",
+      "proofLinksHint": "LinkedIn صفحہ، رجسٹریشن سرٹیفکیٹ، خبریں: جو بھی تصدیق میں مدد دے۔",
+      "addLink": "لنک شامل کریں",
+      "removeLink": "لنک ہٹائیں"
+    }
+  },
+  "hire": {
+    "button": "ہائر کریں",
+    "onlyVerifiedTalents": "صرف تصدیق شدہ ٹیلنٹ کو ہائر کیا جا سکتا ہے۔",
+    "verifyBusinessFirst": "ہائر کرنے کے لیے کاروبار کی تصدیق کروائیں",
+    "businessPending": "آپ کا کاروبار جائزے میں ہے",
+    "requestSent": "درخواست بھیج دی گئی",
+    "alreadyAccepted": "پہلے ہائر کیا",
+    "dialogTitle": "{{name}} کو ہائر کریں",
+    "service": "سروس",
+    "noService": "کچھ اور (نیچے بیان کریں)",
+    "title": "پروجیکٹ کا عنوان",
+    "titlePlaceholder": "مثلاً بہار کی پروڈکٹ لانچ",
+    "message": "پیغام",
+    "messagePlaceholder": "آپ کو کیا چاہیے، کب اور کہاں؟",
+    "budget": "بجٹ (اختیاری)",
+    "budgetPlaceholder": "مثلاً 150000",
+    "currency": "کرنسی",
+    "startDate": "شروع ہونے کی تاریخ (اختیاری)",
+    "send": "درخواست بھیجیں",
+    "sent": "ہائر درخواست بھیج دی گئی",
+    "errors": {
+      "title": "کم از کم 3 حروف لکھیں",
+      "message": "ٹیلنٹ کو تھوڑا زیادہ بتائیں (کم از کم 20 حروف)",
+      "amount": "رقم درج کریں"
+    },
+    "from": "{{business}} کی طرف سے",
+    "startsOn": "{{date}} سے شروع",
+    "sentOn": "{{date}} کو بھیجی",
+    "responseNote": "جواب: {{note}}",
+    "sentTitle": "ہائر درخواستیں",
+    "sentSubtitle": "آپ کی ٹیلنٹ کو بھیجی گئی درخواستیں اور ان کے جواب۔",
+    "sentEmpty": "آپ نے ابھی تک کوئی ہائر درخواست نہیں بھیجی۔",
+    "cancel": "درخواست منسوخ کریں",
+    "cancelTitle": "یہ درخواست منسوخ کریں؟",
+    "cancelBody": "{{name}} اس کا جواب نہیں دے سکے گا۔",
+    "cancelled": "درخواست منسوخ ہو گئی",
+    "incomingTitle": "ہائر درخواستیں",
+    "incomingSubtitle": "تصدیق شدہ کاروبار جو آپ کے ساتھ کام کرنا چاہتے ہیں۔",
+    "incomingEmpty": "ابھی کوئی ہائر درخواست نہیں۔ سروسز شامل کریں اور دستیابی کھولیں تاکہ کاروبار آپ کو ڈھونڈ سکیں۔",
+    "accept": "قبول کریں",
+    "decline": "انکار کریں",
+    "acceptTitle": "یہ درخواست قبول کریں؟",
+    "declineTitle": "اس درخواست سے انکار کریں؟",
+    "acceptBody": "{{business}} کو بتایا جائے گا کہ آپ نے قبول کر لیا۔",
+    "declineBody": "{{business}} کو بتایا جائے گا کہ آپ نے انکار کر دیا۔",
+    "noteLabel": "نوٹ (اختیاری)",
+    "notePlaceholder": "کاروبار کے لیے مختصر پیغام لکھیں",
+    "acceptedToast": "درخواست قبول ہو گئی",
+    "declinedToast": "درخواست سے انکار ہو گیا"
+  },
+  "businesses": {
+    "title": "کاروبار کی تصدیق",
+    "subtitle": "کمپنی کی تفصیلات چیک کریں۔ صرف تصدیق شدہ کاروبار ٹیلنٹ کو ہائر کر سکتے ہیں۔",
+    "searchPlaceholder": "کمپنی یا ویب سائٹ",
+    "allStatuses": "تمام حالتیں",
+    "colCompany": "کمپنی",
+    "colOwner": "اکاؤنٹ",
+    "colCountry": "ملک",
+    "colStatus": "حالت",
+    "colSubmitted": "بھیجا گیا",
+    "emptyTitle": "ابھی کوئی کاروبار نہیں",
+    "emptyText": "کاروبار یہاں تب نظر آئیں گے جب وہ تصدیق کے لیے تفصیلات بھیجیں گے۔",
+    "details": "کمپنی کی تفصیلات",
+    "owner": "اکاؤنٹ",
+    "joined": "{{date}} کو شامل ہوا",
+    "submittedOn": "{{date}} کو بھیجا گیا",
+    "decision": "فیصلہ",
+    "approve": "کاروبار کی تصدیق کریں",
+    "reject": "مسترد کریں",
+    "revoke": "تصدیق واپس لیں",
+    "approveTitle": "اس کاروبار کی تصدیق کریں؟",
+    "approveBody": "{{name}} تصدیق شدہ ٹیلنٹ کو ہائر کر سکے گا۔",
+    "rejectTitle": "اس کاروبار کو مسترد کریں؟",
+    "rejectReason": "وجہ (کاروبار اسے دیکھے گا)",
+    "rejectPlaceholder": "مثلاً ویب سائٹ کمپنی کے نام سے میل نہیں کھاتی",
+    "approved": "کاروبار کی تصدیق ہو گئی",
+    "rejected": "کاروبار مسترد ہو گیا"
   }
 }

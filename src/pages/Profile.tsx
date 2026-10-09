@@ -7,6 +7,7 @@ import axios from 'axios'
 import { personQuery } from '../api/queries'
 import Avatar from '../components/Avatar'
 import ClaimAction from '../components/ClaimAction'
+import HireAction from '../components/business/HireAction'
 import ReportProfileLink from '../components/ReportProfileLink'
 import UnclaimedBadge from '../components/UnclaimedBadge'
 import PublicAvailability from '../components/services/PublicAvailability'
@@ -105,15 +106,9 @@ function Profile() {
             </div>
           </div>
 
-          {/* Contact agle phase mein */}
+          {/* Verified business ke liye Hire, baqi sab ke liye Contact (agle phase mein) */}
           <div className="flex flex-col gap-2 sm:w-44">
-            <button
-              disabled
-              title={t('profile.comingSoon')}
-              className="rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white opacity-50"
-            >
-              {t('profile.contact')}
-            </button>
+            <HireAction person={person} />
             <ClaimAction person={person} />
           </div>
         </div>

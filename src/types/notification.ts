@@ -8,6 +8,13 @@ export type NotificationType =
   | 'claim.code_sent'
   | 'claim.approved'
   | 'claim.rejected'
+  | 'business.new'
+  | 'business.approved'
+  | 'business.rejected'
+  | 'hire.new'
+  | 'hire.cancelled'
+  | 'hire.accepted'
+  | 'hire.declined'
 
 export interface AppNotification {
   _id: string
