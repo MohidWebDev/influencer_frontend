@@ -42,7 +42,7 @@ function IncomingHireRequests() {
   const pending = hires?.filter((hire) => hire.status === 'pending').length ?? 0
 
   return (
-    <section>
+    <section id="hire-requests">
       <h2 className="text-lg font-semibold">
         {t('hire.incomingTitle')}
         {pending > 0 && (
@@ -59,37 +59,50 @@ function IncomingHireRequests() {
           {t('hire.incomingEmpty')}
         </p>
       )}
-      {!!hires?.length && (
-        <ul className="mt-4 space-y-3">
-          {hires.map((hire) => (
-            <HireRequestCard key={hire._id} hire={hire} who="business">
-              {hire.status === 'pending' && (
-                <>
-                  <button
-                    type="button"
-                    onClick={() => setAnswer({ hire, action: 'decline' })}
-                    className="rounded-lg border border-gray-300 px-4 py-2 text-sm hover:bg-gray-100"
-                  >
-                    {t('hire.decline')}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setAnswer({ hire, action: 'accept' })}
-                    className="rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
-                  >
-                    {t('hire.accept')}
-                  </button>
-                </>
-              )}
-            </HireRequestCard>
-          ))}
-        </ul>
+      {/* Pehle woh jin ka jawab dena hai, phir purani (accepted / declined / cancelled) */}
+      {[
+        { key: 'waiting', items: hires?.filter((hire) => hire.status === 'pending') ?? [] },
+        { key: 'history', items: hires?.filter((hire) => hire.status !== 'pending') ?? [] },
+      ].map(
+        (group) =>
+          group.items.length > 0 && (
+            <div key={group.key} className="mt-4">
+              <h3 className="text-sm font-medium text-gray-500">
+                {group.key === 'waiting' ? t('hire.needsReply') : t('hire.earlier')}
+              </h3>
+              <ul className="mt-2 space-y-3">
+                {group.items.map((hire) => (
+                  <HireRequestCard key={hire._id} hire={hire} who="business">
+                    {hire.status === 'pending' && (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => setAnswer({ hire, action: 'decline' })}
+                          className="rounded-lg border border-gray-300 px-4 py-2 text-sm hover:bg-gray-100"
+                        >
+                          {t('hire.decline')}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setAnswer({ hire, action: 'accept' })}
+                          className="rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
+                        >
+                          {t('hire.accept')}
+                        </button>
+                      </>
+                    )}
+                  </HireRequestCard>
+                ))}
+              </ul>
+            </div>
+          ),
       )}
 
       <ConfirmDialog
         open={!!answer}
         title={answer?.action === 'accept' ? t('hire.acceptTitle') : t('hire.declineTitle')}
         tone={answer?.action === 'accept' ? 'success' : 'danger'}
+        confirmLabel={answer?.action === 'accept' ? t('hire.accept') : t('hire.decline')}
         isBusy={respond.isPending}
         onConfirm={() => answer && respond.mutate(answer)}
         onCancel={close}
@@ -99,6 +112,7 @@ function IncomingHireRequests() {
             business: answer?.hire.businessProfile?.companyName ?? '',
           })}
         </p>
+        {answer?.action === 'accept' && <p className="mt-2">{t('hire.acceptShares')}</p>}
         <label className="mt-3 block">
           <span className="mb-1 block text-sm font-medium text-gray-900">{t('hire.noteLabel')}</span>
           <textarea

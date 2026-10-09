@@ -92,10 +92,14 @@ export interface HireRequest {
     companyName: string
     websiteUrl: string
     industry?: string
+    companySize?: CompanySize
+    description?: string
     country: string
     city?: string
     status: BusinessStatus
   } | null
+  // Sirf accept ke baad: doosri taraf ka raabta (talent ko business ka, business ko talent ka)
+  contact?: { name: string; email: string; phone?: string; websiteUrl?: string }
   serviceId?: string
   serviceTitle?: string
   title: string

@@ -907,7 +907,15 @@
     "approved": "تمت الموافقة على مطالبتك بـ{{name}}. الملف أصبح لك.",
     "rejected": "تم رفض مطالبتك بـ{{name}}.",
     "newNotifications": "لديك {{count}} إشعار جديد",
-    "openNotifications": "افتح الإشعارات"
+    "openNotifications": "افتح الإشعارات",
+    "hireNew": "أرسلت {{business}} طلب توظيف إليك.",
+    "openDashboard": "افتح لوحة التحكم",
+    "hireCancelled": "ألغت {{business}} طلب التوظيف.",
+    "businessCodeSent": "تم إرسال رمز تحقق إلى {{channel}}. أدخله في لوحة التحكم.",
+    "businessApproved": "تم توثيق شركتك. يمكنك الآن توظيف المواهب الموثّقة.",
+    "businessRejected": "لم يتم توثيق شركتك. اطّلع على السبب في لوحة التحكم.",
+    "hireAccepted": "قبل {{name}} طلب التوظيف الخاص بك.",
+    "hireDeclined": "رفض {{name}} طلب التوظيف الخاص بك."
   },
   "claimOtp": {
     "attemptsUsed": "{{count}} / {{max}} محاولات خاطئة",
@@ -1401,7 +1409,15 @@
     "noteLabel": "ملاحظة (اختياري)",
     "notePlaceholder": "أضف رسالة قصيرة للشركة",
     "acceptedToast": "تم قبول الطلب",
-    "declinedToast": "تم رفض الطلب"
+    "declinedToast": "تم رفض الطلب",
+    "verifiedBusiness": "شركة موثّقة",
+    "forService": "لـ: {{service}}",
+    "repliedOn": "تم الرد في {{date}}",
+    "needsReply": "بانتظار ردك",
+    "earlier": "طلبات سابقة",
+    "acceptShares": "ستتم مشاركة اسمك وبريدك الإلكتروني معهم، وسترى بيانات التواصل الخاصة بهم.",
+    "nextStepsTalent": "لقد قبلت. تواصل مع الشركة للاتفاق على التفاصيل:",
+    "nextStepsBusiness": "تم القبول! تواصل مع الموهبة للاتفاق على التفاصيل:"
   },
   "businesses": {
     "title": "توثيق الشركات",

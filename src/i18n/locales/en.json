@@ -907,7 +907,15 @@
     "approved": "Your claim for {{name}} was approved. The profile is now yours.",
     "rejected": "Your claim for {{name}} was rejected.",
     "newNotifications": "You have {{count}} new notification(s)",
-    "openNotifications": "Open notifications"
+    "openNotifications": "Open notifications",
+    "hireNew": "{{business}} sent you a hire request.",
+    "openDashboard": "Open dashboard",
+    "hireCancelled": "{{business}} cancelled their hire request.",
+    "businessCodeSent": "A verification code was sent to {{channel}}. Enter it on your dashboard.",
+    "businessApproved": "Your business is verified. You can now hire verified talents.",
+    "businessRejected": "Your business was not verified. See the reason on your dashboard.",
+    "hireAccepted": "{{name}} accepted your hire request.",
+    "hireDeclined": "{{name}} declined your hire request."
   },
   "claimOtp": {
     "attemptsUsed": "{{count}} / {{max}} wrong attempts",
@@ -1401,7 +1409,15 @@
     "noteLabel": "Note (optional)",
     "notePlaceholder": "Add a short message for the business",
     "acceptedToast": "Request accepted",
-    "declinedToast": "Request declined"
+    "declinedToast": "Request declined",
+    "verifiedBusiness": "Verified business",
+    "forService": "For: {{service}}",
+    "repliedOn": "Replied {{date}}",
+    "needsReply": "Waiting for your reply",
+    "earlier": "Earlier requests",
+    "acceptShares": "Your name and email will be shared with them, and you'll see their contact details.",
+    "nextStepsTalent": "You accepted. Contact the business to agree on the details:",
+    "nextStepsBusiness": "Accepted! Contact the talent to agree on the details:"
   },
   "businesses": {
     "title": "Business verification",

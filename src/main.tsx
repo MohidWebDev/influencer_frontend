@@ -12,12 +12,12 @@ import App from './App.tsx'
 import LanguageRoot from './components/LanguageRoot'
 import AppToaster from './components/AppToaster'
 
-// Koi bhi kaam (claim approve, profile edit, hide, delete...) kaamyab ho to profiles ka
+// Koi bhi kaam (claim approve, profile edit, hide, delete, business code, hire jawab...) kaamyab ho to profiles ka
 // data har jagah taaza: Explore, Home, profile page, admin cards. Jo screen pe hai foran
 // dobara aata hai, baqi agli dafa khulne pe
 const mutationCache = new MutationCache({
   onSuccess: () => {
-    for (const queryKey of [['people'], ['person'], ['admin'], ['claims']]) {
+    for (const queryKey of [['people'], ['person'], ['admin'], ['claims'], ['business'], ['me']]) {
       queryClient.invalidateQueries({ queryKey })
     }
   },

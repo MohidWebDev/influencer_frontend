@@ -1,14 +1,15 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBell, faKey } from '@fortawesome/free-solid-svg-icons'
-import { myClaimsQuery } from '../api/queries'
+import { faBell, faHandshake, faKey } from '@fortawesome/free-solid-svg-icons'
+import { incomingHiresQuery, myBusinessQuery, myClaimsQuery, myHiresQuery } from '../api/queries'
 import { useNavigate } from 'react-router-dom'
 import { useUnreadNotifications } from '../hooks/useUnreadNotifications'
 import { useAuth } from '../hooks/useAuth'
 import { claimPersonName, type ClaimStatus } from '../types/claim'
+import type { BusinessStatus, HireStatus } from '../types/business'
 
 // Itne second baad khula hua data dobara mangwao (sirf jab tab samne ho)
 const LIVE_INTERVAL_MS = 8000
@@ -22,13 +23,14 @@ function LiveUpdates() {
 
   useEffect(() => {
     if (!role) return
-    // Admin ko admin ka sara data, baqi users ko apne claims aur profile
+    // Admin ko admin ka sara data, baqi users ko apne claims, profile, business
+    // verification aur hire requests
     const refresh = () => {
       if (document.visibilityState !== 'visible') return
       const keys =
         role === 'admin'
           ? [['admin'], ['claims'], ['notifications'], ['people'], ['person']]
-          : [['claims'], ['notifications'], ['people'], ['person']]
+          : [['claims'], ['notifications'], ['people'], ['person'], ['business'], ['me']]
       // Sirf screen pe maujood (active) queries dobara chalti hain
       keys.forEach((queryKey) => queryClient.invalidateQueries({ queryKey, refetchType: 'active' }))
     }
@@ -44,6 +46,7 @@ function LiveUpdates() {
 
   if (role === 'admin') return <AdminNotifier />
   if (role === 'talent') return <TalentNotifier />
+  if (role === 'business') return <BusinessNotifier />
   return null
 }
 
@@ -82,8 +85,134 @@ function AdminNotifier() {
   return null
 }
 
+// Pichli dafa ki halat se badla kya? Pehli dafa sirf yaad rakho, kuch nahi batao
+function useChanges<T extends { _id: string }, S>(
+  items: T[] | undefined,
+  statusOf: (item: T) => S,
+  onChange: (item: T, before: S | undefined) => void,
+) {
+  const previous = useRef<Map<string, S> | null>(null)
+  // Callbacks har render pe naye hain: ref mein rakho, effect sirf data badalne pe chale
+  const latest = useRef({ statusOf, onChange })
+  useEffect(() => {
+    latest.current = { statusOf, onChange }
+  })
+
+  useEffect(() => {
+    if (!items) return
+    const { statusOf: read, onChange: notify } = latest.current
+    const before = previous.current
+    previous.current = new Map(items.map((item) => [item._id, read(item)]))
+    if (!before) return
+    for (const item of items) {
+      const old = before.get(item._id)
+      if (old !== read(item)) notify(item, old)
+    }
+  }, [items])
+}
+
+// Talent ko nayi hire request aaye (ya business wapas le le) to foran pata chale
+function HireRequestNotifier() {
+  const { t } = useTranslation()
+  const navigate = useNavigate()
+  const { data: hires } = useQuery(incomingHiresQuery)
+
+  useChanges(
+    hires,
+    (hire) => hire.status,
+    (hire, before) => {
+      const business = hire.businessProfile?.companyName ?? ''
+      if (before === undefined && hire.status === 'pending') {
+        toast(
+          (toastItem) => (
+            <button
+              type="button"
+              className="text-start"
+              onClick={() => {
+                toast.dismiss(toastItem.id)
+                navigate('/dashboard')
+              }}
+            >
+              {t('live.hireNew', { business })}
+              <span className="mt-0.5 block text-xs font-medium underline">
+                {t('live.openDashboard')}
+              </span>
+            </button>
+          ),
+          { icon: <FontAwesomeIcon icon={faHandshake} />, duration: 10000 },
+        )
+      } else if (before === 'pending' && hire.status === 'cancelled') {
+        toast(t('live.hireCancelled', { business }), { duration: 8000 })
+      }
+    },
+  )
+  return null
+}
+
+// Business: admin ne code bheja / approve / reject kiya, ya talent ne jawab diya
+function BusinessNotifier() {
+  const { t } = useTranslation()
+  const { data: business } = useQuery(myBusinessQuery)
+  const { data: hires } = useQuery(myHiresQuery)
+
+  // Naya array sirf data badalne pe (warna har render pe effect chalta)
+  const verification = useMemo(
+    () =>
+      business
+        ? [{ _id: business._id, status: business.status, channel: business.verification?.channel }]
+        : undefined,
+    [business],
+  )
+  const sent = useMemo(
+    () =>
+      hires?.map((hire) => ({ _id: hire._id, status: hire.status, name: hire.person?.name ?? '' })),
+    [hires],
+  )
+
+  useChanges<{ _id: string; status: BusinessStatus; channel?: string }, BusinessStatus>(
+    verification,
+    (item) => item.status,
+    (item, before) => {
+      if (before === undefined) return
+      if (item.status === 'waiting_for_business') {
+        toast(t('live.businessCodeSent', { channel: item.channel ?? '' }), {
+          icon: <FontAwesomeIcon icon={faKey} />,
+          duration: 8000,
+        })
+      } else if (item.status === 'approved') {
+        toast.success(t('live.businessApproved'), { duration: 8000 })
+      } else if (item.status === 'rejected') {
+        toast.error(t('live.businessRejected'), { duration: 8000 })
+      }
+    },
+  )
+
+  useChanges<{ _id: string; status: HireStatus; name: string }, HireStatus>(
+    sent,
+    (item) => item.status,
+    (item, before) => {
+      if (before !== 'pending') return
+      if (item.status === 'accepted') {
+        toast.success(t('live.hireAccepted', { name: item.name }), { duration: 8000 })
+      } else if (item.status === 'declined') {
+        toast(t('live.hireDeclined', { name: item.name }), { duration: 8000 })
+      }
+    },
+  )
+  return null
+}
+
 // Admin ne code bheja / approve / reject kiya to talent ko foran pata chale
 function TalentNotifier() {
+  return (
+    <>
+      <ClaimNotifier />
+      <HireRequestNotifier />
+    </>
+  )
+}
+
+function ClaimNotifier() {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
   const { data: claims } = useQuery(myClaimsQuery)

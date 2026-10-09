@@ -133,6 +133,8 @@ function RoleDashboard({ role }: { role: SignupRole }) {
       <DashboardHeader />
 
       {role === 'talent' && <MyProfileSection />}
+      {/* Hire requests jaldi dikhen: talent ko jawab dena hota hai */}
+      {role === 'talent' && <IncomingHireRequests />}
       {role === 'business' && <BusinessVerificationSection />}
 
       <div>
@@ -171,8 +173,7 @@ function RoleDashboard({ role }: { role: SignupRole }) {
         ))}
       </div>
 
-      {/* Hire requests: talent ko aayi hui, business ki bheji hui */}
-      {role === 'talent' && <IncomingHireRequests />}
+      {/* Business ki bheji hui hire requests */}
       {role === 'business' && <SentHireRequests />}
     </div>
   )
