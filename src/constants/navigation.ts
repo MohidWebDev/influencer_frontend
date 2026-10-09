@@ -1,14 +1,11 @@
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 import {
   faBell,
-  faBriefcase,
   faCircleInfo,
   faCompass,
-  faFileContract,
   faEnvelope,
   faGear,
   faHouse,
-  faIdCard,
   faLayerGroup,
   faShieldHalved,
   faStar,
@@ -55,31 +52,6 @@ export const MAIN_NAV: NavItem[] = [
       return tr('site.nav.about')
     },
     icon: faCircleInfo,
-  },
-  {
-    to: '/my-profile',
-    get label() {
-      return tr('site.nav.myProfile')
-    },
-    icon: faIdCard,
-    roles: ['talent'],
-  },
-  {
-    to: '/dashboard/services',
-    get label() {
-      return tr('site.nav.services')
-    },
-    icon: faBriefcase,
-    roles: ['talent'],
-  },
-  {
-    to: '/agreements',
-    get label() {
-      return tr('site.nav.agreements')
-    },
-    icon: faFileContract,
-    // Business ke liye dashboard pe (navbar saaf rahe)
-    roles: ['talent'],
   },
   {
     to: '/talents',

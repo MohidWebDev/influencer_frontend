@@ -77,7 +77,7 @@ Business, agency and organization accounts see a star on every profile card (Exp
 
 ## Navigation
 
-All navbar links live in `src/constants/navigation.ts` (`MAIN_NAV`, `UTILITY_NAV`, `ACCOUNT_NAV`), each with the roles that can see it. Business accounts reach their business details, Shortlists and Agreements from the dashboard instead of the navbar. Pages that are planned but not built yet (`/inbox`, `/talents`) show a "Coming soon" page.
+All navbar links live in `src/constants/navigation.ts` (`MAIN_NAV`, `UTILITY_NAV`, `ACCOUNT_NAV`), each with the roles that can see it. Business accounts reach their business details, Shortlists and Agreements from the dashboard instead of the navbar, and talents reach their profile, Services and Agreements the same way. Pages that are planned but not built yet (`/inbox`, `/talents`) show a "Coming soon" page.
 
 ## Admin panel (`/admin`)
 

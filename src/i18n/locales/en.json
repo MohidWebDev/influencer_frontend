@@ -772,11 +772,13 @@
     },
     "services": {
       "title": "Services & rates",
-      "description": "List what you offer (talks, campaigns, podcasts) and your price range."
+      "description": "List what you offer (talks, campaigns, podcasts) and your price range.",
+      "action": "Manage services"
     },
     "availability": {
       "title": "Availability",
-      "description": "Tell businesses what you are open to right now."
+      "description": "Tell businesses what you are open to right now.",
+      "action": "Set availability"
     },
     "inquiries": {
       "title": "Inquiries",
@@ -824,7 +826,8 @@
     "agreements": {
       "title": "Agreements",
       "businessDescription": "Signed agreements with the talents you hired: terms, milestones and deliveries.",
-      "action": "Open agreements"
+      "action": "Open agreements",
+      "talentDescription": "Signed agreements with the businesses that hired you: terms, milestones and deliveries."
     }
   },
   "oldAdmin": {

@@ -52,11 +52,20 @@ const ROLE_DASHBOARDS: Record<SignupRole, RoleConfig> = {
         icon: faFileInvoiceDollar,
         title: 'dash.services.title',
         description: 'dash.services.description',
+        action: { label: 'dash.services.action', to: '/dashboard/services' },
       },
       {
         icon: faCalendarCheck,
         title: 'dash.availability.title',
         description: 'dash.availability.description',
+        // Availability bhi services wale page pe hi set hoti hai
+        action: { label: 'dash.availability.action', to: '/dashboard/services' },
+      },
+      {
+        icon: faFileContract,
+        title: 'dash.agreements.title',
+        description: 'dash.agreements.talentDescription',
+        action: { label: 'dash.agreements.action', to: '/agreements' },
       },
     ],
   },
