@@ -79,12 +79,12 @@ function AdminOverviewPage() {
                 highlight={data.reports.open > 0}
               />
               <StatCard
-                to="/admin/businesses?status=pending"
+                to="/admin/businesses?status=needs_action"
                 icon={faBuilding}
-                label={t('overview.businessesPending')}
-                value={data.businesses.pending}
+                label={t('overview.businessesNeedAction')}
+                value={data.businesses.needsAction}
                 detail={t('overview.businessesApproved', { count: data.businesses.approved })}
-                highlight={data.businesses.pending > 0}
+                highlight={data.businesses.needsAction > 0}
               />
               <StatCard
                 to="/admin/users"

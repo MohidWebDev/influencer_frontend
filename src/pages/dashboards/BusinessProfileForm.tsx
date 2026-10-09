@@ -50,7 +50,9 @@ function BusinessForm({ business }: { business: BusinessProfile | null }) {
       saveMyBusiness({ ...form, proofLinks: form.proofLinks.map((l) => l.trim()).filter(Boolean) }),
     onSuccess: (saved) => {
       queryClient.setQueryData(myBusinessQuery.queryKey, saved)
-      toast.success(saved.status === 'approved' ? t('business.saved') : t('business.submitted'))
+      // Pehli dafa, ya tasdeeq shuru se (pehchaan badli / reject ke baad) = "bhej diya"
+      const restarted = saved.status === 'pending' && business?.status !== 'pending'
+      toast.success(restarted ? t('business.submitted') : t('business.saved'))
       navigate('/dashboard')
     },
     onError: (error) => {
@@ -73,7 +75,7 @@ function BusinessForm({ business }: { business: BusinessProfile | null }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5 rounded-2xl bg-white p-5 shadow-sm md:p-6">
-      {business?.status === 'approved' && (
+      {business && business.status !== 'rejected' && (
         <p className="rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-800">
           {t('business.identityWarning')}
         </p>
@@ -246,7 +248,7 @@ function BusinessForm({ business }: { business: BusinessProfile | null }) {
         >
           {save.isPending
             ? t('common.saving')
-            : business?.status === 'approved'
+            : business && business.status !== 'rejected'
               ? t('common.save')
               : t('business.submit')}
         </button>

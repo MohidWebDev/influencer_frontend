@@ -8,7 +8,7 @@ import { faCircleCheck, faHandshake, faHourglassHalf } from '@fortawesome/free-s
 import { createHire } from '../../api/business'
 import { myBusinessQuery, myHiresQuery } from '../../api/queries'
 import { useAuth } from '../../hooks/useAuth'
-import type { HireInput } from '../../types/business'
+import { isOpenBusiness, type HireInput } from '../../types/business'
 import type { Person } from '../../types/person'
 import { getApiError } from '../../utils/apiError'
 import HireDialog from './HireDialog'
@@ -71,7 +71,7 @@ function HireAction({ person }: { person: Person }) {
           {t('hire.button')}
         </button>
         <Link to="/dashboard" className="text-center text-xs text-gray-600 underline">
-          {business.data?.status === 'pending'
+          {business.data && isOpenBusiness(business.data.status)
             ? t('hire.businessPending')
             : t('hire.verifyBusinessFirst')}
         </Link>

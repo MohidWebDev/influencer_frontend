@@ -6,7 +6,7 @@ export interface AdminStats {
   users: { total: number; suspended: number; byRole: Partial<Record<Role, number>> }
   claims: { needsAction: number; open: number }
   reports: { open: number; reviewing: number }
-  businesses: { pending: number; approved: number }
+  businesses: { needsAction: number; approved: number }
 }
 
 export interface AdminUser {

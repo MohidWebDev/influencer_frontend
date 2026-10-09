@@ -28,7 +28,7 @@ const ACTIONS: Record<(typeof TARGETS)[number], string[]> = {
   ],
   user: ['suspend', 'unsuspend', 'role_change'],
   report: ['update'],
-  business: ['approve', 'reject'],
+  business: ['send_code', 'reset_otp', 'otp_locked', 'verify_manual', 'approve', 'reject'],
 }
 
 // Sirf parhne ke liye: koi button yahan kuch badalta nahi
