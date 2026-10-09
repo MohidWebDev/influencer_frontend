@@ -7,7 +7,8 @@
     "reports": "البلاغات",
     "auditLog": "سجل التدقيق",
     "manageProfiles": "إدارة الملفات",
-    "language": "اللغة"
+    "language": "اللغة",
+    "businesses": "الشركات"
   },
   "common": {
     "loading": "جارٍ التحميل...",
@@ -55,7 +56,9 @@
     "people": "الملفات",
     "peopleDetail": "{{claimed}} مُطالب بها · {{verified}} موثقة · {{hidden}} مخفية",
     "usersByRole": "المستخدمون حسب الدور",
-    "open": "فتح"
+    "open": "فتح",
+    "businessesPending": "شركات بانتظار التحقق",
+    "businessesApproved": "{{count}} موثّقة"
   },
   "claimStatus": {
     "pending": "إرسال الرمز",
@@ -256,7 +259,8 @@
       "lastOtpAttemptAt": "آخر محاولة للرمز",
       "verifiedBy": "وثّقه",
       "verificationMethod": "طريقة التوثيق",
-      "isNewProfile": "ملف جديد"
+      "isNewProfile": "ملف جديد",
+      "companyName": "الشركة"
     },
     "close": "إغلاق",
     "allActions": "كل الإجراءات",
@@ -294,6 +298,10 @@
       },
       "report": {
         "update": "حدّث {{actor}} بلاغاً عن {{target}}."
+      },
+      "business": {
+        "approve": "وثّق {{actor}} الشركة {{target}}.",
+        "reject": "رفض {{actor}} الشركة {{target}}."
       }
     }
   },
@@ -301,7 +309,8 @@
     "person": "ملف",
     "claim": "مطالبة",
     "user": "مستخدم",
-    "report": "بلاغ"
+    "report": "بلاغ",
+    "business": "شركة"
   },
   "auditAction": {
     "person": {
@@ -329,6 +338,10 @@
     },
     "report": {
       "update": "حدّث بلاغاً"
+    },
+    "business": {
+      "approve": "وثّق الشركة",
+      "reject": "رفض الشركة"
     }
   },
   "reportForm": {
@@ -370,7 +383,8 @@
       "accountMenu": "قائمة الحساب",
       "language": "اللغة",
       "home": "الرئيسية",
-      "about": "من نحن"
+      "about": "من نحن",
+      "myBusiness": "نشاطي التجاري"
     },
     "search": {
       "placeholder": "ابحث بالاسم أو المجال...",
@@ -546,7 +560,10 @@
     "EMAIL_FAILED": "تعذر إرسال البريد. يرجى المحاولة مجدداً.",
     "EMAIL_NOT_CONFIGURED": "إعادة التعيين عبر البريد غير متاحة حالياً. يرجى التواصل مع الدعم.",
     "NO_PROFILE": "طالب بملفك أولاً لإضافة خدمات",
-    "TOO_MANY_SERVICES": "وصلت إلى الحد الأقصى للخدمات"
+    "TOO_MANY_SERVICES": "وصلت إلى الحد الأقصى للخدمات",
+    "BUSINESS_NOT_VERIFIED": "يجب توثيق شركتك قبل أن تتمكن من توظيف المواهب",
+    "TALENT_NOT_VERIFIED": "يمكنك توظيف المواهب الموثّقة فقط",
+    "HIRE_PENDING": "لقد أرسلت طلبًا لهذه الموهبة بالفعل"
   },
   "search": {
     "any": "الكل",
@@ -1026,7 +1043,14 @@
       "report_new": "بلاغ جديد عن {{person}}: {{reason}}.",
       "claim_code_sent": "أرسلنا رمز التحقق لـ{{person}} إلى حسابك الرسمي. أدخله في لوحة التحكم.",
       "claim_approved": "تمت الموافقة على مطالبتك بـ{{person}}. الملف أصبح لك.",
-      "claim_rejected": "تم رفض مطالبتك بـ{{person}}."
+      "claim_rejected": "تم رفض مطالبتك بـ{{person}}.",
+      "business_new": "أرسل {{claimant}} الشركة {{business}} للتحقق.",
+      "business_approved": "تم توثيق شركتك {{business}}. يمكنك الآن توظيف المواهب الموثّقة.",
+      "business_rejected": "لم يتم توثيق شركتك {{business}}: {{reason}}",
+      "hire_new": "تريد {{business}} توظيفك. رُدّ من لوحة التحكم.",
+      "hire_cancelled": "ألغت {{business}} طلب التوظيف.",
+      "hire_accepted": "قبل {{person}} طلب التوظيف الخاص بك.",
+      "hire_declined": "رفض {{person}} طلب التوظيف الخاص بك."
     }
   },
   "dataState": {
@@ -1253,5 +1277,135 @@
     "availableShort": "متاح",
     "notAvailable": "لا يقبل عملاً جديداً حالياً",
     "fromDate": "متاح من {{date}}"
+  },
+  "businessStatus": {
+    "pending": "قيد المراجعة",
+    "approved": "موثّقة",
+    "rejected": "مرفوضة"
+  },
+  "hireStatus": {
+    "pending": "بانتظار الرد",
+    "accepted": "مقبول",
+    "declined": "مرفوض",
+    "cancelled": "ملغى"
+  },
+  "business": {
+    "label": "توثيق الشركة",
+    "startTitle": "وثّق شركتك لتبدأ التوظيف",
+    "startBody": "أخبرنا عن شركتك. بعد أن يوثّقها المشرف، يمكنك إرسال طلبات توظيف إلى المواهب الموثّقة.",
+    "startButton": "أضف بيانات الشركة",
+    "edit": "تعديل البيانات",
+    "fixAndResubmit": "صحّح وأعد الإرسال",
+    "verifiedLabel": "شركة موثّقة",
+    "verifiedBody": "شركتك موثّقة. يمكنك توظيف أي موهبة تحمل شارة التوثيق.",
+    "findTalents": "ابحث عن مواهب للتوظيف",
+    "pendingLabel": "قيد المراجعة",
+    "pendingBody": "أُرسلت في {{date}}. يراجع المشرف بياناتك. يمكنك توظيف المواهب بعد التوثيق.",
+    "rejected": "لم يتم توثيق شركتك: {{reason}}",
+    "formTitle": "وثّق شركتك",
+    "editTitle": "بيانات الشركة",
+    "formSubtitle": "الشركات الموثّقة فقط يمكنها توظيف المواهب. يراجع المشرف هذه البيانات قبل التوثيق.",
+    "identityWarning": "تغيير اسم الشركة أو رقم التسجيل أو الموقع أو الدولة يعيد شركتك إلى المراجعة. لن تتمكن من التوظيف حتى يتم توثيقها مرة أخرى.",
+    "submit": "أرسل للتوثيق",
+    "submitted": "تم الإرسال للتوثيق",
+    "saved": "تم حفظ بيانات الشركة",
+    "fields": {
+      "companyName": "اسم الشركة",
+      "industry": "القطاع",
+      "industryPlaceholder": "مثل: الأغذية والمشروبات",
+      "companySize": "حجم الشركة",
+      "chooseSize": "اختر الحجم",
+      "employees": "{{size}} موظف",
+      "description": "عن الشركة",
+      "descriptionPlaceholder": "ماذا تفعل شركتك؟",
+      "websiteUrl": "الموقع الإلكتروني",
+      "registrationNumber": "رقم التسجيل",
+      "registrationPlaceholder": "مثل: الرقم الضريبي أو رقم السجل التجاري",
+      "country": "الدولة",
+      "city": "المدينة",
+      "contactPhone": "هاتف التواصل",
+      "proofLinks": "روابط الإثبات",
+      "proofLinksHint": "صفحة LinkedIn، شهادة التسجيل، تغطية صحفية: أي شيء يساعدنا على التحقق.",
+      "addLink": "أضف رابطًا",
+      "removeLink": "احذف الرابط"
+    }
+  },
+  "hire": {
+    "button": "وظّف",
+    "onlyVerifiedTalents": "يمكن توظيف المواهب الموثّقة فقط.",
+    "verifyBusinessFirst": "وثّق شركتك لتتمكن من التوظيف",
+    "businessPending": "شركتك قيد المراجعة",
+    "requestSent": "تم إرسال الطلب",
+    "alreadyAccepted": "تم التوظيف سابقًا",
+    "dialogTitle": "توظيف {{name}}",
+    "service": "الخدمة",
+    "noService": "شيء آخر (صفه أدناه)",
+    "title": "عنوان المشروع",
+    "titlePlaceholder": "مثل: إطلاق منتج الربيع",
+    "message": "الرسالة",
+    "messagePlaceholder": "ماذا تحتاج، ومتى، وأين؟",
+    "budget": "الميزانية (اختياري)",
+    "budgetPlaceholder": "مثل: 150000",
+    "currency": "العملة",
+    "startDate": "تاريخ البدء (اختياري)",
+    "send": "أرسل الطلب",
+    "sent": "تم إرسال طلب التوظيف",
+    "errors": {
+      "title": "استخدم 3 أحرف على الأقل",
+      "message": "أخبر الموهبة بالمزيد (20 حرفًا على الأقل)",
+      "amount": "أدخل مبلغًا"
+    },
+    "from": "من {{business}}",
+    "startsOn": "يبدأ في {{date}}",
+    "sentOn": "أُرسل في {{date}}",
+    "responseNote": "الرد: {{note}}",
+    "sentTitle": "طلبات التوظيف",
+    "sentSubtitle": "الطلبات التي أرسلتها إلى المواهب وردودهم.",
+    "sentEmpty": "لم ترسل أي طلبات توظيف بعد.",
+    "cancel": "إلغاء الطلب",
+    "cancelTitle": "إلغاء هذا الطلب؟",
+    "cancelBody": "لن يتمكن {{name}} من الرد عليه.",
+    "cancelled": "تم إلغاء الطلب",
+    "incomingTitle": "طلبات التوظيف",
+    "incomingSubtitle": "شركات موثّقة تريد العمل معك.",
+    "incomingEmpty": "لا توجد طلبات توظيف بعد. أضف خدماتك وافتح توفرك حتى تجدك الشركات.",
+    "accept": "قبول",
+    "decline": "رفض",
+    "acceptTitle": "قبول هذا الطلب؟",
+    "declineTitle": "رفض هذا الطلب؟",
+    "acceptBody": "سيتم إبلاغ {{business}} بأنك قبلت.",
+    "declineBody": "سيتم إبلاغ {{business}} بأنك رفضت.",
+    "noteLabel": "ملاحظة (اختياري)",
+    "notePlaceholder": "أضف رسالة قصيرة للشركة",
+    "acceptedToast": "تم قبول الطلب",
+    "declinedToast": "تم رفض الطلب"
+  },
+  "businesses": {
+    "title": "توثيق الشركات",
+    "subtitle": "راجع بيانات الشركات. الشركات الموثّقة فقط يمكنها توظيف المواهب.",
+    "searchPlaceholder": "الشركة أو الموقع",
+    "allStatuses": "كل الحالات",
+    "colCompany": "الشركة",
+    "colOwner": "الحساب",
+    "colCountry": "الدولة",
+    "colStatus": "الحالة",
+    "colSubmitted": "تاريخ الإرسال",
+    "emptyTitle": "لا توجد شركات بعد",
+    "emptyText": "تظهر الشركات هنا عندما ترسل بياناتها للتوثيق.",
+    "details": "بيانات الشركة",
+    "owner": "الحساب",
+    "joined": "انضم في {{date}}",
+    "submittedOn": "أُرسلت في {{date}}",
+    "decision": "القرار",
+    "approve": "وثّق الشركة",
+    "reject": "رفض",
+    "revoke": "سحب التوثيق",
+    "approveTitle": "توثيق هذه الشركة؟",
+    "approveBody": "ستتمكن {{name}} من توظيف المواهب الموثّقة.",
+    "rejectTitle": "رفض هذه الشركة؟",
+    "rejectReason": "السبب (ستراه الشركة)",
+    "rejectPlaceholder": "مثل: الموقع لا يطابق اسم الشركة",
+    "approved": "تم توثيق الشركة",
+    "rejected": "تم رفض الشركة"
   }
 }

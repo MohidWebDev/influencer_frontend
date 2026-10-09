@@ -52,8 +52,13 @@ src/
 | `/people/:slug` | Public profile (Claim button for talents) |
 | `/people/:slug/claim` | Talent only: send a claim with proof |
 | `/dashboard/profile/edit` | Talent only: edit the profile you own |
-| `/dashboard` | Logged-in home per account type. Talent sees their profile / claim status. Admins get People and Claim requests tabs |
+| `/dashboard` | Logged-in home per account type. Talent sees their profile / claim status and incoming hire requests (accept / decline). Business sees its verification status and the hire requests it sent. Admins get People and Claim requests tabs |
+| `/dashboard/business` | Business only: send company details for verification (or edit them) |
 | `/dashboard/people/new`, `/dashboard/people/:id/edit` | Admin only: create or edit a profile |
+
+## Business verification and hiring
+
+A business account fills in its company details at `/dashboard/business`. An admin verifies or rejects it at `/admin/businesses`. Only a verified business sees an active **Hire** button on a profile, and only on verified talents (claimed + verified badge). Everyone else still sees the disabled "Contact / Hire" button. The talent accepts or declines the request on their dashboard. Code lives in `src/components/business/`, `src/api/business.ts` and `src/types/business.ts`.
 
 ## Navigation
 
@@ -61,12 +66,13 @@ All navbar links live in `src/constants/navigation.ts` (`MAIN_NAV`, `UTILITY_NAV
 
 ## Admin panel (`/admin`)
 
-Admins only (`ProtectedRoute roles={['admin']}`). Sidebar: Dashboard, Claims, Users, Reports, Audit log.
+Admins only (`ProtectedRoute roles={['admin']}`). Sidebar: Dashboard, Claims, Businesses, Users, Reports, Audit log.
 
 | URL | Page |
 |---|---|
 | `/admin` | Overview: claims needing action, open reports, users, profiles |
 | `/admin/claims`, `/admin/claims/:id` | Claims table (status filter) and detail: evidence, code, approve/reject |
+| `/admin/businesses`, `/admin/businesses/:id` | Business verification queue and detail: company details, verify / reject / revoke |
 | `/admin/users` | Search, role/status filter, change role, suspend/unsuspend |
 | `/admin/reports`, `/admin/reports/:id` | Reports queue and detail: status, admin note, takedown |
 | `/admin/audit-logs` | Read-only audit log with filters and before/after view |

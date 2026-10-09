@@ -7,6 +7,9 @@ const STYLES: Record<string, string> = {
   resolved: 'bg-green-50 text-green-700',
   active: 'bg-green-50 text-green-700',
   suspended: 'bg-red-50 text-red-700',
+  accepted: 'bg-green-50 text-green-700',
+  declined: 'bg-red-50 text-red-700',
+  cancelled: 'bg-gray-100 text-gray-600',
 }
 
 function StatusPill({ status, label }: { status: string; label: string }) {

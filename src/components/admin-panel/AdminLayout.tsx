@@ -2,6 +2,7 @@ import { NavLink, Outlet, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
+  faBuilding,
   faChartPie,
   faClipboardList,
   faFlag,
@@ -14,6 +15,7 @@ import {
 const LINKS: { to: string; key: string; icon: IconDefinition; end?: boolean }[] = [
   { to: '/admin', key: 'nav.dashboard', icon: faChartPie, end: true },
   { to: '/admin/claims', key: 'nav.claims', icon: faUserCheck },
+  { to: '/admin/businesses', key: 'nav.businesses', icon: faBuilding },
   { to: '/admin/users', key: 'nav.users', icon: faUsers },
   { to: '/admin/reports', key: 'nav.reports', icon: faFlag },
   { to: '/admin/audit-logs', key: 'nav.auditLog', icon: faClipboardList },

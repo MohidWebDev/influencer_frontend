@@ -11,7 +11,7 @@ import DataState from '../../components/admin-panel/DataState'
 import PageHeader from '../../components/admin-panel/PageHeader'
 import { formatDateTime } from '../../utils/adminFormat'
 
-const TARGETS = ['person', 'claim', 'user', 'report'] as const
+const TARGETS = ['person', 'claim', 'user', 'report', 'business'] as const
 const PAGE_SIZE = 25
 
 // Har target ke actions (auditAction.* mein inke naam hain)
@@ -28,6 +28,7 @@ const ACTIONS: Record<(typeof TARGETS)[number], string[]> = {
   ],
   user: ['suspend', 'unsuspend', 'role_change'],
   report: ['update'],
+  business: ['approve', 'reject'],
 }
 
 // Sirf parhne ke liye: koi button yahan kuch badalta nahi
