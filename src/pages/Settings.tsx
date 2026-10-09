@@ -3,6 +3,8 @@ import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import toast from 'react-hot-toast'
+import { useQuery } from '@tanstack/react-query'
+import { myClaimsQuery, myProfileQuery } from '../api/queries'
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -223,9 +225,71 @@ function PasswordSection() {
   )
 }
 
+// Talent ki profile ka kya hoga: khud banayi ho to mit jati hai, warna talent chunta hai
+function ProfileChoice({
+  removeProfile,
+  onChange,
+}: {
+  removeProfile: boolean
+  onChange: (remove: boolean) => void
+}) {
+  const { t } = useTranslation()
+  const { data: profile } = useQuery(myProfileQuery)
+  const { data: claims } = useQuery(myClaimsQuery)
+  if (!profile) return null
+
+  const selfCreated = claims?.some(
+    (claim) => claim.status === 'approved' && claim.isNewProfile && claim.person?._id === profile._id,
+  )
+  if (selfCreated) {
+    return (
+      <p className="mt-4 rounded-xl bg-red-50 p-3 text-sm text-red-800">
+        {t('settings.profileSelfCreated', { name: profile.name })}
+      </p>
+    )
+  }
+
+  const option = (remove: boolean) => (
+    <label
+      className={`flex cursor-pointer items-start gap-3 rounded-xl border p-3 text-sm ${
+        removeProfile === remove ? 'border-gray-900 bg-gray-50' : 'border-gray-200'
+      }`}
+    >
+      <input
+        type="radio"
+        name="profile-choice"
+        checked={removeProfile === remove}
+        onChange={() => onChange(remove)}
+        className="mt-0.5"
+      />
+      <span>
+        <span className="block font-medium text-gray-900">
+          {t(remove ? 'settings.profileRemove' : 'settings.profileKeep')}
+        </span>
+        <span className="block text-gray-600">
+          {t(remove ? 'settings.profileRemoveHint' : 'settings.profileKeepHint', { name: profile.name })}
+        </span>
+      </span>
+    </label>
+  )
+
+  return (
+    <fieldset className="mt-4">
+      <legend className="text-sm font-medium text-gray-900">
+        {t('settings.profileQuestion', { name: profile.name })}
+      </legend>
+      <div className="mt-2 space-y-2">
+        {option(false)}
+        {option(true)}
+      </div>
+    </fieldset>
+  )
+}
+
 function DeleteAccountDialog({ onClose }: { onClose: () => void }) {
   const { t } = useTranslation()
   const { user, deleteAccount } = useAuth()
+  const [removeProfile, setRemoveProfile] = useState(false)
   const [text, setText] = useState('')
   const [error, setError] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
@@ -249,8 +313,10 @@ function DeleteAccountDialog({ onClose }: { onClose: () => void }) {
     setIsDeleting(true)
     setError('')
     try {
-      await deleteAccount(text)
-      toast.success(t('settings.deleted'))
+      const profile = await deleteAccount(text, removeProfile)
+      toast.success(profile ? t(`settings.deletedProfile.${profile}`) : t('settings.deleted'), {
+        duration: 8000,
+      })
     } catch (err) {
       const { message } = getApiError(err)
       setError(message)
@@ -269,7 +335,7 @@ function DeleteAccountDialog({ onClose }: { onClose: () => void }) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="delete-title"
-        className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl"
+        className="max-h-[92vh] w-full max-w-md overflow-y-auto rounded-2xl bg-white p-6 shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-3">
@@ -293,8 +359,11 @@ function DeleteAccountDialog({ onClose }: { onClose: () => void }) {
         <ul className="mt-3 list-disc space-y-1 ps-5 text-sm text-gray-600">
           <li>{t('settings.deletePoint1')}</li>
           <li>{t('settings.deletePoint2')}</li>
-          <li>{t('settings.deletePoint3')}</li>
+          {user?.role === 'talent' && <li>{t('settings.deletePoint3')}</li>}
         </ul>
+        {user?.role === 'talent' && (
+          <ProfileChoice removeProfile={removeProfile} onChange={setRemoveProfile} />
+        )}
 
         <form onSubmit={handleSubmit} className="mt-5">
           <label htmlFor="delete-confirm" className="block text-sm text-gray-700">

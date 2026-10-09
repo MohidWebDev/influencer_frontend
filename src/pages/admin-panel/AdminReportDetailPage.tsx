@@ -27,20 +27,25 @@ function ReportUpdateForm({ report }: { report: AdminReport }) {
   )
   const [adminNote, setAdminNote] = useState(report.adminNote ?? '')
   const [hidePerson, setHidePerson] = useState(false)
+  const [deletePerson, setDeletePerson] = useState(false)
   const [confirming, setConfirming] = useState(false)
   const canHide = report.person?.visibility === 'visible'
+  // Removal request pe profile hamesha ke liye mitayi ja sakti hai
+  const canDelete = report.reason === 'removal_request' && !!report.person
 
   const save = useMutation({
     mutationFn: () =>
       updateAdminReport(report._id, {
-        status,
+        status: deletePerson ? 'resolved' : status,
         adminNote: adminNote.trim(),
-        hidePerson: canHide && hidePerson,
+        hidePerson: canHide && hidePerson && !deletePerson,
+        deletePerson: canDelete && deletePerson,
       }),
     onSuccess: (updated) => {
       toast.success(t('reports.updated'))
       setConfirming(false)
       setHidePerson(false)
+      setDeletePerson(false)
       queryClient.invalidateQueries({ queryKey: ['admin'] })
       if (updated.person) {
         queryClient.invalidateQueries({ queryKey: ['person', updated.person.slug] })
@@ -64,7 +69,8 @@ function ReportUpdateForm({ report }: { report: AdminReport }) {
       <label className="block">
         <span className="mb-1 block text-sm font-medium">{t('reports.newStatus')}</span>
         <select
-          value={status}
+          value={deletePerson ? 'resolved' : status}
+          disabled={deletePerson}
           onChange={(e) => setStatus(e.target.value as EditableStatus)}
           className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm"
         >
@@ -86,7 +92,21 @@ function ReportUpdateForm({ report }: { report: AdminReport }) {
           className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
         />
       </label>
-      {canHide && (
+      {canDelete && (
+        <label className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800">
+          <input
+            type="checkbox"
+            checked={deletePerson}
+            onChange={(e) => setDeletePerson(e.target.checked)}
+            className="mt-0.5 h-4 w-4"
+          />
+          <span>
+            <span className="block font-medium">{t('reports.deletePerson')}</span>
+            <span className="block text-xs">{t('reports.deletePersonHint')}</span>
+          </span>
+        </label>
+      )}
+      {canHide && !deletePerson && (
         <label className="flex items-start gap-2 text-sm">
           <input
             type="checkbox"
@@ -107,13 +127,23 @@ function ReportUpdateForm({ report }: { report: AdminReport }) {
       <ConfirmDialog
         open={confirming}
         title={t('reports.confirmTitle')}
-        tone={hidePerson ? 'danger' : 'default'}
+        tone={hidePerson || deletePerson ? 'danger' : 'default'}
         isBusy={save.isPending}
         onConfirm={() => save.mutate()}
         onCancel={() => setConfirming(false)}
       >
-        <p>{t('reports.confirmBody', { status: t(`reportStatus.${status}`) })}</p>
-        {hidePerson && <p className="mt-2 font-medium text-red-700">{t('reports.confirmHide')}</p>}
+        <p>
+          {t('reports.confirmBody', {
+            status: t(`reportStatus.${deletePerson ? 'resolved' : status}`),
+          })}
+        </p>
+        {deletePerson ? (
+          <p className="mt-2 font-medium text-red-700">
+            {t('reports.confirmDelete', { name: report.person?.name ?? '' })}
+          </p>
+        ) : (
+          hidePerson && <p className="mt-2 font-medium text-red-700">{t('reports.confirmHide')}</p>
+        )}
       </ConfirmDialog>
     </form>
   )
@@ -188,6 +218,11 @@ function AdminReportDetailPage() {
                   {report.reporter?.email ?? report.reporterEmail}
                 </p>
                 <p className="mt-1 text-xs text-gray-500">{formatDateTime(report.createdAt)}</p>
+                {report.fromOwner && (
+                  <p className="mt-2 inline-block rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700">
+                    {t('reports.fromOwner')}
+                  </p>
+                )}
               </section>
             </div>
 

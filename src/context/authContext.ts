@@ -1,5 +1,5 @@
 import { createContext } from 'react'
-import type { LoginInput, RegisterInput } from '../api/auth'
+import type { DeletedProfileOutcome, LoginInput, RegisterInput } from '../api/auth'
 import type { User } from '../types/user'
 
 export interface AuthContextValue {
@@ -12,7 +12,7 @@ export interface AuthContextValue {
   // Email wale code ke baad naya password; user khud login ho jata hai
   resetPassword: (email: string, resetToken: string, newPassword: string) => Promise<User>
   // confirm = "delete <naam>"
-  deleteAccount: (confirm: string) => Promise<void>
+  deleteAccount: (confirm: string, removeProfile?: boolean) => Promise<DeletedProfileOutcome | null>
 }
 
 export const AuthContext = createContext<AuthContextValue | null>(null)

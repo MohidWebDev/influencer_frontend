@@ -184,7 +184,12 @@
     "confirmBody": "Status will be set to \"{{status}}\".",
     "confirmHide": "The profile will also be hidden from the public site.",
     "updated": "Report updated",
-    "handled": "Last handled by {{name}} on {{date}}"
+    "handled": "Last handled by {{name}} on {{date}}",
+    "fromOwner": "Requested by the profile's owner when deleting their account",
+    "fromOwnerShort": "Owner",
+    "deletePerson": "Delete the profile permanently",
+    "deletePersonHint": "The profile, its photo and claims are deleted, and it won't be added again from public sources. The report is marked resolved.",
+    "confirmDelete": "The profile \"{{name}}\" will be deleted permanently. This can't be undone."
   },
   "audit": {
     "title": "Audit log",
@@ -1169,7 +1174,7 @@
     "deleteWarning": "This is permanent. Once deleted:",
     "deletePoint1": "You'll be signed out and can't sign in again with this account.",
     "deletePoint2": "Your claims and notifications are removed.",
-    "deletePoint3": "A profile you own stays public but becomes unclaimed.",
+    "deletePoint3": "You choose below what happens to the public profile you own.",
     "typeToConfirm": "To confirm, type",
     "deleteForever": "Delete my account",
     "deleting": "Deleting...",
@@ -1178,7 +1183,19 @@
     "switchToLight": "Switch to light mode",
     "forgotTitle": "Forgot your current password?",
     "forgotText": "We'll email a 6-digit code to",
-    "forgotButton": "Reset with email code"
+    "forgotButton": "Reset with email code",
+    "profileQuestion": "What should happen to your profile \"{{name}}\"?",
+    "profileKeep": "Keep it as a public profile",
+    "profileKeepHint": "Everything you added (services, availability, your edits) is removed and it goes back to the public information we had before you claimed it, without the verified badge.",
+    "profileRemove": "Remove my public profile",
+    "profileRemoveHint": "It's hidden right away, and our team deletes it permanently. It won't be added again from public sources.",
+    "profileSelfCreated": "Your profile \"{{name}}\" was created by you, so it will be deleted together with your account.",
+    "deletedProfile": {
+      "unclaimed": "Your account is deleted. Your profile is back to its public, unclaimed version.",
+      "hidden_for_review": "Your account is deleted. Your profile is hidden until our team checks it.",
+      "removal_requested": "Your account is deleted. Your profile is hidden and our team will remove it permanently.",
+      "deleted": "Your account and your profile are deleted."
+    }
   },
   "forgot": {
     "link": "Forgot password?",

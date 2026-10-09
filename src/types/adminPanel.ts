@@ -107,6 +107,8 @@ export interface AdminReport {
   reporter?: { name: string; email: string; role: Role }
   reporterName?: string
   reporterEmail?: string
+  // Profile ke maalik ne account mitate waqt khud hatane ko kaha
+  fromOwner?: boolean
   status: ReportStatus
   adminNote?: string
   handledBy?: { name: string; email: string }

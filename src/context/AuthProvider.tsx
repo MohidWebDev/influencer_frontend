@@ -79,12 +79,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return loggedIn
   }
 
-  async function deleteAccount(confirm: string) {
-    await deleteAccountRequest(confirm)
+  async function deleteAccount(confirm: string, removeProfile = false) {
+    const profile = await deleteAccountRequest(confirm, removeProfile)
     // Pehle Home pe jao, session wahan pohanch kar saaf hoga (neeche effect).
     // Warna protected page session khatam hote hi /login pe bhej deta hai
     setLeavingAfterDelete(true)
     navigate('/', { replace: true })
+    return profile
   }
 
   const [leavingAfterDelete, setLeavingAfterDelete] = useState(false)

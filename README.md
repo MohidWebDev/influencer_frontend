@@ -66,6 +66,10 @@ A business account fills in its company details at `/dashboard/business`. Verifi
 
 After a talent accepts a hire request, the business drafts an agreement (scope, milestones with amounts and due dates, payment terms, usage rights, rounds of changes, cancellation). Either side can propose new terms; every version is kept. Each side signs by entering a code emailed to them, and when both have signed the same version the terms are locked and get a SHA-256 fingerprint. The talent delivers each milestone, the business approves it or asks for changes (up to the agreed rounds), either side can report a problem that an admin resolves, and both leave a review at the end. Business reviews of a talent show on the public profile; talents see a business's rating on its hire requests. "Download PDF" prints a formal version of the agreement (the navbar and footer are hidden when printing). Code lives in `src/pages/agreements/`, `src/components/agreements/`, `src/api/agreements.ts` and `src/types/agreement.ts`.
 
+## Deleting an account
+
+Settings → Delete account. A talent who owns a public-source profile chooses: **keep it as a public profile** (everything they added is removed and it goes back to the public version, unclaimed) or **remove my public profile** (hidden at once; a removal request goes to the admins). A profile the talent created themselves is deleted with the account. On a removal request report, admins can tick **Delete the profile permanently**; it won't be re-added from public sources. Reports opened by a profile's owner show an "Owner" badge.
+
 ## Navigation
 
 All navbar links live in `src/constants/navigation.ts` (`MAIN_NAV`, `UTILITY_NAV`, `ACCOUNT_NAV`), each with the roles that can see it. Pages that are planned but not built yet (`/inbox`, `/shortlists`, `/talents`) show a "Coming soon" page.

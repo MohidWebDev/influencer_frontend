@@ -113,7 +113,14 @@ function AdminReportsPage() {
                       </span>
                     )}
                   </td>
-                  <td className="px-4 py-3">{t(`reportReason.${report.reason}`)}</td>
+                  <td className="px-4 py-3">
+                    {t(`reportReason.${report.reason}`)}
+                    {report.fromOwner && (
+                      <span className="ms-2 rounded-full bg-blue-50 px-2 py-0.5 text-xs text-blue-700">
+                        {t('reports.fromOwnerShort')}
+                      </span>
+                    )}
+                  </td>
                   <td className="px-4 py-3 text-gray-600">
                     {report.reporter?.email ?? report.reporterEmail ?? t('common.guest')}
                   </td>

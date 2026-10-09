@@ -54,7 +54,12 @@ export async function getAdminReport(id: string) {
 
 export async function updateAdminReport(
   id: string,
-  input: { status: Exclude<ReportStatus, 'open'>; adminNote?: string; hidePerson?: boolean },
+  input: {
+    status: Exclude<ReportStatus, 'open'>
+    adminNote?: string
+    hidePerson?: boolean
+    deletePerson?: boolean
+  },
 ) {
   const res = await api.patch<ApiSuccess<{ report: AdminReport }>>(`/admin/reports/${id}`, input)
   return res.data.data.report

@@ -40,8 +40,15 @@ export async function changePasswordRequest(input: {
   await api.patch('/auth/password', input)
 }
 
-export async function deleteAccountRequest(confirm: string) {
-  await api.delete('/auth/account', { data: { confirm } })
+// Profile ka kya hua: wapas unclaimed, chhupi (admin dekhega), hatane ki request, ya mit gayi
+export type DeletedProfileOutcome = 'unclaimed' | 'hidden_for_review' | 'removal_requested' | 'deleted'
+
+export async function deleteAccountRequest(confirm: string, removeProfile = false) {
+  const res = await api.delete<ApiSuccess<{ deleted: boolean; profile: DeletedProfileOutcome | null }>>(
+    '/auth/account',
+    { data: { confirm, removeProfile } },
+  )
+  return res.data.data.profile
 }
 
 // Password bhool gaya: 1) email pe code  2) code check -> reset token  3) naya password
