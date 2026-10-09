@@ -15,7 +15,9 @@ function ProtectedRoute({ children, roles }: ProtectedRouteProps) {
   const { user, isLoading } = useAuth()
   const location = useLocation()
 
-  if (isLoading) {
+  // Pichli dafa login tha to page foran dikhao (server ka jawab peeche aata hai).
+  // Login nahi tha to server ka intezar, warna galat /login pe bhej dete
+  if (isLoading && !user) {
     return <p className="text-center text-gray-500">{t('common.loading')}</p>
   }
 

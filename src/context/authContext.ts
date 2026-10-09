@@ -4,6 +4,7 @@ import type { User } from '../types/user'
 
 export interface AuthContextValue {
   user: User | null
+  // Server se login abhi pakka ho raha hai. Is dauran `user` pichli dafa ka andaza hai
   isLoading: boolean
   login: (input: LoginInput) => Promise<User>
   register: (input: RegisterInput) => Promise<User>

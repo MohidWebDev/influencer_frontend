@@ -18,13 +18,37 @@ import { AuthContext } from './authContext'
 
 const ME_KEY = ['auth', 'me']
 
+// Pichli dafa ka login (sirf navbar foran sahi dikhane ke liye). Asal faisla
+// hamesha server ka /auth/me karta hai, ye bas us ke jawab tak ka andaza hai
+const SESSION_HINT_KEY = 'auth:user'
+
+function readSessionHint(): User | null {
+  try {
+    const saved = localStorage.getItem(SESSION_HINT_KEY)
+    return saved ? (JSON.parse(saved) as User) : null
+  } catch {
+    return null
+  }
+}
+
+function saveSessionHint(user: User | null) {
+  try {
+    if (user) localStorage.setItem(SESSION_HINT_KEY, JSON.stringify(user))
+    else localStorage.removeItem(SESSION_HINT_KEY)
+  } catch {
+    // Private window waghera mein storage band ho sakti hai: koi baat nahi
+  }
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient()
   const navigate = useNavigate()
   const { pathname } = useLocation()
 
   // App khulte hi pata karo ke koi login hai ya nahi
-  const { data: user, isLoading } = useQuery({
+  // Jab tak server jawab na de, pichla login dikhao (Login / Sign up ya user ka menu),
+  // taake reload pe navbar khali na rahe
+  const { data: user, isPlaceholderData: isVerifying } = useQuery({
     queryKey: ME_KEY,
     queryFn: async () => {
       try {
@@ -37,7 +61,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     },
     retry: false,
     staleTime: Infinity,
+    placeholderData: readSessionHint,
   })
+  // Server ka asal jawab agli dafa ke andaze ke liye yaad rakho (logout pe mit jata hai)
+  useEffect(() => {
+    if (!isVerifying && user !== undefined) saveSessionHint(user)
+  }, [user, isVerifying])
   // Login user ko public lists bhi seedha server se (CDN ka purana jawab nahi)
   setBypassCdn(Boolean(user))
 
@@ -100,7 +129,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     <AuthContext.Provider
       value={{
         user: user ?? null,
-        isLoading,
+        isLoading: isVerifying,
         login,
         register,
         logout,

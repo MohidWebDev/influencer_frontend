@@ -42,7 +42,7 @@ function BellCount({ count }: { count: number }) {
 
 function Navbar() {
   const { t } = useTranslation()
-  const { user, isLoading, logout } = useAuth()
+  const { user, logout } = useAuth()
   const navigate = useNavigate()
   const { pathname, search } = useLocation()
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -99,46 +99,46 @@ function Navbar() {
         <div className="ms-auto hidden items-center gap-1 xl:flex xl:justify-self-end">
           <ThemeToggle />
           <LanguageMenu />
-          {!isLoading &&
-            (user ? (
-              <>
-                {utilityItems.map((item) => (
-                  <TopLink
-                    key={item.to}
-                    to={item.to}
-                    title={item.label}
-                    aria-label={item.label}
-                    className={`relative ${iconButton(active(item))}`}
-                  >
-                    <FontAwesomeIcon icon={item.icon} />
-                    {item.to === '/notifications' && <BellCount count={unread} />}
-                  </TopLink>
-                ))}
-                {homeItem && (
-                  <TopLink to={homeItem.to} className={`${linkClass(active(homeItem))} ms-1`}>
-                    <FontAwesomeIcon icon={homeItem.icon} />
-                    {homeItem.label}
-                  </TopLink>
-                )}
-                <div className="ms-1">
-                  <AccountMenu onLogout={handleLogout} />
-                </div>
-              </>
-            ) : (
-              <>
-                <TopLink to="/login" className={linkClass(pathname === '/login')}>
-                  <FontAwesomeIcon icon={faRightToBracket} />
-                  {t('site.nav.login')}
-                </TopLink>
+          {/* Reload pe bhi foran: pichla login yaad hai (AuthProvider), server baad mein pakka karta hai */}
+          {user ? (
+            <>
+              {utilityItems.map((item) => (
                 <TopLink
-                  to="/register"
-                  className="inline-flex items-center gap-2 rounded-lg bg-gray-900 px-3 py-1.5 text-sm text-white hover:bg-gray-800"
+                  key={item.to}
+                  to={item.to}
+                  title={item.label}
+                  aria-label={item.label}
+                  className={`relative ${iconButton(active(item))}`}
                 >
-                  <FontAwesomeIcon icon={faUserPlus} />
-                  {t('site.nav.signup')}
+                  <FontAwesomeIcon icon={item.icon} />
+                  {item.to === '/notifications' && <BellCount count={unread} />}
                 </TopLink>
-              </>
-            ))}
+              ))}
+              {homeItem && (
+                <TopLink to={homeItem.to} className={`${linkClass(active(homeItem))} ms-1`}>
+                  <FontAwesomeIcon icon={homeItem.icon} />
+                  {homeItem.label}
+                </TopLink>
+              )}
+              <div className="ms-1">
+                <AccountMenu onLogout={handleLogout} />
+              </div>
+            </>
+          ) : (
+            <>
+              <TopLink to="/login" className={linkClass(pathname === '/login')}>
+                <FontAwesomeIcon icon={faRightToBracket} />
+                {t('site.nav.login')}
+              </TopLink>
+              <TopLink
+                to="/register"
+                className="inline-flex items-center gap-2 rounded-lg bg-gray-900 px-3 py-1.5 text-sm text-white hover:bg-gray-800"
+              >
+                <FontAwesomeIcon icon={faUserPlus} />
+                {t('site.nav.signup')}
+              </TopLink>
+            </>
+          )}
         </div>
 
         {/* Mobile: notifications + menu button */}
