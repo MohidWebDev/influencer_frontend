@@ -11,6 +11,7 @@ const AFTER_MUTATION_KEYS = [
   ['business'],
   ['me'],
   ['agreements'],
+  ['shortlists'],
 ]
 
 const mutationCache = new MutationCache({

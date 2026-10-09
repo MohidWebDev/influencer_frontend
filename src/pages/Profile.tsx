@@ -8,6 +8,7 @@ import { personQuery } from '../api/queries'
 import Avatar from '../components/Avatar'
 import ClaimAction from '../components/ClaimAction'
 import HireAction from '../components/business/HireAction'
+import SaveToShortlist from '../components/shortlists/SaveToShortlist'
 import ReportProfileLink from '../components/ReportProfileLink'
 import UnclaimedBadge from '../components/UnclaimedBadge'
 import PublicAvailability from '../components/services/PublicAvailability'
@@ -111,6 +112,7 @@ function Profile() {
           {/* Verified business ke liye Hire, baqi sab ke liye Contact (agle phase mein) */}
           <div className="flex flex-col gap-2 sm:w-44">
             <HireAction person={person} />
+            <SaveToShortlist personId={person._id} personName={person.name} variant="button" />
             <ClaimAction person={person} />
           </div>
         </div>

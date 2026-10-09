@@ -56,6 +56,7 @@ src/
 | `/dashboard/business` | Business only: send company details for verification (or edit them) |
 | `/agreements`, `/agreements/:id` | Business and talent: their agreements; terms, signing, milestones, disputes, reviews and "Download PDF" (browser print) |
 | `/agreements/new?hire=` | Business only: draft an agreement from an accepted hire request |
+| `/shortlists`, `/shortlists/:id` | Business, agency, organization: named lists of people with private notes, hiring status, Hire button and a compare view (2–4 people) |
 | `/dashboard/people/new`, `/dashboard/people/:id/edit` | Admin only: create or edit a profile |
 
 ## Business verification and hiring
@@ -70,9 +71,13 @@ After a talent accepts a hire request, the business drafts an agreement (scope, 
 
 Settings → Delete account. A talent who owns a public-source profile chooses: **keep it as a public profile** (everything they added is removed and it goes back to the public version, unclaimed) or **remove my public profile** (hidden at once; a removal request goes to the admins). A profile the talent created themselves is deleted with the account. On a removal request report, admins can tick **Delete the profile permanently**; it won't be re-added from public sources. Reports opened by a profile's owner show an "Owner" badge.
 
+## Shortlists
+
+Business, agency and organization accounts see a star on every profile card (Explore, Home) and on profile pages. It opens a picker to add the person to one or more named lists, or create a new list on the spot. `/shortlists/:id` shows each person with a private note, rating, starting price, availability and hiring status (hire request, agreement, or a Hire button for verified talents when the account is a business). Tick 2–4 people and press Compare to see them side by side. Code lives in `src/pages/shortlists/`, `src/components/shortlists/`, `src/api/shortlists.ts` and `src/types/shortlist.ts`.
+
 ## Navigation
 
-All navbar links live in `src/constants/navigation.ts` (`MAIN_NAV`, `UTILITY_NAV`, `ACCOUNT_NAV`), each with the roles that can see it. Pages that are planned but not built yet (`/inbox`, `/shortlists`, `/talents`) show a "Coming soon" page.
+All navbar links live in `src/constants/navigation.ts` (`MAIN_NAV`, `UTILITY_NAV`, `ACCOUNT_NAV`), each with the roles that can see it. Pages that are planned but not built yet (`/inbox`, `/talents`) show a "Coming soon" page.
 
 ## Admin panel (`/admin`)
 

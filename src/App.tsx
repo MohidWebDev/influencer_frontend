@@ -20,7 +20,7 @@ import ServicesPage from './pages/dashboards/ServicesPage'
 import BusinessProfileForm from './pages/dashboards/BusinessProfileForm'
 import ForgotPassword from './pages/ForgotPassword'
 import MyProfileRedirect from './pages/MyProfileRedirect'
-import { faEnvelope, faStar, faUsers } from '@fortawesome/free-solid-svg-icons'
+import { faEnvelope, faUsers } from '@fortawesome/free-solid-svg-icons'
 import AdminPersonEditor from './pages/admin/AdminPersonEditor'
 import AdminLayout from './components/admin-panel/AdminLayout'
 import AdminOverviewPage from './pages/admin-panel/AdminOverviewPage'
@@ -34,6 +34,8 @@ import AdminBusinessesPage from './pages/admin-panel/AdminBusinessesPage'
 import AdminBusinessDetailPage from './pages/admin-panel/AdminBusinessDetailPage'
 import ReportProfile from './pages/ReportProfile'
 import AgreementsPage from './pages/agreements/AgreementsPage'
+import ShortlistsPage from './pages/shortlists/ShortlistsPage'
+import ShortlistDetailPage from './pages/shortlists/ShortlistDetailPage'
 import AgreementNewPage from './pages/agreements/AgreementNewPage'
 import AgreementDetailPage from './pages/agreements/AgreementDetailPage'
 import AdminAgreementsPage from './pages/admin-panel/AdminAgreementsPage'
@@ -124,7 +126,15 @@ function App() {
           path="/shortlists"
           element={
             <ProtectedRoute roles={['business', 'agency', 'organization']}>
-              <ComingSoon page="shortlists" icon={faStar} />
+              <ShortlistsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/shortlists/:id"
+          element={
+            <ProtectedRoute roles={['business', 'agency', 'organization']}>
+              <ShortlistDetailPage />
             </ProtectedRoute>
           }
         />

@@ -85,6 +85,7 @@ const ROLE_DASHBOARDS: Record<SignupRole, RoleConfig> = {
         icon: faStar,
         title: 'dash.shortlists.title',
         description: 'dash.shortlists.businessDescription',
+        action: { label: 'dash.shortlists.action', to: '/shortlists' },
       },
     ],
   },
@@ -97,6 +98,7 @@ const ROLE_DASHBOARDS: Record<SignupRole, RoleConfig> = {
         icon: faStar,
         title: 'dash.shortlists.title',
         description: 'dash.shortlists.agencyDescription',
+        action: { label: 'dash.shortlists.action', to: '/shortlists' },
       },
       {
         icon: faEnvelopeOpenText,
@@ -119,6 +121,7 @@ const ROLE_DASHBOARDS: Record<SignupRole, RoleConfig> = {
         icon: faStar,
         title: 'dash.shortlists.title',
         description: 'dash.shortlists.orgDescription',
+        action: { label: 'dash.shortlists.action', to: '/shortlists' },
       },
     ],
   },

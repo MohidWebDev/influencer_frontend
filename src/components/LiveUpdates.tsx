@@ -63,7 +63,7 @@ function LiveUpdates() {
     const keys =
       role === 'admin'
         ? [['admin'], ['claims'], ['notifications'], ['people'], ['person']]
-        : [['claims'], ['notifications'], ['people'], ['person'], ['business'], ['me'], ['agreements']]
+        : [['claims'], ['notifications'], ['people'], ['person'], ['business'], ['me'], ['agreements'], ['shortlists']]
 
     const refresh = () => {
       if (document.visibilityState !== 'visible') return

@@ -7,12 +7,18 @@ import { personQuery } from '../api/queries'
 import type { PersonSummary } from '../types/person'
 import { countryName, formatCount } from '../utils/format'
 import Avatar from './Avatar'
+import SaveToShortlist from './shortlists/SaveToShortlist'
+import { SHORTLIST_ROLES } from '../constants/roles'
+import { useAuth } from '../hooks/useAuth'
 import UnclaimedBadge from './UnclaimedBadge'
 import VerifiedBadge from './VerifiedBadge'
 
 function PersonCard({ person }: { person: PersonSummary }) {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
+  const { user } = useAuth()
+  // Sitare ke liye jagah sirf unhein jo shortlist bana sakte hain
+  const canSave = !!user && SHORTLIST_ROLES.includes(user.role)
 
   // Card pe mouse/ungli aate hi profile pehle se mangwa lo.
   // Click tak data cache mein hota hai, is liye profile foran khulti hai
@@ -23,48 +29,54 @@ function PersonCard({ person }: { person: PersonSummary }) {
   const location = [person.city, countryName(person.country)].filter(Boolean).join(', ')
 
   return (
-    <Link
-      to={`/people/${person.slug}`}
-      onMouseEnter={prefetchProfile}
-      onFocus={prefetchProfile}
-      onTouchStart={prefetchProfile}
-      className="flex gap-4 rounded-2xl border border-gray-200 bg-white p-4 transition hover:border-gray-400 hover:shadow-sm"
-    >
-      <Avatar name={person.name} photoUrl={person.photoUrl} />
-      <div className="min-w-0 flex-1">
-        <div className="flex flex-wrap items-center gap-2">
-          <h3 className="font-semibold">{person.name}</h3>
-          {person.verified && <VerifiedBadge />}
-          {person.claimedBy === null && <UnclaimedBadge />}
-          {person.availability?.isOpen && (
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700">
-              <span className="h-1.5 w-1.5 rounded-full bg-green-500" aria-hidden="true" />
-              {t('services.availableShort')}
-            </span>
+    // Sitara link ke bahar (link ke andar button jayez nahi), card ke kone pe
+    <div className="relative">
+      <Link
+        to={`/people/${person.slug}`}
+        onMouseEnter={prefetchProfile}
+        onFocus={prefetchProfile}
+        onTouchStart={prefetchProfile}
+        className={`flex h-full gap-4 rounded-2xl border border-gray-200 bg-white p-4 transition hover:border-gray-400 hover:shadow-sm ${canSave ? 'pe-14' : ''}`}
+      >
+        <Avatar name={person.name} photoUrl={person.photoUrl} />
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-2">
+            <h3 className="font-semibold">{person.name}</h3>
+            {person.verified && <VerifiedBadge />}
+            {person.claimedBy === null && <UnclaimedBadge />}
+            {person.availability?.isOpen && (
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700">
+                <span className="h-1.5 w-1.5 rounded-full bg-green-500" aria-hidden="true" />
+                {t('services.availableShort')}
+              </span>
+            )}
+          </div>
+          {person.headline && (
+            <p className="mt-0.5 line-clamp-2 text-sm text-gray-600">{person.headline}</p>
           )}
+          <p className="mt-2 text-xs text-gray-500">
+            {person.professions.map((p) => p.name).join(' · ')}
+          </p>
+          <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500">
+            {location && (
+              <span>
+                <FontAwesomeIcon icon={faLocationDot} className="me-1 text-gray-400" />
+                {location}
+              </span>
+            )}
+            {person.totalFollowers > 0 && (
+              <span>
+                <FontAwesomeIcon icon={faUsers} className="me-1 text-gray-400" />
+                {t('site.followers', { value: formatCount(person.totalFollowers) })}
+              </span>
+            )}
+          </div>
         </div>
-        {person.headline && (
-          <p className="mt-0.5 line-clamp-2 text-sm text-gray-600">{person.headline}</p>
-        )}
-        <p className="mt-2 text-xs text-gray-500">
-          {person.professions.map((p) => p.name).join(' · ')}
-        </p>
-        <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500">
-          {location && (
-            <span>
-              <FontAwesomeIcon icon={faLocationDot} className="me-1 text-gray-400" />
-              {location}
-            </span>
-          )}
-          {person.totalFollowers > 0 && (
-            <span>
-              <FontAwesomeIcon icon={faUsers} className="me-1 text-gray-400" />
-              {t('site.followers', { value: formatCount(person.totalFollowers) })}
-            </span>
-          )}
-        </div>
+      </Link>
+      <div className="absolute end-3 top-3">
+        <SaveToShortlist personId={person._id} personName={person.name} />
       </div>
-    </Link>
+    </div>
   )
 }
 

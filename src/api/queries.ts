@@ -3,6 +3,7 @@ import { getPerson, listPeople, listTaxonomy } from './people'
 import { getMyProfile, listMyClaims } from './claims'
 import { getMyBusiness, listIncomingHires, listMyHires } from './business'
 import { getAgreement, getPersonReviews, listMyAgreements } from './agreements'
+import { getSavedMembership, getShortlist, listShortlists } from './shortlists'
 import type { TaxonomyType } from '../types/person'
 
 // Har query ki key aur function ek jagah. Pages aur prefetch dono yahi use karte hain,
@@ -80,5 +81,23 @@ export function personReviewsQuery(slug: string) {
     queryKey: ['person', slug, 'reviews'],
     queryFn: () => getPersonReviews(slug),
     staleTime: 60 * 1000,
+  })
+}
+
+// Shortlists: business / agency / organization
+export const shortlistsQuery = queryOptions({
+  queryKey: ['shortlists', 'all'],
+  queryFn: listShortlists,
+})
+
+export const savedMembershipQuery = queryOptions({
+  queryKey: ['shortlists', 'saved'],
+  queryFn: getSavedMembership,
+})
+
+export function shortlistQuery(id: string) {
+  return queryOptions({
+    queryKey: ['shortlists', 'one', id],
+    queryFn: () => getShortlist(id),
   })
 }

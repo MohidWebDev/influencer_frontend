@@ -25,3 +25,6 @@ export const ROLE_LABELS: Record<Role, string> = translatedLabels(
   ['talent', 'representative', 'business', 'agency', 'organization', 'admin'],
   'roles',
 )
+
+// Ye account shortlists bana sakte hain (talent ki lists)
+export const SHORTLIST_ROLES: Role[] = ['business', 'agency', 'organization']
