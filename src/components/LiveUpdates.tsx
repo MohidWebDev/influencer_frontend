@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import axios from 'axios'
+import { useQuery, useQueryClient, type Query } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -15,6 +16,16 @@ import type { BusinessStatus, HireStatus } from '../types/business'
 const LIVE_INTERVAL_MS = 8000
 // Tab / DevTools ke beech aate jaate focus baar baar aata hai: itni der mein dobara refresh nahi
 const MIN_GAP_MS = 3000
+
+// 404 / 403 jaisa jawab (4xx) chand second mein khud theek nahi hota. Aisi query jis ke paas
+// dikhane ko data hi nahi, har refresh pe "loading" pe wapas jati hai aur section jhapakta hai.
+// Isay baar baar mat mangwao; page dobara khulne pe React Query khud ek dafa phir koshish karta hai
+function worthRefreshing(query: Query) {
+  const { status, data, error } = query.state
+  if (status !== 'error' || data !== undefined) return true
+  const code = axios.isAxiosError(error) ? (error.response?.status ?? 0) : 0
+  return !(code >= 400 && code < 500)
+}
 
 // Page refresh ke baghair naya data: har thodi der baad aur tab pe wapas aane pe
 // jo queries screen pe hain unko taaza karo. Naya kaam aaye to toast bhi dikhao.
@@ -36,7 +47,8 @@ function LiveUpdates() {
         {
           refetchType: 'active',
           // Login aur categories (taxonomy) ko har page pe dobara mangwane ki zaroorat nahi
-          predicate: (query) => !['auth', 'taxonomy'].includes(String(query.queryKey[0])),
+          predicate: (query) =>
+            !['auth', 'taxonomy'].includes(String(query.queryKey[0])) && worthRefreshing(query),
         },
         { cancelRefetch: false },
       )
@@ -64,7 +76,7 @@ function LiveUpdates() {
         queryClient.invalidateQueries(
           // Sirf screen pe maujood (active) queries; jo request abhi chal rahi hai use
           // kaat kar dobara shuru mat karo (dheemi network pe data kabhi pohanchta hi nahi)
-          { queryKey, refetchType: 'active' },
+          { queryKey, refetchType: 'active', predicate: worthRefreshing },
           { cancelRefetch: false },
         )
       }
