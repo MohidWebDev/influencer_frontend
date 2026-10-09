@@ -14,13 +14,20 @@ import {
   faUser,
 } from '@fortawesome/free-solid-svg-icons'
 import Avatar from '../Avatar'
+import Stars from '../agreements/Stars'
 import StatusPill from '../admin-panel/StatusPill'
 import type { HireRequest } from '../../types/business'
 import { formatDate } from '../../utils/adminFormat'
 import { countryName } from '../../utils/format'
 
 // Talent ko: kis business ne bheji (verified, kya karti hai, kahan hai, website)
-function BusinessInfo({ business }: { business: NonNullable<HireRequest['businessProfile']> }) {
+function BusinessInfo({
+  business,
+  rating,
+}: {
+  business: NonNullable<HireRequest['businessProfile']>
+  rating?: HireRequest['businessRating']
+}) {
   const { t } = useTranslation()
   const location = [business.city, countryName(business.country)].filter(Boolean).join(', ')
   return (
@@ -32,6 +39,14 @@ function BusinessInfo({ business }: { business: NonNullable<HireRequest['busines
             <FontAwesomeIcon icon={faCircleCheck} />
             {t('hire.verifiedBusiness')}
           </span>
+        )}
+        {rating ? (
+          <span className="inline-flex items-center gap-1 text-xs text-gray-600">
+            <Stars value={rating.average} size="text-xs" />
+            {t('agreements.ratingSummary', { average: rating.average, count: rating.count })}
+          </span>
+        ) : (
+          <span className="text-xs text-gray-500">{t('agreements.noRatings')}</span>
         )}
       </p>
       <p className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500">
@@ -147,7 +162,7 @@ function HireRequestCard({
           ) : (
             <>
               {hire.businessProfile ? (
-                <BusinessInfo business={hire.businessProfile} />
+                <BusinessInfo business={hire.businessProfile} rating={hire.businessRating} />
               ) : (
                 <p className="mt-0.5 text-sm text-gray-600">{t('hire.from', { business: '—' })}</p>
               )}

@@ -12,6 +12,7 @@ import ReportProfileLink from '../components/ReportProfileLink'
 import UnclaimedBadge from '../components/UnclaimedBadge'
 import PublicAvailability from '../components/services/PublicAvailability'
 import PublicServices from '../components/services/PublicServices'
+import PublicReviews from '../components/agreements/PublicReviews'
 import VerifiedBadge from '../components/VerifiedBadge'
 import { PLATFORM_ICONS, PLATFORM_LABELS, STATUS_LABELS } from '../constants/people'
 import type { TaxonomyItem } from '../types/person'
@@ -124,6 +125,8 @@ function Profile() {
           )}
 
           <PublicServices services={person.services ?? []} />
+
+          <PublicReviews slug={person.slug} />
 
           <section className="space-y-4 rounded-2xl bg-white p-6 shadow-sm">
             <TagList

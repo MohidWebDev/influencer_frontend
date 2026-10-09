@@ -1,5 +1,8 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFileContract } from '@fortawesome/free-solid-svg-icons'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { cancelHire } from '../../api/business'
@@ -52,6 +55,16 @@ function SentHireRequests() {
                 >
                   {t('hire.cancel')}
                 </button>
+              )}
+              {/* Accept ke baad: muahida banao ya kholo */}
+              {hire.status === 'accepted' && (
+                <Link
+                  to={hire.agreement ? `/agreements/${hire.agreement}` : `/agreements/new?hire=${hire._id}`}
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
+                >
+                  <FontAwesomeIcon icon={faFileContract} />
+                  {hire.agreement ? t('agreements.view') : t('agreements.draft')}
+                </Link>
               )}
             </HireRequestCard>
           ))}

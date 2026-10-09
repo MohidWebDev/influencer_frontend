@@ -54,11 +54,17 @@ src/
 | `/dashboard/profile/edit` | Talent only: edit the profile you own |
 | `/dashboard` | Logged-in home per account type. Talent sees their profile / claim status and incoming hire requests (accept / decline). Business sees its verification status and the hire requests it sent. Admins get People and Claim requests tabs |
 | `/dashboard/business` | Business only: send company details for verification (or edit them) |
+| `/agreements`, `/agreements/:id` | Business and talent: their agreements; terms, signing, milestones, disputes, reviews and "Download PDF" (browser print) |
+| `/agreements/new?hire=` | Business only: draft an agreement from an accepted hire request |
 | `/dashboard/people/new`, `/dashboard/people/:id/edit` | Admin only: create or edit a profile |
 
 ## Business verification and hiring
 
 A business account fills in its company details at `/dashboard/business`. Verification works like a talent claim: the admin sends a 6-digit code to one of the business's contacts (login email, website, proof link or phone) from `/admin/businesses/:id`, the business enters it on its dashboard (5 wrong tries lock it; the admin can reset the code or verify manually), and the admin then gives final approval. Only an approved business sees an active **Hire** button on a profile, and only on verified talents (claimed + verified badge). Everyone else still sees the disabled "Contact / Hire" button. The talent sees the request near the top of their dashboard with the business details (verified badge, industry, location, website) and accepts or declines it. Once accepted, both sides see each other's contact details (the talent gets the business contact's name, email and phone; the business gets the talent's name and email). `LiveUpdates` refreshes the business verification and hire requests every few seconds and shows a toast when the admin sends a code, approves or rejects, when a new hire request arrives, or when the talent replies, so nobody has to reload the page. Code lives in `src/components/business/`, `src/api/business.ts` and `src/types/business.ts`.
+
+## Agreements
+
+After a talent accepts a hire request, the business drafts an agreement (scope, milestones with amounts and due dates, payment terms, usage rights, rounds of changes, cancellation). Either side can propose new terms; every version is kept. Each side signs by entering a code emailed to them, and when both have signed the same version the terms are locked and get a SHA-256 fingerprint. The talent delivers each milestone, the business approves it or asks for changes (up to the agreed rounds), either side can report a problem that an admin resolves, and both leave a review at the end. Business reviews of a talent show on the public profile; talents see a business's rating on its hire requests. "Download PDF" prints a formal version of the agreement (the navbar and footer are hidden when printing). Code lives in `src/pages/agreements/`, `src/components/agreements/`, `src/api/agreements.ts` and `src/types/agreement.ts`.
 
 ## Navigation
 
@@ -66,13 +72,14 @@ All navbar links live in `src/constants/navigation.ts` (`MAIN_NAV`, `UTILITY_NAV
 
 ## Admin panel (`/admin`)
 
-Admins only (`ProtectedRoute roles={['admin']}`). Sidebar: Dashboard, Claims, Businesses, Users, Reports, Audit log.
+Admins only (`ProtectedRoute roles={['admin']}`). Sidebar: Dashboard, Claims, Businesses, Agreements, Users, Reports, Audit log.
 
 | URL | Page |
 |---|---|
 | `/admin` | Overview: claims needing action, open reports, users, profiles |
 | `/admin/claims`, `/admin/claims/:id` | Claims table (status filter) and detail: evidence, code, approve/reject |
 | `/admin/businesses`, `/admin/businesses/:id` | Business verification queue and detail: company details, send / reset the code, verify manually, approve after the correct code, reject / revoke |
+| `/admin/agreements`, `/admin/agreements/:id` | All agreements; resolve disputes (continue / complete / cancel) |
 | `/admin/users` | Search, role/status filter, change role, suspend/unsuspend |
 | `/admin/reports`, `/admin/reports/:id` | Reports queue and detail: status, admin note, takedown |
 | `/admin/audit-logs` | Read-only audit log with filters and before/after view |

@@ -103,7 +103,8 @@
   --color-orange-900: color-mix(in oklab, var(--color-orange-400) 50%, white);
 }
 
-.dark .keep-dark {
+.dark .keep-dark,
+.dark .print-document {
   color-scheme: dark;
   --color-white: #fff;
   --color-gray-50: oklch(98.5% 0.002 247.839);

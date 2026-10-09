@@ -30,7 +30,7 @@ function LiveUpdates() {
       const keys =
         role === 'admin'
           ? [['admin'], ['claims'], ['notifications'], ['people'], ['person']]
-          : [['claims'], ['notifications'], ['people'], ['person'], ['business'], ['me']]
+          : [['claims'], ['notifications'], ['people'], ['person'], ['business'], ['me'], ['agreements']]
       // Sirf screen pe maujood (active) queries dobara chalti hain
       keys.forEach((queryKey) => queryClient.invalidateQueries({ queryKey, refetchType: 'active' }))
     }

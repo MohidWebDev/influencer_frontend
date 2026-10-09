@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faBuilding,
+  faFileContract,
   faFlag,
   faIdCard,
   faUserCheck,
@@ -85,6 +86,14 @@ function AdminOverviewPage() {
                 value={data.businesses.needsAction}
                 detail={t('overview.businessesApproved', { count: data.businesses.approved })}
                 highlight={data.businesses.needsAction > 0}
+              />
+              <StatCard
+                to="/admin/agreements?status=disputed"
+                icon={faFileContract}
+                label={t('overview.disputes')}
+                value={data.agreements.disputed}
+                detail={t('overview.activeAgreements', { count: data.agreements.active })}
+                highlight={data.agreements.disputed > 0}
               />
               <StatCard
                 to="/admin/users"

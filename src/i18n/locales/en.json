@@ -8,7 +8,8 @@
     "auditLog": "Audit log",
     "manageProfiles": "Manage profiles",
     "language": "Language",
-    "businesses": "Businesses"
+    "businesses": "Businesses",
+    "agreements": "Agreements"
   },
   "common": {
     "loading": "Loading...",
@@ -58,7 +59,9 @@
     "usersByRole": "Users by role",
     "open": "Open",
     "businessesApproved": "{{count}} verified",
-    "businessesNeedAction": "Businesses need action"
+    "businessesNeedAction": "Businesses need action",
+    "disputes": "Open disputes",
+    "activeAgreements": "{{count}} active agreements"
   },
   "claimStatus": {
     "pending": "Send code",
@@ -306,6 +309,11 @@
         "reset_otp": "{{actor}} reset the OTP and sent a new code to the business {{target}}.",
         "otp_locked": "{{actor}} entered a wrong OTP 5 times, so verification of {{target}} was locked.",
         "verify_manual": "{{actor}} verified the business {{target}} manually and approved it."
+      },
+      "agreement": {
+        "sign": "{{actor}} signed the agreement {{target}}.",
+        "dispute": "{{actor}} opened a dispute on the agreement {{target}}.",
+        "resolve": "{{actor}} resolved the dispute on the agreement {{target}}."
       }
     }
   },
@@ -314,7 +322,8 @@
     "claim": "Claim",
     "user": "User",
     "report": "Report",
-    "business": "Business"
+    "business": "Business",
+    "agreement": "Agreement"
   },
   "auditAction": {
     "person": {
@@ -350,6 +359,11 @@
       "reset_otp": "Reset business OTP",
       "otp_locked": "Business OTP locked",
       "verify_manual": "Verified business manually"
+    },
+    "agreement": {
+      "sign": "Signed agreement",
+      "dispute": "Opened dispute",
+      "resolve": "Resolved dispute"
     }
   },
   "reportForm": {
@@ -392,7 +406,8 @@
       "language": "Language",
       "home": "Home",
       "about": "About",
-      "myBusiness": "My business"
+      "myBusiness": "My business",
+      "agreements": "Agreements"
     },
     "search": {
       "placeholder": "Search by name or what they do...",
@@ -572,7 +587,13 @@
     "BUSINESS_NOT_VERIFIED": "Your business must be verified before you can hire talents",
     "TALENT_NOT_VERIFIED": "You can only hire verified talents",
     "HIRE_PENDING": "You already sent this talent a request",
-    "BUSINESS_CODE_NOT_VERIFIED": "The business has not entered the correct code yet"
+    "BUSINESS_CODE_NOT_VERIFIED": "The business has not entered the correct code yet",
+    "HIRE_NOT_ACCEPTED": "The talent has to accept the hire request first",
+    "AGREEMENT_EXISTS": "There is already an agreement for this request",
+    "ALREADY_SIGNED": "You already signed this version",
+    "TOO_SOON": "Please wait a moment before asking for a new code",
+    "NO_REVISIONS_LEFT": "All the revisions in the agreement are used",
+    "ACTIVE_AGREEMENT": "Finish or resolve your active agreements before deleting your account"
   },
   "search": {
     "any": "Any",
@@ -1070,7 +1091,20 @@
       "hire_declined": "{{person}} declined your hire request.",
       "business_code_verified": "{{claimant}} entered the correct code for {{business}}. It is ready to approve.",
       "business_otp_locked": "{{claimant}} entered a wrong code 5 times for {{business}}. Verification is locked.",
-      "business_code_sent": "We sent a verification code for {{business}}. Enter it on your dashboard."
+      "business_code_sent": "We sent a verification code for {{business}}. Enter it on your dashboard.",
+      "agreement_disputed_admin": "A dispute was opened on the agreement \"{{title}}\" between {{business}} and {{person}}.",
+      "agreement_proposed": "{{business}} sent you an agreement: \"{{title}}\". Review and sign it.",
+      "agreement_updated": "New terms were proposed for \"{{title}}\". Review and sign them.",
+      "agreement_signed": "The other side signed \"{{title}}\". Sign it to make it active.",
+      "agreement_active": "\"{{title}}\" is signed by both sides and now active.",
+      "agreement_cancelled": "The agreement \"{{title}}\" was cancelled.",
+      "agreement_delivered": "{{person}} delivered \"{{milestone}}\" for \"{{title}}\". Review it.",
+      "agreement_approved": "\"{{milestone}}\" was approved for \"{{title}}\".",
+      "agreement_changes_requested": "Changes were requested on \"{{milestone}}\" for \"{{title}}\".",
+      "agreement_completed": "\"{{title}}\" is completed. Leave a review.",
+      "agreement_disputed": "A problem was reported on \"{{title}}\". An admin will review it.",
+      "agreement_resolved": "The dispute on \"{{title}}\" was resolved: {{outcome}}",
+      "agreement_reviewed": "You received a {{rating}}-star review for \"{{title}}\"."
     }
   },
   "dataState": {
@@ -1456,5 +1490,212 @@
     "approveOnlyAfterCode": "You can approve once the business enters the correct code.",
     "verifyTitle": "Verify this business manually?",
     "verifyBody": "Only do this if you confirmed it another way. {{name}} will be verified and can hire talents right away."
+  },
+  "agreementStatus": {
+    "negotiating": "Agreeing terms",
+    "active": "Active",
+    "disputed": "Disputed",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "milestoneStatus": {
+    "pending": "To do",
+    "delivered": "Delivered",
+    "approved": "Approved"
+  },
+  "agreements": {
+    "title": "Agreements",
+    "subtitle": {
+      "business": "Agreements with the talents you hired.",
+      "talent": "Agreements with the businesses that hired you."
+    },
+    "emptyTitle": "No agreements yet",
+    "emptyText": {
+      "business": "When a talent accepts your hire request, draft an agreement from your dashboard.",
+      "talent": "When you accept a hire request, the business sends you an agreement here."
+    },
+    "with": {
+      "business": "With {{name}}",
+      "talent": "With {{name}}"
+    },
+    "updatedOn": "Updated {{date}}",
+    "next": {
+      "reviewAndSign": "Review the terms and sign",
+      "waitingOther": "Waiting for the other side to sign",
+      "deliver": "Deliver the next milestone",
+      "review": "A milestone is waiting for your approval",
+      "inProgress": "Work in progress",
+      "leaveReview": "Leave a review"
+    },
+    "view": "View agreement",
+    "draft": "Draft agreement",
+    "waitingForDraft": "The business will send you an agreement to sign.",
+    "backToList": "All agreements",
+    "newTitle": "Draft an agreement",
+    "newSubtitle": "Write down what you agreed with {{name}}. They can propose changes before both of you sign.",
+    "newSubtitleGeneric": "Write down what you agreed. The talent can propose changes before both of you sign.",
+    "hireNotReady": "This hire request isn't accepted, or it doesn't exist.",
+    "sendToTalent": "Send to talent",
+    "created": "Agreement sent to the talent",
+    "terms": "Terms",
+    "total": "Total: {{amount}}",
+    "totalLabel": "Total",
+    "due": "Due {{date}}",
+    "revisionsCount": "{{count}} round(s) of changes included",
+    "revisionsUsed": "Changes used: {{used}} of {{total}}",
+    "fields": {
+      "title": "Agreement title",
+      "scope": "Scope of work",
+      "scopePlaceholder": "What exactly will be delivered, where and how?",
+      "milestones": "Milestones and payments",
+      "milestonesHint": "Split the work into steps. Each step has its own amount and due date.",
+      "milestoneTitle": "Milestone {{number}}",
+      "amount": "Amount ({{currency}})",
+      "dueDate": "Due date",
+      "currency": "Currency",
+      "addMilestone": "Add milestone",
+      "removeMilestone": "Remove milestone",
+      "paymentTerms": "Payment terms",
+      "paymentTermsPlaceholder": "e.g. 50% after the first milestone, the rest within 7 days of the last",
+      "usageRights": "Content usage rights",
+      "usageRightsPlaceholder": "e.g. The brand may repost the content on its own accounts for 6 months",
+      "cancellationTerms": "Cancellation",
+      "cancellationPlaceholder": "e.g. Either side can cancel with 7 days' notice; finished milestones are still paid",
+      "revisions": "Rounds of changes",
+      "revisionsHint": "How many times the business can send a delivery back for changes."
+    },
+    "errors": {
+      "title": "Use at least 3 characters",
+      "scope": "Describe the work (at least 20 characters)",
+      "milestones": "Add at least one milestone"
+    },
+    "party": {
+      "business": "Business",
+      "talent": "Talent"
+    },
+    "versionBy": "Version {{version}}, proposed by {{party}} on {{date}}",
+    "downloadPdf": "Download PDF",
+    "banner": {
+      "waitingForOther": "You proposed these terms. Waiting for {{name}} to sign or propose changes.",
+      "reviewTerms": "{{name}} proposed these terms. Sign them, or propose changes.",
+      "active": {
+        "business": "Signed by both sides on {{date}}. The talent delivers each milestone; you approve it or ask for changes.",
+        "talent": "Signed by both sides on {{date}}. Deliver each milestone here; the business approves it or asks for changes."
+      },
+      "completed": "Completed on {{date}}. Every milestone was approved.",
+      "cancelledBy": {
+        "business": "Cancelled by the business on {{date}}.",
+        "talent": "Cancelled by the talent on {{date}}.",
+        "admin": "Cancelled by an admin on {{date}}."
+      }
+    },
+    "reason": "Reason: {{reason}}",
+    "proposeChanges": "Propose changes",
+    "counterHint": "Saving new terms creates a new version. Any signatures on the current version are removed, so both sides sign again.",
+    "sendChanges": "Send new terms",
+    "counterSent": "New terms sent",
+    "signatures": "Signatures (version {{version}})",
+    "signedOn": "Signed {{date}}",
+    "notSigned": "Not signed yet",
+    "waitingOther": "You signed this version. It becomes active as soon as the other side signs.",
+    "signExplain": "We'll email a 6-digit code to your login email. Entering it is your electronic signature on this version of the agreement.",
+    "emailMeCode": "Email me a code to sign",
+    "codeSent": "Code sent. Check your email.",
+    "signButton": "Sign agreement",
+    "signedToast": "Signed. Waiting for the other side.",
+    "nowActive": "Signed by both sides. The agreement is now active.",
+    "resend": "Send a new code",
+    "resendIn": "Send a new code in {{count}}s",
+    "signedRecord": "Signed record",
+    "fingerprint": "Agreement fingerprint (SHA-256)",
+    "fingerprintHint": "This fingerprint is calculated from the signed terms and both parties. If anything changed afterwards, it would no longer match.",
+    "deliver": "Mark as delivered",
+    "deliverTitle": "Deliver this milestone",
+    "deliveryNote": "What did you deliver?",
+    "deliveryPlaceholder": "e.g. The three posts are live on Instagram",
+    "deliveryLink": "Link (optional)",
+    "deliveredOn": "Delivered {{date}}",
+    "requestChanges": "Ask for changes ({{count}} left)",
+    "noRevisionsLeft": "All rounds of changes are used",
+    "changesTitle": "What needs to change?",
+    "changesPlaceholder": "Be specific so the talent can fix it",
+    "changesRequestedNote": "Changes requested: {{note}}",
+    "sendBack": "Send back",
+    "approve": "Approve",
+    "approveTitle": "Approve this milestone?",
+    "approveBody": "Approving confirms the milestone was delivered as agreed. This can't be undone.",
+    "toast": {
+      "deliver": "Milestone delivered",
+      "changes": "Sent back for changes",
+      "approve": "Milestone approved"
+    },
+    "completedToast": "All milestones approved. The agreement is completed.",
+    "cancel": "Cancel agreement",
+    "cancelTitle": "Cancel this agreement?",
+    "cancelBody": "It hasn't been signed by both sides yet, so it simply ends. The other side will be told.",
+    "reasonOptional": "Reason (optional)",
+    "cancelledToast": "Agreement cancelled",
+    "reportProblem": "Report a problem",
+    "disputeTitle": "Report a problem with this agreement",
+    "disputeBody": "An admin will review the signed agreement, the deliveries and both sides' messages. Work is paused until the admin decides.",
+    "disputePlaceholder": "What went wrong? (at least 20 characters)",
+    "disputeOpened": "Problem reported. An admin will review it.",
+    "disputeBy": "Problem reported by the {{party}} on {{date}}",
+    "disputeWaiting": "An admin is reviewing this.",
+    "outcome": {
+      "continue": "Decision: the work continues.",
+      "complete": "Decision: the agreement is marked completed.",
+      "cancel": "Decision: the agreement is cancelled."
+    },
+    "reviews": "Reviews",
+    "reviewPrompt": {
+      "business": "How was working with {{name}}?",
+      "talent": "How was working with {{name}}?"
+    },
+    "reviewPlaceholder": "Share a few words (optional)",
+    "submitReview": "Post review",
+    "reviewSaved": "Thanks for your review",
+    "yourReview": "Your review",
+    "theirReview": "{{name}}'s review",
+    "rating": "Rating",
+    "stars": "{{count}} star(s)",
+    "ratingSummary": "{{average}} ({{count}})",
+    "noRatings": "No ratings yet",
+    "publicReviews": "Reviews from businesses",
+    "history": "Earlier versions ({{count}})",
+    "show": "Show",
+    "hide": "Hide",
+    "print": {
+      "reference": "Agreement {{id}} · version {{version}}",
+      "signedBy": "Signatures",
+      "signature": "{{name}} ({{email}}), signed electronically on {{date}}",
+      "footer": "Generated by {{platform}} on {{date}}. Signed electronically with one-time codes sent to each party's email."
+    }
+  },
+  "adminAgreements": {
+    "title": "Agreements",
+    "subtitle": "Signed agreements between businesses and talents. Resolve disputes here.",
+    "emptyTitle": "No agreements yet",
+    "emptyText": "Agreements appear here once a business drafts one.",
+    "colTitle": "Agreement",
+    "colUpdated": "Updated",
+    "signedVersion": "Signed version {{version}} on {{date}} (IP {{ip}})",
+    "reviewGiven": "Gave {{rating}} stars",
+    "decision": "Your decision",
+    "outcomes": {
+      "continue": "Continue the work",
+      "complete": "Mark as completed",
+      "cancel": "Cancel the agreement"
+    },
+    "outcomeHints": {
+      "continue": "The agreement goes back to active, as signed.",
+      "complete": "The work counts as done; both sides can leave reviews.",
+      "cancel": "The agreement ends here."
+    },
+    "notePlaceholder": "Explain the decision to both sides",
+    "resolve": "Resolve dispute",
+    "confirmTitle": "Resolve this dispute?",
+    "confirmBody": "Decision: {{outcome}}. Both sides will be notified.",
+    "resolved": "Dispute resolved"
   }
 }

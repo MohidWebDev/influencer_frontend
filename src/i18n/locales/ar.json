@@ -8,7 +8,8 @@
     "auditLog": "سجل التدقيق",
     "manageProfiles": "إدارة الملفات",
     "language": "اللغة",
-    "businesses": "الشركات"
+    "businesses": "الشركات",
+    "agreements": "الاتفاقيات"
   },
   "common": {
     "loading": "جارٍ التحميل...",
@@ -58,7 +59,9 @@
     "usersByRole": "المستخدمون حسب الدور",
     "open": "فتح",
     "businessesApproved": "{{count}} موثّقة",
-    "businessesNeedAction": "شركات تحتاج إجراء"
+    "businessesNeedAction": "شركات تحتاج إجراء",
+    "disputes": "نزاعات مفتوحة",
+    "activeAgreements": "{{count}} اتفاقيات نشطة"
   },
   "claimStatus": {
     "pending": "إرسال الرمز",
@@ -306,6 +309,11 @@
         "reset_otp": "أعاد {{actor}} تعيين الرمز وأرسل رمزًا جديدًا إلى الشركة {{target}}.",
         "otp_locked": "أدخل {{actor}} رمزًا خاطئًا 5 مرات، فقُفل التحقق من {{target}}.",
         "verify_manual": "وثّق {{actor}} الشركة {{target}} يدويًا ووافق عليها."
+      },
+      "agreement": {
+        "sign": "وقّع {{actor}} الاتفاقية {{target}}.",
+        "dispute": "فتح {{actor}} نزاعًا على الاتفاقية {{target}}.",
+        "resolve": "حلّ {{actor}} النزاع على الاتفاقية {{target}}."
       }
     }
   },
@@ -314,7 +322,8 @@
     "claim": "مطالبة",
     "user": "مستخدم",
     "report": "بلاغ",
-    "business": "شركة"
+    "business": "شركة",
+    "agreement": "اتفاقية"
   },
   "auditAction": {
     "person": {
@@ -350,6 +359,11 @@
       "reset_otp": "أعاد تعيين رمز الشركة",
       "otp_locked": "قُفل رمز الشركة",
       "verify_manual": "وثّق الشركة يدويًا"
+    },
+    "agreement": {
+      "sign": "وقّع الاتفاقية",
+      "dispute": "فتح نزاعًا",
+      "resolve": "حلّ النزاع"
     }
   },
   "reportForm": {
@@ -392,7 +406,8 @@
       "language": "اللغة",
       "home": "الرئيسية",
       "about": "من نحن",
-      "myBusiness": "نشاطي التجاري"
+      "myBusiness": "نشاطي التجاري",
+      "agreements": "الاتفاقيات"
     },
     "search": {
       "placeholder": "ابحث بالاسم أو المجال...",
@@ -572,7 +587,13 @@
     "BUSINESS_NOT_VERIFIED": "يجب توثيق شركتك قبل أن تتمكن من توظيف المواهب",
     "TALENT_NOT_VERIFIED": "يمكنك توظيف المواهب الموثّقة فقط",
     "HIRE_PENDING": "لقد أرسلت طلبًا لهذه الموهبة بالفعل",
-    "BUSINESS_CODE_NOT_VERIFIED": "لم تُدخل الشركة الرمز الصحيح بعد"
+    "BUSINESS_CODE_NOT_VERIFIED": "لم تُدخل الشركة الرمز الصحيح بعد",
+    "HIRE_NOT_ACCEPTED": "يجب أن تقبل الموهبة طلب التوظيف أولًا",
+    "AGREEMENT_EXISTS": "توجد اتفاقية لهذا الطلب بالفعل",
+    "ALREADY_SIGNED": "لقد وقّعت هذه النسخة بالفعل",
+    "TOO_SOON": "انتظر قليلًا قبل طلب رمز جديد",
+    "NO_REVISIONS_LEFT": "تم استخدام جميع جولات التعديل في الاتفاقية",
+    "ACTIVE_AGREEMENT": "أكمل أو احلّ اتفاقياتك النشطة قبل حذف حسابك"
   },
   "search": {
     "any": "الكل",
@@ -1070,7 +1091,20 @@
       "hire_declined": "رفض {{person}} طلب التوظيف الخاص بك.",
       "business_code_verified": "أدخل {{claimant}} الرمز الصحيح لـ {{business}}. جاهزة للموافقة.",
       "business_otp_locked": "أدخل {{claimant}} رمزًا خاطئًا 5 مرات لـ {{business}}. تم قفل التحقق.",
-      "business_code_sent": "أرسلنا رمز تحقق لـ {{business}}. أدخله في لوحة التحكم."
+      "business_code_sent": "أرسلنا رمز تحقق لـ {{business}}. أدخله في لوحة التحكم.",
+      "agreement_disputed_admin": "فُتح نزاع على الاتفاقية \"{{title}}\" بين {{business}} و{{person}}.",
+      "agreement_proposed": "أرسلت {{business}} إليك اتفاقية: \"{{title}}\". راجعها ووقّعها.",
+      "agreement_updated": "اقتُرحت شروط جديدة لـ \"{{title}}\". راجعها ووقّعها.",
+      "agreement_signed": "وقّع الطرف الآخر \"{{title}}\". وقّعها لتصبح نشطة.",
+      "agreement_active": "وقّع الطرفان \"{{title}}\" وأصبحت نشطة الآن.",
+      "agreement_cancelled": "أُلغيت الاتفاقية \"{{title}}\".",
+      "agreement_delivered": "سلّم {{person}} \"{{milestone}}\" ضمن \"{{title}}\". راجعه.",
+      "agreement_approved": "تمت الموافقة على \"{{milestone}}\" ضمن \"{{title}}\".",
+      "agreement_changes_requested": "طُلبت تعديلات على \"{{milestone}}\" ضمن \"{{title}}\".",
+      "agreement_completed": "اكتملت \"{{title}}\". اترك تقييمًا.",
+      "agreement_disputed": "أُبلغ عن مشكلة في \"{{title}}\". سيراجعها المشرف.",
+      "agreement_resolved": "حُلّ النزاع على \"{{title}}\": {{outcome}}",
+      "agreement_reviewed": "حصلت على تقييم {{rating}} نجوم في \"{{title}}\"."
     }
   },
   "dataState": {
@@ -1456,5 +1490,212 @@
     "approveOnlyAfterCode": "يمكنك الموافقة بعد أن تُدخل الشركة الرمز الصحيح.",
     "verifyTitle": "توثيق هذه الشركة يدويًا؟",
     "verifyBody": "افعل ذلك فقط إذا تحققت بطريقة أخرى. سيتم توثيق {{name}} فورًا ويمكنها توظيف المواهب."
+  },
+  "agreementStatus": {
+    "negotiating": "الاتفاق على الشروط",
+    "active": "نشطة",
+    "disputed": "متنازع عليها",
+    "completed": "مكتملة",
+    "cancelled": "ملغاة"
+  },
+  "milestoneStatus": {
+    "pending": "قيد التنفيذ",
+    "delivered": "تم التسليم",
+    "approved": "تمت الموافقة"
+  },
+  "agreements": {
+    "title": "الاتفاقيات",
+    "subtitle": {
+      "business": "اتفاقياتك مع المواهب التي وظّفتها.",
+      "talent": "اتفاقياتك مع الشركات التي وظّفتك."
+    },
+    "emptyTitle": "لا توجد اتفاقيات بعد",
+    "emptyText": {
+      "business": "عندما تقبل موهبة طلب التوظيف، أنشئ اتفاقية من لوحة التحكم.",
+      "talent": "عندما تقبل طلب توظيف، سترسل الشركة اتفاقية إليك هنا."
+    },
+    "with": {
+      "business": "مع {{name}}",
+      "talent": "مع {{name}}"
+    },
+    "updatedOn": "حُدّثت في {{date}}",
+    "next": {
+      "reviewAndSign": "راجع الشروط ووقّع",
+      "waitingOther": "بانتظار توقيع الطرف الآخر",
+      "deliver": "سلّم المرحلة التالية",
+      "review": "مرحلة بانتظار موافقتك",
+      "inProgress": "العمل جارٍ",
+      "leaveReview": "اترك تقييمًا"
+    },
+    "view": "عرض الاتفاقية",
+    "draft": "إنشاء اتفاقية",
+    "waitingForDraft": "سترسل الشركة إليك اتفاقية للتوقيع.",
+    "backToList": "كل الاتفاقيات",
+    "newTitle": "إنشاء اتفاقية",
+    "newSubtitle": "اكتب ما اتفقت عليه مع {{name}}. يمكنه اقتراح تعديلات قبل أن يوقّع الطرفان.",
+    "newSubtitleGeneric": "اكتب ما اتفقتم عليه. يمكن للموهبة اقتراح تعديلات قبل أن يوقّع الطرفان.",
+    "hireNotReady": "طلب التوظيف هذا غير مقبول أو غير موجود.",
+    "sendToTalent": "أرسل إلى الموهبة",
+    "created": "تم إرسال الاتفاقية إلى الموهبة",
+    "terms": "الشروط",
+    "total": "الإجمالي: {{amount}}",
+    "totalLabel": "الإجمالي",
+    "due": "الموعد {{date}}",
+    "revisionsCount": "{{count}} جولة/جولات تعديل مشمولة",
+    "revisionsUsed": "التعديلات المستخدمة: {{used}} من {{total}}",
+    "fields": {
+      "title": "عنوان الاتفاقية",
+      "scope": "نطاق العمل",
+      "scopePlaceholder": "ما الذي سيُسلَّم بالضبط، وأين، وكيف؟",
+      "milestones": "المراحل والدفعات",
+      "milestonesHint": "قسّم العمل إلى مراحل، لكل مرحلة مبلغ وموعد.",
+      "milestoneTitle": "المرحلة {{number}}",
+      "amount": "المبلغ ({{currency}})",
+      "dueDate": "الموعد",
+      "currency": "العملة",
+      "addMilestone": "أضف مرحلة",
+      "removeMilestone": "احذف المرحلة",
+      "paymentTerms": "شروط الدفع",
+      "paymentTermsPlaceholder": "مثل: 50% بعد المرحلة الأولى، والباقي خلال 7 أيام من الأخيرة",
+      "usageRights": "حقوق استخدام المحتوى",
+      "usageRightsPlaceholder": "مثل: يمكن للعلامة التجارية إعادة نشر المحتوى على حساباتها لمدة 6 أشهر",
+      "cancellationTerms": "الإلغاء",
+      "cancellationPlaceholder": "مثل: يمكن لأي طرف الإلغاء بإشعار 7 أيام؛ وتُدفع المراحل المكتملة",
+      "revisions": "جولات التعديل",
+      "revisionsHint": "كم مرة يمكن للشركة إعادة التسليم لطلب تعديلات."
+    },
+    "errors": {
+      "title": "استخدم 3 أحرف على الأقل",
+      "scope": "صف العمل (20 حرفًا على الأقل)",
+      "milestones": "أضف مرحلة واحدة على الأقل"
+    },
+    "party": {
+      "business": "الشركة",
+      "talent": "الموهبة"
+    },
+    "versionBy": "النسخة {{version}}، اقترحها {{party}} في {{date}}",
+    "downloadPdf": "تنزيل PDF",
+    "banner": {
+      "waitingForOther": "أنت اقترحت هذه الشروط. بانتظار توقيع {{name}} أو اقتراح تعديلات.",
+      "reviewTerms": "اقترح {{name}} هذه الشروط. وقّعها أو اقترح تعديلات.",
+      "active": {
+        "business": "وقّعها الطرفان في {{date}}. تسلّم الموهبة كل مرحلة، وأنت توافق أو تطلب تعديلات.",
+        "talent": "وقّعها الطرفان في {{date}}. سلّم كل مرحلة هنا، والشركة توافق أو تطلب تعديلات."
+      },
+      "completed": "اكتملت في {{date}}. تمت الموافقة على كل المراحل.",
+      "cancelledBy": {
+        "business": "ألغتها الشركة في {{date}}.",
+        "talent": "ألغتها الموهبة في {{date}}.",
+        "admin": "ألغاها المشرف في {{date}}."
+      }
+    },
+    "reason": "السبب: {{reason}}",
+    "proposeChanges": "اقترح تعديلات",
+    "counterHint": "حفظ شروط جديدة ينشئ نسخة جديدة وتُزال التوقيعات الحالية، فيوقّع الطرفان من جديد.",
+    "sendChanges": "أرسل الشروط الجديدة",
+    "counterSent": "تم إرسال الشروط الجديدة",
+    "signatures": "التوقيعات (النسخة {{version}})",
+    "signedOn": "وُقّعت في {{date}}",
+    "notSigned": "لم تُوقَّع بعد",
+    "waitingOther": "وقّعت هذه النسخة. ستصبح نشطة فور توقيع الطرف الآخر.",
+    "signExplain": "سنرسل رمزًا من 6 أرقام إلى بريد تسجيل الدخول. إدخاله هو توقيعك الإلكتروني على هذه النسخة.",
+    "emailMeCode": "أرسل لي رمز التوقيع",
+    "codeSent": "تم إرسال الرمز. تحقّق من بريدك.",
+    "signButton": "وقّع الاتفاقية",
+    "signedToast": "تم التوقيع. بانتظار الطرف الآخر.",
+    "nowActive": "وقّع الطرفان. الاتفاقية نشطة الآن.",
+    "resend": "أرسل رمزًا جديدًا",
+    "resendIn": "أرسل رمزًا جديدًا خلال {{count}} ث",
+    "signedRecord": "سجل التوقيع",
+    "fingerprint": "بصمة الاتفاقية (SHA-256)",
+    "fingerprintHint": "تُحسب هذه البصمة من الشروط الموقّعة ومن الطرفين. إذا تغيّر أي شيء لاحقًا فلن تتطابق.",
+    "deliver": "تأكيد التسليم",
+    "deliverTitle": "تسليم هذه المرحلة",
+    "deliveryNote": "ماذا سلّمت؟",
+    "deliveryPlaceholder": "مثل: المنشورات الثلاثة منشورة على إنستغرام",
+    "deliveryLink": "رابط (اختياري)",
+    "deliveredOn": "سُلّمت في {{date}}",
+    "requestChanges": "اطلب تعديلات (متبقٍ {{count}})",
+    "noRevisionsLeft": "استُخدمت كل جولات التعديل",
+    "changesTitle": "ما الذي يجب تعديله؟",
+    "changesPlaceholder": "كن محددًا حتى تتمكن الموهبة من الإصلاح",
+    "changesRequestedNote": "التعديلات المطلوبة: {{note}}",
+    "sendBack": "إعادة",
+    "approve": "موافقة",
+    "approveTitle": "الموافقة على هذه المرحلة؟",
+    "approveBody": "الموافقة تؤكد أن المرحلة سُلّمت كما اتُّفق. لا يمكن التراجع عنها.",
+    "toast": {
+      "deliver": "تم تسليم المرحلة",
+      "changes": "أُعيدت لطلب تعديلات",
+      "approve": "تمت الموافقة على المرحلة"
+    },
+    "completedToast": "تمت الموافقة على كل المراحل. اكتملت الاتفاقية.",
+    "cancel": "إلغاء الاتفاقية",
+    "cancelTitle": "إلغاء هذه الاتفاقية؟",
+    "cancelBody": "لم يوقّعها الطرفان بعد، لذا ستنتهي ببساطة. سيتم إبلاغ الطرف الآخر.",
+    "reasonOptional": "السبب (اختياري)",
+    "cancelledToast": "أُلغيت الاتفاقية",
+    "reportProblem": "الإبلاغ عن مشكلة",
+    "disputeTitle": "الإبلاغ عن مشكلة في هذه الاتفاقية",
+    "disputeBody": "سيراجع المشرف الاتفاقية الموقّعة والتسليمات وأقوال الطرفين. يتوقف العمل حتى يقرّر المشرف.",
+    "disputePlaceholder": "ما الذي حدث؟ (20 حرفًا على الأقل)",
+    "disputeOpened": "تم الإبلاغ عن المشكلة. سيراجعها المشرف.",
+    "disputeBy": "أبلغت {{party}} عن مشكلة في {{date}}",
+    "disputeWaiting": "يراجع المشرف هذا الأمر.",
+    "outcome": {
+      "continue": "القرار: يستمر العمل.",
+      "complete": "القرار: تُعدّ الاتفاقية مكتملة.",
+      "cancel": "القرار: أُلغيت الاتفاقية."
+    },
+    "reviews": "التقييمات",
+    "reviewPrompt": {
+      "business": "كيف كان العمل مع {{name}}؟",
+      "talent": "كيف كان العمل مع {{name}}؟"
+    },
+    "reviewPlaceholder": "اكتب بضع كلمات (اختياري)",
+    "submitReview": "نشر التقييم",
+    "reviewSaved": "شكرًا على تقييمك",
+    "yourReview": "تقييمك",
+    "theirReview": "تقييم {{name}}",
+    "rating": "التقييم",
+    "stars": "{{count}} نجوم",
+    "ratingSummary": "{{average}} ({{count}})",
+    "noRatings": "لا توجد تقييمات بعد",
+    "publicReviews": "تقييمات الشركات",
+    "history": "النسخ السابقة ({{count}})",
+    "show": "عرض",
+    "hide": "إخفاء",
+    "print": {
+      "reference": "الاتفاقية {{id}} · النسخة {{version}}",
+      "signedBy": "التوقيعات",
+      "signature": "{{name}} ({{email}})، وُقّعت إلكترونيًا في {{date}}",
+      "footer": "أنشأها {{platform}} في {{date}}. وُقّعت إلكترونيًا برموز لمرة واحدة أُرسلت إلى بريد كل طرف."
+    }
+  },
+  "adminAgreements": {
+    "title": "الاتفاقيات",
+    "subtitle": "الاتفاقيات الموقّعة بين الشركات والمواهب. احلّ النزاعات هنا.",
+    "emptyTitle": "لا توجد اتفاقيات بعد",
+    "emptyText": "تظهر الاتفاقيات هنا عندما تنشئ شركة اتفاقية.",
+    "colTitle": "الاتفاقية",
+    "colUpdated": "آخر تحديث",
+    "signedVersion": "وقّع النسخة {{version}} في {{date}} (IP {{ip}})",
+    "reviewGiven": "منح {{rating}} نجوم",
+    "decision": "قرارك",
+    "outcomes": {
+      "continue": "استمرار العمل",
+      "complete": "اعتبارها مكتملة",
+      "cancel": "إلغاء الاتفاقية"
+    },
+    "outcomeHints": {
+      "continue": "تعود الاتفاقية نشطة كما وُقّعت.",
+      "complete": "يُعدّ العمل منتهيًا ويمكن للطرفين ترك تقييمات.",
+      "cancel": "تنتهي الاتفاقية هنا."
+    },
+    "notePlaceholder": "اشرح القرار للطرفين",
+    "resolve": "حلّ النزاع",
+    "confirmTitle": "حلّ هذا النزاع؟",
+    "confirmBody": "القرار: {{outcome}}. سيتم إبلاغ الطرفين.",
+    "resolved": "تم حلّ النزاع"
   }
 }

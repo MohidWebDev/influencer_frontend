@@ -5,6 +5,7 @@ import {
   faBuilding,
   faCircleInfo,
   faCompass,
+  faFileContract,
   faEnvelope,
   faGear,
   faHouse,
@@ -79,6 +80,14 @@ export const MAIN_NAV: NavItem[] = [
     },
     icon: faBuilding,
     roles: ['business'],
+  },
+  {
+    to: '/agreements',
+    get label() {
+      return tr('site.nav.agreements')
+    },
+    icon: faFileContract,
+    roles: ['business', 'talent'],
   },
   {
     to: '/talents',

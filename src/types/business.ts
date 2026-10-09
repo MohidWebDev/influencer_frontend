@@ -98,6 +98,10 @@ export interface HireRequest {
     city?: string
     status: BusinessStatus
   } | null
+  // Accept ke baad bana muahida
+  agreement?: string
+  // Talent ko: pichle talents ne is business ko kitni rating di
+  businessRating?: { average: number; count: number } | null
   // Sirf accept ke baad: doosri taraf ka raabta (talent ko business ka, business ko talent ka)
   contact?: { name: string; email: string; phone?: string; websiteUrl?: string }
   serviceId?: string

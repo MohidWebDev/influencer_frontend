@@ -1,7 +1,8 @@
 import i18n from '../i18n'
 import type { Pricing } from '../types/services'
 
-function money(value: number, currency: string) {
+// "Rs 250,000" chuni hui zaban ke andaaz mein
+export function money(value: number, currency: string) {
   try {
     return new Intl.NumberFormat(i18n.language, {
       style: 'currency',

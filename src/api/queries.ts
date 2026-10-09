@@ -2,6 +2,7 @@ import { queryOptions } from '@tanstack/react-query'
 import { getPerson, listPeople, listTaxonomy } from './people'
 import { getMyProfile, listMyClaims } from './claims'
 import { getMyBusiness, listIncomingHires, listMyHires } from './business'
+import { getAgreement, getPersonReviews, listMyAgreements } from './agreements'
 import type { TaxonomyType } from '../types/person'
 
 // Har query ki key aur function ek jagah. Pages aur prefetch dono yahi use karte hain,
@@ -65,3 +66,26 @@ export const incomingHiresQuery = queryOptions({
   queryFn: listIncomingHires,
   staleTime: 0,
 })
+
+// Muahide: business aur talent dono ke
+export const myAgreementsQuery = queryOptions({
+  queryKey: ['agreements', 'mine'],
+  queryFn: listMyAgreements,
+  staleTime: 0,
+})
+
+export function agreementQuery(id: string) {
+  return queryOptions({
+    queryKey: ['agreements', id],
+    queryFn: () => getAgreement(id),
+    staleTime: 0,
+  })
+}
+
+export function personReviewsQuery(slug: string) {
+  return queryOptions({
+    queryKey: ['person', slug, 'reviews'],
+    queryFn: () => getPersonReviews(slug),
+    staleTime: 60 * 1000,
+  })
+}

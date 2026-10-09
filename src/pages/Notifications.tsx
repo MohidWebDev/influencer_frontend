@@ -12,7 +12,14 @@ import {
   faCheckDouble,
   faCircleCheck,
   faCircleXmark,
+  faFileContract,
+  faFileSignature,
   faFlag,
+  faStar,
+  faTriangleExclamation,
+  faTruckFast,
+  faRotateLeft,
+  faScaleBalanced,
   faHandshake,
   faKey,
   faLock,
@@ -49,6 +56,19 @@ const LOOK: Record<NotificationType, { icon: IconDefinition; tint: string }> = {
   'hire.accepted': { icon: faHandshake, tint: 'bg-green-50 text-green-700' },
   'hire.declined': { icon: faCircleXmark, tint: 'bg-gray-100 text-gray-600' },
   'hire.cancelled': { icon: faBan, tint: 'bg-gray-100 text-gray-600' },
+  'agreement.disputed_admin': { icon: faTriangleExclamation, tint: 'bg-red-50 text-red-700' },
+  'agreement.proposed': { icon: faFileContract, tint: 'bg-violet-50 text-violet-700' },
+  'agreement.updated': { icon: faFileContract, tint: 'bg-amber-50 text-amber-700' },
+  'agreement.signed': { icon: faFileSignature, tint: 'bg-blue-50 text-blue-700' },
+  'agreement.active': { icon: faFileSignature, tint: 'bg-green-50 text-green-700' },
+  'agreement.cancelled': { icon: faBan, tint: 'bg-gray-100 text-gray-600' },
+  'agreement.delivered': { icon: faTruckFast, tint: 'bg-blue-50 text-blue-700' },
+  'agreement.approved': { icon: faCircleCheck, tint: 'bg-green-50 text-green-700' },
+  'agreement.changes_requested': { icon: faRotateLeft, tint: 'bg-amber-50 text-amber-700' },
+  'agreement.completed': { icon: faCircleCheck, tint: 'bg-green-50 text-green-700' },
+  'agreement.disputed': { icon: faTriangleExclamation, tint: 'bg-red-50 text-red-700' },
+  'agreement.resolved': { icon: faScaleBalanced, tint: 'bg-blue-50 text-blue-700' },
+  'agreement.reviewed': { icon: faStar, tint: 'bg-amber-50 text-amber-700' },
 }
 
 // "5 minutes ago" chuni hui zaban mein
@@ -220,6 +240,12 @@ function Notifications() {
                         person: notification.data.person ?? t('claims.deletedProfile'),
                         claimant: notification.data.claimant ?? t('claims.deletedUser'),
                         business: notification.data.business ?? '—',
+                        title: notification.data.title ?? '',
+                        milestone: notification.data.milestone ?? '',
+                        rating: notification.data.rating ?? '',
+                        outcome: notification.data.outcome
+                          ? t(`agreements.outcome.${notification.data.outcome}`)
+                          : '',
                         reason: notification.data.reason
                           ? t(`reportReason.${notification.data.reason}`, {
                               defaultValue: notification.data.reason,

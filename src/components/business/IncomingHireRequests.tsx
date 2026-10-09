@@ -1,5 +1,8 @@
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFileContract } from '@fortawesome/free-solid-svg-icons'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { respondHire } from '../../api/business'
@@ -91,6 +94,19 @@ function IncomingHireRequests() {
                         </button>
                       </>
                     )}
+                    {/* Accept ke baad business muahida bhejta hai */}
+                    {hire.status === 'accepted' &&
+                      (hire.agreement ? (
+                        <Link
+                          to={`/agreements/${hire.agreement}`}
+                          className="inline-flex items-center gap-1.5 rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
+                        >
+                          <FontAwesomeIcon icon={faFileContract} />
+                          {t('agreements.view')}
+                        </Link>
+                      ) : (
+                        <p className="text-sm text-gray-500">{t('agreements.waitingForDraft')}</p>
+                      ))}
                   </HireRequestCard>
                 ))}
               </ul>

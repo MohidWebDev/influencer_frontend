@@ -17,7 +17,7 @@ import AppToaster from './components/AppToaster'
 // dobara aata hai, baqi agli dafa khulne pe
 const mutationCache = new MutationCache({
   onSuccess: () => {
-    for (const queryKey of [['people'], ['person'], ['admin'], ['claims'], ['business'], ['me']]) {
+    for (const queryKey of [['people'], ['person'], ['admin'], ['claims'], ['business'], ['me'], ['agreements']]) {
       queryClient.invalidateQueries({ queryKey })
     }
   },

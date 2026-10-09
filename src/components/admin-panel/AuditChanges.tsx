@@ -77,6 +77,7 @@ function useFormatter(targetType: AuditLogEntry['targetType'], names: Map<string
         report: 'reportStatus',
         user: 'users',
         business: 'businessStatus',
+        agreement: 'agreementStatus',
       }[targetType],
       role: 'roles',
       platform: 'platform',

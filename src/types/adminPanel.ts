@@ -7,6 +7,7 @@ export interface AdminStats {
   claims: { needsAction: number; open: number }
   reports: { open: number; reviewing: number }
   businesses: { needsAction: number; approved: number }
+  agreements: { disputed: number; active: number }
 }
 
 export interface AdminUser {
@@ -23,7 +24,7 @@ export interface AuditLogEntry {
   actor: { _id: string; name: string; email: string } | null
   actorEmail: string
   action: string
-  targetType: 'person' | 'claim' | 'user' | 'report' | 'business'
+  targetType: 'person' | 'claim' | 'user' | 'report' | 'business' | 'agreement'
   targetId?: string
   targetLabel?: string
   before?: unknown

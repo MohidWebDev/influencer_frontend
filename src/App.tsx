@@ -33,6 +33,11 @@ import AdminAuditLogPage from './pages/admin-panel/AdminAuditLogPage'
 import AdminBusinessesPage from './pages/admin-panel/AdminBusinessesPage'
 import AdminBusinessDetailPage from './pages/admin-panel/AdminBusinessDetailPage'
 import ReportProfile from './pages/ReportProfile'
+import AgreementsPage from './pages/agreements/AgreementsPage'
+import AgreementNewPage from './pages/agreements/AgreementNewPage'
+import AgreementDetailPage from './pages/agreements/AgreementDetailPage'
+import AdminAgreementsPage from './pages/admin-panel/AdminAgreementsPage'
+import AdminAgreementDetailPage from './pages/admin-panel/AdminAgreementDetailPage'
 
 function App() {
   return (
@@ -72,6 +77,30 @@ function App() {
           element={
             <ProtectedRoute roles={['business']}>
               <BusinessProfileForm />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/agreements"
+          element={
+            <ProtectedRoute roles={['business', 'talent']}>
+              <AgreementsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/agreements/new"
+          element={
+            <ProtectedRoute roles={['business']}>
+              <AgreementNewPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/agreements/:id"
+          element={
+            <ProtectedRoute roles={['business', 'talent']}>
+              <AgreementDetailPage />
             </ProtectedRoute>
           }
         />
@@ -176,6 +205,8 @@ function App() {
           <Route path="reports/:id" element={<AdminReportDetailPage />} />
           <Route path="businesses" element={<AdminBusinessesPage />} />
           <Route path="businesses/:id" element={<AdminBusinessDetailPage />} />
+          <Route path="agreements" element={<AdminAgreementsPage />} />
+          <Route path="agreements/:id" element={<AdminAgreementDetailPage />} />
           <Route path="audit-logs" element={<AdminAuditLogPage />} />
         </Route>
         <Route path="/people/:slug/report" element={<ReportProfile />} />
