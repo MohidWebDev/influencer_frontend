@@ -1,8 +1,30 @@
 import type { Currency } from './services'
 import type { Role } from './user'
 
-// pending -> admin dekh raha hai, approved -> verified (hire kar sakta hai), rejected -> dobara bhejo
-export type BusinessStatus = 'pending' | 'approved' | 'rejected'
+// Talent ke claim jaisa: admin code bhejta hai, business daalta hai, admin approve karta hai.
+// Sirf approved business hire kar sakta hai
+export type BusinessStatus =
+  | 'pending'
+  | 'waiting_for_business'
+  | 'otp_failed'
+  | 'code_verified'
+  | 'approved'
+  | 'rejected'
+
+export const BUSINESS_STATUSES: BusinessStatus[] = [
+  'pending',
+  'waiting_for_business',
+  'otp_failed',
+  'code_verified',
+  'approved',
+  'rejected',
+]
+
+// Tasdeeq abhi chal rahi hai (approved / rejected nahi)
+export const isOpenBusiness = (status: BusinessStatus) =>
+  status !== 'approved' && status !== 'rejected'
+
+export const MAX_BUSINESS_OTP_ATTEMPTS = 5
 export type CompanySize = '1-10' | '11-50' | '51-200' | '201-1000' | '1000+'
 export type HireStatus = 'pending' | 'accepted' | 'declined' | 'cancelled'
 
@@ -22,6 +44,13 @@ export interface BusinessProfile {
   contactPhone?: string
   proofLinks: string[]
   status: BusinessStatus
+  // Code kahan bheja gaya aur kab tak chalega
+  verification?: { channel?: string; codeSentAt?: string; expiresAt?: string }
+  otpAttempts?: number
+  otpLockedAt?: string
+  lastOtpAttemptAt?: string
+  verifiedAt?: string
+  verificationMethod?: 'otp' | 'admin_manual'
   submittedAt: string
   reviewedAt?: string
   rejectionReason?: string
@@ -46,6 +75,13 @@ export interface BusinessInput {
 export interface AdminBusiness extends Omit<BusinessProfile, 'owner'> {
   owner: { _id: string; name: string; email: string; role: Role; status: string; createdAt: string } | null
   reviewedBy?: { name: string; email: string }
+  verifiedBy?: { name: string; email: string } | null
+}
+
+// Admin detail / code actions ka jawab: jahan code bheja ja sakta hai woh bhi
+export interface AdminBusinessPayload {
+  business: AdminBusiness
+  channels: string[]
 }
 
 export interface HireRequest {

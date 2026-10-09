@@ -8,11 +8,10 @@ import AdminPager from '../../components/admin-panel/AdminPager'
 import DataState from '../../components/admin-panel/DataState'
 import PageHeader from '../../components/admin-panel/PageHeader'
 import StatusPill from '../../components/admin-panel/StatusPill'
-import type { BusinessStatus } from '../../types/business'
+import { BUSINESS_STATUSES } from '../../types/business'
 import { formatDateTime } from '../../utils/adminFormat'
 import { countryName } from '../../utils/format'
 
-const STATUSES: BusinessStatus[] = ['pending', 'approved', 'rejected']
 const PAGE_SIZE = 20
 
 // /admin/businesses -> business verification ki queue
@@ -69,7 +68,9 @@ function AdminBusinessesPage() {
             className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm"
           >
             <option value="">{t('businesses.allStatuses')}</option>
-            {STATUSES.map((s) => (
+            <option value="needs_action">{t('claimFilter.needs_action')}</option>
+            <option value="open">{t('claimFilter.open')}</option>
+            {BUSINESS_STATUSES.map((s) => (
               <option key={s} value={s}>
                 {t(`businessStatus.${s}`)}
               </option>

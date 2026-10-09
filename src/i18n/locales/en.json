@@ -57,8 +57,8 @@
     "peopleDetail": "{{claimed}} claimed · {{verified}} verified · {{hidden}} hidden",
     "usersByRole": "Users by role",
     "open": "Open",
-    "businessesPending": "Businesses to verify",
-    "businessesApproved": "{{count}} verified"
+    "businessesApproved": "{{count}} verified",
+    "businessesNeedAction": "Businesses need action"
   },
   "claimStatus": {
     "pending": "Send code",
@@ -301,7 +301,11 @@
       },
       "business": {
         "approve": "{{actor}} verified the business {{target}}.",
-        "reject": "{{actor}} rejected the business {{target}}."
+        "reject": "{{actor}} rejected the business {{target}}.",
+        "send_code": "{{actor}} sent a verification code to the business {{target}}.",
+        "reset_otp": "{{actor}} reset the OTP and sent a new code to the business {{target}}.",
+        "otp_locked": "{{actor}} entered a wrong OTP 5 times, so verification of {{target}} was locked.",
+        "verify_manual": "{{actor}} verified the business {{target}} manually and approved it."
       }
     }
   },
@@ -341,7 +345,11 @@
     },
     "business": {
       "approve": "Verified business",
-      "reject": "Rejected business"
+      "reject": "Rejected business",
+      "send_code": "Sent business code",
+      "reset_otp": "Reset business OTP",
+      "otp_locked": "Business OTP locked",
+      "verify_manual": "Verified business manually"
     }
   },
   "reportForm": {
@@ -563,7 +571,8 @@
     "TOO_MANY_SERVICES": "You've reached the maximum number of services",
     "BUSINESS_NOT_VERIFIED": "Your business must be verified before you can hire talents",
     "TALENT_NOT_VERIFIED": "You can only hire verified talents",
-    "HIRE_PENDING": "You already sent this talent a request"
+    "HIRE_PENDING": "You already sent this talent a request",
+    "BUSINESS_CODE_NOT_VERIFIED": "The business has not entered the correct code yet"
   },
   "search": {
     "any": "Any",
@@ -1050,7 +1059,10 @@
       "hire_new": "{{business}} wants to hire you. Reply from your dashboard.",
       "hire_cancelled": "{{business}} cancelled their hire request.",
       "hire_accepted": "{{person}} accepted your hire request.",
-      "hire_declined": "{{person}} declined your hire request."
+      "hire_declined": "{{person}} declined your hire request.",
+      "business_code_verified": "{{claimant}} entered the correct code for {{business}}. It is ready to approve.",
+      "business_otp_locked": "{{claimant}} entered a wrong code 5 times for {{business}}. Verification is locked.",
+      "business_code_sent": "We sent a verification code for {{business}}. Enter it on your dashboard."
     }
   },
   "dataState": {
@@ -1279,9 +1291,12 @@
     "fromDate": "Available from {{date}}"
   },
   "businessStatus": {
-    "pending": "Pending review",
+    "pending": "Waiting for code",
     "approved": "Verified",
-    "rejected": "Rejected"
+    "rejected": "Rejected",
+    "waiting_for_business": "Code sent",
+    "otp_failed": "Locked",
+    "code_verified": "Code verified"
   },
   "hireStatus": {
     "pending": "Waiting for reply",
@@ -1292,20 +1307,19 @@
   "business": {
     "label": "Business verification",
     "startTitle": "Verify your business to start hiring",
-    "startBody": "Tell us about your company. Once an admin verifies it, you can send hire requests to verified talents.",
+    "startBody": "Tell us about your company. An admin will send a 6-digit code to one of your contacts. Enter it here, and once the admin verifies you, you can send hire requests to verified talents.",
     "startButton": "Add business details",
     "edit": "Edit details",
     "fixAndResubmit": "Fix and resubmit",
     "verifiedLabel": "Verified business",
     "verifiedBody": "Your business is verified. You can hire any talent with the verified badge.",
     "findTalents": "Find talents to hire",
-    "pendingLabel": "Under review",
-    "pendingBody": "Sent on {{date}}. An admin is checking your details. You can hire talents once it is verified.",
+    "pendingBody": "Sent on {{date}}. Our team will send a 6-digit code to your account email, website, phone or one of your proof links, usually within 1–2 days.",
     "rejected": "Your business was not verified: {{reason}}",
     "formTitle": "Verify your business",
     "editTitle": "Business details",
     "formSubtitle": "Only verified businesses can hire talents. An admin checks these details before verifying you.",
-    "identityWarning": "Changing the company name, registration number, website or country sends your business for review again. You can't hire until it is verified again.",
+    "identityWarning": "Changing the company name, registration number, website or country starts verification again from the beginning. You can't hire until it is verified again.",
     "submit": "Submit for verification",
     "submitted": "Sent for verification",
     "saved": "Business details saved",
@@ -1328,7 +1342,16 @@
       "proofLinksHint": "LinkedIn page, registration certificate, press coverage: anything that helps us verify you.",
       "addLink": "Add link",
       "removeLink": "Remove link"
-    }
+    },
+    "inProgress": "Business verification in progress",
+    "step1": "Details sent",
+    "step2": "Code sent to you",
+    "step3": "Code verified",
+    "step4": "Verified",
+    "sentAfter": "Find the code there and enter it below.",
+    "locked": "Too many wrong attempts. Your business is under review by the admin.",
+    "codeVerifiedBody": "Code verified. An admin will give final approval soon, then you can hire verified talents.",
+    "codeVerifiedToast": "Code verified! An admin will approve your business soon."
   },
   "hire": {
     "button": "Hire",
@@ -1406,6 +1429,16 @@
     "rejectReason": "Reason (the business will see it)",
     "rejectPlaceholder": "e.g. The website doesn't match the company name",
     "approved": "Business verified",
-    "rejected": "Business rejected"
+    "rejected": "Business rejected",
+    "verification": "Verification",
+    "codeTitle": "Send this code to the business at:",
+    "resetDone": "OTP reset. Send the new code to the business.",
+    "manualDone": "Business verified and approved",
+    "lockedTitle": "The business entered the wrong code 5 times",
+    "lockedHint": "Locked on {{date}}. Reset the OTP to send a new code, verify manually, or reject.",
+    "verifiedByOtp": "The business entered the correct code on {{date}}.",
+    "approveOnlyAfterCode": "You can approve once the business enters the correct code.",
+    "verifyTitle": "Verify this business manually?",
+    "verifyBody": "Only do this if you confirmed it another way. {{name}} will be verified and can hire talents right away."
   }
 }

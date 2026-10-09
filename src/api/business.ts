@@ -3,6 +3,7 @@ import type { ApiSuccess } from '../types/api'
 import type { AuditLogEntry } from '../types/adminPanel'
 import type {
   AdminBusiness,
+  AdminBusinessPayload,
   BusinessInput,
   BusinessProfile,
   HireInput,
@@ -18,6 +19,15 @@ export async function getMyBusiness() {
 // Pehli dafa ya dobara verification ke liye bhejo
 export async function saveMyBusiness(input: BusinessInput) {
   const res = await api.put<ApiSuccess<{ business: BusinessProfile }>>('/business/profile', input)
+  return res.data.data.business
+}
+
+// Business woh 6-digit code daalta hai jo admin ne bheja
+export async function verifyMyBusinessCode(code: string) {
+  const res = await api.post<ApiSuccess<{ business: BusinessProfile }>>(
+    '/business/profile/verify',
+    { code },
+  )
   return res.data.data.business
 }
 
@@ -59,14 +69,41 @@ export async function listAdminBusinesses(params: URLSearchParams) {
 }
 
 export async function getAdminBusiness(id: string) {
-  const res = await api.get<ApiSuccess<{ business: AdminBusiness; history: AuditLogEntry[] }>>(
+  const res = await api.get<ApiSuccess<AdminBusinessPayload & { history: AuditLogEntry[] }>>(
     `/admin/businesses/${id}`,
   )
   return res.data.data
 }
 
+// Admin naya code banata hai. Code sirf isi jawab mein ek dafa milta hai
+export async function sendBusinessCode(id: string, channel: string) {
+  const res = await api.post<ApiSuccess<AdminBusinessPayload & { code: string }>>(
+    `/admin/businesses/${id}/code`,
+    { channel },
+  )
+  return res.data.data
+}
+
+// Lock khol kar naya code. Raabta na do to pichla
+export async function resetBusinessOtp(id: string, channel?: string) {
+  const res = await api.post<ApiSuccess<AdminBusinessPayload & { code: string }>>(
+    `/admin/businesses/${id}/reset-otp`,
+    channel ? { channel } : {},
+  )
+  return res.data.data
+}
+
+// Admin khud tasdeeq kare (OTP ke baghair). Is se business approve bhi ho jata hai
+export async function verifyBusinessManually(id: string) {
+  const res = await api.post<ApiSuccess<AdminBusinessPayload>>(
+    `/admin/businesses/${id}/verify-manual`,
+    {},
+  )
+  return res.data.data.business
+}
+
 export async function reviewBusiness(id: string, action: 'approve' | 'reject', reason?: string) {
-  const res = await api.patch<ApiSuccess<{ business: AdminBusiness }>>(`/admin/businesses/${id}`, {
+  const res = await api.patch<ApiSuccess<AdminBusinessPayload>>(`/admin/businesses/${id}`, {
     action,
     reason,
   })

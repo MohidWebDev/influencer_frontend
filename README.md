@@ -58,7 +58,7 @@ src/
 
 ## Business verification and hiring
 
-A business account fills in its company details at `/dashboard/business`. An admin verifies or rejects it at `/admin/businesses`. Only a verified business sees an active **Hire** button on a profile, and only on verified talents (claimed + verified badge). Everyone else still sees the disabled "Contact / Hire" button. The talent accepts or declines the request on their dashboard. Code lives in `src/components/business/`, `src/api/business.ts` and `src/types/business.ts`.
+A business account fills in its company details at `/dashboard/business`. Verification works like a talent claim: the admin sends a 6-digit code to one of the business's contacts (login email, website, proof link or phone) from `/admin/businesses/:id`, the business enters it on its dashboard (5 wrong tries lock it; the admin can reset the code or verify manually), and the admin then gives final approval. Only an approved business sees an active **Hire** button on a profile, and only on verified talents (claimed + verified badge). Everyone else still sees the disabled "Contact / Hire" button. The talent accepts or declines the request on their dashboard. Code lives in `src/components/business/`, `src/api/business.ts` and `src/types/business.ts`.
 
 ## Navigation
 
@@ -72,7 +72,7 @@ Admins only (`ProtectedRoute roles={['admin']}`). Sidebar: Dashboard, Claims, Bu
 |---|---|
 | `/admin` | Overview: claims needing action, open reports, users, profiles |
 | `/admin/claims`, `/admin/claims/:id` | Claims table (status filter) and detail: evidence, code, approve/reject |
-| `/admin/businesses`, `/admin/businesses/:id` | Business verification queue and detail: company details, verify / reject / revoke |
+| `/admin/businesses`, `/admin/businesses/:id` | Business verification queue and detail: company details, send / reset the code, verify manually, approve after the correct code, reject / revoke |
 | `/admin/users` | Search, role/status filter, change role, suspend/unsuspend |
 | `/admin/reports`, `/admin/reports/:id` | Reports queue and detail: status, admin note, takedown |
 | `/admin/audit-logs` | Read-only audit log with filters and before/after view |
