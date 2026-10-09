@@ -70,15 +70,17 @@ export const MAIN_NAV: NavItem[] = [
     // Business ke liye dashboard pe (navbar saaf rahe)
     roles: ['agency', 'organization'],
   },
-  {
-    to: '/admin',
-    get label() {
-      return tr('site.nav.adminPanel')
-    },
-    icon: faShieldHalved,
-    roles: ['admin'],
-  },
 ]
+
+// Admin ka "Dashboard": right side pe bell ke saath (baqi users ke Dashboard ki jagah)
+export const ADMIN_PANEL_NAV: NavItem = {
+  to: '/admin',
+  get label() {
+    return tr('site.nav.adminPanel')
+  },
+  icon: faShieldHalved,
+  roles: ['admin'],
+}
 
 // Right side ke chhote icon buttons (logged-in)
 export const UTILITY_NAV: NavItem[] = [

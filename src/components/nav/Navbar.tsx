@@ -7,7 +7,6 @@ import {
   faBars,
   faRightFromBracket,
   faRightToBracket,
-  faTableColumns,
   faUserPlus,
   faXmark,
 } from '@fortawesome/free-solid-svg-icons'
@@ -15,6 +14,7 @@ import toast from 'react-hot-toast'
 import { PLATFORM_NAME } from '../../constants/config'
 import {
   ACCOUNT_NAV,
+  ADMIN_PANEL_NAV,
   MAIN_NAV,
   UTILITY_NAV,
   canSee,
@@ -69,8 +69,8 @@ function Navbar() {
       isActive ? 'bg-gray-900 text-white' : 'text-gray-600 hover:bg-gray-100'
     }`
 
-  const dashboardItem = ACCOUNT_NAV[0]
-  const showDashboard = canSee(dashboardItem, role)
+  // Right side ka bara button: admin ke liye Admin panel, baqi sab ke liye Dashboard
+  const homeItem = [ACCOUNT_NAV[0], ADMIN_PANEL_NAV].find((item) => canSee(item, role))
 
   // Sticky: scroll karne pe bhi navbar upar chipka rahe
   return (
@@ -114,10 +114,10 @@ function Navbar() {
                     {item.to === '/notifications' && <BellCount count={unread} />}
                   </TopLink>
                 ))}
-                {showDashboard && (
-                  <TopLink to="/dashboard" className={`${linkClass(active(dashboardItem))} ms-1`}>
-                    <FontAwesomeIcon icon={faTableColumns} />
-                    {t('site.nav.dashboard')}
+                {homeItem && (
+                  <TopLink to={homeItem.to} className={`${linkClass(active(homeItem))} ms-1`}>
+                    <FontAwesomeIcon icon={homeItem.icon} />
+                    {homeItem.label}
                   </TopLink>
                 )}
                 <div className="ms-1">
@@ -184,7 +184,7 @@ function Navbar() {
               {[
                 ...mainItems,
                 ...(user
-                  ? [...(showDashboard ? [dashboardItem] : []), ...utilityItems, ACCOUNT_NAV[1]]
+                  ? [...(homeItem ? [homeItem] : []), ...utilityItems, ACCOUNT_NAV[1]]
                   : []),
               ].map((item) => (
                 <li key={item.to}>
