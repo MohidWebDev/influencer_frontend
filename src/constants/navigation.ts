@@ -8,7 +8,6 @@ import {
   faEnvelope,
   faGear,
   faHouse,
-  // faLayerGroup,
   faShieldHalved,
   faStar,
   faTableColumns,
