@@ -1,12 +1,19 @@
 import api from './axios'
 import type { ApiSuccess } from '../types/api'
+import type { CompanySize } from '../types/business'
 import type { SignupRole, User } from '../types/user'
 
 export interface RegisterInput {
-  name: string
+  // Business ke liye nahi: us ka naam company ka naam hota hai
+  name?: string
   email: string
   password: string
   role: SignupRole
+  // Sirf business
+  companyName?: string
+  industry?: string
+  companySize?: CompanySize | ''
+  description?: string
 }
 
 export interface LoginInput {

@@ -4,6 +4,7 @@ import { Link, Navigate, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import FormField from '../components/FormField'
 import { SIGNUP_ROLE_OPTIONS } from '../constants/roles'
+import { COMPANY_SIZES, type CompanySize } from '../types/business'
 import { useAuth } from '../hooks/useAuth'
 import type { SignupRole } from '../types/user'
 import { getApiError } from '../utils/apiError'
@@ -17,6 +18,12 @@ function Register() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [role, setRole] = useState<SignupRole | ''>('')
+  // Business: naam ki jagah company ki details
+  const [companyName, setCompanyName] = useState('')
+  const [industry, setIndustry] = useState('')
+  const [companySize, setCompanySize] = useState<CompanySize | ''>('')
+  const [description, setDescription] = useState('')
+  const isBusiness = role === 'business'
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -33,7 +40,11 @@ function Register() {
 
     setIsSubmitting(true)
     try {
-      const created = await register({ name, email, password, role })
+      const created = await register(
+        isBusiness
+          ? { email, password, role, companyName, industry, companySize, description }
+          : { name, email, password, role },
+      )
       toast.success(t('register.welcome', { name: created.name }))
       navigate('/dashboard', { replace: true })
     } catch (error) {
@@ -82,18 +93,85 @@ function Register() {
         </fieldset>
 
         <div className="space-y-4">
-          <FormField
-            id="name"
-            label={t('register.fullName')}
-            autoComplete="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            error={errors.name}
-            required
-          />
+          {isBusiness ? (
+            <>
+              {/* Business: company ki details. Account ka naam company ka naam hoga */}
+              <p className="text-sm font-medium">{t('register.aboutCompany')}</p>
+              <FormField
+                id="companyName"
+                label={t('business.fields.companyName')}
+                autoComplete="organization"
+                maxLength={120}
+                value={companyName}
+                onChange={(e) => setCompanyName(e.target.value)}
+                error={errors.companyName}
+                required
+              />
+              <div className="grid gap-4 sm:grid-cols-2">
+                <FormField
+                  id="industry"
+                  label={t('business.fields.industry')}
+                  placeholder={t('business.fields.industryPlaceholder')}
+                  maxLength={80}
+                  value={industry}
+                  onChange={(e) => setIndustry(e.target.value)}
+                  error={errors.industry}
+                />
+                <div>
+                  <label htmlFor="companySize" className="mb-1 block text-sm font-medium">
+                    {t('business.fields.companySize')}
+                  </label>
+                  <select
+                    id="companySize"
+                    value={companySize}
+                    onChange={(e) => setCompanySize(e.target.value as CompanySize | '')}
+                    className={`w-full rounded-lg border bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-gray-900 ${
+                      errors.companySize ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  >
+                    <option value="">{t('business.fields.chooseSize')}</option>
+                    {COMPANY_SIZES.map((size) => (
+                      <option key={size} value={size}>
+                        {t('business.fields.employees', { size })}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.companySize && <p className="mt-1 text-sm text-red-600">{errors.companySize}</p>}
+                </div>
+              </div>
+              <div>
+                <label htmlFor="description" className="mb-1 block text-sm font-medium">
+                  {t('business.fields.description')}
+                </label>
+                <textarea
+                  id="description"
+                  rows={3}
+                  maxLength={1000}
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder={t('business.fields.descriptionPlaceholder')}
+                  className={`w-full rounded-lg border px-3 py-2 outline-none focus:ring-2 focus:ring-gray-900 ${
+                    errors.description ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                />
+                {errors.description && <p className="mt-1 text-sm text-red-600">{errors.description}</p>}
+              </div>
+              <p className="border-t border-gray-100 pt-4 text-sm font-medium">{t('register.loginDetails')}</p>
+            </>
+          ) : (
+            <FormField
+              id="name"
+              label={t('register.fullName')}
+              autoComplete="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              error={errors.name}
+              required
+            />
+          )}
           <FormField
             id="email"
-            label={t('login.email')}
+            label={isBusiness ? t('register.workEmail') : t('login.email')}
             type="email"
             autoComplete="email"
             value={email}

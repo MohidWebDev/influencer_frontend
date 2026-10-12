@@ -11,18 +11,21 @@ import FormField from '../../components/FormField'
 import { COUNTRY_OPTIONS } from '../../constants/people'
 import { COMPANY_SIZES, type BusinessInput, type BusinessProfile } from '../../types/business'
 import { getApiError } from '../../utils/apiError'
+import { useAuth } from '../../hooks/useAuth'
+import type { User } from '../../types/user'
 import { countryName } from '../../utils/format'
 
 const MAX_LINKS = 5
 const selectClass =
   'w-full rounded-lg border border-gray-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-gray-900'
 
-function toForm(business?: BusinessProfile | null): BusinessInput {
+// Pehli dafa: signup pe di gayi company details se shuru (User.company)
+function toForm(business: BusinessProfile | null, signup?: User['company']): BusinessInput {
   return {
-    companyName: business?.companyName ?? '',
-    industry: business?.industry ?? '',
-    companySize: business?.companySize ?? '',
-    description: business?.description ?? '',
+    companyName: business?.companyName ?? signup?.companyName ?? '',
+    industry: business?.industry ?? signup?.industry ?? '',
+    companySize: business?.companySize ?? signup?.companySize ?? '',
+    description: business?.description ?? signup?.description ?? '',
     websiteUrl: business?.websiteUrl ?? '',
     registrationNumber: business?.registrationNumber ?? '',
     country: business?.country ?? 'PK',
@@ -37,7 +40,8 @@ function BusinessForm({ business }: { business: BusinessProfile | null }) {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-  const [form, setForm] = useState<BusinessInput>(() => toForm(business))
+  const { user } = useAuth()
+  const [form, setForm] = useState<BusinessInput>(() => toForm(business, user?.company))
   const [errors, setErrors] = useState<Record<string, string>>({})
 
   const update = <K extends keyof BusinessInput>(key: K, value: BusinessInput[K]) => {

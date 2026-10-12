@@ -665,7 +665,10 @@
     "submitting": "Creating account...",
     "haveAccount": "Already have an account?",
     "login": "Log in",
-    "welcome": "Welcome, {{name}}!"
+    "welcome": "Welcome, {{name}}!",
+    "aboutCompany": "About your company",
+    "loginDetails": "Login details",
+    "workEmail": "Work email"
   },
   "claimForm": {
     "sent": "Claim sent! We will review it soon.",
