@@ -10,7 +10,6 @@ import type {
   ReportStatus,
 } from '../types/adminPanel'
 import type { Role } from '../types/user'
-
 export async function getAdminStats() {
   const res = await api.get<ApiSuccess<AdminStats>>('/admin/stats')
   return res.data.data
