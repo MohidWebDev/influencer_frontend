@@ -34,13 +34,16 @@ function ForgotPassword() {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const location = useLocation()
-  const { resetPassword } = useAuth()
+  const { user, resetPassword } = useAuth()
 
   const [step, setStep] = useState<Step>('email')
   const fromState = location.state as { email?: string; from?: string } | null
-  const [email, setEmail] = useState(() => fromState?.email ?? '')
-  // Settings se aaye (login hai) to wapas Settings, warna login page
-  const backTo = fromState?.from === '/settings' ? '/settings' : '/login'
+  const [typedEmail, setEmail] = useState(() => fromState?.email ?? '')
+  // Login hai to email us account ka hi, badla nahi ja sakta (sirf apna password reset)
+  const lockedEmail = user?.email
+  const email = lockedEmail ?? typedEmail
+  // Login hai (Settings se aaye) to wapas Settings, warna login page
+  const backTo = lockedEmail || fromState?.from === '/settings' ? '/settings' : '/login'
   const [code, setCode] = useState('')
   const [resetToken, setResetToken] = useState('')
   const [password, setPassword] = useState('')
@@ -162,16 +165,41 @@ function ForgotPassword() {
           <>
             <p className="mt-1 text-sm text-gray-500">{t('forgot.emailText')}</p>
             <form onSubmit={handleEmail} className="mt-6 space-y-4" noValidate>
-              <FormField
-                id="email"
-                label={t('login.email')}
-                type="email"
-                autoComplete="email"
-                autoFocus
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                error={errors.email}
-              />
+              {lockedEmail ? (
+                <div>
+                  <label htmlFor="email" className="mb-1 block text-sm font-medium">
+                    {t('login.email')}
+                  </label>
+                  <div className="relative">
+                    <input
+                      id="email"
+                      type="email"
+                      value={lockedEmail}
+                      readOnly
+                      aria-readonly="true"
+                      dir="ltr"
+                      className="w-full cursor-not-allowed rounded-lg border border-gray-200 bg-gray-50 py-2 ps-3 pe-9 text-gray-600 outline-none"
+                    />
+                    <FontAwesomeIcon
+                      icon={faLock}
+                      className="pointer-events-none absolute end-3 top-1/2 -translate-y-1/2 text-xs text-gray-400"
+                    />
+                  </div>
+                  <p className="mt-1 text-xs text-gray-500">{t('forgot.emailLocked')}</p>
+                  {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
+                </div>
+              ) : (
+                <FormField
+                  id="email"
+                  label={t('login.email')}
+                  type="email"
+                  autoComplete="email"
+                  autoFocus
+                  value={typedEmail}
+                  onChange={(e) => setEmail(e.target.value)}
+                  error={errors.email}
+                />
+              )}
               <button
                 type="submit"
                 disabled={busy}
@@ -225,16 +253,21 @@ function ForgotPassword() {
               </button>
             </form>
             <div className="mt-5 flex flex-wrap items-center justify-between gap-2 text-sm">
-              <button
-                type="button"
-                onClick={() => {
-                  setStep('email')
-                  setErrors({})
-                }}
-                className="text-gray-600 underline-offset-4 hover:text-gray-900 hover:underline"
-              >
-                {t('forgot.changeEmail')}
-              </button>
+              {/* Login hai to email badla nahi ja sakta; khali span taake "Resend" end pe rahe */}
+              {lockedEmail ? (
+                <span />
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setStep('email')
+                    setErrors({})
+                  }}
+                  className="text-gray-600 underline-offset-4 hover:text-gray-900 hover:underline"
+                >
+                  {t('forgot.changeEmail')}
+                </button>
+              )}
               <button
                 type="button"
                 onClick={sendCode}

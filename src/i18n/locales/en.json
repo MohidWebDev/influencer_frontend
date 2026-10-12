@@ -1263,7 +1263,8 @@
     "savePassword": "Save and sign in",
     "done": "Password reset. Welcome back, {{name}}!",
     "backToLogin": "Back to sign in",
-    "backToSettings": "Back to settings"
+    "backToSettings": "Back to settings",
+    "emailLocked": "This is your account's email. The code will be sent here."
   },
   "services": {
     "title": "Services & availability",
