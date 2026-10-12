@@ -82,7 +82,7 @@ function Navbar() {
       <nav className="flex items-center gap-3 px-4 py-3 sm:px-6 xl:grid xl:grid-cols-[1fr_auto_1fr] lg:px-8">
         <TopLink
           to="/"
-          className="me-2 truncate text-base font-bold sm:text-xl xl:justify-self-start"
+          className="me-2 truncate text-baManager Dashboard – Backend Integration & Dashboard Connectivitybrse font-bold sm:text-xl xl:justify-self-start"
         >
           {PLATFORM_NAME}
         </TopLink>

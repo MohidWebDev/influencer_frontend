@@ -10,7 +10,7 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import NotFound from './pages/NotFound'
-import Browse from './pages/Browse'
+// import Browse from './pages/Browse'
 import About from './pages/About'
 import Notifications from './pages/Notifications'
 import CreateMyProfile from './pages/dashboards/CreateMyProfile'
@@ -57,7 +57,7 @@ function App() {
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
         <Route path="/search" element={<Search />} />
-        <Route path="/browse" element={<Browse />} />
+        {/* <Route path="/browse" element={<Browse />} /> */}
         <Route path="/about" element={<About />} />
         <Route path="/businesses" element={<BusinessesPage />} />
         <Route path="/managers" element={<ManagersPage />} />
