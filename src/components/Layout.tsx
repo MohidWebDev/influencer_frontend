@@ -3,6 +3,7 @@ import LiveUpdates from './LiveUpdates'
 import ScrollManager from './ScrollManager'
 import Navbar from './nav/Navbar'
 import Footer from './Footer'
+import PageErrorBoundary from './PageErrorBoundary'
 
 function Layout() {
   // Home ka hero poori screen ki chaurai leta hai, baqi pages beech ke container mein
@@ -18,7 +19,9 @@ function Layout() {
       >
         {/* key = page ka raasta: naya page aaye to fade-in dobara chale */}
         <div key={pathname} className="motion-safe:animate-page-in">
-          <Outlet />
+          <PageErrorBoundary>
+            <Outlet />
+          </PageErrorBoundary>
         </div>
       </main>
       <Footer />

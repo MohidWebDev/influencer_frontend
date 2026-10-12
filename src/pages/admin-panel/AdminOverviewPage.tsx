@@ -15,6 +15,7 @@ import { getAdminStats } from '../../api/adminPanel'
 import DataState from '../../components/admin-panel/DataState'
 import PageHeader from '../../components/admin-panel/PageHeader'
 import type { Role } from '../../types/user'
+import type { AdminStats } from '../../types/adminPanel'
 
 function StatCard(props: {
   to: string
@@ -43,12 +44,26 @@ function StatCard(props: {
   )
 }
 
+function withDefaults(data: Partial<AdminStats>): AdminStats {
+  return {
+    people: { total: 0, hidden: 0, claimed: 0, verified: 0, ...data.people },
+    users: { total: 0, suspended: 0, ...data.users, byRole: data.users?.byRole ?? {} },
+    claims: { needsAction: 0, open: 0, ...data.claims },
+    reports: { open: 0, reviewing: 0, ...data.reports },
+    businesses: { needsAction: 0, approved: 0, ...data.businesses },
+    agreements: { disputed: 0, active: 0, ...data.agreements },
+  }
+}
+
 function AdminOverviewPage() {
   const { t } = useTranslation()
   const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['admin', 'stats'],
     queryFn: getAdminStats,
   })
+
+  // Backend ka koi hissa na aaye (purana deploy waghera) to 0 dikhao, page crash na ho
+  const stats = data && withDefaults(data)
 
   return (
     <>
@@ -60,60 +75,60 @@ function AdminOverviewPage() {
         isEmpty={!data}
         onRetry={() => refetch()}
       >
-        {data && (
+        {stats && (
           <div className="space-y-6">
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
               <StatCard
                 to="/admin/claims?status=needs_action"
                 icon={faUserCheck}
                 label={t('overview.claimsNeedAction')}
-                value={data.claims.needsAction}
-                detail={t('overview.openClaims', { count: data.claims.open })}
-                highlight={data.claims.needsAction > 0}
+                value={stats.claims.needsAction}
+                detail={t('overview.openClaims', { count: stats.claims.open })}
+                highlight={stats.claims.needsAction > 0}
               />
               <StatCard
                 to="/admin/reports?status=open"
                 icon={faFlag}
                 label={t('overview.openReports')}
-                value={data.reports.open}
-                detail={t('overview.reviewingReports', { count: data.reports.reviewing })}
-                highlight={data.reports.open > 0}
+                value={stats.reports.open}
+                detail={t('overview.reviewingReports', { count: stats.reports.reviewing })}
+                highlight={stats.reports.open > 0}
               />
               <StatCard
                 to="/admin/businesses?status=needs_action"
                 icon={faBuilding}
                 label={t('overview.businessesNeedAction')}
-                value={data.businesses.needsAction}
-                detail={t('overview.businessesApproved', { count: data.businesses.approved })}
-                highlight={data.businesses.needsAction > 0}
+                value={stats.businesses.needsAction}
+                detail={t('overview.businessesApproved', { count: stats.businesses.approved })}
+                highlight={stats.businesses.needsAction > 0}
               />
               <StatCard
                 to="/admin/agreements?status=disputed"
                 icon={faFileContract}
                 label={t('overview.disputes')}
-                value={data.agreements.disputed}
-                detail={t('overview.activeAgreements', { count: data.agreements.active })}
-                highlight={data.agreements.disputed > 0}
+                value={stats.agreements.disputed}
+                detail={t('overview.activeAgreements', { count: stats.agreements.active })}
+                highlight={stats.agreements.disputed > 0}
               />
               <StatCard
                 to="/admin/users"
                 icon={faUsers}
                 label={t('overview.users')}
-                value={data.users.total}
-                detail={t('overview.suspendedUsers', { count: data.users.suspended })}
+                value={stats.users.total}
+                detail={t('overview.suspendedUsers', { count: stats.users.suspended })}
               />
               <StatCard
                 to="/dashboard"
                 icon={faIdCard}
                 label={t('overview.people')}
-                value={data.people.total}
-                detail={t('overview.peopleDetail', data.people)}
+                value={stats.people.total}
+                detail={t('overview.peopleDetail', stats.people)}
               />
             </div>
             <section className="rounded-2xl bg-white p-5 shadow-sm">
               <h2 className="font-semibold">{t('overview.usersByRole')}</h2>
               <ul className="mt-4 grid gap-3 sm:grid-cols-3">
-                {(Object.entries(data.users.byRole) as [Role, number][]).map(([role, count]) => (
+                {(Object.entries(stats.users.byRole) as [Role, number][]).map(([role, count]) => (
                   <li key={role}>
                     <Link
                       to={`/admin/users?role=${role}`}
