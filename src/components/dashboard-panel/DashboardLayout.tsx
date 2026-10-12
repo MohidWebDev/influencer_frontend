@@ -12,10 +12,18 @@ import {
   faHandshake,
   faIdCard,
   faStar,
+  faUserTie,
+  faUsers,
   type IconDefinition,
 } from '@fortawesome/free-solid-svg-icons'
 import { useAuth } from '../../hooks/useAuth'
-import { incomingHiresQuery, myHiresQuery, myProfileQuery } from '../../api/queries'
+import {
+  incomingHiresQuery,
+  myHiresQuery,
+  myManagerQuery,
+  myProfileQuery,
+  myRepresentationsQuery,
+} from '../../api/queries'
 
 interface SideLink {
   to: string
@@ -27,20 +35,24 @@ interface SideLink {
   badge?: number
 }
 
-// Talent aur business ke dashboard pages: admin panel jaisa sidebar + page.
+// Talent, business aur manager ke dashboard pages: admin panel jaisa sidebar + page.
 // Baqi account types (agency, organization...) ke liye sirf page, sidebar nahi
 function DashboardLayout() {
   const { user } = useAuth()
   const role = user?.role
-  if (role !== 'talent' && role !== 'business') return <Outlet />
-  return role === 'talent' ? <TalentPanel /> : <BusinessPanel />
+  if (role === 'talent') return <TalentPanel />
+  if (role === 'business') return <BusinessPanel />
+  if (role === 'representative') return <ManagerPanel />
+  return <Outlet />
 }
 
 function TalentPanel() {
   const { t } = useTranslation()
   const { data: profile } = useQuery(myProfileQuery)
   const { data: hires } = useQuery(incomingHiresQuery)
+  const { data: manager } = useQuery({ ...myManagerQuery, retry: false })
   const pending = hires?.filter((hire) => hire.status === 'pending').length ?? 0
+  const managerRequests = manager?.pending.filter((rep) => rep.status === 'requested').length ?? 0
 
   return (
     <Panel
@@ -57,6 +69,7 @@ function TalentPanel() {
         { to: '/dashboard/services', key: 'dashNav.services', icon: faBriefcase },
         { to: '/dashboard/hire-requests', key: 'dashNav.hireRequests', icon: faHandshake, badge: pending },
         { to: '/agreements', key: 'dashNav.agreements', icon: faFileContract },
+        { to: '/dashboard/my-manager', key: 'dashNav.myManager', icon: faUserTie, badge: managerRequests },
       ]}
       extra={
         profile && (
@@ -87,6 +100,26 @@ function BusinessPanel() {
         { to: '/shortlists', key: 'dashNav.shortlists', icon: faStar },
         { to: '/dashboard/hire-requests', key: 'dashNav.hireRequests', icon: faHandshake, badge: toDraft },
         { to: '/agreements', key: 'dashNav.agreements', icon: faFileContract },
+      ]}
+    />
+  )
+}
+
+// Manager: apni tasdeeq, talents (roster) aur un ki hire requests ek jagah
+function ManagerPanel() {
+  const { data: hires } = useQuery(incomingHiresQuery)
+  const { data: reps } = useQuery(myRepresentationsQuery)
+  const pending = hires?.filter((hire) => hire.status === 'pending').length ?? 0
+  const invites = reps?.filter((rep) => rep.status === 'invited').length ?? 0
+
+  return (
+    <Panel
+      titleKey="dashNav.managerTitle"
+      links={[
+        { to: '/dashboard', key: 'dashNav.overview', icon: faChartPie, end: true },
+        { to: '/dashboard/manager', key: 'dashNav.managerDetails', icon: faUserTie },
+        { to: '/talents', key: 'dashNav.myTalents', icon: faUsers, badge: invites },
+        { to: '/dashboard/hire-requests', key: 'dashNav.hireRequests', icon: faHandshake, badge: pending },
       ]}
     />
   )

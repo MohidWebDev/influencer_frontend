@@ -9,7 +9,8 @@
     "manageProfiles": "Manage profiles",
     "language": "Language",
     "businesses": "Businesses",
-    "agreements": "Agreements"
+    "agreements": "Agreements",
+    "managers": "Managers"
   },
   "common": {
     "loading": "Loading...",
@@ -61,7 +62,9 @@
     "businessesApproved": "{{count}} verified",
     "businessesNeedAction": "Businesses need action",
     "disputes": "Open disputes",
-    "activeAgreements": "{{count}} active agreements"
+    "activeAgreements": "{{count}} active agreements",
+    "managersNeedAction": "Managers to review",
+    "managersApproved": "{{count}} verified"
   },
   "claimStatus": {
     "pending": "Send code",
@@ -328,7 +331,8 @@
     "user": "User",
     "report": "Report",
     "business": "Business",
-    "agreement": "Agreement"
+    "agreement": "Agreement",
+    "manager": "Manager"
   },
   "auditAction": {
     "person": {
@@ -369,6 +373,10 @@
       "sign": "Signed agreement",
       "dispute": "Opened dispute",
       "resolve": "Resolved dispute"
+    },
+    "manager": {
+      "approve": "Verified manager",
+      "reject": "Rejected manager"
     }
   },
   "reportForm": {
@@ -793,7 +801,8 @@
     },
     "yourTalents": {
       "title": "Your talents",
-      "description": "Profiles you manage on behalf of the people you represent."
+      "description": "Profiles you manage on behalf of the people you represent.",
+      "action": "Open my talents"
     },
     "repInquiries": {
       "description": "All requests for your talents in one inbox."
@@ -831,6 +840,10 @@
       "businessDescription": "Signed agreements with the talents you hired: terms, milestones and deliveries.",
       "action": "Open agreements",
       "talentDescription": "Signed agreements with the businesses that hired you: terms, milestones and deliveries."
+    },
+    "repHires": {
+      "title": "Hire requests",
+      "action": "Open hire requests"
     }
   },
   "oldAdmin": {
@@ -1124,7 +1137,17 @@
       "agreement_completed": "\"{{title}}\" is completed. Leave a review.",
       "agreement_disputed": "A problem was reported on \"{{title}}\". An admin will review it.",
       "agreement_resolved": "The dispute on \"{{title}}\" was resolved: {{outcome}}",
-      "agreement_reviewed": "You received a {{rating}}-star review for \"{{title}}\"."
+      "agreement_reviewed": "You received a {{rating}}-star review for \"{{title}}\".",
+      "manager_new": "{{manager}} sent their manager details for verification.",
+      "manager_approved": "You are a verified manager. You can now work with talents.",
+      "manager_rejected": "Your manager details were not verified: {{reason}}",
+      "representation_requested": "{{name}} wants to be your manager. Review the request.",
+      "representation_invited": "{{name}} invited you to be their manager.",
+      "representation_accepted": "{{name}} accepted. You are now linked.",
+      "representation_declined": "{{name}} declined.",
+      "representation_ended": "{{name}} ended the representation for {{person}}.",
+      "hire_new_managed": "{{business}} wants to hire {{person}}. Reply from your dashboard.",
+      "hire_answered_by_manager": "Your manager {{name}} {{action}} the hire request from {{business}}."
     }
   },
   "dataState": {
@@ -1804,11 +1827,167 @@
     "viewPublicProfile": "View public profile",
     "pendingHires": "New hire requests waiting for your reply: {{count}}",
     "acceptedHires": "Talents accepted your request. Draft the agreement: {{count}}",
-    "review": "Review"
+    "review": "Review",
+    "managerTitle": "Manager dashboard",
+    "managerDetails": "Manager details",
+    "myTalents": "My talents",
+    "myManager": "My manager"
   },
   "pageError": {
     "title": "This page couldn't load",
     "text": "Something went wrong while showing this page. Reload to try again. If it keeps happening, the server may still be updating.",
     "reload": "Reload page"
+  },
+  "manager": {
+    "verification": "Manager verification",
+    "getVerifiedTitle": "Get verified as a manager",
+    "getVerifiedText": "Tell us about your work and share proof such as your agency page or a management contract. Once an admin verifies you, you can work with talents on their behalf.",
+    "addDetails": "Add your details",
+    "verifiedManager": "Verified manager",
+    "underReview": "Under review",
+    "notVerified": "Not verified",
+    "independent": "Independent manager",
+    "pendingText": "Sent on {{date}}. An admin is checking your details. You can link to talents once you are verified.",
+    "approvedText": "You are verified. Open a talent's profile and click \"Request to represent\", or ask your talents to invite you by your login email.",
+    "findTalents": "Find talents",
+    "rejected": "Not verified: {{reason}}",
+    "formTitle": "Get verified as a manager",
+    "editTitle": "Your manager details",
+    "formSubtitle": "We check these details before you can work with talents. Talents also see them before they accept you.",
+    "identityWarning": "Changing your agency, website or country sends your details back for review. Until then you cannot act for your talents.",
+    "submit": "Send for verification",
+    "submitted": "Sent for verification",
+    "saved": "Details saved",
+    "fields": {
+      "agencyName": "Agency or company",
+      "agencyPlaceholder": "Leave empty if you work on your own",
+      "websiteUrl": "Website or LinkedIn",
+      "bio": "About you",
+      "bioPlaceholder": "Who you manage and what you do for them",
+      "talentsCount": "Talents you manage",
+      "proofLinksHint": "Agency page, management contract, press coverage: anything that shows you manage talents."
+    },
+    "talentsTitle": "My talents",
+    "talentsSubtitle": "The talents you represent, and invitations from talents.",
+    "verifyFirst": "Get verified before you can work with talents.",
+    "invitesTitle": "Invitations from talents",
+    "invitedYou": "{{name}} invited you to be their manager.",
+    "inviteAccepted": "You now represent this talent",
+    "inviteDeclined": "Invitation declined",
+    "rosterTitle": "Your roster",
+    "rosterEmptyTitle": "No talents yet",
+    "rosterEmptyText": "Open a talent's profile and click \"Request to represent\", or ask your talents to invite you by your login email.",
+    "followers": "{{count}} followers",
+    "liveServices": "{{count}} live services",
+    "pendingHires": "{{count}} new hire requests",
+    "openAgreements": "{{count}} open agreements",
+    "sentRequestsTitle": "Requests you sent",
+    "sentInvitesTitle": "Invitations you sent",
+    "sentOn": "Sent {{date}}",
+    "withdraw": "Withdraw",
+    "withdrawTitle": "Withdraw this request?",
+    "withdrawBody": "{{name}} will no longer be able to accept it.",
+    "withdrawInviteBody": "{{name}} will no longer be able to accept your invitation.",
+    "requestWithdrawn": "Request withdrawn",
+    "inviteWithdrawn": "Invitation withdrawn",
+    "status": {
+      "invited": "Invited",
+      "requested": "Requested",
+      "active": "Active",
+      "declined": "Declined",
+      "cancelled": "Withdrawn",
+      "ended": "Ended"
+    },
+    "permissions": {
+      "manageProfile": "Manage profile",
+      "handleHires": "Handle hire requests"
+    },
+    "permissionHelp": {
+      "manageProfile": "Edit the profile, services, prices and availability.",
+      "handleHires": "Accept or decline hire requests from businesses."
+    },
+    "whatCanTheyDo": "What can they do for you?",
+    "signingNote": "You always sign agreements yourself. You can change these permissions or remove your manager at any time.",
+    "backToTalents": "Back to my talents",
+    "workingFor": "Working for",
+    "switchTalent": "Switch talent",
+    "stopRepresenting": "Stop representing",
+    "stopTitle": "Stop representing this talent?",
+    "stopBody": "You will no longer be able to act for {{name}}. They will be told.",
+    "ended": "Representation ended",
+    "tabs": {
+      "hires": "Hire requests",
+      "services": "Services & availability",
+      "profile": "Profile"
+    },
+    "noPermissionTitle": "You don't have permission for this",
+    "noPermissionText": "Ask the talent to allow \"{{permission}}\" for you.",
+    "forTalent": "For {{name}}",
+    "answeredBy": "Answered by {{name}} (manager)",
+    "hiresSubtitle": "Hire requests for the talents who let you handle them.",
+    "hiresEmpty": "No hire requests yet.",
+    "hiresNotice": "New hire requests for your talents: {{count}}",
+    "invitesNotice": "Talents invited you to represent them: {{count}}",
+    "requestsNotice": "Managers asked to represent you: {{count}}",
+    "myManagerTitle": "My manager",
+    "myManagerSubtitle": "A verified manager can handle hire requests and your profile for you. You choose what they can do.",
+    "claimFirst": "Claim your profile first to work with a manager.",
+    "wantsToRepresent": "Wants to represent you",
+    "acceptManager": "Accept as my manager",
+    "requestAccepted": "Your manager is set",
+    "requestDeclined": "Request declined",
+    "yourManagerSince": "Your manager since {{date}}",
+    "removeManager": "Remove manager",
+    "removeTitle": "Remove your manager?",
+    "removeBody": "{{name}} will no longer be able to act for you. They will be told.",
+    "savePermissions": "Save permissions",
+    "permissionsSaved": "Permissions saved",
+    "inviteTitle": "Invite your manager",
+    "inviteText": "Enter the email your manager uses to log in. They must be a verified manager on the platform.",
+    "managerEmail": "Manager's email",
+    "messageOptional": "Message (optional)",
+    "sendInvite": "Send invitation",
+    "inviteSent": "Invitation sent",
+    "historyTitle": "Past managers and requests",
+    "representedBy": "Represented by {{name}}",
+    "representedByAgency": "Represented by {{name}} · {{agencyName}}",
+    "youRepresent": "You represent them",
+    "requestPending": "Request sent",
+    "verifyToRepresent": "Verify to represent",
+    "requestToRepresent": "Request to represent",
+    "requestTitle": "Represent {{name}}?",
+    "requestBody": "{{name}} will be asked to accept you as their manager and choose what you can do.",
+    "requestPlaceholder": "Introduce yourself and how you can help",
+    "sendRequest": "Send request",
+    "requestSent": "Request sent",
+    "actionWord": {
+      "accept": "accepted",
+      "decline": "declined"
+    }
+  },
+  "managerStatus": {
+    "pending": "Pending review",
+    "approved": "Verified",
+    "rejected": "Rejected"
+  },
+  "adminManagers": {
+    "title": "Managers",
+    "subtitle": "Managers and agents asking to be verified before they work with talents.",
+    "searchPlaceholder": "Search name, email, agency",
+    "emptyTitle": "No managers yet",
+    "emptyText": "Managers appear here when they send their details.",
+    "colManager": "Manager",
+    "colAgency": "Agency",
+    "checkHint": "Check the website or LinkedIn and the proof links. Verified managers can link to talents, always with the talent's consent.",
+    "approve": "Verify manager",
+    "approveTitle": "Verify this manager?",
+    "approveBody": "{{name}} will be able to link to talents who accept them.",
+    "approved": "Manager verified",
+    "rejectTitle": "Reject this manager?",
+    "rejectPlaceholder": "e.g. We could not confirm your agency",
+    "rejected": "Manager rejected",
+    "revokeWarning": "This ends their links with {{count}} talents. The talents will be told.",
+    "talentsTitle": "Talents ({{count}} active)",
+    "noTalents": "Not linked to any talents yet."
   }
 }

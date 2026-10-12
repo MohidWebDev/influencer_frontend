@@ -9,7 +9,8 @@
     "manageProfiles": "پروفائلز کا انتظام",
     "language": "زبان",
     "businesses": "کاروبار",
-    "agreements": "معاہدے"
+    "agreements": "معاہدے",
+    "managers": "مینیجرز"
   },
   "common": {
     "loading": "لوڈ ہو رہا ہے...",
@@ -61,7 +62,9 @@
     "businessesApproved": "{{count}} تصدیق شدہ",
     "businessesNeedAction": "کاروبار جن پر کارروائی درکار ہے",
     "disputes": "کھلے تنازعات",
-    "activeAgreements": "{{count}} فعال معاہدے"
+    "activeAgreements": "{{count}} فعال معاہدے",
+    "managersNeedAction": "جائزے کے لیے مینیجرز",
+    "managersApproved": "{{count}} تصدیق شدہ"
   },
   "claimStatus": {
     "pending": "کوڈ بھیجیں",
@@ -328,7 +331,8 @@
     "user": "صارف",
     "report": "رپورٹ",
     "business": "کاروبار",
-    "agreement": "معاہدہ"
+    "agreement": "معاہدہ",
+    "manager": "مینیجر"
   },
   "auditAction": {
     "person": {
@@ -369,6 +373,10 @@
       "sign": "معاہدے پر دستخط",
       "dispute": "تنازع کھولا",
       "resolve": "تنازع حل کیا"
+    },
+    "manager": {
+      "approve": "مینیجر کی تصدیق کی",
+      "reject": "مینیجر مسترد کیا"
     }
   },
   "reportForm": {
@@ -793,7 +801,8 @@
     },
     "yourTalents": {
       "title": "آپ کا ٹیلنٹ",
-      "description": "وہ پروفائلز جن کا آپ اپنے نمائندہ افراد کی جانب سے انتظام کرتے ہیں۔"
+      "description": "وہ پروفائلز جن کا آپ اپنے نمائندہ افراد کی جانب سے انتظام کرتے ہیں۔",
+      "action": "میرے ٹیلنٹ کھولیں"
     },
     "repInquiries": {
       "description": "آپ کے ٹیلنٹ کی تمام درخواستیں ایک ان باکس میں۔"
@@ -831,6 +840,10 @@
       "businessDescription": "آپ کے ہائر کیے گئے ٹیلنٹ کے ساتھ دستخط شدہ معاہدے: شرائط، مراحل اور ڈیلیوری۔",
       "action": "معاہدے کھولیں",
       "talentDescription": "آپ کو ہائر کرنے والے کاروباروں کے ساتھ دستخط شدہ معاہدے: شرائط، مراحل اور ڈیلیوری۔"
+    },
+    "repHires": {
+      "title": "ہائر درخواستیں",
+      "action": "ہائر درخواستیں کھولیں"
     }
   },
   "oldAdmin": {
@@ -1124,7 +1137,17 @@
       "agreement_completed": "\"{{title}}\" مکمل ہو گیا۔ ریویو دیں۔",
       "agreement_disputed": "\"{{title}}\" پر مسئلہ رپورٹ کیا گیا۔ ایڈمن جائزہ لے گا۔",
       "agreement_resolved": "\"{{title}}\" کا تنازع حل ہو گیا: {{outcome}}",
-      "agreement_reviewed": "آپ کو \"{{title}}\" کے لیے {{rating}} ستاروں کا ریویو ملا۔"
+      "agreement_reviewed": "آپ کو \"{{title}}\" کے لیے {{rating}} ستاروں کا ریویو ملا۔",
+      "manager_new": "{{manager}} نے مینیجر تفصیلات تصدیق کے لیے بھیجی ہیں۔",
+      "manager_approved": "آپ تصدیق شدہ مینیجر ہیں۔ اب آپ ٹیلنٹ کے ساتھ کام کر سکتے ہیں۔",
+      "manager_rejected": "آپ کی مینیجر تفصیلات کی تصدیق نہیں ہوئی: {{reason}}",
+      "representation_requested": "{{name}} آپ کے مینیجر بننا چاہتے ہیں۔ درخواست دیکھیں۔",
+      "representation_invited": "{{name}} نے آپ کو اپنا مینیجر بننے کی دعوت دی ہے۔",
+      "representation_accepted": "{{name}} نے قبول کر لیا۔ اب آپ جڑ گئے ہیں۔",
+      "representation_declined": "{{name}} نے انکار کر دیا۔",
+      "representation_ended": "{{name}} نے {{person}} کی نمائندگی ختم کر دی۔",
+      "hire_new_managed": "{{business}} {{person}} کو ہائر کرنا چاہتا ہے۔ ڈیش بورڈ سے جواب دیں۔",
+      "hire_answered_by_manager": "آپ کے مینیجر {{name}} نے {{business}} کی ہائر درخواست {{action}}۔"
     }
   },
   "dataState": {
@@ -1804,11 +1827,167 @@
     "viewPublicProfile": "پبلک پروفائل دیکھیں",
     "pendingHires": "نئی ہائر درخواستیں آپ کے جواب کی منتظر ہیں: {{count}}",
     "acceptedHires": "ٹیلنٹ نے آپ کی درخواست قبول کر لی۔ معاہدہ تیار کریں: {{count}}",
-    "review": "دیکھیں"
+    "review": "دیکھیں",
+    "managerTitle": "مینیجر ڈیش بورڈ",
+    "managerDetails": "مینیجر تفصیلات",
+    "myTalents": "میرے ٹیلنٹ",
+    "myManager": "میرا مینیجر"
   },
   "pageError": {
     "title": "یہ صفحہ نہیں کھل سکا",
     "text": "یہ صفحہ دکھاتے ہوئے کچھ غلط ہو گیا۔ دوبارہ کوشش کے لیے ری لوڈ کریں۔ اگر بار بار ہو تو شاید سرور ابھی اپڈیٹ ہو رہا ہے۔",
     "reload": "صفحہ ری لوڈ کریں"
+  },
+  "manager": {
+    "verification": "مینیجر کی تصدیق",
+    "getVerifiedTitle": "بطور مینیجر تصدیق کروائیں",
+    "getVerifiedText": "اپنے کام کے بارے میں بتائیں اور ثبوت دیں، جیسے ایجنسی کا صفحہ یا مینجمنٹ معاہدہ۔ ایڈمن کی تصدیق کے بعد آپ ٹیلنٹ کی طرف سے کام کر سکیں گے۔",
+    "addDetails": "اپنی تفصیلات شامل کریں",
+    "verifiedManager": "تصدیق شدہ مینیجر",
+    "underReview": "جائزے میں",
+    "notVerified": "تصدیق نہیں ہوئی",
+    "independent": "آزاد مینیجر",
+    "pendingText": "{{date}} کو بھیجا گیا۔ ایڈمن آپ کی تفصیلات دیکھ رہا ہے۔ تصدیق کے بعد آپ ٹیلنٹ سے جڑ سکیں گے۔",
+    "approvedText": "آپ کی تصدیق ہو گئی۔ کسی ٹیلنٹ کی پروفائل کھول کر \"نمائندگی کی درخواست\" پر کلک کریں، یا اپنے ٹیلنٹ سے کہیں کہ آپ کی لاگ اِن ای میل سے آپ کو دعوت دیں۔",
+    "findTalents": "ٹیلنٹ تلاش کریں",
+    "rejected": "تصدیق نہیں ہوئی: {{reason}}",
+    "formTitle": "بطور مینیجر تصدیق کروائیں",
+    "editTitle": "آپ کی مینیجر تفصیلات",
+    "formSubtitle": "ٹیلنٹ کے ساتھ کام سے پہلے ہم یہ تفصیلات دیکھتے ہیں۔ ٹیلنٹ بھی آپ کو قبول کرنے سے پہلے انہیں دیکھتے ہیں۔",
+    "identityWarning": "ایجنسی، ویب سائٹ یا ملک بدلنے سے تفصیلات دوبارہ جائزے میں جائیں گی۔ تب تک آپ ٹیلنٹ کی طرف سے کام نہیں کر سکیں گے۔",
+    "submit": "تصدیق کے لیے بھیجیں",
+    "submitted": "تصدیق کے لیے بھیج دیا گیا",
+    "saved": "تفصیلات محفوظ ہو گئیں",
+    "fields": {
+      "agencyName": "ایجنسی یا کمپنی",
+      "agencyPlaceholder": "اکیلے کام کرتے ہیں تو خالی چھوڑ دیں",
+      "websiteUrl": "ویب سائٹ یا LinkedIn",
+      "bio": "آپ کے بارے میں",
+      "bioPlaceholder": "آپ کن کو سنبھالتے ہیں اور ان کے لیے کیا کرتے ہیں",
+      "talentsCount": "آپ کتنے ٹیلنٹ سنبھالتے ہیں",
+      "proofLinksHint": "ایجنسی کا صفحہ، مینجمنٹ معاہدہ، خبریں: کچھ بھی جو دکھائے کہ آپ ٹیلنٹ سنبھالتے ہیں۔"
+    },
+    "talentsTitle": "میرے ٹیلنٹ",
+    "talentsSubtitle": "وہ ٹیلنٹ جن کی آپ نمائندگی کرتے ہیں، اور ٹیلنٹ کی دعوتیں۔",
+    "verifyFirst": "ٹیلنٹ کے ساتھ کام سے پہلے تصدیق کروائیں۔",
+    "invitesTitle": "ٹیلنٹ کی دعوتیں",
+    "invitedYou": "{{name}} نے آپ کو اپنا مینیجر بننے کی دعوت دی ہے۔",
+    "inviteAccepted": "اب آپ اس ٹیلنٹ کی نمائندگی کرتے ہیں",
+    "inviteDeclined": "دعوت مسترد کر دی",
+    "rosterTitle": "آپ کے ٹیلنٹ",
+    "rosterEmptyTitle": "ابھی کوئی ٹیلنٹ نہیں",
+    "rosterEmptyText": "کسی ٹیلنٹ کی پروفائل کھول کر \"نمائندگی کی درخواست\" پر کلک کریں، یا اپنے ٹیلنٹ سے کہیں کہ آپ کی لاگ اِن ای میل سے آپ کو دعوت دیں۔",
+    "followers": "{{count}} فالوورز",
+    "liveServices": "{{count}} فعال خدمات",
+    "pendingHires": "{{count}} نئی ہائر درخواستیں",
+    "openAgreements": "{{count}} کھلے معاہدے",
+    "sentRequestsTitle": "آپ کی بھیجی ہوئی درخواستیں",
+    "sentInvitesTitle": "آپ کی بھیجی ہوئی دعوتیں",
+    "sentOn": "{{date}} کو بھیجا",
+    "withdraw": "واپس لیں",
+    "withdrawTitle": "یہ درخواست واپس لیں؟",
+    "withdrawBody": "{{name}} اسے قبول نہیں کر سکیں گے۔",
+    "withdrawInviteBody": "{{name}} آپ کی دعوت قبول نہیں کر سکیں گے۔",
+    "requestWithdrawn": "درخواست واپس لے لی",
+    "inviteWithdrawn": "دعوت واپس لے لی",
+    "status": {
+      "invited": "دعوت دی گئی",
+      "requested": "درخواست کی گئی",
+      "active": "فعال",
+      "declined": "مسترد",
+      "cancelled": "واپس لی گئی",
+      "ended": "ختم"
+    },
+    "permissions": {
+      "manageProfile": "پروفائل سنبھالنا",
+      "handleHires": "ہائر درخواستیں سنبھالنا"
+    },
+    "permissionHelp": {
+      "manageProfile": "پروفائل، خدمات، قیمتیں اور دستیابی بدلنا۔",
+      "handleHires": "کاروباروں کی ہائر درخواستیں قبول یا مسترد کرنا۔"
+    },
+    "whatCanTheyDo": "وہ آپ کے لیے کیا کر سکتے ہیں؟",
+    "signingNote": "معاہدوں پر دستخط آپ خود ہی کرتے ہیں۔ آپ یہ اجازتیں کبھی بھی بدل سکتے ہیں یا مینیجر کو ہٹا سکتے ہیں۔",
+    "backToTalents": "میرے ٹیلنٹ پر واپس",
+    "workingFor": "کس کے لیے کام",
+    "switchTalent": "ٹیلنٹ بدلیں",
+    "stopRepresenting": "نمائندگی ختم کریں",
+    "stopTitle": "اس ٹیلنٹ کی نمائندگی ختم کریں؟",
+    "stopBody": "آپ {{name}} کی طرف سے کام نہیں کر سکیں گے۔ انہیں بتا دیا جائے گا۔",
+    "ended": "نمائندگی ختم ہو گئی",
+    "tabs": {
+      "hires": "ہائر درخواستیں",
+      "services": "خدمات اور دستیابی",
+      "profile": "پروفائل"
+    },
+    "noPermissionTitle": "آپ کو اس کی اجازت نہیں",
+    "noPermissionText": "ٹیلنٹ سے کہیں کہ آپ کو \"{{permission}}\" کی اجازت دیں۔",
+    "forTalent": "{{name}} کے لیے",
+    "answeredBy": "جواب {{name}} (مینیجر) نے دیا",
+    "hiresSubtitle": "ان ٹیلنٹ کی ہائر درخواستیں جنہوں نے آپ کو یہ اجازت دی ہے۔",
+    "hiresEmpty": "ابھی کوئی ہائر درخواست نہیں۔",
+    "hiresNotice": "آپ کے ٹیلنٹ کے لیے نئی ہائر درخواستیں: {{count}}",
+    "invitesNotice": "ٹیلنٹ نے آپ کو نمائندگی کی دعوت دی: {{count}}",
+    "requestsNotice": "مینیجرز نے آپ کی نمائندگی کی درخواست کی: {{count}}",
+    "myManagerTitle": "میرا مینیجر",
+    "myManagerSubtitle": "تصدیق شدہ مینیجر آپ کی ہائر درخواستیں اور پروفائل سنبھال سکتا ہے۔ آپ چنتے ہیں کہ وہ کیا کر سکے۔",
+    "claimFirst": "مینیجر کے ساتھ کام سے پہلے اپنی پروفائل کلیم کریں۔",
+    "wantsToRepresent": "آپ کی نمائندگی کرنا چاہتے ہیں",
+    "acceptManager": "اپنا مینیجر قبول کریں",
+    "requestAccepted": "آپ کا مینیجر مقرر ہو گیا",
+    "requestDeclined": "درخواست مسترد کر دی",
+    "yourManagerSince": "{{date}} سے آپ کا مینیجر",
+    "removeManager": "مینیجر ہٹائیں",
+    "removeTitle": "اپنا مینیجر ہٹائیں؟",
+    "removeBody": "{{name}} آپ کی طرف سے کام نہیں کر سکیں گے۔ انہیں بتا دیا جائے گا۔",
+    "savePermissions": "اجازتیں محفوظ کریں",
+    "permissionsSaved": "اجازتیں محفوظ ہو گئیں",
+    "inviteTitle": "اپنے مینیجر کو دعوت دیں",
+    "inviteText": "وہ ای میل لکھیں جس سے آپ کا مینیجر لاگ اِن کرتا ہے۔ ان کا پلیٹ فارم پر تصدیق شدہ مینیجر ہونا ضروری ہے۔",
+    "managerEmail": "مینیجر کی ای میل",
+    "messageOptional": "پیغام (اختیاری)",
+    "sendInvite": "دعوت بھیجیں",
+    "inviteSent": "دعوت بھیج دی گئی",
+    "historyTitle": "پرانے مینیجر اور درخواستیں",
+    "representedBy": "نمائندہ: {{name}}",
+    "representedByAgency": "نمائندہ: {{name}} · {{agencyName}}",
+    "youRepresent": "آپ ان کی نمائندگی کرتے ہیں",
+    "requestPending": "درخواست بھیج دی",
+    "verifyToRepresent": "نمائندگی کے لیے تصدیق",
+    "requestToRepresent": "نمائندگی کی درخواست",
+    "requestTitle": "{{name}} کی نمائندگی کریں؟",
+    "requestBody": "{{name}} سے پوچھا جائے گا کہ آپ کو اپنا مینیجر قبول کریں اور چنیں کہ آپ کیا کر سکیں۔",
+    "requestPlaceholder": "اپنا تعارف کروائیں اور بتائیں کہ آپ کیسے مدد کر سکتے ہیں",
+    "sendRequest": "درخواست بھیجیں",
+    "requestSent": "درخواست بھیج دی گئی",
+    "actionWord": {
+      "accept": "قبول کی",
+      "decline": "مسترد کی"
+    }
+  },
+  "managerStatus": {
+    "pending": "جائزے میں",
+    "approved": "تصدیق شدہ",
+    "rejected": "مسترد"
+  },
+  "adminManagers": {
+    "title": "مینیجرز",
+    "subtitle": "مینیجرز اور ایجنٹ جو ٹیلنٹ کے ساتھ کام سے پہلے تصدیق چاہتے ہیں۔",
+    "searchPlaceholder": "نام، ای میل، ایجنسی تلاش کریں",
+    "emptyTitle": "ابھی کوئی مینیجر نہیں",
+    "emptyText": "مینیجرز اپنی تفصیلات بھیجیں تو یہاں نظر آئیں گے۔",
+    "colManager": "مینیجر",
+    "colAgency": "ایجنسی",
+    "checkHint": "ویب سائٹ یا LinkedIn اور ثبوت کے لنکس دیکھیں۔ تصدیق شدہ مینیجر ٹیلنٹ سے جڑ سکتے ہیں، ہمیشہ ٹیلنٹ کی رضامندی سے۔",
+    "approve": "مینیجر کی تصدیق کریں",
+    "approveTitle": "اس مینیجر کی تصدیق کریں؟",
+    "approveBody": "{{name}} ان ٹیلنٹ سے جڑ سکیں گے جو انہیں قبول کریں۔",
+    "approved": "مینیجر کی تصدیق ہو گئی",
+    "rejectTitle": "یہ مینیجر مسترد کریں؟",
+    "rejectPlaceholder": "مثلاً ہم آپ کی ایجنسی کی تصدیق نہیں کر سکے",
+    "rejected": "مینیجر مسترد",
+    "revokeWarning": "اس سے {{count}} ٹیلنٹ کے ساتھ ان کے رشتے ختم ہو جائیں گے۔ ٹیلنٹ کو بتا دیا جائے گا۔",
+    "talentsTitle": "ٹیلنٹ ({{count}} فعال)",
+    "noTalents": "ابھی کسی ٹیلنٹ سے نہیں جڑے۔"
   }
 }

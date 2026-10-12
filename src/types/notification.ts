@@ -31,6 +31,16 @@ export type NotificationType =
   | 'hire.cancelled'
   | 'hire.accepted'
   | 'hire.declined'
+  | 'manager.new'
+  | 'manager.approved'
+  | 'manager.rejected'
+  | 'representation.requested'
+  | 'representation.invited'
+  | 'representation.accepted'
+  | 'representation.declined'
+  | 'representation.ended'
+  | 'hire.new_managed'
+  | 'hire.answered_by_manager'
 
 export interface AppNotification {
   _id: string

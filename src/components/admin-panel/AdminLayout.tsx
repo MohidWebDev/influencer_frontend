@@ -9,6 +9,7 @@ import {
   faFlag,
   faIdCard,
   faUserCheck,
+  faUserTie,
   faUsers,
   type IconDefinition,
 } from '@fortawesome/free-solid-svg-icons'
@@ -17,6 +18,7 @@ const LINKS: { to: string; key: string; icon: IconDefinition; end?: boolean }[] 
   { to: '/admin', key: 'nav.dashboard', icon: faChartPie, end: true },
   { to: '/admin/claims', key: 'nav.claims', icon: faUserCheck },
   { to: '/admin/businesses', key: 'nav.businesses', icon: faBuilding },
+  { to: '/admin/managers', key: 'nav.managers', icon: faUserTie },
   { to: '/admin/agreements', key: 'nav.agreements', icon: faFileContract },
   { to: '/admin/users', key: 'nav.users', icon: faUsers },
   { to: '/admin/reports', key: 'nav.reports', icon: faFlag },

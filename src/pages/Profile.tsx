@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircle, faGlobe, faLanguage, faLocationDot } from '@fortawesome/free-solid-svg-icons'
+import { faCircle, faGlobe, faLanguage, faLocationDot, faUserTie } from '@fortawesome/free-solid-svg-icons'
 import { Link, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
@@ -9,6 +9,7 @@ import Avatar from '../components/Avatar'
 import ClaimAction from '../components/ClaimAction'
 import HireAction from '../components/business/HireAction'
 import SaveToShortlist from '../components/shortlists/SaveToShortlist'
+import RepresentAction from '../components/manager/RepresentAction'
 import ReportProfileLink from '../components/ReportProfileLink'
 import UnclaimedBadge from '../components/UnclaimedBadge'
 import PublicAvailability from '../components/services/PublicAvailability'
@@ -86,6 +87,15 @@ function Profile() {
               {!person.claimedBy && <UnclaimedBadge />}
             </div>
             {person.headline && <p className="mt-1 text-gray-600">{person.headline}</p>}
+            {/* Verified manager ke zariye kaam karta hai */}
+            {person.representedBy && (
+              <p className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-700">
+                <FontAwesomeIcon icon={faUserTie} className="text-gray-500" />
+                {person.representedBy.agencyName
+                  ? t('manager.representedByAgency', person.representedBy)
+                  : t('manager.representedBy', { name: person.representedBy.name })}
+              </p>
+            )}
             <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-500">
               {location && (
                 <span>
@@ -113,6 +123,7 @@ function Profile() {
           <div className="flex flex-col gap-2 sm:w-44">
             <HireAction person={person} />
             <SaveToShortlist personId={person._id} personName={person.name} variant="button" />
+            <RepresentAction person={person} />
             <ClaimAction person={person} />
           </div>
         </div>

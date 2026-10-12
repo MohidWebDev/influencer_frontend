@@ -118,10 +118,13 @@ function ContactPanel({ contact, who }: { contact: NonNullable<HireRequest['cont
 function HireRequestCard({
   hire,
   who,
+  showTalent = false,
   children,
 }: {
   hire: HireRequest
   who: 'talent' | 'business'
+  // Manager ke inbox mein: kis talent ke liye aayi
+  showTalent?: boolean
   children?: ReactNode
 }) {
   const { t, i18n } = useTranslation()
@@ -161,6 +164,11 @@ function HireRequestCard({
             </p>
           ) : (
             <>
+              {showTalent && hire.person && (
+                <p className="mt-0.5 text-sm font-medium text-violet-700">
+                  {t('manager.forTalent', { name: hire.person.name })}
+                </p>
+              )}
               {hire.businessProfile ? (
                 <BusinessInfo business={hire.businessProfile} rating={hire.businessRating} />
               ) : (
@@ -192,6 +200,12 @@ function HireRequestCard({
               <span>{t('hire.repliedOn', { date: formatDate(hire.respondedAt) })}</span>
             )}
           </div>
+          {/* Talent ki jagah manager ne jawab diya */}
+          {hire.respondedBy?.role === 'representative' && (
+            <p className="mt-2 text-xs text-gray-500">
+              {t('manager.answeredBy', { name: hire.respondedBy.name })}
+            </p>
+          )}
           {hire.responseNote && (
             <p className="mt-3 rounded-xl bg-gray-50 px-3 py-2 text-sm text-gray-700">
               {t('hire.responseNote', { note: hire.responseNote })}

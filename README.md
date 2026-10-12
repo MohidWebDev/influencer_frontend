@@ -75,9 +75,13 @@ Settings → Delete account. A talent who owns a public-source profile chooses: 
 
 Business, agency and organization accounts see a star on every profile card (Explore, Home) and on profile pages. It opens a picker to add the person to one or more named lists, or create a new list on the spot. `/shortlists/:id` shows each person with a private note, rating, starting price, availability and hiring status (hire request, agreement, or a Hire button for verified talents when the account is a business). Tick 2–4 people and press Compare to see them side by side. Code lives in `src/pages/shortlists/`, `src/components/shortlists/`, `src/api/shortlists.ts` and `src/types/shortlist.ts`.
 
+## Managers / agents
+
+A manager (representative account) sends their details from **Manager details** (`/dashboard/manager`) and an admin verifies them at `/admin/managers`. A verified manager links to a talent only with the talent's consent: the manager clicks **Request to represent** on the talent's profile, or the talent invites them by email from **My manager** (`/dashboard/my-manager`). A talent has one manager at a time and picks what they may do: **Handle hire requests** and / or **Manage profile** (profile, services, availability); signing agreements stays with the talent. The manager's **My talents** (`/talents`) lists the roster and invitations, `/talents/:personId` is the workspace for one talent (hire requests, services, profile, each locked without the permission), and **Hire requests** combines all their talents. Hire requests a manager answered show "Answered by …", and public profiles show "Represented by …". Code lives in `src/pages/manager/`, `src/components/manager/`, `src/pages/dashboards/ManagerProfileForm.tsx`, `src/pages/dashboards/MyManagerPage.tsx`, `src/api/manager.ts` and `src/types/manager.ts`.
+
 ## Navigation
 
-All navbar links live in `src/constants/navigation.ts` (`MAIN_NAV`, `UTILITY_NAV`, `ACCOUNT_NAV`), each with the roles that can see it. Talent and business accounts reach their own pages (profile, Services, Hire requests, Agreements, business details, Shortlists) from a sidebar like the admin panel's, built in `src/components/dashboard-panel/DashboardLayout.tsx`, instead of the navbar. Pages that are planned but not built yet (`/inbox`, `/talents`) show a "Coming soon" page.
+All navbar links live in `src/constants/navigation.ts` (`MAIN_NAV`, `UTILITY_NAV`, `ACCOUNT_NAV`), each with the roles that can see it. Talent, business and manager accounts reach their own pages (profile, Services, Hire requests, Agreements, business or manager details, Shortlists, My talents, My manager) from a sidebar like the admin panel's, built in `src/components/dashboard-panel/DashboardLayout.tsx`, instead of the navbar. Pages that are planned but not built yet (`/inbox`) show a "Coming soon" page.
 
 ## Admin panel (`/admin`)
 

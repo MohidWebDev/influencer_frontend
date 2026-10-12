@@ -18,11 +18,15 @@ import ComingSoon from './pages/ComingSoon'
 import Settings from './pages/Settings'
 import ServicesPage from './pages/dashboards/ServicesPage'
 import HireRequestsPage from './pages/dashboards/HireRequestsPage'
+import ManagerProfileForm from './pages/dashboards/ManagerProfileForm'
+import MyManagerPage from './pages/dashboards/MyManagerPage'
+import MyTalentsPage from './pages/manager/MyTalentsPage'
+import ManagedTalentPage from './pages/manager/ManagedTalentPage'
 import DashboardLayout from './components/dashboard-panel/DashboardLayout'
 import BusinessProfileForm from './pages/dashboards/BusinessProfileForm'
 import ForgotPassword from './pages/ForgotPassword'
 import MyProfileRedirect from './pages/MyProfileRedirect'
-import { faEnvelope, faUsers } from '@fortawesome/free-solid-svg-icons'
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import AdminPersonEditor from './pages/admin/AdminPersonEditor'
 import AdminLayout from './components/admin-panel/AdminLayout'
 import AdminOverviewPage from './pages/admin-panel/AdminOverviewPage'
@@ -41,6 +45,8 @@ import ShortlistDetailPage from './pages/shortlists/ShortlistDetailPage'
 import AgreementNewPage from './pages/agreements/AgreementNewPage'
 import AgreementDetailPage from './pages/agreements/AgreementDetailPage'
 import AdminAgreementsPage from './pages/admin-panel/AdminAgreementsPage'
+import AdminManagersPage from './pages/admin-panel/AdminManagersPage'
+import AdminManagerDetailPage from './pages/admin-panel/AdminManagerDetailPage'
 import AdminAgreementDetailPage from './pages/admin-panel/AdminAgreementDetailPage'
 
 function App() {
@@ -94,9 +100,41 @@ function App() {
             }
           />
           <Route
+            path="/dashboard/manager"
+            element={
+              <ProtectedRoute roles={['representative']}>
+                <ManagerProfileForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/talents"
+            element={
+              <ProtectedRoute roles={['representative']}>
+                <MyTalentsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/talents/:personId"
+            element={
+              <ProtectedRoute roles={['representative']}>
+                <ManagedTalentPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/my-manager"
+            element={
+              <ProtectedRoute roles={['talent']}>
+                <MyManagerPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/dashboard/hire-requests"
             element={
-              <ProtectedRoute roles={['talent', 'business']}>
+              <ProtectedRoute roles={['talent', 'business', 'representative']}>
                 <HireRequestsPage />
               </ProtectedRoute>
             }
@@ -167,14 +205,6 @@ function App() {
           }
         />
         <Route
-          path="/talents"
-          element={
-            <ProtectedRoute roles={['representative']}>
-              <ComingSoon page="talents" icon={faUsers} />
-            </ProtectedRoute>
-          }
-        />
-        <Route
           path="/settings"
           element={
             <ProtectedRoute>
@@ -227,6 +257,8 @@ function App() {
           <Route path="reports/:id" element={<AdminReportDetailPage />} />
           <Route path="businesses" element={<AdminBusinessesPage />} />
           <Route path="businesses/:id" element={<AdminBusinessDetailPage />} />
+          <Route path="managers" element={<AdminManagersPage />} />
+          <Route path="managers/:id" element={<AdminManagerDetailPage />} />
           <Route path="agreements" element={<AdminAgreementsPage />} />
           <Route path="agreements/:id" element={<AdminAgreementDetailPage />} />
           <Route path="audit-logs" element={<AdminAuditLogPage />} />

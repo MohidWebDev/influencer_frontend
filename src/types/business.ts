@@ -113,6 +113,8 @@ export interface HireRequest {
   status: HireStatus
   respondedAt?: string
   responseNote?: string
+  // Jawab kis ne diya: talent khud ya us ka manager
+  respondedBy?: { _id: string; name: string; role: string } | null
   createdAt: string
 }
 

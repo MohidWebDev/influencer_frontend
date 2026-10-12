@@ -8,6 +8,7 @@ import {
   faFlag,
   faIdCard,
   faUserCheck,
+  faUserTie,
   faUsers,
   type IconDefinition,
 } from '@fortawesome/free-solid-svg-icons'
@@ -52,6 +53,7 @@ function withDefaults(data: Partial<AdminStats>): AdminStats {
     reports: { open: 0, reviewing: 0, ...data.reports },
     businesses: { needsAction: 0, approved: 0, ...data.businesses },
     agreements: { disputed: 0, active: 0, ...data.agreements },
+    managers: { needsAction: 0, approved: 0, ...data.managers },
   }
 }
 
@@ -109,6 +111,14 @@ function AdminOverviewPage() {
                 value={stats.agreements.disputed}
                 detail={t('overview.activeAgreements', { count: stats.agreements.active })}
                 highlight={stats.agreements.disputed > 0}
+              />
+              <StatCard
+                to="/admin/managers?status=pending"
+                icon={faUserTie}
+                label={t('overview.managersNeedAction')}
+                value={stats.managers.needsAction}
+                detail={t('overview.managersApproved', { count: stats.managers.approved })}
+                highlight={stats.managers.needsAction > 0}
               />
               <StatCard
                 to="/admin/users"

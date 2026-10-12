@@ -7,6 +7,7 @@ import {
   faEnvelopeOpenText,
   faFileContract,
   faFileInvoiceDollar,
+  faHandshake,
   faMagnifyingGlass,
   faMicrophone,
   faStar,
@@ -17,6 +18,7 @@ import DashboardHeader from '../../components/DashboardHeader'
 import MyProfileSection from '../../components/MyProfileSection'
 import BusinessVerificationSection from '../../components/business/BusinessVerificationSection'
 import HireRequestsNotice from '../../components/dashboard-panel/HireRequestsNotice'
+import ManagerVerificationSection from '../../components/manager/ManagerVerificationSection'
 import type { SignupRole } from '../../types/user'
 
 interface DashboardCard {
@@ -76,11 +78,13 @@ const ROLE_DASHBOARDS: Record<SignupRole, RoleConfig> = {
         icon: faUsers,
         title: 'dash.yourTalents.title',
         description: 'dash.yourTalents.description',
+        action: { label: 'dash.yourTalents.action', to: '/talents' },
       },
       {
-        icon: faEnvelopeOpenText,
-        title: 'dash.inquiries.title',
+        icon: faHandshake,
+        title: 'dash.repHires.title',
         description: 'dash.repInquiries.description',
+        action: { label: 'dash.repHires.action', to: '/dashboard/hire-requests' },
       },
       EXPLORE,
     ],
@@ -151,9 +155,12 @@ function RoleDashboard({ role }: { role: SignupRole }) {
       <DashboardHeader />
 
       {/* Jin hire requests pe kaam baqi hai (poori list sidebar ke "Hire requests" mein) */}
-      {(role === 'talent' || role === 'business') && <HireRequestsNotice role={role} />}
+      {(role === 'talent' || role === 'business' || role === 'representative') && (
+        <HireRequestsNotice role={role} />
+      )}
       {role === 'talent' && <MyProfileSection />}
       {role === 'business' && <BusinessVerificationSection />}
+      {role === 'representative' && <ManagerVerificationSection />}
 
       <div>
         <h2 className="text-lg font-semibold">{t(config.title)}</h2>

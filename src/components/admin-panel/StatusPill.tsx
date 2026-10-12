@@ -17,6 +17,9 @@ const STYLES: Record<string, string> = {
   accepted: 'bg-green-50 text-green-700',
   declined: 'bg-red-50 text-red-700',
   cancelled: 'bg-gray-100 text-gray-600',
+  invited: 'bg-violet-50 text-violet-700',
+  requested: 'bg-violet-50 text-violet-700',
+  ended: 'bg-gray-100 text-gray-600',
 }
 
 function StatusPill({ status, label }: { status: string; label: string }) {

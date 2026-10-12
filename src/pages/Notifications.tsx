@@ -25,6 +25,7 @@ import {
   faLock,
   faUserCheck,
   faUserPlus,
+  faUserTie,
   faIdCard,
 } from '@fortawesome/free-solid-svg-icons'
 import {
@@ -69,6 +70,16 @@ const LOOK: Record<NotificationType, { icon: IconDefinition; tint: string }> = {
   'agreement.disputed': { icon: faTriangleExclamation, tint: 'bg-red-50 text-red-700' },
   'agreement.resolved': { icon: faScaleBalanced, tint: 'bg-blue-50 text-blue-700' },
   'agreement.reviewed': { icon: faStar, tint: 'bg-amber-50 text-amber-700' },
+  'manager.new': { icon: faUserTie, tint: 'bg-blue-50 text-blue-700' },
+  'manager.approved': { icon: faCircleCheck, tint: 'bg-green-50 text-green-700' },
+  'manager.rejected': { icon: faCircleXmark, tint: 'bg-gray-100 text-gray-600' },
+  'representation.requested': { icon: faUserTie, tint: 'bg-violet-50 text-violet-700' },
+  'representation.invited': { icon: faUserTie, tint: 'bg-violet-50 text-violet-700' },
+  'representation.accepted': { icon: faUserTie, tint: 'bg-green-50 text-green-700' },
+  'representation.declined': { icon: faCircleXmark, tint: 'bg-gray-100 text-gray-600' },
+  'representation.ended': { icon: faBan, tint: 'bg-gray-100 text-gray-600' },
+  'hire.new_managed': { icon: faHandshake, tint: 'bg-violet-50 text-violet-700' },
+  'hire.answered_by_manager': { icon: faHandshake, tint: 'bg-blue-50 text-blue-700' },
 }
 
 // "5 minutes ago" chuni hui zaban mein
@@ -243,6 +254,12 @@ function Notifications() {
                         title: notification.data.title ?? '',
                         milestone: notification.data.milestone ?? '',
                         rating: notification.data.rating ?? '',
+                        // Manager / talent ka naam, aur manager ne kya jawab diya
+                        name: notification.data.name ?? '',
+                        manager: notification.data.manager ?? '',
+                        action: notification.data.action
+                          ? t(`manager.actionWord.${notification.data.action}`)
+                          : '',
                         outcome: notification.data.outcome
                           ? t(`agreements.outcome.${notification.data.outcome}`)
                           : '',

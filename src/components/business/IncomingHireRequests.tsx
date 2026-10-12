@@ -14,11 +14,13 @@ import { getApiError } from '../../utils/apiError'
 
 type Answer = { hire: HireRequest; action: 'accept' | 'decline' }
 
-// Talent dashboard: verified businesses ki aayi hui hire requests. Accept ya decline
-function IncomingHireRequests() {
+// Talent dashboard: verified businesses ki aayi hui hire requests. Accept ya decline.
+// Manager: apne saare talents ki (manager=true), ya ek talent ki (personId)
+function IncomingHireRequests({ personId, manager = false }: { personId?: string; manager?: boolean } = {}) {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const { data: hires, isLoading } = useQuery(incomingHiresQuery)
+  const { data: all, isLoading } = useQuery(incomingHiresQuery)
+  const hires = personId ? all?.filter((hire) => hire.person?._id === personId) : all
   const [answer, setAnswer] = useState<Answer | null>(null)
   const [note, setNote] = useState('')
 
@@ -54,12 +56,14 @@ function IncomingHireRequests() {
           </span>
         )}
       </h2>
-      <p className="text-sm text-gray-500">{t('hire.incomingSubtitle')}</p>
+      <p className="text-sm text-gray-500">
+        {manager ? t('manager.hiresSubtitle') : t('hire.incomingSubtitle')}
+      </p>
 
       {isLoading && <div className="mt-4 h-24 animate-pulse rounded-2xl bg-white shadow-sm" />}
       {!isLoading && !hires?.length && (
         <p className="mt-4 rounded-2xl border border-dashed border-gray-300 bg-white px-5 py-8 text-center text-sm text-gray-500">
-          {t('hire.incomingEmpty')}
+          {manager ? t('manager.hiresEmpty') : t('hire.incomingEmpty')}
         </p>
       )}
       {/* Pehle woh jin ka jawab dena hai, phir purani (accepted / declined / cancelled) */}
@@ -75,7 +79,7 @@ function IncomingHireRequests() {
               </h3>
               <ul className="mt-2 space-y-3">
                 {group.items.map((hire) => (
-                  <HireRequestCard key={hire._id} hire={hire} who="business">
+                  <HireRequestCard key={hire._id} hire={hire} who="business" showTalent={manager && !personId}>
                     {hire.status === 'pending' && (
                       <>
                         <button

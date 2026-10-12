@@ -11,7 +11,7 @@ import DataState from '../../components/admin-panel/DataState'
 import PageHeader from '../../components/admin-panel/PageHeader'
 import { formatDateTime } from '../../utils/adminFormat'
 
-const TARGETS = ['person', 'claim', 'user', 'report', 'business', 'agreement'] as const
+const TARGETS = ['person', 'claim', 'user', 'report', 'business', 'agreement', 'manager'] as const
 const PAGE_SIZE = 25
 
 // Har target ke actions (auditAction.* mein inke naam hain)
@@ -30,6 +30,7 @@ const ACTIONS: Record<(typeof TARGETS)[number], string[]> = {
   report: ['update'],
   agreement: ['sign', 'dispute', 'resolve'],
   business: ['send_code', 'reset_otp', 'otp_locked', 'verify_manual', 'approve', 'reject'],
+  manager: ['approve', 'reject'],
 }
 
 // Sirf parhne ke liye: koi button yahan kuch badalta nahi

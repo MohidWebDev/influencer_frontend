@@ -42,13 +42,15 @@ type DialogState =
   | { mode: 'new'; initial?: Partial<ServiceInput> }
   | { mode: 'edit'; service: Service }
 
-// /dashboard/services -> talent apni services aur availability sambhalta hai
-function ServicesPage() {
+// /dashboard/services -> talent apni services aur availability sambhalta hai.
+// personId: manager apne talent ki taraf se (talent workspace ke andar, apna heading nahi)
+function ServicesPage({ personId }: { personId?: string } = {}) {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
+  const servicesKey = personId ? [...MY_SERVICES_KEY, personId] : MY_SERVICES_KEY
   const { data, isLoading, error } = useQuery({
-    queryKey: MY_SERVICES_KEY,
-    queryFn: getMyServices,
+    queryKey: servicesKey,
+    queryFn: () => getMyServices(personId),
     retry: false,
   })
   const [dialog, setDialog] = useState<DialogState | null>(null)
@@ -56,12 +58,14 @@ function ServicesPage() {
   const [toDelete, setToDelete] = useState<Service | null>(null)
 
   // Server ka jawab hi naya sach: cache foran update
-  const apply = (next: MyServices) => queryClient.setQueryData(MY_SERVICES_KEY, next)
+  const apply = (next: MyServices) => queryClient.setQueryData(servicesKey, next)
   const fail = (err: unknown) => toast.error(getApiError(err).message)
 
   const save = useMutation({
     mutationFn: (input: ServiceInput) =>
-      dialog?.mode === 'edit' ? updateService(dialog.service._id, input) : createService(input),
+      dialog?.mode === 'edit'
+        ? updateService(dialog.service._id, input, personId)
+        : createService(input, personId),
     onMutate: () => setDialogErrors({}),
     onSuccess: (next) => {
       apply(next)
@@ -77,7 +81,7 @@ function ServicesPage() {
 
   const toggle = useMutation({
     mutationFn: ({ id, isActive }: { id: string; isActive: boolean }) =>
-      updateService(id, { isActive }),
+      updateService(id, { isActive }, personId),
     onSuccess: (next, { isActive }) => {
       apply(next)
       toast.success(isActive ? t('services.shown') : t('services.hiddenToast'))
@@ -86,7 +90,7 @@ function ServicesPage() {
   })
 
   const remove = useMutation({
-    mutationFn: (id: string) => deleteService(id),
+    mutationFn: (id: string) => deleteService(id, personId),
     onSuccess: (next) => {
       apply(next)
       toast.success(t('services.deleted'))
@@ -96,7 +100,7 @@ function ServicesPage() {
   })
 
   const availability = useMutation({
-    mutationFn: saveAvailability,
+    mutationFn: (input: Parameters<typeof saveAvailability>[0]) => saveAvailability(input, personId),
     onSuccess: (next) => {
       apply(next)
       toast.success(t('services.availabilitySaved'))
@@ -163,10 +167,14 @@ function ServicesPage() {
   return (
     <div className="mx-auto max-w-6xl space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight md:text-3xl">{t('services.title')}</h1>
-          <p className="mt-1 text-sm text-gray-500">{t('services.subtitle')}</p>
-        </div>
+        {personId ? (
+          <span />
+        ) : (
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight md:text-3xl">{t('services.title')}</h1>
+            <p className="mt-1 text-sm text-gray-500">{t('services.subtitle')}</p>
+          </div>
+        )}
         <Link
           to={`/people/${person.slug}`}
           className="inline-flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-medium hover:bg-gray-100"

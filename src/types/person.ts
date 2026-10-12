@@ -60,6 +60,8 @@ export interface Person extends PersonSummary {
   claimedBy: string | null
   // Sirf chalti services (public)
   services?: Service[]
+  // Talent ka verified manager (agar koi hai)
+  representedBy?: { name: string; agencyName: string | null } | null
   availability?: Availability
   // Photo kahan se aayi (jaise Wikimedia Commons) aur license
   photoCredit?: {

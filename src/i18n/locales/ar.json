@@ -9,7 +9,8 @@
     "manageProfiles": "إدارة الملفات",
     "language": "اللغة",
     "businesses": "الشركات",
-    "agreements": "الاتفاقيات"
+    "agreements": "الاتفاقيات",
+    "managers": "المديرون"
   },
   "common": {
     "loading": "جارٍ التحميل...",
@@ -61,7 +62,9 @@
     "businessesApproved": "{{count}} موثّقة",
     "businessesNeedAction": "شركات تحتاج إجراء",
     "disputes": "نزاعات مفتوحة",
-    "activeAgreements": "{{count}} اتفاقيات نشطة"
+    "activeAgreements": "{{count}} اتفاقيات نشطة",
+    "managersNeedAction": "مديرون للمراجعة",
+    "managersApproved": "{{count}} موثّق"
   },
   "claimStatus": {
     "pending": "إرسال الرمز",
@@ -328,7 +331,8 @@
     "user": "مستخدم",
     "report": "بلاغ",
     "business": "شركة",
-    "agreement": "اتفاقية"
+    "agreement": "اتفاقية",
+    "manager": "مدير"
   },
   "auditAction": {
     "person": {
@@ -369,6 +373,10 @@
       "sign": "وقّع الاتفاقية",
       "dispute": "فتح نزاعًا",
       "resolve": "حلّ النزاع"
+    },
+    "manager": {
+      "approve": "وثّق مديرًا",
+      "reject": "رفض مديرًا"
     }
   },
   "reportForm": {
@@ -793,7 +801,8 @@
     },
     "yourTalents": {
       "title": "مواهبك",
-      "description": "الملفات التي تديرها نيابة عن الأشخاص الذين تمثلهم."
+      "description": "الملفات التي تديرها نيابة عن الأشخاص الذين تمثلهم.",
+      "action": "افتح مواهبي"
     },
     "repInquiries": {
       "description": "كل الطلبات لمواهبك في صندوق واحد."
@@ -831,6 +840,10 @@
       "businessDescription": "الاتفاقيات الموقّعة مع المواهب التي وظّفتها: الشروط والمراحل والتسليمات.",
       "action": "افتح الاتفاقيات",
       "talentDescription": "الاتفاقيات الموقّعة مع الشركات التي وظّفتك: الشروط والمراحل والتسليمات."
+    },
+    "repHires": {
+      "title": "طلبات التوظيف",
+      "action": "افتح طلبات التوظيف"
     }
   },
   "oldAdmin": {
@@ -1124,7 +1137,17 @@
       "agreement_completed": "اكتملت \"{{title}}\". اترك تقييمًا.",
       "agreement_disputed": "أُبلغ عن مشكلة في \"{{title}}\". سيراجعها المشرف.",
       "agreement_resolved": "حُلّ النزاع على \"{{title}}\": {{outcome}}",
-      "agreement_reviewed": "حصلت على تقييم {{rating}} نجوم في \"{{title}}\"."
+      "agreement_reviewed": "حصلت على تقييم {{rating}} نجوم في \"{{title}}\".",
+      "manager_new": "أرسل {{manager}} بيانات المدير للتوثيق.",
+      "manager_approved": "أنت مدير موثّق. يمكنك الآن العمل مع المواهب.",
+      "manager_rejected": "لم يتم توثيق بياناتك كمدير: {{reason}}",
+      "representation_requested": "يريد {{name}} أن يكون مديرك. راجع الطلب.",
+      "representation_invited": "دعاك {{name}} لتكون مديره.",
+      "representation_accepted": "قبل {{name}}. أنتما مرتبطان الآن.",
+      "representation_declined": "رفض {{name}}.",
+      "representation_ended": "أنهى {{name}} تمثيل {{person}}.",
+      "hire_new_managed": "تريد {{business}} توظيف {{person}}. ردّ من لوحتك.",
+      "hire_answered_by_manager": "{{action}} مديرك {{name}} طلب التوظيف من {{business}}."
     }
   },
   "dataState": {
@@ -1804,11 +1827,167 @@
     "viewPublicProfile": "عرض الملف العام",
     "pendingHires": "طلبات توظيف جديدة بانتظار ردك: {{count}}",
     "acceptedHires": "قبلت المواهب طلبك. جهّز الاتفاقية: {{count}}",
-    "review": "مراجعة"
+    "review": "مراجعة",
+    "managerTitle": "لوحة المدير",
+    "managerDetails": "بيانات المدير",
+    "myTalents": "مواهبي",
+    "myManager": "مديري"
   },
   "pageError": {
     "title": "تعذّر تحميل هذه الصفحة",
     "text": "حدث خطأ أثناء عرض هذه الصفحة. أعد التحميل للمحاولة مرة أخرى. إذا تكرر ذلك فربما لا يزال الخادم قيد التحديث.",
     "reload": "إعادة تحميل الصفحة"
+  },
+  "manager": {
+    "verification": "توثيق المدير",
+    "getVerifiedTitle": "احصل على التوثيق كمدير",
+    "getVerifiedText": "أخبرنا عن عملك وقدّم إثباتًا مثل صفحة وكالتك أو عقد إدارة. بعد أن يوثّقك المشرف يمكنك العمل نيابةً عن المواهب.",
+    "addDetails": "أضف بياناتك",
+    "verifiedManager": "مدير موثّق",
+    "underReview": "قيد المراجعة",
+    "notVerified": "غير موثّق",
+    "independent": "مدير مستقل",
+    "pendingText": "أُرسلت في {{date}}. يراجع المشرف بياناتك. يمكنك الارتباط بالمواهب بعد التوثيق.",
+    "approvedText": "تم توثيقك. افتح ملف موهبة واضغط \"طلب التمثيل\"، أو اطلب من مواهبك دعوتك عبر بريد تسجيل دخولك.",
+    "findTalents": "ابحث عن مواهب",
+    "rejected": "لم يتم التوثيق: {{reason}}",
+    "formTitle": "احصل على التوثيق كمدير",
+    "editTitle": "بياناتك كمدير",
+    "formSubtitle": "نراجع هذه البيانات قبل أن تعمل مع المواهب، وتراها المواهب أيضًا قبل قبولك.",
+    "identityWarning": "تغيير الوكالة أو الموقع أو الدولة يعيد بياناتك للمراجعة، ولن تتمكن حتى ذلك الحين من العمل نيابةً عن مواهبك.",
+    "submit": "إرسال للتوثيق",
+    "submitted": "أُرسلت للتوثيق",
+    "saved": "تم حفظ البيانات",
+    "fields": {
+      "agencyName": "الوكالة أو الشركة",
+      "agencyPlaceholder": "اتركه فارغًا إن كنت تعمل بمفردك",
+      "websiteUrl": "الموقع أو LinkedIn",
+      "bio": "نبذة عنك",
+      "bioPlaceholder": "من تدير وماذا تفعل لهم",
+      "talentsCount": "عدد المواهب التي تديرها",
+      "proofLinksHint": "صفحة الوكالة، عقد الإدارة، تغطية صحفية: أي شيء يثبت أنك تدير مواهب."
+    },
+    "talentsTitle": "مواهبي",
+    "talentsSubtitle": "المواهب التي تمثّلها، ودعوات المواهب.",
+    "verifyFirst": "احصل على التوثيق قبل العمل مع المواهب.",
+    "invitesTitle": "دعوات من المواهب",
+    "invitedYou": "دعاك {{name}} لتكون مديره.",
+    "inviteAccepted": "أنت الآن تمثّل هذه الموهبة",
+    "inviteDeclined": "تم رفض الدعوة",
+    "rosterTitle": "قائمة مواهبك",
+    "rosterEmptyTitle": "لا توجد مواهب بعد",
+    "rosterEmptyText": "افتح ملف موهبة واضغط \"طلب التمثيل\"، أو اطلب من مواهبك دعوتك عبر بريد تسجيل دخولك.",
+    "followers": "{{count}} متابع",
+    "liveServices": "{{count}} خدمات فعّالة",
+    "pendingHires": "{{count}} طلبات توظيف جديدة",
+    "openAgreements": "{{count}} اتفاقيات مفتوحة",
+    "sentRequestsTitle": "الطلبات التي أرسلتها",
+    "sentInvitesTitle": "الدعوات التي أرسلتها",
+    "sentOn": "أُرسلت {{date}}",
+    "withdraw": "سحب",
+    "withdrawTitle": "سحب هذا الطلب؟",
+    "withdrawBody": "لن يتمكن {{name}} من قبوله.",
+    "withdrawInviteBody": "لن يتمكن {{name}} من قبول دعوتك.",
+    "requestWithdrawn": "تم سحب الطلب",
+    "inviteWithdrawn": "تم سحب الدعوة",
+    "status": {
+      "invited": "مدعو",
+      "requested": "مطلوب",
+      "active": "نشط",
+      "declined": "مرفوض",
+      "cancelled": "مسحوب",
+      "ended": "منتهٍ"
+    },
+    "permissions": {
+      "manageProfile": "إدارة الملف",
+      "handleHires": "التعامل مع طلبات التوظيف"
+    },
+    "permissionHelp": {
+      "manageProfile": "تعديل الملف والخدمات والأسعار والتوفر.",
+      "handleHires": "قبول أو رفض طلبات التوظيف من الشركات."
+    },
+    "whatCanTheyDo": "ماذا يمكنه أن يفعل لك؟",
+    "signingNote": "أنت من يوقّع الاتفاقيات دائمًا. يمكنك تغيير هذه الصلاحيات أو إزالة مديرك في أي وقت.",
+    "backToTalents": "العودة إلى مواهبي",
+    "workingFor": "تعمل لصالح",
+    "switchTalent": "تبديل الموهبة",
+    "stopRepresenting": "إنهاء التمثيل",
+    "stopTitle": "إنهاء تمثيل هذه الموهبة؟",
+    "stopBody": "لن تتمكن من العمل نيابةً عن {{name}}، وسيتم إبلاغه.",
+    "ended": "انتهى التمثيل",
+    "tabs": {
+      "hires": "طلبات التوظيف",
+      "services": "الخدمات والتوفر",
+      "profile": "الملف"
+    },
+    "noPermissionTitle": "ليست لديك صلاحية لهذا",
+    "noPermissionText": "اطلب من الموهبة السماح لك بـ \"{{permission}}\".",
+    "forTalent": "لصالح {{name}}",
+    "answeredBy": "أجاب {{name}} (المدير)",
+    "hiresSubtitle": "طلبات التوظيف للمواهب التي سمحت لك بالتعامل معها.",
+    "hiresEmpty": "لا توجد طلبات توظيف بعد.",
+    "hiresNotice": "طلبات توظيف جديدة لمواهبك: {{count}}",
+    "invitesNotice": "دعتك مواهب لتمثيلها: {{count}}",
+    "requestsNotice": "طلب مديرون تمثيلك: {{count}}",
+    "myManagerTitle": "مديري",
+    "myManagerSubtitle": "يمكن لمدير موثّق التعامل مع طلبات التوظيف وملفك نيابةً عنك. أنت تختار ما يمكنه فعله.",
+    "claimFirst": "طالب بملفك أولًا للعمل مع مدير.",
+    "wantsToRepresent": "يريد تمثيلك",
+    "acceptManager": "قبوله مديرًا لي",
+    "requestAccepted": "تم تعيين مديرك",
+    "requestDeclined": "تم رفض الطلب",
+    "yourManagerSince": "مديرك منذ {{date}}",
+    "removeManager": "إزالة المدير",
+    "removeTitle": "إزالة مديرك؟",
+    "removeBody": "لن يتمكن {{name}} من العمل نيابةً عنك، وسيتم إبلاغه.",
+    "savePermissions": "حفظ الصلاحيات",
+    "permissionsSaved": "تم حفظ الصلاحيات",
+    "inviteTitle": "ادعُ مديرك",
+    "inviteText": "أدخل البريد الذي يسجّل به مديرك الدخول. يجب أن يكون مديرًا موثّقًا على المنصة.",
+    "managerEmail": "بريد المدير",
+    "messageOptional": "رسالة (اختياري)",
+    "sendInvite": "إرسال الدعوة",
+    "inviteSent": "تم إرسال الدعوة",
+    "historyTitle": "مديرون وطلبات سابقة",
+    "representedBy": "يمثّله {{name}}",
+    "representedByAgency": "يمثّله {{name}} · {{agencyName}}",
+    "youRepresent": "أنت تمثّله",
+    "requestPending": "تم إرسال الطلب",
+    "verifyToRepresent": "وثّق حسابك للتمثيل",
+    "requestToRepresent": "طلب التمثيل",
+    "requestTitle": "تمثيل {{name}}؟",
+    "requestBody": "سيُطلب من {{name}} قبولك مديرًا له واختيار ما يمكنك فعله.",
+    "requestPlaceholder": "عرّف بنفسك وكيف يمكنك المساعدة",
+    "sendRequest": "إرسال الطلب",
+    "requestSent": "تم إرسال الطلب",
+    "actionWord": {
+      "accept": "قبل",
+      "decline": "رفض"
+    }
+  },
+  "managerStatus": {
+    "pending": "قيد المراجعة",
+    "approved": "موثّق",
+    "rejected": "مرفوض"
+  },
+  "adminManagers": {
+    "title": "المديرون",
+    "subtitle": "مديرون ووكلاء يطلبون التوثيق قبل العمل مع المواهب.",
+    "searchPlaceholder": "ابحث بالاسم أو البريد أو الوكالة",
+    "emptyTitle": "لا يوجد مديرون بعد",
+    "emptyText": "يظهر المديرون هنا عندما يرسلون بياناتهم.",
+    "colManager": "المدير",
+    "colAgency": "الوكالة",
+    "checkHint": "تحقّق من الموقع أو LinkedIn وروابط الإثبات. يمكن للمديرين الموثّقين الارتباط بالمواهب، دائمًا بموافقة الموهبة.",
+    "approve": "توثيق المدير",
+    "approveTitle": "توثيق هذا المدير؟",
+    "approveBody": "سيتمكن {{name}} من الارتباط بالمواهب التي تقبله.",
+    "approved": "تم توثيق المدير",
+    "rejectTitle": "رفض هذا المدير؟",
+    "rejectPlaceholder": "مثلًا: لم نتمكن من تأكيد وكالتك",
+    "rejected": "تم رفض المدير",
+    "revokeWarning": "سيؤدي هذا إلى إنهاء ارتباطه بـ {{count}} مواهب، وسيتم إبلاغها.",
+    "talentsTitle": "المواهب ({{count}} نشطة)",
+    "noTalents": "غير مرتبط بأي موهبة بعد."
   }
 }

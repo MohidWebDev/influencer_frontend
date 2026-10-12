@@ -4,6 +4,7 @@ import { getMyProfile, listMyClaims } from './claims'
 import { getMyBusiness, listIncomingHires, listMyHires } from './business'
 import { getAgreement, getPersonReviews, listMyAgreements } from './agreements'
 import { getSavedMembership, getShortlist, listShortlists } from './shortlists'
+import { getMyManager, getMyManagerProfile, getMyTalent, listMyRepresentations, listMyTalents } from './manager'
 import type { TaxonomyType } from '../types/person'
 
 // Har query ki key aur function ek jagah. Pages aur prefetch dono yahi use karte hain,
@@ -101,3 +102,32 @@ export function shortlistQuery(id: string) {
     queryFn: () => getShortlist(id),
   })
 }
+
+// Manager: apni tasdeeq, talents ke saath rishte aur roster
+export const myManagerProfileQuery = queryOptions({
+  queryKey: ['manager', 'profile'],
+  queryFn: getMyManagerProfile,
+})
+
+export const myRepresentationsQuery = queryOptions({
+  queryKey: ['manager', 'representations'],
+  queryFn: listMyRepresentations,
+})
+
+export const myTalentsQuery = queryOptions({
+  queryKey: ['manager', 'talents'],
+  queryFn: listMyTalents,
+})
+
+export function myTalentQuery(personId: string) {
+  return queryOptions({
+    queryKey: ['manager', 'talent', personId],
+    queryFn: () => getMyTalent(personId),
+  })
+}
+
+// Talent: mera manager aur khuli darkhwastein
+export const myManagerQuery = queryOptions({
+  queryKey: ['me', 'manager'],
+  queryFn: getMyManager,
+})

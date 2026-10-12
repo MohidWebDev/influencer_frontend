@@ -10,7 +10,6 @@ import {
   faShieldHalved,
   faStar,
   faTableColumns,
-  faUsers,
 } from '@fortawesome/free-solid-svg-icons'
 import { tr } from '../i18n/translated'
 import type { Role } from '../types/user'
@@ -52,14 +51,6 @@ export const MAIN_NAV: NavItem[] = [
       return tr('site.nav.about')
     },
     icon: faCircleInfo,
-  },
-  {
-    to: '/talents',
-    get label() {
-      return tr('site.nav.myTalents')
-    },
-    icon: faUsers,
-    roles: ['representative'],
   },
   {
     to: '/shortlists',
