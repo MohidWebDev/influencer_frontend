@@ -39,13 +39,6 @@ export const MAIN_NAV: NavItem[] = [
     },
     icon: faCompass,
   },
-  // {
-  //   to: '/browse',
-  //   get label() {
-  //     return tr('site.nav.browse')
-  //   },
-  //   icon: faLayerGroup,
-  // },
   {
     to: '/businesses',
     get label() {
