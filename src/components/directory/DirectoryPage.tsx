@@ -25,6 +25,15 @@ const PAGE_SIZE = 12
 
 type Kind = 'businesses' | 'managers'
 
+// Upar wale card ki tasveerein (Unsplash): businesses ke liye shishe ki office buildings,
+// managers ke liye deal / handshake
+const HEADER_IMAGES: Record<Kind, string> = {
+  businesses:
+    'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80',
+  managers:
+    'https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1600&q=80',
+}
+
 // Kis account type se sign up (register page pe pehle se chuna hua)
 const SIGNUP_TYPE: Record<Kind, string> = { businesses: 'business', managers: 'representative' }
 
@@ -260,7 +269,16 @@ function DirectoryPage({ kind, icon }: { kind: Kind; icon: IconDefinition }) {
   return (
     <div className="space-y-6">
       <section className="keep-dark relative isolate overflow-hidden rounded-3xl bg-gray-900 px-5 py-10 text-white sm:px-8 md:py-14">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_85%_20%,rgba(255,255,255,0.12),transparent_45%)]" />
+        <img
+          src={HEADER_IMAGES[kind]}
+          alt=""
+          decoding="async"
+          // Tasveer na aaye to bhi header saaf (gehra rang) rahe
+          onError={(e) => (e.currentTarget.style.display = 'none')}
+          className="absolute inset-0 -z-10 h-full w-full object-cover object-center"
+        />
+        {/* Likhai wali taraf gehra parda taake text saaf parha jaye */}
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-gray-950/95 via-gray-950/75 to-gray-950/25 rtl:bg-gradient-to-l" />
         <div className="max-w-2xl">
           <p className="inline-flex items-center gap-2 text-xs font-medium tracking-wider text-white/60 uppercase">
             <FontAwesomeIcon icon={icon} />
