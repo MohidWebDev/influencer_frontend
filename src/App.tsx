@@ -25,6 +25,8 @@ import ManagedTalentPage from './pages/manager/ManagedTalentPage'
 import DashboardLayout from './components/dashboard-panel/DashboardLayout'
 import BusinessProfileForm from './pages/dashboards/BusinessProfileForm'
 import ForgotPassword from './pages/ForgotPassword'
+import BusinessesPage from './pages/directory/BusinessesPage'
+import ManagersPage from './pages/directory/ManagersPage'
 import MyProfileRedirect from './pages/MyProfileRedirect'
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import AdminPersonEditor from './pages/admin/AdminPersonEditor'
@@ -57,6 +59,8 @@ function App() {
         <Route path="/search" element={<Search />} />
         <Route path="/browse" element={<Browse />} />
         <Route path="/about" element={<About />} />
+        <Route path="/businesses" element={<BusinessesPage />} />
+        <Route path="/managers" element={<ManagersPage />} />
         {/* Talent / business dashboard ke pages: admin panel jaisa sidebar */}
         <Route element={<DashboardLayout />}>
           <Route

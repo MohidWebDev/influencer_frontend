@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { useState, type FormEvent } from 'react'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useNavigate, useSearchParams } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import FormField from '../components/FormField'
 import { SIGNUP_ROLE_OPTIONS } from '../constants/roles'
@@ -13,11 +13,16 @@ function Register() {
   const { t } = useTranslation()
   const { user, register } = useAuth()
   const navigate = useNavigate()
+  // /register?type=business -> account type pehle se chuna hua (Businesses / Managers page se)
+  const [searchParams] = useSearchParams()
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [role, setRole] = useState<SignupRole | ''>('')
+  const [role, setRole] = useState<SignupRole | ''>(() => {
+    const type = searchParams.get('type')
+    return SIGNUP_ROLE_OPTIONS.some((o) => o.value === type) ? (type as SignupRole) : ''
+  })
   // Business: naam ki jagah company ki details
   const [companyName, setCompanyName] = useState('')
   const [industry, setIndustry] = useState('')
@@ -83,9 +88,7 @@ function Register() {
                   className="sr-only"
                 />
                 <span className="block font-medium">{option.label}</span>
-                <span className="mt-1 block text-sm text-gray-500">
-                  {option.description}
-                </span>
+                <span className="mt-1 block text-sm text-gray-500">{option.description}</span>
               </label>
             ))}
           </div>
@@ -136,7 +139,9 @@ function Register() {
                       </option>
                     ))}
                   </select>
-                  {errors.companySize && <p className="mt-1 text-sm text-red-600">{errors.companySize}</p>}
+                  {errors.companySize && (
+                    <p className="mt-1 text-sm text-red-600">{errors.companySize}</p>
+                  )}
                 </div>
               </div>
               <div>
@@ -154,9 +159,13 @@ function Register() {
                     errors.description ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
-                {errors.description && <p className="mt-1 text-sm text-red-600">{errors.description}</p>}
+                {errors.description && (
+                  <p className="mt-1 text-sm text-red-600">{errors.description}</p>
+                )}
               </div>
-              <p className="border-t border-gray-100 pt-4 text-sm font-medium">{t('register.loginDetails')}</p>
+              <p className="border-t border-gray-100 pt-4 text-sm font-medium">
+                {t('register.loginDetails')}
+              </p>
             </>
           ) : (
             <FormField

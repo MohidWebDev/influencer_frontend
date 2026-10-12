@@ -91,7 +91,10 @@ function Navbar() {
         <div className="hidden items-center justify-center gap-1 xl:flex">
           {mainItems.map((item) => (
             <TopLink key={item.to} to={item.to} className={linkClass(active(item))}>
-              <FontAwesomeIcon icon={item.icon} />
+              {/* 1280-1535px pe jagah kam: sirf naam (span: FA ka svg "hidden" nahi maanta) */}
+              <span className="hidden 2xl:inline-flex">
+                <FontAwesomeIcon icon={item.icon} />
+              </span>
               {item.label}
             </TopLink>
           ))}
@@ -134,7 +137,7 @@ function Navbar() {
               </TopLink>
               <TopLink
                 to="/register"
-                className="inline-flex items-center gap-2 rounded-lg bg-gray-900 px-3 py-1.5 text-sm text-white hover:bg-gray-800"
+                className="inline-flex items-center gap-2 rounded-lg bg-gray-900 px-3 py-1.5 text-sm whitespace-nowrap text-white hover:bg-gray-800"
               >
                 <FontAwesomeIcon icon={faUserPlus} />
                 {t('site.nav.signup')}

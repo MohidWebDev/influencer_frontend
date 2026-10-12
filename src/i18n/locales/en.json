@@ -420,7 +420,9 @@
       "home": "Home",
       "about": "About",
       "myBusiness": "My business",
-      "agreements": "Agreements"
+      "agreements": "Agreements",
+      "businesses": "Businesses",
+      "managers": "Managers"
     },
     "search": {
       "placeholder": "Search by name or what they do...",
@@ -1990,5 +1992,36 @@
     "revokeWarning": "This ends their links with {{count}} talents. The talents will be told.",
     "talentsTitle": "Talents ({{count}} active)",
     "noTalents": "Not linked to any talents yet."
+  },
+  "directory": {
+    "inReview": "In review",
+    "notVerified": "Not verified yet",
+    "joined": "Joined {{date}}",
+    "employees": "{{size}} employees",
+    "talents": "Represents {{count}} talent(s)",
+    "noMatch": "Nothing matches “{{term}}”",
+    "noMatchHint": "Check the spelling or try a shorter name.",
+    "businesses": {
+      "eyebrow": "Directory",
+      "title": "Businesses",
+      "subtitle": "Companies on the platform that hire speakers, creators and experts.",
+      "searchLabel": "Search businesses",
+      "searchPlaceholder": "Search by company name…",
+      "count": "businesses",
+      "emptyTitle": "No businesses yet",
+      "emptyText": "Businesses show up here as soon as they create an account.",
+      "join": "Sign up as a business"
+    },
+    "managers": {
+      "eyebrow": "Directory",
+      "title": "Managers & agents",
+      "subtitle": "Managers and agents who represent talent on the platform.",
+      "searchLabel": "Search managers",
+      "searchPlaceholder": "Search by name or agency…",
+      "count": "managers",
+      "emptyTitle": "No managers yet",
+      "emptyText": "Managers and agents show up here as soon as they create an account.",
+      "join": "Sign up as a manager"
+    }
   }
 }

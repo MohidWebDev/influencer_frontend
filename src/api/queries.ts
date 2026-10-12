@@ -4,7 +4,14 @@ import { getMyProfile, listMyClaims } from './claims'
 import { getMyBusiness, listIncomingHires, listMyHires } from './business'
 import { getAgreement, getPersonReviews, listMyAgreements } from './agreements'
 import { getSavedMembership, getShortlist, listShortlists } from './shortlists'
-import { getMyManager, getMyManagerProfile, getMyTalent, listMyRepresentations, listMyTalents } from './manager'
+import {
+  getMyManager,
+  getMyManagerProfile,
+  getMyTalent,
+  listMyRepresentations,
+  listMyTalents,
+} from './manager'
+import { listBusinessDirectory, listManagerDirectory } from './directory'
 import type { TaxonomyType } from '../types/person'
 
 // Har query ki key aur function ek jagah. Pages aur prefetch dono yahi use karte hain,
@@ -74,7 +81,7 @@ export function agreementQuery(id: string) {
   return queryOptions({
     queryKey: ['agreements', id],
     queryFn: () => getAgreement(id),
-    })
+  })
 }
 
 export function personReviewsQuery(slug: string) {
@@ -131,3 +138,14 @@ export const myManagerQuery = queryOptions({
   queryKey: ['me', 'manager'],
   queryFn: getMyManager,
 })
+
+// Public directory: sign up karne wale businesses aur managers
+export function directoryQuery(kind: 'businesses' | 'managers', params: URLSearchParams) {
+  return queryOptions({
+    queryKey: ['directory', kind, params.toString()],
+    queryFn: () =>
+      kind === 'businesses' ? listBusinessDirectory(params) : listManagerDirectory(params),
+    // Naya signup jaldi dikhe
+    staleTime: 30 * 1000,
+  })
+}
