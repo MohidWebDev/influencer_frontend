@@ -12,7 +12,8 @@ import Avatar from '../Avatar'
 // Desktop pe naam wala button: Dashboard, Settings, Log out
 function AccountMenu({ onLogout }: { onLogout: () => void }) {
   const { t } = useTranslation()
-  const { user } = useAuth()
+  const { user: confirmedUser, cachedUser } = useAuth()
+  const user = confirmedUser ?? cachedUser
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const close = useCallback(() => setOpen(false), [])

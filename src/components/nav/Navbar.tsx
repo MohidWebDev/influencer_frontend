@@ -42,7 +42,9 @@ function BellCount({ count }: { count: number }) {
 
 function Navbar() {
   const { t } = useTranslation()
-  const { user, logout } = useAuth()
+  // Shakal ke liye: pakka login, ya tasdeeq ke dauran pichla login (bell ki API pakke pe hi)
+  const { user: confirmedUser, cachedUser, logout } = useAuth()
+  const user = confirmedUser ?? cachedUser
   const navigate = useNavigate()
   const { pathname, search } = useLocation()
   const [mobileOpen, setMobileOpen] = useState(false)

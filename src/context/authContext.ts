@@ -3,9 +3,13 @@ import type { DeletedProfileOutcome, LoginInput, RegisterInput } from '../api/au
 import type { User } from '../types/user'
 
 export interface AuthContextValue {
+  // Server ka pakka kiya hua login. Isi ko dekh kar user wali APIs chalti hain
   user: User | null
-  // Server se login abhi pakka ho raha hai. Is dauran `user` pichli dafa ka andaza hai
+  // Server se login abhi pakka ho raha hai (is dauran `user` null hai)
   isLoading: boolean
+  // Pichli dafa ka login, sirf navbar ki shakal foran sahi dikhane ke liye.
+  // Is se kabhi API mat chalao: session khatam ho chuka ho to har call 401 deti hai
+  cachedUser: User | null
   login: (input: LoginInput) => Promise<User>
   register: (input: RegisterInput) => Promise<User>
   logout: () => Promise<void>

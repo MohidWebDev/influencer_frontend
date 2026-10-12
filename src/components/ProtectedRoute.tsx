@@ -15,9 +15,9 @@ function ProtectedRoute({ children, roles }: ProtectedRouteProps) {
   const { user, isLoading } = useAuth()
   const location = useLocation()
 
-  // Pichli dafa login tha to page foran dikhao (server ka jawab peeche aata hai).
-  // Login nahi tha to server ka intezar, warna galat /login pe bhej dete
-  if (isLoading && !user) {
+  // Server login pakka kare tab tak intezar: andaze wale user pe page ki APIs
+  // chal jati thin aur session khatam hone pe sab 401 deti thin
+  if (isLoading) {
     return <p className="text-center text-gray-500">{t('common.loading')}</p>
   }
 

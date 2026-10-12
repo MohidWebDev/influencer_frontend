@@ -68,7 +68,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!isVerifying && user !== undefined) saveSessionHint(user)
   }, [user, isVerifying])
   // Login user ko public lists bhi seedha server se (CDN ka purana jawab nahi)
-  setBypassCdn(Boolean(user))
+  setBypassCdn(Boolean(user) && !isVerifying)
 
   async function login(input: LoginInput) {
     const loggedIn = await loginUser(input)
@@ -128,8 +128,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   return (
     <AuthContext.Provider
       value={{
-        user: user ?? null,
+        // Andaza (placeholder) user nahi: jab tak server haan na kahe, koi login nahi
+        user: isVerifying ? null : (user ?? null),
         isLoading: isVerifying,
+        cachedUser: isVerifying ? (user ?? null) : null,
         login,
         register,
         logout,
