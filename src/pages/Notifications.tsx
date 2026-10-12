@@ -228,6 +228,8 @@ function Notifications() {
         <ul className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-gray-200/70">
           {items.map((notification) => {
             const look = LOOK[notification.type] ?? LOOK['claim.new']
+            // Khali data (jaise "verified manager") DB se aata hi nahi: {} maan lo
+            const data = notification.data ?? {}
             const isUnread = !notification.readAt
             return (
               <li key={notification._id} className="border-b border-gray-100 last:border-b-0">
@@ -248,24 +250,24 @@ function Notifications() {
                       className={`block text-sm leading-relaxed ${isUnread ? 'font-semibold text-gray-900' : 'text-gray-700'}`}
                     >
                       {t(`notifications.types.${notification.type.replace('.', '_')}`, {
-                        person: notification.data.person ?? t('claims.deletedProfile'),
-                        claimant: notification.data.claimant ?? t('claims.deletedUser'),
-                        business: notification.data.business ?? '—',
-                        title: notification.data.title ?? '',
-                        milestone: notification.data.milestone ?? '',
-                        rating: notification.data.rating ?? '',
+                        person: data.person ?? t('claims.deletedProfile'),
+                        claimant: data.claimant ?? t('claims.deletedUser'),
+                        business: data.business ?? '—',
+                        title: data.title ?? '',
+                        milestone: data.milestone ?? '',
+                        rating: data.rating ?? '',
                         // Manager / talent ka naam, aur manager ne kya jawab diya
-                        name: notification.data.name ?? '',
-                        manager: notification.data.manager ?? '',
-                        action: notification.data.action
-                          ? t(`manager.actionWord.${notification.data.action}`)
+                        name: data.name ?? '',
+                        manager: data.manager ?? '',
+                        action: data.action
+                          ? t(`manager.actionWord.${data.action}`)
                           : '',
-                        outcome: notification.data.outcome
-                          ? t(`agreements.outcome.${notification.data.outcome}`)
+                        outcome: data.outcome
+                          ? t(`agreements.outcome.${data.outcome}`)
                           : '',
-                        reason: notification.data.reason
-                          ? t(`reportReason.${notification.data.reason}`, {
-                              defaultValue: notification.data.reason,
+                        reason: data.reason
+                          ? t(`reportReason.${data.reason}`, {
+                              defaultValue: data.reason,
                             })
                           : '',
                       })}
