@@ -33,14 +33,30 @@ function ConfirmDialog({
 }: ConfirmDialogProps) {
   const { t } = useTranslation()
   const cancelRef = useRef<HTMLButtonElement>(null)
+  // ✅ onCancel ko ref mein rakho taake effect uspar depend na kare
+  const onCancelRef = useRef(onCancel)
 
+  // ✅ Har render par latest onCancel update karo — bina effect trigger kiye
+  useEffect(() => {
+    onCancelRef.current = onCancel
+  })
+
+  // ✅ Effect sirf `open` par chale — `onCancel` par nahi
   useEffect(() => {
     if (!open) return
-    cancelRef.current?.focus()
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onCancel()
+
+    // Focus: agar dialog ke andar textarea/input hai to usay focus do,
+    // warna cancel button ko (default behaviour)
+    const dialog = cancelRef.current?.closest('[role="dialog"]')
+    const firstField = dialog?.querySelector<HTMLElement>('textarea, input')
+    ;(firstField ?? cancelRef.current)?.focus()
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onCancelRef.current()
+    }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
-  }, [open, onCancel])
+  }, [open])   // ✅ sirf `open` — `onCancel` nahi
 
   if (!open) return null
 
