@@ -5,19 +5,15 @@ import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faArrowRight,
- 
   faBriefcase,
   faBuilding,
-  
   faChartLine,
   faChevronDown,
   faCircleCheck,
   faEye,
-  
   faIdBadge,
   faLanguage,
   faLock,
-  
   faStar,
   faUserCheck,
   faUserTie,
@@ -68,8 +64,6 @@ function About() {
     body: t(`about.step${n}Body`),
   }))
 
- 
-
   const values: { icon: IconDefinition; title: string; body: string }[] = [
     { icon: faChartLine, title: t('about.value1Title'), body: t('about.value1Body') },
     { icon: faUserCheck, title: t('about.value2Title'), body: t('about.value2Body') },
@@ -78,6 +72,7 @@ function About() {
   ]
 
   // Teen qism ke account: har ek ke apne fayde aur signup ka seedha raasta
+  // i === 1 (manager) — dark; baaki (talent, business) — white
   const audiences: { key: string; icon: IconDefinition; type: string }[] = [
     { key: 'talent', icon: faStar, type: 'talent' },
     { key: 'manager', icon: faUserTie, type: 'representative' },
@@ -159,20 +154,21 @@ function About() {
         </ol>
       </section>
 
-     
-      
-
       {/* Kis ke liye: teen account types */}
       <section>
         <h2 className="text-center text-2xl font-bold">{t('about.forTitle')}</h2>
         <div className="mt-8 grid gap-4 lg:grid-cols-3">
           {audiences.map((audience, i) => {
-            const dark = i === 0
+            // ✅ Sirf beech wala card (i === 1 = manager) dark hoga.
+            // Left (talent) aur right (business) white rahenge.
+            const dark = i === 1
             return (
               <div
                 key={audience.key}
                 className={`flex flex-col rounded-3xl p-6 md:p-8 ${
-                  dark ? 'keep-dark bg-gray-900 text-white' : 'bg-white shadow-sm ring-1 ring-gray-100'
+                  dark
+                    ? 'keep-dark bg-gray-900 text-white'
+                    : 'bg-white shadow-sm ring-1 ring-gray-100'
                 }`}
               >
                 <span
@@ -190,7 +186,9 @@ function About() {
                     <li key={n} className="flex gap-3 text-sm leading-relaxed">
                       <FontAwesomeIcon
                         icon={faCircleCheck}
-                        className={`mt-1 shrink-0 ${dark ? 'text-emerald-400' : 'text-emerald-600'}`}
+                        className={`mt-1 shrink-0 ${
+                          dark ? 'text-emerald-400' : 'text-emerald-600'
+                        }`}
                       />
                       <span className={dark ? 'text-white/80' : 'text-gray-600'}>
                         {t(`about.for.${audience.key}${n}`)}
