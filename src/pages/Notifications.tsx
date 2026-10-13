@@ -1,7 +1,12 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import {
+  keepPreviousData,
+  useInfiniteQuery,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -37,7 +42,9 @@ import {
   markAllNotificationsRead,
   markNotificationRead,
 } from '../api/notifications'
+import { useAuth } from '../hooks/useAuth'
 import {
+  CATEGORIES_BY_ROLE,
   NOTIFICATION_CATEGORIES,
   type AppNotification,
   type NotificationCategory,
@@ -126,6 +133,7 @@ function Notifications() {
   const { t, i18n } = useTranslation()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
+  const { user } = useAuth()
   const [unreadOnly, setUnreadOnly] = useState(false)
   // Chuna hua tab URL mein (?tab=hiring), taake wapas aane pe wahi khule
   const [searchParams, setSearchParams] = useSearchParams()
@@ -137,6 +145,8 @@ function Notifications() {
   const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
       queryKey: ['notifications', 'list', unreadOnly, category ?? 'all'],
+      // Tab badalte waqt purani ginti (badges) dikhti rahe jab tak naya data aaye
+      placeholderData: keepPreviousData,
       queryFn: ({ pageParam }) => listNotifications(pageParam, unreadOnly, category),
       initialPageParam: 1,
       getNextPageParam: (last) =>
@@ -146,8 +156,12 @@ function Notifications() {
   const items = data?.pages.flatMap((page) => page.notifications) ?? []
   const totalUnread = data?.pages[0]?.unread ?? 0
   const counts = data?.pages[0]?.categories ?? {}
-  // Sirf woh tabs jin mein kuch hai (har account type ke apne); chuna hua hamesha
-  const tabs = NOTIFICATION_CATEGORIES.filter((c) => counts[c] || c === category)
+  // Tabs account type ke hisaab se pehle se tay (data ka intezar nahi, click pe ghayab nahi hote)
+  const roleTabs = user ? CATEGORIES_BY_ROLE[user.role] : NOTIFICATION_CATEGORIES
+  // Kisi aur qism ki notification aayi ho (jaise role badla) to woh tab bhi
+  const tabs = NOTIFICATION_CATEGORIES.filter(
+    (c) => roleTabs.includes(c) || counts[c] || c === category,
+  )
   // Is tab ki unread ginti
   const unread = category ? (counts[category]?.unread ?? 0) : totalUnread
 

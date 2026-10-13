@@ -309,31 +309,6 @@ function PersonForm({
         </fieldset>
       </section>
 
-      <section className={sectionClass}>
-        <h2 className="text-lg font-semibold">{t('personForm.categories')}</h2>
-        <TaxonomyPicker
-          label={t('personForm.professions')}
-          items={professions}
-          selected={form.professions}
-          onChange={(v) => update('professions', v)}
-          error={errors.professions}
-        />
-        <TaxonomyPicker
-          label={t('personForm.industries')}
-          items={industries}
-          selected={form.industries}
-          onChange={(v) => update('industries', v)}
-          error={errors.industries}
-        />
-        <TaxonomyPicker
-          label={t('personForm.topics')}
-          items={topics}
-          selected={form.topics}
-          onChange={(v) => update('topics', v)}
-          error={errors.topics}
-        />
-      </section>
-
       <section id="social-accounts" className={`${sectionClass} scroll-mt-24`}>
         <div className="flex items-center justify-between gap-3">
           <div>
@@ -444,6 +419,31 @@ function PersonForm({
             )}
           </div>
         ))}
+      </section>
+
+      <section className={sectionClass}>
+        <h2 className="text-lg font-semibold">{t('personForm.categories')}</h2>
+        <TaxonomyPicker
+          label={t('personForm.professions')}
+          items={professions}
+          selected={form.professions}
+          onChange={(v) => update('professions', v)}
+          error={errors.professions}
+        />
+        <TaxonomyPicker
+          label={t('personForm.industries')}
+          items={industries}
+          selected={form.industries}
+          onChange={(v) => update('industries', v)}
+          error={errors.industries}
+        />
+        <TaxonomyPicker
+          label={t('personForm.topics')}
+          items={topics}
+          selected={form.topics}
+          onChange={(v) => update('topics', v)}
+          error={errors.topics}
+        />
       </section>
 
       {isAdmin && (

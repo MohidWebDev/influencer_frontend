@@ -1,3 +1,5 @@
+import type { Role } from './user'
+
 // Backend jo notification bhejta hai. Jumla frontend pe type + data se banta hai
 export type NotificationType =
   | 'claim.new'
@@ -62,6 +64,14 @@ export const NOTIFICATION_CATEGORIES: NotificationCategory[] = [
   'manager',
   'admin',
 ]
+
+// Har account type ke tabs: hamesha yahi dikhte hain (data aane ka intezar nahi)
+export const CATEGORIES_BY_ROLE: Record<Role, NotificationCategory[]> = {
+  talent: ['hiring', 'campaigns', 'agreements', 'verification', 'manager'],
+  representative: ['hiring', 'verification', 'manager'],
+  business: ['hiring', 'campaigns', 'agreements', 'verification'],
+  admin: ['admin'],
+}
 
 export type CategoryCounts = Partial<
   Record<NotificationCategory, { total: number; unread: number }>
