@@ -10,7 +10,7 @@ import {
   faXTwitter,
   faYoutube,
 } from '@fortawesome/free-brands-svg-icons'
-import { faArrowUp, faEnvelope, faShieldHalved } from '@fortawesome/free-solid-svg-icons'
+import { faArrowUp, faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import { CONTACT_EMAIL, PLATFORM_NAME, SOCIAL_LINKS } from '../constants/config'
 import { useAuth } from '../hooks/useAuth'
 
