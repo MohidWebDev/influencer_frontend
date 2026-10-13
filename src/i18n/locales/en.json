@@ -953,7 +953,11 @@
       "research_sheet": "Research sheet",
       "self_submitted": "Sent by the person",
       "admin": "Admin knowledge"
-    }
+    },
+    "websiteOptional": "Website (optional)",
+    "socialRequired": "Add at least one social account",
+    "socialUrlRequired": "Enter the profile link (https://...)",
+    "socialRequiredHint": "At least one social account is required, so businesses can see your work and reach."
   },
   "oldClaims": {
     "title": "Claim requests",
@@ -1896,7 +1900,8 @@
       "bio": "About you",
       "bioPlaceholder": "Who you manage and what you do for them",
       "talentsCount": "Talents you manage",
-      "proofLinksHint": "Agency page, management contract, press coverage: anything that shows you manage talents."
+      "proofLinksHint": "Agency page, management contract, press coverage: anything that shows you manage talents.",
+      "socialHint": "At least one is required (Instagram, LinkedIn, X ...). We use it to verify you."
     },
     "talentsTitle": "My talents",
     "talentsSubtitle": "The talents you represent, and invitations from talents.",

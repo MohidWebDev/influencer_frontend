@@ -14,6 +14,7 @@ import StatusPill from '../../components/admin-panel/StatusPill'
 import PermissionChips from '../../components/manager/PermissionChips'
 import { adminErrorMessage, formatDateTime } from '../../utils/adminFormat'
 import { countryName } from '../../utils/format'
+import { PLATFORM_LABELS } from '../../constants/people'
 
 const card = 'rounded-2xl bg-white p-5 shadow-sm'
 const button =
@@ -92,8 +93,20 @@ function AdminManagerDetailPage() {
                 <h2 className="font-semibold">{t('dashNav.managerDetails')}</h2>
                 <dl className="mt-2 divide-y divide-gray-100">
                   <Row label={t('manager.fields.agencyName')}>{manager.agencyName || t('manager.independent')}</Row>
-                  <Row label={t('manager.fields.websiteUrl')}>
-                    <ExternalLink href={manager.websiteUrl} />
+                  <Row label={t('personForm.social')}>
+                    {manager.socialAccounts?.length > 0 && (
+                      <ul className="space-y-1">
+                        {manager.socialAccounts.map((account) => (
+                          <li key={account.url}>
+                            <span className="me-1.5 text-gray-500">{PLATFORM_LABELS[account.platform]}:</span>
+                            <ExternalLink href={account.url} />
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </Row>
+                  <Row label={t('personForm.website')}>
+                    {manager.websiteUrl && <ExternalLink href={manager.websiteUrl} />}
                   </Row>
                   <Row label={t('business.fields.country')}>
                     {[manager.city, countryName(manager.country)].filter(Boolean).join(', ')}

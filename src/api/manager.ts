@@ -6,6 +6,7 @@ import type {
   AdminManagerPayload,
   ManagedTalent,
   ManagerProfile,
+  ManagerSocialAccount,
   MyManager,
   Representation,
   RepresentationPermissions,
@@ -20,7 +21,8 @@ export async function getMyManagerProfile() {
 
 export interface ManagerPayload {
   agencyName?: string
-  websiteUrl: string
+  websiteUrl?: string
+  socialAccounts: ManagerSocialAccount[]
   country: string
   city?: string
   contactPhone?: string

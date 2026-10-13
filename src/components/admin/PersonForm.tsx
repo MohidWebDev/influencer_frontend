@@ -44,7 +44,23 @@ interface FormState {
   sourceNote: string
 }
 
-function toFormState(person?: Person): FormState {
+const emptySocial = (): SocialRow => ({
+  platform: 'instagram',
+  url: '',
+  handle: '',
+  followers: '',
+  engagementRate: '',
+})
+
+function toFormState(person?: Person, needsSocial = false): FormState {
+  const socialAccounts =
+    person?.socialAccounts.map((a) => ({
+      platform: a.platform,
+      url: a.url,
+      handle: a.handle ?? '',
+      followers: a.followers?.toString() ?? '',
+      engagementRate: a.engagementRate?.toString() ?? '',
+    })) ?? []
   return {
     name: person?.name ?? '',
     headline: person?.headline ?? '',
@@ -57,14 +73,8 @@ function toFormState(person?: Person): FormState {
     professions: person?.professions.map((t) => t.slug) ?? [],
     industries: person?.industries.map((t) => t.slug) ?? [],
     topics: person?.topics.map((t) => t.slug) ?? [],
-    socialAccounts:
-      person?.socialAccounts.map((a) => ({
-        platform: a.platform,
-        url: a.url,
-        handle: a.handle ?? '',
-        followers: a.followers?.toString() ?? '',
-        engagementRate: a.engagementRate?.toString() ?? '',
-      })) ?? [],
+    // Talent ke liye ek social account zaroori: khali ho to ek khana pehle se khula
+    socialAccounts: socialAccounts.length || !needsSocial ? socialAccounts : [emptySocial()],
     status: person?.status ?? 'public',
     visibility: person?.visibility ?? 'visible',
     sourceType: 'public_web',
@@ -152,7 +162,12 @@ function PersonForm({
   const isNew = !person
   const isOwner = mode === 'owner'
   const isAdmin = mode === 'admin'
-  const [form, setForm] = useState<FormState>(() => toFormState(person))
+  // Talent (apni profile / nayi profile): kam az kam ek social account zaroori, website optional
+  const needsSocial = !isAdmin
+  const [form, setForm] = useState<FormState>(() => toFormState(person, needsSocial))
+  // Yahin ki jaanch ke errors (server ke errors ke upar)
+  const [localErrors, setLocalErrors] = useState<Record<string, string>>({})
+  const shownErrors = { ...errors, ...localErrors }
   const { data: professions = [] } = useTaxonomy('professions')
   const { data: industries = [] } = useTaxonomy('industries')
   const { data: topics = [] } = useTaxonomy('topics')
@@ -179,6 +194,18 @@ function PersonForm({
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault()
+    if (needsSocial) {
+      const found: Record<string, string> = {}
+      if (form.socialAccounts.length === 0) found.socialAccounts = t('personForm.socialRequired')
+      form.socialAccounts.forEach((row, index) => {
+        if (!row.url.trim()) found[`socialAccounts.${index}.url`] = t('personForm.socialUrlRequired')
+      })
+      setLocalErrors(found)
+      if (Object.keys(found).length) {
+        document.getElementById('social-accounts')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        return
+      }
+    }
     onSubmit(toInput(form, isNew, mode))
   }
 
@@ -232,7 +259,7 @@ function PersonForm({
         />
         <FormField
           id="websiteUrl"
-          label={t('personForm.website')}
+          label={needsSocial ? t('personForm.websiteOptional') : t('personForm.website')}
           placeholder="https://..."
           value={form.websiteUrl}
           onChange={(e) => update('websiteUrl', e.target.value)}
@@ -307,17 +334,27 @@ function PersonForm({
         />
       </section>
 
-      <section className={sectionClass}>
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">{t('personForm.social')}</h2>
+      <section id="social-accounts" className={`${sectionClass} scroll-mt-24`}>
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <h2 className="text-lg font-semibold">
+              {t('personForm.social')}
+              {needsSocial && (
+                <span className="ms-0.5 text-red-500" aria-hidden="true">
+                  *
+                </span>
+              )}
+            </h2>
+            {needsSocial && (
+              <p className="text-sm text-gray-500">{t('personForm.socialRequiredHint')}</p>
+            )}
+          </div>
           <button
             type="button"
-            onClick={() =>
-              update('socialAccounts', [
-                ...form.socialAccounts,
-                { platform: 'instagram', url: '', handle: '', followers: '', engagementRate: '' },
-              ])
-            }
+            onClick={() => {
+              update('socialAccounts', [...form.socialAccounts, emptySocial()])
+              setLocalErrors((prev) => ({ ...prev, socialAccounts: '' }))
+            }}
             className="rounded-lg border border-gray-300 px-3 py-1.5 text-sm hover:bg-gray-100"
           >
             {t('personForm.addAccount')}
@@ -326,8 +363,8 @@ function PersonForm({
         {form.socialAccounts.length === 0 && (
           <p className="text-sm text-gray-500">{t('personForm.noSocial')}</p>
         )}
-        {errors.socialAccounts && (
-          <p className="text-sm text-red-600">{errors.socialAccounts}</p>
+        {shownErrors.socialAccounts && (
+          <p className="text-sm text-red-600">{shownErrors.socialAccounts}</p>
         )}
         {form.socialAccounts.map((row, index) => (
           <div
@@ -355,8 +392,11 @@ function PersonForm({
               label={t('personForm.profileUrl')}
               placeholder="https://..."
               value={row.url}
-              onChange={(e) => updateSocial(index, { url: e.target.value })}
-              error={errors[`socialAccounts.${index}.url`]}
+              onChange={(e) => {
+                updateSocial(index, { url: e.target.value })
+                setLocalErrors((prev) => ({ ...prev, [`socialAccounts.${index}.url`]: '' }))
+              }}
+              error={shownErrors[`socialAccounts.${index}.url`]}
             />
             <FormField
               id={`social-handle-${index}`}
@@ -387,18 +427,21 @@ function PersonForm({
                 error={errors[`socialAccounts.${index}.engagementRate`]}
               />
             </div>
-            <button
-              type="button"
-              onClick={() =>
-                update(
-                  'socialAccounts',
-                  form.socialAccounts.filter((_, i) => i !== index),
-                )
-              }
-              className="justify-self-start text-sm text-red-600 hover:underline"
-            >
-              {t('personForm.removeAccount')}
-            </button>
+            {/* Talent ka aakhri social account hataya nahi ja sakta */}
+            {!(needsSocial && form.socialAccounts.length === 1) && (
+              <button
+                type="button"
+                onClick={() =>
+                  update(
+                    'socialAccounts',
+                    form.socialAccounts.filter((_, i) => i !== index),
+                  )
+                }
+                className="justify-self-start text-sm text-red-600 hover:underline"
+              >
+                {t('personForm.removeAccount')}
+              </button>
+            )}
           </div>
         ))}
       </section>

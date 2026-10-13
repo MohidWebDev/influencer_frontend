@@ -8,8 +8,9 @@ import { faArrowLeft, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { saveMyManagerProfile } from '../../api/manager'
 import { myManagerProfileQuery } from '../../api/queries'
 import FormField from '../../components/FormField'
-import { COUNTRY_OPTIONS } from '../../constants/people'
+import { COUNTRY_OPTIONS, PLATFORM_LABELS } from '../../constants/people'
 import type { ManagerInput, ManagerProfile } from '../../types/manager'
+import type { SocialPlatform } from '../../types/person'
 import { getApiError } from '../../utils/apiError'
 import { useAuth } from '../../hooks/useAuth'
 import type { User } from '../../types/user'
@@ -24,6 +25,10 @@ function toForm(manager: ManagerProfile | null, signup?: User['manager']): Manag
   return {
     agencyName: manager?.agencyName ?? signup?.agencyName ?? '',
     websiteUrl: manager?.websiteUrl ?? signup?.websiteUrl ?? '',
+    // Kam az kam ek social account zaroori: khali ho to ek khana pehle se khula
+    socialAccounts: manager?.socialAccounts?.length
+      ? manager.socialAccounts
+      : [{ platform: 'instagram', url: '' }],
     country: manager?.country ?? signup?.country ?? 'PK',
     city: manager?.city ?? '',
     contactPhone: manager?.contactPhone ?? '',
@@ -52,6 +57,10 @@ function ManagerForm({ manager }: { manager: ManagerProfile | null }) {
       saveMyManagerProfile({
         agencyName: form.agencyName.trim() || undefined,
         websiteUrl: form.websiteUrl.trim(),
+        socialAccounts: form.socialAccounts.map((a) => ({
+          platform: a.platform,
+          url: a.url.trim(),
+        })),
         country: form.country,
         city: form.city.trim() || undefined,
         contactPhone: form.contactPhone.trim(),
@@ -74,7 +83,28 @@ function ManagerForm({ manager }: { manager: ManagerProfile | null }) {
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault()
+    // Har social khane mein link ho
+    const found: Record<string, string> = {}
+    form.socialAccounts.forEach((account, index) => {
+      if (!account.url.trim())
+        found[`socialAccounts.${index}.url`] = t('personForm.socialUrlRequired')
+    })
+    if (Object.keys(found).length) {
+      setErrors(found)
+      document
+        .getElementById('manager-social')
+        ?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      return
+    }
     save.mutate()
+  }
+
+  const setSocial = (index: number, patch: Partial<ManagerInput['socialAccounts'][number]>) => {
+    update(
+      'socialAccounts',
+      form.socialAccounts.map((account, i) => (i === index ? { ...account, ...patch } : account)),
+    )
+    setErrors((prev) => ({ ...prev, [`socialAccounts.${index}.url`]: '' }))
   }
 
   const setLink = (index: number, value: string) =>
@@ -109,14 +139,86 @@ function ManagerForm({ manager }: { manager: ManagerProfile | null }) {
         <FormField
           id="websiteUrl"
           type="url"
-          label={t('manager.fields.websiteUrl')}
-          placeholder="https://linkedin.com/in/..."
+          label={t('personForm.websiteOptional')}
+          placeholder="https://..."
           value={form.websiteUrl}
           onChange={(e) => update('websiteUrl', e.target.value)}
           error={errors.websiteUrl}
-          required
         />
       </div>
+
+      {/* Social accounts: kam az kam ek zaroori */}
+      <fieldset id="manager-social" className="scroll-mt-24">
+        <legend className="text-sm font-medium">
+          {t('personForm.social')}
+          <span className="ms-0.5 text-red-500" aria-hidden="true">
+            *
+          </span>
+        </legend>
+        <p className="mt-0.5 text-xs text-gray-500">{t('manager.fields.socialHint')}</p>
+        {errors.socialAccounts && (
+          <p className="mt-1 text-sm text-red-600">{errors.socialAccounts}</p>
+        )}
+        <div className="mt-2 space-y-2">
+          {form.socialAccounts.map((account, index) => (
+            <div key={index}>
+              <div className="flex gap-2">
+                <select
+                  aria-label={t('personForm.platform')}
+                  value={account.platform}
+                  onChange={(e) => setSocial(index, { platform: e.target.value as SocialPlatform })}
+                  className="w-36 shrink-0 rounded-lg border border-gray-300 bg-white px-2 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-900"
+                >
+                  {Object.entries(PLATFORM_LABELS).map(([value, label]) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+                <input
+                  type="url"
+                  aria-label={t('personForm.profileUrl')}
+                  placeholder="https://instagram.com/..."
+                  value={account.url}
+                  onChange={(e) => setSocial(index, { url: e.target.value })}
+                  className={`w-full min-w-0 rounded-lg border px-3 py-2 outline-none focus:ring-2 focus:ring-gray-900 ${
+                    errors[`socialAccounts.${index}.url`] ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                />
+                {form.socialAccounts.length > 1 && (
+                  <button
+                    type="button"
+                    aria-label={t('personForm.removeAccount')}
+                    onClick={() =>
+                      update(
+                        'socialAccounts',
+                        form.socialAccounts.filter((_, i) => i !== index),
+                      )
+                    }
+                    className="rounded-lg px-3 text-gray-400 hover:bg-gray-100 hover:text-red-600"
+                  >
+                    <FontAwesomeIcon icon={faTrash} />
+                  </button>
+                )}
+              </div>
+              {errors[`socialAccounts.${index}.url`] && (
+                <p className="mt-1 text-sm text-red-600">{errors[`socialAccounts.${index}.url`]}</p>
+              )}
+            </div>
+          ))}
+        </div>
+        {form.socialAccounts.length < 10 && (
+          <button
+            type="button"
+            onClick={() =>
+              update('socialAccounts', [...form.socialAccounts, { platform: 'instagram', url: '' }])
+            }
+            className="mt-2 inline-flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-gray-900"
+          >
+            {t('personForm.addAccount')}
+          </button>
+        )}
+      </fieldset>
       <label className="block">
         <span className="mb-1 block text-sm font-medium">{t('manager.fields.bio')}</span>
         <textarea

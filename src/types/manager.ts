@@ -1,3 +1,4 @@
+import type { SocialPlatform } from './person'
 import type { AuditLogEntry } from './adminPanel'
 
 // Manager / agent (representative account) ki tasdeeq
@@ -7,7 +8,9 @@ export interface ManagerProfile {
   _id: string
   owner: string
   agencyName?: string
-  websiteUrl: string
+  // Optional; kam az kam ek social account zaroori
+  websiteUrl?: string
+  socialAccounts: ManagerSocialAccount[]
   country: string
   city?: string
   contactPhone?: string
@@ -22,9 +25,15 @@ export interface ManagerProfile {
   updatedAt: string
 }
 
+export interface ManagerSocialAccount {
+  platform: SocialPlatform
+  url: string
+}
+
 export interface ManagerInput {
   agencyName: string
   websiteUrl: string
+  socialAccounts: ManagerSocialAccount[]
   country: string
   city: string
   contactPhone: string
