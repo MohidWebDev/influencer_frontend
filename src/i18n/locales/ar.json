@@ -2204,5 +2204,13 @@
       "accepted": "مختارة",
       "rejected": "مرفوضة"
     }
+  },
+  "reviews": {
+    "ratingTitle": "تقييم {{average}} من 5 من {{count}} جهة",
+    "showAll": "عرض كل التقييمات ({{count}})",
+    "allTitle": "كل التقييمات",
+    "loadMore": "تحميل المزيد من التقييمات",
+    "loading": "جارٍ التحميل...",
+    "removedBusiness": "جهة معلنة"
   }
 }

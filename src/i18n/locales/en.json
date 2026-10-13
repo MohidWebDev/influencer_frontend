@@ -2204,5 +2204,13 @@
       "accepted": "Selected",
       "rejected": "Rejected"
     }
+  },
+  "reviews": {
+    "ratingTitle": "Rated {{average}} out of 5 by {{count}} business(es)",
+    "showAll": "Show all reviews ({{count}})",
+    "allTitle": "All reviews",
+    "loadMore": "Load more reviews",
+    "loading": "Loading...",
+    "removedBusiness": "A business"
   }
 }

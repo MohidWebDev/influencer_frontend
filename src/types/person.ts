@@ -47,6 +47,13 @@ export interface PersonSummary {
   claimedBy?: string | null
   // Card pe "Available" dikhane ke liye
   availability?: Pick<Availability, 'isOpen' | 'openTo'>
+  // Businesses ki reviews ka average aur kitno ne di (koi review na ho to null)
+  rating?: PersonRating | null
+}
+
+export interface PersonRating {
+  average: number
+  count: number
 }
 
 // Profile page ka poora version

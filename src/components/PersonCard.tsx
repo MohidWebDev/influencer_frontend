@@ -12,6 +12,7 @@ import { SHORTLIST_ROLES } from '../constants/roles'
 import { useAuth } from '../hooks/useAuth'
 import UnclaimedBadge from './UnclaimedBadge'
 import VerifiedBadge from './VerifiedBadge'
+import RatingBadge from './agreements/RatingBadge'
 
 function PersonCard({ person }: { person: PersonSummary }) {
   const { t } = useTranslation()
@@ -53,6 +54,11 @@ function PersonCard({ person }: { person: PersonSummary }) {
           </div>
           {person.headline && (
             <p className="mt-0.5 line-clamp-2 text-sm text-gray-600">{person.headline}</p>
+          )}
+          {person.rating && (
+            <div className="mt-1">
+              <RatingBadge rating={person.rating} />
+            </div>
           )}
           <p className="mt-2 text-xs text-gray-500">
             {person.professions.map((p) => p.name).join(' · ')}

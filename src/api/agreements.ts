@@ -83,15 +83,21 @@ export async function reviewAgreement(id: string, rating: number, comment?: stri
   return one(await api.post<One>(`/agreements/${id}/review`, { rating, comment }))
 }
 
-// Public: talent ke baare mein businesses ki reviews
-export async function getPersonReviews(slug: string) {
-  const res = await api.get<ApiSuccess<PersonReviews>>(`/people/${slug}/reviews`)
-  return res.data.data
+// Public: talent ke baare mein businesses ki reviews, naye pehle (page = 4 ya jitni limit)
+export const REVIEWS_PREVIEW = 4
+
+export async function getPersonReviews(slug: string, page = 1, limit = REVIEWS_PREVIEW) {
+  const res = await api.get<ApiSuccess<PersonReviews>>(`/people/${slug}/reviews`, {
+    params: { page, limit },
+  })
+  return { ...res.data.data, meta: res.data.meta! }
 }
 
 // Admin
 export async function adminListAgreements(params: URLSearchParams) {
-  const res = await api.get<ApiSuccess<{ agreements: Agreement[] }>>('/admin/agreements', { params })
+  const res = await api.get<ApiSuccess<{ agreements: Agreement[] }>>('/admin/agreements', {
+    params,
+  })
   return { agreements: res.data.data.agreements.map(normalizeAgreement), meta: res.data.meta! }
 }
 

@@ -1,36 +1,179 @@
+import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
-import { useQuery } from '@tanstack/react-query'
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faXmark } from '@fortawesome/free-solid-svg-icons'
+import { getPersonReviews } from '../../api/agreements'
 import { personReviewsQuery } from '../../api/queries'
+import type { PersonReviews } from '../../types/agreement'
+import { initials } from '../../utils/format'
 import { formatDate } from '../../utils/adminFormat'
+import RatingBadge from './RatingBadge'
 import Stars from './Stars'
 
-// Profile page: mukammal kaam ke baad businesses ki di hui reviews (koi na ho to kuch nahi)
+const ALL_PAGE_SIZE = 10
+
+type Review = PersonReviews['reviews'][number]
+
+// Ek review: business ka naam, sitare, tareekh aur likhai
+function ReviewItem({ review }: { review: Review }) {
+  const { t } = useTranslation()
+  const name = review.business ?? t('reviews.removedBusiness')
+  return (
+    <li className="flex gap-3 py-4">
+      <span
+        aria-hidden="true"
+        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gray-900 text-xs font-semibold text-white"
+      >
+        {initials(name)}
+      </span>
+      <div className="min-w-0 flex-1">
+        <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-0.5">
+          <span className="truncate text-sm font-medium text-gray-900">{name}</span>
+          <span className="text-xs text-gray-500">{formatDate(review.createdAt)}</span>
+        </div>
+        <Stars value={review.rating} size="text-xs" />
+        {review.comment && (
+          <p className="mt-1.5 text-sm whitespace-pre-line text-gray-700">{review.comment}</p>
+        )}
+      </div>
+    </li>
+  )
+}
+
+// Saari reviews: 10-10 kar ke, neeche "Load more"
+function AllReviewsDialog({
+  slug,
+  summary,
+  onClose,
+}: {
+  slug: string
+  summary: PersonReviews['rating']
+  onClose: () => void
+}) {
+  const { t } = useTranslation()
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
+    queryKey: ['person', slug, 'reviews', 'all'],
+    queryFn: ({ pageParam }) => getPersonReviews(slug, pageParam, ALL_PAGE_SIZE),
+    initialPageParam: 1,
+    getNextPageParam: (last) =>
+      last.meta.page * last.meta.limit < last.meta.total ? last.meta.page + 1 : undefined,
+  })
+  const reviews = data?.pages.flatMap((page) => page.reviews) ?? []
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
+    document.addEventListener('keydown', onKey)
+    // Peeche ka page scroll na ho
+    const overflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = overflow
+    }
+  }, [onClose])
+
+  return createPortal(
+    <div
+      className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 sm:items-center sm:p-4"
+      onClick={onClose}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="all-reviews-title"
+        onClick={(e) => e.stopPropagation()}
+        className="flex max-h-[90vh] w-full max-w-xl flex-col rounded-t-2xl bg-white shadow-xl sm:rounded-2xl"
+      >
+        <div className="flex items-start justify-between gap-3 border-b border-gray-100 px-6 py-4">
+          <div>
+            <h2 id="all-reviews-title" className="text-lg font-semibold text-gray-900">
+              {t('reviews.allTitle')}
+            </h2>
+            <div className="mt-1">
+              <RatingBadge
+                rating={summary.average === null ? null : { ...summary, average: summary.average }}
+                size="md"
+              />
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label={t('settings.close')}
+            className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-700"
+          >
+            <FontAwesomeIcon icon={faXmark} />
+          </button>
+        </div>
+        <div className="overflow-y-auto px-6">
+          {isLoading ? (
+            <div className="space-y-3 py-4">
+              {Array.from({ length: 4 }, (_, i) => (
+                <div key={i} className="h-16 animate-pulse rounded-xl bg-gray-100" />
+              ))}
+            </div>
+          ) : (
+            <ul className="divide-y divide-gray-100">
+              {reviews.map((review) => (
+                <ReviewItem key={review._id} review={review} />
+              ))}
+            </ul>
+          )}
+          {hasNextPage && (
+            <div className="pb-5 text-center">
+              <button
+                type="button"
+                onClick={() => fetchNextPage()}
+                disabled={isFetchingNextPage}
+                className="rounded-xl border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-50 disabled:opacity-60"
+              >
+                {isFetchingNextPage ? t('reviews.loading') : t('reviews.loadMore')}
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>,
+    document.body,
+  )
+}
+
+// Profile page: businesses ki reviews. Pehli 4, zyada hon to "Show all reviews" (koi na ho to kuch nahi)
 function PublicReviews({ slug }: { slug: string }) {
   const { t } = useTranslation()
+  const [showAll, setShowAll] = useState(false)
   const { data } = useQuery({ ...personReviewsQuery(slug), retry: false })
   if (!data || data.rating.count === 0) return null
+  const { rating } = data
 
   return (
-    <section className="rounded-2xl bg-white p-6 shadow-sm">
-      <div className="flex flex-wrap items-center gap-3">
+    <section id="reviews" className="scroll-mt-24 rounded-2xl bg-white p-6 shadow-sm">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 className="text-lg font-semibold">{t('agreements.publicReviews')}</h2>
-        <span className="inline-flex items-center gap-1.5 text-sm text-gray-600">
-          <Stars value={data.rating.average ?? 0} />
-          {t('agreements.ratingSummary', { average: data.rating.average, count: data.rating.count })}
-        </span>
+        <RatingBadge
+          rating={rating.average === null ? null : { ...rating, average: rating.average }}
+          size="md"
+        />
       </div>
-      <ul className="mt-4 divide-y divide-gray-100">
-        {data.reviews.map((review, index) => (
-          <li key={index} className="py-3">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="text-sm font-medium">{review.business ?? '—'}</span>
-              <span className="text-xs text-gray-500">{formatDate(review.createdAt)}</span>
-            </div>
-            <Stars value={review.rating} size="text-xs" />
-            {review.comment && <p className="mt-1 text-sm text-gray-700">{review.comment}</p>}
-          </li>
+      <ul className="mt-2 divide-y divide-gray-100">
+        {data.reviews.map((review) => (
+          <ReviewItem key={review._id} review={review} />
         ))}
       </ul>
+      {rating.count > data.reviews.length && (
+        <button
+          type="button"
+          onClick={() => setShowAll(true)}
+          className="mt-2 w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-800 hover:bg-gray-50"
+        >
+          {t('reviews.showAll', { count: rating.count })}
+        </button>
+      )}
+      {showAll && (
+        <AllReviewsDialog slug={slug} summary={rating} onClose={() => setShowAll(false)} />
+      )}
     </section>
   )
 }

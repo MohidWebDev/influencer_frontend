@@ -91,6 +91,7 @@ export function agreementQuery(id: string) {
   })
 }
 
+// Profile pe pehli 4 reviews ("Show all" dialog baqi pages khud mangwata hai)
 export function personReviewsQuery(slug: string) {
   return queryOptions({
     queryKey: ['person', slug, 'reviews'],

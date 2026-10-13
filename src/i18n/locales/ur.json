@@ -2204,5 +2204,13 @@
       "accepted": "منتخب",
       "rejected": "مسترد"
     }
+  },
+  "reviews": {
+    "ratingTitle": "{{count}} بزنس کی جانب سے 5 میں سے {{average}} ریٹنگ",
+    "showAll": "تمام ریویوز دیکھیں ({{count}})",
+    "allTitle": "تمام ریویوز",
+    "loadMore": "مزید ریویوز",
+    "loading": "لوڈ ہو رہا ہے...",
+    "removedBusiness": "ایک بزنس"
   }
 }

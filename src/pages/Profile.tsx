@@ -15,6 +15,7 @@ import UnclaimedBadge from '../components/UnclaimedBadge'
 import PublicAvailability from '../components/services/PublicAvailability'
 import PublicServices from '../components/services/PublicServices'
 import PublicReviews from '../components/agreements/PublicReviews'
+import RatingBadge from '../components/agreements/RatingBadge'
 import VerifiedBadge from '../components/VerifiedBadge'
 import { PLATFORM_ICONS, PLATFORM_LABELS, STATUS_LABELS } from '../constants/people'
 import type { TaxonomyItem } from '../types/person'
@@ -87,6 +88,12 @@ function Profile() {
               {!person.claimedBy && <UnclaimedBadge />}
             </div>
             {person.headline && <p className="mt-1 text-gray-600">{person.headline}</p>}
+            {/* Sitare: click pe neeche reviews tak */}
+            {person.rating && (
+              <a href="#reviews" className="mt-2 inline-flex rounded-md hover:opacity-80">
+                <RatingBadge rating={person.rating} size="md" />
+              </a>
+            )}
             {/* Verified manager ke zariye kaam karta hai */}
             {person.representedBy && (
               <p className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-700">

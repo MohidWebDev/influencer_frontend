@@ -104,7 +104,7 @@ export interface Agreement {
 
 export interface PersonReviews {
   rating: { average: number | null; count: number }
-  reviews: { rating: number; comment?: string; createdAt: string; business?: string }[]
+  reviews: { _id: string; rating: number; comment?: string; createdAt: string; business?: string }[]
 }
 
 // Kul raqam (saare milestones ka jor)
