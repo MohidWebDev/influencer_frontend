@@ -36,6 +36,7 @@ export type NotificationType =
   | 'manager.new'
   | 'manager.approved'
   | 'manager.rejected'
+  | 'manager.reviewed'
   | 'representation.requested'
   | 'representation.invited'
   | 'representation.accepted'

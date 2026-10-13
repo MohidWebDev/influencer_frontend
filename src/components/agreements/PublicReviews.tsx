@@ -6,7 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { getPersonReviews } from '../../api/agreements'
 import { personReviewsQuery } from '../../api/queries'
-import type { PersonReviews } from '../../types/agreement'
+import { Link } from 'react-router-dom'
+import Avatar from '../Avatar'
 import { initials } from '../../utils/format'
 import { formatDate } from '../../utils/adminFormat'
 import RatingBadge from './RatingBadge'
@@ -14,23 +15,52 @@ import Stars from './Stars'
 
 const ALL_PAGE_SIZE = 10
 
-type Review = PersonReviews['reviews'][number]
+// Har jagah ki review isi shakal mein (talent, business ya manager ke baare mein)
+export interface ReviewItemData {
+  _id: string
+  rating: number
+  comment?: string
+  createdAt: string
+  // Likhne wala (business ya talent) aur us ka page (agar ho)
+  name?: string
+  href?: string
+  photoUrl?: string
+}
 
-// Ek review: business ka naam, sitare, tareekh aur likhai
-function ReviewItem({ review }: { review: Review }) {
+interface ReviewPage {
+  rating: { average: number | null; count: number }
+  reviews: ReviewItemData[]
+  meta: { page: number; limit: number; total: number }
+}
+
+// Ek review: likhne wale ka naam, sitare, tareekh aur likhai
+function ReviewItem({ review }: { review: ReviewItemData }) {
   const { t } = useTranslation()
-  const name = review.business ?? t('reviews.removedBusiness')
+  const name = review.name ?? t('reviews.removedBusiness')
   return (
     <li className="flex gap-3 py-4">
-      <span
-        aria-hidden="true"
-        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gray-900 text-xs font-semibold text-white"
-      >
-        {initials(name)}
-      </span>
+      {review.photoUrl ? (
+        <Avatar name={name} photoUrl={review.photoUrl} size="sm" />
+      ) : (
+        <span
+          aria-hidden="true"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gray-900 text-xs font-semibold text-white"
+        >
+          {initials(name)}
+        </span>
+      )}
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-0.5">
-          <span className="truncate text-sm font-medium text-gray-900">{name}</span>
+          {review.href ? (
+            <Link
+              to={review.href}
+              className="truncate text-sm font-medium text-gray-900 hover:underline"
+            >
+              {name}
+            </Link>
+          ) : (
+            <span className="truncate text-sm font-medium text-gray-900">{name}</span>
+          )}
           <span className="text-xs text-gray-500">{formatDate(review.createdAt)}</span>
         </div>
         <Stars value={review.rating} size="text-xs" />
@@ -44,18 +74,20 @@ function ReviewItem({ review }: { review: Review }) {
 
 // Saari reviews: 10-10 kar ke, neeche "Load more"
 function AllReviewsDialog({
-  slug,
+  allKey,
+  loadPage,
   summary,
   onClose,
 }: {
-  slug: string
-  summary: PersonReviews['rating']
+  allKey: readonly unknown[]
+  loadPage: (page: number, limit: number) => Promise<ReviewPage>
+  summary: ReviewPage['rating']
   onClose: () => void
 }) {
   const { t } = useTranslation()
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ['person', slug, 'reviews', 'all'],
-    queryFn: ({ pageParam }) => getPersonReviews(slug, pageParam, ALL_PAGE_SIZE),
+    queryKey: allKey,
+    queryFn: ({ pageParam }) => loadPage(pageParam, ALL_PAGE_SIZE),
     initialPageParam: 1,
     getNextPageParam: (last) =>
       last.meta.page * last.meta.limit < last.meta.total ? last.meta.page + 1 : undefined,
@@ -140,29 +172,39 @@ function AllReviewsDialog({
   )
 }
 
-// Profile page: businesses ki reviews. Pehli 4, zyada hon to "Show all reviews" (koi na ho to kuch nahi)
-function PublicReviews({ slug }: { slug: string }) {
+// Reviews ka hissa: pehli 4, zyada hon to "Show all reviews" (koi na ho to kuch nahi).
+// Talent, business aur manager teeno ke pages pe
+export function ReviewsSection({
+  title,
+  firstPage,
+  allKey,
+  loadPage,
+}: {
+  title: string
+  firstPage?: Omit<ReviewPage, 'meta'>
+  allKey: readonly unknown[]
+  loadPage: (page: number, limit: number) => Promise<ReviewPage>
+}) {
   const { t } = useTranslation()
   const [showAll, setShowAll] = useState(false)
-  const { data } = useQuery({ ...personReviewsQuery(slug), retry: false })
-  if (!data || data.rating.count === 0) return null
-  const { rating } = data
+  if (!firstPage || firstPage.rating.count === 0) return null
+  const { rating } = firstPage
 
   return (
     <section id="reviews" className="scroll-mt-24 rounded-2xl bg-white p-6 shadow-sm">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="text-lg font-semibold">{t('agreements.publicReviews')}</h2>
+        <h2 className="text-lg font-semibold">{title}</h2>
         <RatingBadge
           rating={rating.average === null ? null : { ...rating, average: rating.average }}
           size="md"
         />
       </div>
       <ul className="mt-2 divide-y divide-gray-100">
-        {data.reviews.map((review) => (
+        {firstPage.reviews.map((review) => (
           <ReviewItem key={review._id} review={review} />
         ))}
       </ul>
-      {rating.count > data.reviews.length && (
+      {rating.count > firstPage.reviews.length && (
         <button
           type="button"
           onClick={() => setShowAll(true)}
@@ -172,9 +214,40 @@ function PublicReviews({ slug }: { slug: string }) {
         </button>
       )}
       {showAll && (
-        <AllReviewsDialog slug={slug} summary={rating} onClose={() => setShowAll(false)} />
+        <AllReviewsDialog
+          allKey={allKey}
+          loadPage={loadPage}
+          summary={rating}
+          onClose={() => setShowAll(false)}
+        />
       )}
     </section>
+  )
+}
+
+// Talent ki reviews businesses ki taraf se
+const fromBusiness = (review: {
+  _id: string
+  rating: number
+  comment?: string
+  createdAt: string
+  business?: string
+}): ReviewItemData => ({ ...review, name: review.business })
+
+// Profile page: businesses ki talent ke baare mein reviews
+function PublicReviews({ slug }: { slug: string }) {
+  const { t } = useTranslation()
+  const { data } = useQuery({ ...personReviewsQuery(slug), retry: false })
+  return (
+    <ReviewsSection
+      title={t('agreements.publicReviews')}
+      firstPage={data && { rating: data.rating, reviews: data.reviews.map(fromBusiness) }}
+      allKey={['person', slug, 'reviews', 'all']}
+      loadPage={async (page, limit) => {
+        const result = await getPersonReviews(slug, page, limit)
+        return { ...result, reviews: result.reviews.map(fromBusiness) }
+      }}
+    />
   )
 }
 

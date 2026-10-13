@@ -6,11 +6,18 @@ import toast from 'react-hot-toast'
 import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleCheck, faGlobe, faUserTie } from '@fortawesome/free-solid-svg-icons'
-import { inviteManager, talentEnd, talentRespond, updatePermissions } from '../../api/manager'
+import {
+  inviteManager,
+  reviewMyManager,
+  talentEnd,
+  talentRespond,
+  updatePermissions,
+} from '../../api/manager'
 import { myManagerQuery } from '../../api/queries'
 import FormField from '../../components/FormField'
 import ConfirmDialog from '../../components/admin-panel/ConfirmDialog'
 import StatusPill from '../../components/admin-panel/StatusPill'
+import Stars from '../../components/agreements/Stars'
 import PermissionPicker from '../../components/manager/PermissionPicker'
 import type { Representation, RepresentationPermissions } from '../../types/manager'
 import { getApiError } from '../../utils/apiError'
@@ -107,6 +114,58 @@ function RequestCard({ rep }: { rep: Representation }) {
 }
 
 // Abhi ka manager: ijazat badlo ya rishta khatam karo
+// Talent apne manager ko sitare aur do lafz (ek dafa). Pehle se di ho to wahi dikhao
+function ManagerReview({ rep }: { rep: Representation }) {
+  const { t } = useTranslation()
+  const queryClient = useQueryClient()
+  const [rating, setRating] = useState(0)
+  const [comment, setComment] = useState('')
+  const send = useMutation({
+    mutationFn: () => reviewMyManager(rep._id, rating, comment.trim() || undefined),
+    onSuccess: () => {
+      toast.success(t('manager.reviewSent'))
+      queryClient.invalidateQueries({ queryKey: ['me', 'manager'] })
+    },
+    onError: (err) => toast.error(getApiError(err).message),
+  })
+
+  if (rep.review) {
+    return (
+      <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600">
+        <span>{t('manager.yourReview')}</span>
+        <Stars value={rep.review.rating} />
+        {rep.review.comment && <span className="text-gray-500">“{rep.review.comment}”</span>}
+      </div>
+    )
+  }
+  return (
+    <div className="space-y-2 rounded-xl bg-gray-50 p-4">
+      <p className="text-sm font-medium">{t('manager.rateTitle', { name: managerOf(rep).name })}</p>
+      <Stars value={rating} onChange={setRating} size="text-xl" />
+      {rating > 0 && (
+        <>
+          <textarea
+            rows={2}
+            maxLength={1000}
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            placeholder={t('manager.reviewPlaceholder')}
+            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-900"
+          />
+          <button
+            type="button"
+            disabled={send.isPending}
+            onClick={() => send.mutate()}
+            className="rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800 disabled:opacity-60"
+          >
+            {send.isPending ? t('common.saving') : t('manager.sendReview')}
+          </button>
+        </>
+      )}
+    </div>
+  )
+}
+
 function ActiveManager({ rep }: { rep: Representation }) {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
@@ -143,6 +202,7 @@ function ActiveManager({ rep }: { rep: Representation }) {
         {t('manager.yourManagerSince', { date: formatDate(rep.respondedAt ?? rep.updatedAt) })}
       </p>
       <ManagerCard rep={rep} />
+      <ManagerReview rep={rep} />
       <PermissionPicker value={permissions} onChange={setPermissions} />
       <div className="flex flex-wrap justify-between gap-2 border-t border-gray-100 pt-4">
         <button
@@ -320,10 +380,14 @@ function MyManagerPage() {
               <h2 className="text-sm font-medium text-gray-500">{t('manager.historyTitle')}</h2>
               <ul className="divide-y divide-gray-100 rounded-2xl border border-gray-200 bg-white">
                 {data.history.map((rep) => (
-                  <li key={rep._id} className="flex flex-wrap items-center gap-3 px-4 py-2.5 text-sm">
-                    <span className="flex-1">{managerOf(rep).name}</span>
-                    <StatusPill status={rep.status} label={t(`manager.status.${rep.status}`)} />
-                    <span className="text-xs text-gray-500">{formatDate(rep.endedAt ?? rep.updatedAt)}</span>
+                  <li key={rep._id} className="space-y-2 px-4 py-2.5 text-sm">
+                    <div className="flex flex-wrap items-center gap-3">
+                      <span className="flex-1">{managerOf(rep).name}</span>
+                      <StatusPill status={rep.status} label={t(`manager.status.${rep.status}`)} />
+                      <span className="text-xs text-gray-500">{formatDate(rep.endedAt ?? rep.updatedAt)}</span>
+                    </div>
+                    {/* Jis manager ke saath kaam kiya (rishta khatam) us ko bhi review */}
+                    {rep.status === 'ended' && <ManagerReview rep={rep} />}
                   </li>
                 ))}
               </ul>

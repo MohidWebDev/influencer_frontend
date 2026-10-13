@@ -16,6 +16,8 @@ import {
   faXmark,
 } from '@fortawesome/free-solid-svg-icons'
 import Pagination from '../Pagination'
+import RatingBadge from '../agreements/RatingBadge'
+import { hostOf } from './directoryUtils'
 import { directoryQuery } from '../../api/queries'
 import { useAuth } from '../../hooks/useAuth'
 import type { DirectoryBusiness, DirectoryManager } from '../../types/directory'
@@ -56,15 +58,6 @@ function Badge({
   )
 }
 
-// "https://www.acme.com/about" -> "acme.com"
-const hostOf = (url: string) => {
-  try {
-    return new URL(url).hostname.replace(/^www\./, '')
-  } catch {
-    return url
-  }
-}
-
 // Ek business ya manager ka card
 function EntryCard({
   name,
@@ -72,12 +65,15 @@ function EntryCard({
   description,
   entry,
   extra,
+  to,
 }: {
   name: string
   subtitle?: string
   description?: string
   entry: DirectoryBusiness | DirectoryManager
   extra?: ReactNode
+  // Poora card is page ka link (talent card jaisa)
+  to: string
 }) {
   const { t, i18n } = useTranslation()
   const location = [entry.city, countryName(entry.country)].filter(Boolean).join(', ')
@@ -87,7 +83,7 @@ function EntryCard({
   })
 
   return (
-    <article className="flex flex-col rounded-2xl border border-gray-200 bg-white p-5 transition hover:border-gray-300 hover:shadow-sm">
+    <article className="relative flex flex-col rounded-2xl border border-gray-200 bg-white p-5 transition hover:border-gray-400 hover:shadow-sm">
       <div className="flex items-start gap-4">
         <span
           aria-hidden="true"
@@ -97,7 +93,12 @@ function EntryCard({
         </span>
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h3 className="truncate font-semibold text-gray-900">{name}</h3>
+            <h3 className="truncate font-semibold text-gray-900">
+              {/* Poore card pe click: link ka parda card pe phaila hua (website link us ke upar) */}
+              <Link to={to} className="after:absolute after:inset-0 after:rounded-2xl">
+                {name}
+              </Link>
+            </h3>
             {entry.verified ? (
               <Badge tone="bg-blue-50 text-blue-700" icon={faCircleCheck}>
                 {t('site.verified')}
@@ -113,6 +114,11 @@ function EntryCard({
             )}
           </div>
           {subtitle && <p className="mt-0.5 truncate text-sm text-gray-600">{subtitle}</p>}
+          {entry.rating && (
+            <div className="mt-1">
+              <RatingBadge rating={entry.rating} />
+            </div>
+          )}
         </div>
       </div>
 
@@ -135,7 +141,7 @@ function EntryCard({
             href={entry.websiteUrl}
             target="_blank"
             rel="noopener noreferrer nofollow"
-            className="inline-flex items-center gap-1 font-medium text-gray-700 hover:text-gray-950 hover:underline"
+            className="relative z-10 inline-flex items-center gap-1 font-medium text-gray-700 hover:text-gray-950 hover:underline"
           >
             {hostOf(entry.websiteUrl)}
             <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="text-[9px]" />
@@ -234,6 +240,7 @@ function DirectoryPage({ kind, icon }: { kind: Kind; icon: IconDefinition }) {
             ? (data.items as DirectoryBusiness[]).map((b) => (
                 <EntryCard
                   key={b._id}
+                  to={`/businesses/${b._id}`}
                   entry={b}
                   name={b.name}
                   subtitle={[
@@ -249,6 +256,7 @@ function DirectoryPage({ kind, icon }: { kind: Kind; icon: IconDefinition }) {
             : (data.items as DirectoryManager[]).map((m) => (
                 <EntryCard
                   key={m._id}
+                  to={`/managers/${m._id}`}
                   entry={m}
                   name={m.name}
                   subtitle={m.agencyName}

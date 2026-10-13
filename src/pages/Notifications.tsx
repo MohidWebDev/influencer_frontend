@@ -88,6 +88,7 @@ const LOOK: Record<NotificationType, { icon: IconDefinition; tint: string }> = {
   'manager.new': { icon: faUserTie, tint: 'bg-blue-50 text-blue-700' },
   'manager.approved': { icon: faCircleCheck, tint: 'bg-green-50 text-green-700' },
   'manager.rejected': { icon: faCircleXmark, tint: 'bg-gray-100 text-gray-600' },
+  'manager.reviewed': { icon: faStar, tint: 'bg-amber-50 text-amber-700' },
   'representation.requested': { icon: faUserTie, tint: 'bg-violet-50 text-violet-700' },
   'representation.invited': { icon: faUserTie, tint: 'bg-violet-50 text-violet-700' },
   'representation.accepted': { icon: faUserTie, tint: 'bg-green-50 text-green-700' },
