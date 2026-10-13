@@ -19,7 +19,6 @@ const TONES = {
   success: 'bg-green-600 hover:bg-green-700',
 }
 
-// Har khatarnak kaam se pehle "kya aap sure hain?"
 function ConfirmDialog({
   open,
   title,
@@ -33,30 +32,36 @@ function ConfirmDialog({
 }: ConfirmDialogProps) {
   const { t } = useTranslation()
   const cancelRef = useRef<HTMLButtonElement>(null)
-  // ✅ onCancel ko ref mein rakho taake effect uspar depend na kare
-  const onCancelRef = useRef(onCancel)
 
-  // ✅ Har render par latest onCancel update karo — bina effect trigger kiye
+  // ✅ Latest callbacks ko ref mein rakho — effect unpar depend nahi karega
+  const onCancelRef = useRef(onCancel)
   useEffect(() => {
     onCancelRef.current = onCancel
   })
 
-  // ✅ Effect sirf `open` par chale — `onCancel` par nahi
+  // ✅ Effect sirf `open` par chalta hai.
+  // Pehla focusable field (textarea/input) ko focus karta hai, warna cancel button.
+  // Escape key se cancel.
   useEffect(() => {
     if (!open) return
 
-    // Focus: agar dialog ke andar textarea/input hai to usay focus do,
-    // warna cancel button ko (default behaviour)
-    const dialog = cancelRef.current?.closest('[role="dialog"]')
-    const firstField = dialog?.querySelector<HTMLElement>('textarea, input')
-    ;(firstField ?? cancelRef.current)?.focus()
+    // Defer focus taake DOM ready ho
+    const id = window.setTimeout(() => {
+      const dialog = cancelRef.current?.closest('[role="dialog"]')
+      const firstField = dialog?.querySelector<HTMLElement>('textarea, input')
+      ;(firstField ?? cancelRef.current)?.focus()
+    }, 0)
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onCancelRef.current()
     }
     document.addEventListener('keydown', onKey)
-    return () => document.removeEventListener('keydown', onKey)
-  }, [open])   // ✅ sirf `open` — `onCancel` nahi
+
+    return () => {
+      window.clearTimeout(id)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [open])   // ✅ SIRF `open` — `onCancel` nahi
 
   if (!open) return null
 
