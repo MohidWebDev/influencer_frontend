@@ -420,7 +420,8 @@
       "myBusiness": "نشاطي التجاري",
       "agreements": "الاتفاقيات",
       "businesses": "الشركات",
-      "managers": "المديرون"
+      "managers": "المديرون",
+      "campaigns": "الحملات"
     },
     "search": {
       "placeholder": "ابحث بالاسم أو المجال...",
@@ -849,6 +850,14 @@
     "repHires": {
       "title": "طلبات التوظيف",
       "action": "افتح طلبات التوظيف"
+    },
+    "campaigns": {
+      "businessTitle": "الحملات",
+      "businessDescription": "انشر دعوة مفتوحة ودع المواهب تتقدم إليك.",
+      "businessAction": "فتح الحملات",
+      "talentTitle": "حملات مفتوحة",
+      "talentDescription": "شركات تبحث عن مواهب الآن. تقدّم بملفك.",
+      "talentAction": "تصفّح الحملات"
     }
   },
   "oldAdmin": {
@@ -1152,7 +1161,10 @@
       "representation_declined": "رفض {{name}}.",
       "representation_ended": "أنهى {{name}} تمثيل {{person}}.",
       "hire_new_managed": "تريد {{business}} توظيف {{person}}. ردّ من لوحتك.",
-      "hire_answered_by_manager": "{{action}} مديرك {{name}} طلب التوظيف من {{business}}."
+      "hire_answered_by_manager": "{{action}} مديرك {{name}} طلب التوظيف من {{business}}.",
+      "campaign_application": "تقدّم {{person}} لحملتك \"{{campaign}}\".",
+      "campaign_accepted": "اختارتك {{business}} لحملة \"{{campaign}}\". طلب التعاقد جاهز.",
+      "campaign_rejected": "لم يتم اختيارك لحملة \"{{campaign}}\" هذه المرة."
     }
   },
   "dataState": {
@@ -1837,7 +1849,9 @@
     "managerTitle": "لوحة المدير",
     "managerDetails": "بيانات المدير",
     "myTalents": "مواهبي",
-    "myManager": "مديري"
+    "myManager": "مديري",
+    "campaigns": "الحملات",
+    "applications": "طلباتي"
   },
   "pageError": {
     "title": "تعذّر تحميل هذه الصفحة",
@@ -2036,5 +2050,148 @@
     "event_organizer": "منظم فعاليات",
     "government": "جهة حكومية",
     "other": "أخرى"
+  },
+  "campaigns": {
+    "acceptedToast": "تم اختيار الموهبة. طلب التعاقد مقبول الآن",
+    "allCategories": "كل الفئات",
+    "allCountries": "كل الدول",
+    "anyCountry": "أي دولة",
+    "applicants": "المتقدمون",
+    "applicantsSummary": "تقدّم {{count}} · تم اختيار {{accepted}}",
+    "applicationsTitle": "طلباتي",
+    "applicationsSubtitle": "الحملات التي تقدّمت لها وقرار الجهة المعلنة.",
+    "applied": "تقدّم {{count}} حتى الآن",
+    "appliedOn": "تم التقديم في {{date}}",
+    "apply": "إرسال الطلب",
+    "applyBy": "التقديم حتى {{date}}",
+    "applySent": "تم إرسال الطلب. ستراجعه الجهة المعلنة قريباً",
+    "applyTitle": "تقدّم لهذه الحملة",
+    "applying": "جارٍ الإرسال...",
+    "applyingAs": "التقديم بملفك:",
+    "back": "العودة إلى حملاتي",
+    "backToList": "كل الحملات",
+    "browse": "تصفّح الحملات",
+    "budgetOpen": "الميزانية عند الطلب",
+    "claimProfile": "أو ابحث عن ملفك الحالي وطالب به",
+    "close": "إغلاق الحملة",
+    "closeConfirm": "إغلاق هذه الحملة؟ لن يتمكن المواهب من التقديم بعد الآن.",
+    "closedTitle": "التقديم مغلق",
+    "closedText": "هذه الحملة لم تعد تستقبل طلبات جديدة.",
+    "count": "حملة مفتوحة",
+    "createProfile": "أنشئ ملفك",
+    "created": "أُنشئت في {{date}}",
+    "delete": "حذف الحملة",
+    "deleteConfirm": "حذف هذه الحملة وكل طلباتها؟ تبقى طلبات التعاقد للمواهب المختارة.",
+    "deleted": "تم حذف الحملة",
+    "edit": "تعديل الحملة",
+    "emptyTitle": "لا توجد حملات مفتوحة بعد",
+    "emptyText": "عندما تنشر شركة أو مؤسسة حملة، ستظهر هنا ويمكن للمواهب التقديم.",
+    "errors": {
+      "brief": "صف الحملة في {{count}} حرفاً على الأقل",
+      "deadline": "يجب أن يكون الموعد النهائي اليوم أو لاحقاً",
+      "pitch": "أخبر الجهة المعلنة بالمزيد ({{count}} حرفاً على الأقل)",
+      "slots": "أدخل رقماً من 1 إلى 100",
+      "title": "استخدم 3 أحرف على الأقل"
+    },
+    "eyebrow": "دعوات مفتوحة",
+    "fields": {
+      "brief": "التفاصيل",
+      "briefHint": "ما تحتاجه، المخرجات، التواريخ ومن تبحث عنه.",
+      "briefPlaceholder": "مثلاً: نطلق تشكيلة وجبات صيفية ونحتاج صنّاع محتوى طعام لمقطع واحد لكل منهم...",
+      "budget": "الميزانية لكل موهبة",
+      "budgetHint": "اتركه فارغاً إذا كنت تفضّل مناقشته.",
+      "category": "نوع العمل",
+      "country": "دولة الموهبة",
+      "deadline": "آخر موعد للتقديم",
+      "pitch": "لماذا أنت مناسب؟",
+      "pitchPlaceholder": "جمهورك، أعمال مشابهة قمت بها، فكرتك لهذه الحملة...",
+      "slots": "عدد المواهب المطلوبة",
+      "slotsHint": "تُغلق الحملة عند اختيار هذا العدد.",
+      "title": "عنوان الحملة",
+      "titlePlaceholder": "مثلاً: إطلاق وجبات صيفية على إنستغرام"
+    },
+    "followers": "{{count}} متابع",
+    "formSubtitle": "يرى المواهب هذا في صفحة الحملات ويتقدمون بملفاتهم.",
+    "fullHint": "اخترت بالفعل العدد المطلوب من المواهب",
+    "joinAsTalent": "جديد هنا؟ سجّل كموهبة",
+    "loginToApply": "سجّل الدخول بحساب الموهبة للتقديم.",
+    "manage": "إدارة المتقدمين",
+    "mineTitle": "الحملات",
+    "mineSubtitle": "انشر دعوة مفتوحة ودع المواهب تتقدم إليك.",
+    "mineEmptyTitle": "لا توجد حملات بعد",
+    "mineEmptyText": "أنشئ حملتك الأولى: صف العمل وسيتقدم المواهب بملفاتهم.",
+    "new": "حملة جديدة",
+    "newApplicants": "جديد",
+    "noApplicants": "لا يوجد متقدمون هنا",
+    "noApplicantsDraft": "انشر الحملة ليتمكن المواهب من رؤيتها والتقديم.",
+    "noApplicantsText": "ستظهر الطلبات الجديدة هنا وسيصلك إشعار.",
+    "noApplicationsTitle": "لم تتقدم لأي حملة بعد",
+    "noApplicationsText": "تصفّح الحملات المفتوحة من الشركات والمؤسسات وتقدّم بملفك.",
+    "noDeadline": "بدون موعد نهائي",
+    "noMatch": "لا توجد حملات تطابق هذه المرشحات",
+    "notFound": "الحملة غير موجودة",
+    "onlyTalent": "يمكن لحسابات المواهب فقط التقديم للحملات.",
+    "openHire": "فتح طلب التعاقد",
+    "postOne": "انشر حملة",
+    "posted": "نُشرت في {{date}}",
+    "postedBy": "نشرتها",
+    "profileFirst": "تحتاج أولاً إلى ملف عام لتعرف الجهة المعلنة من أنت.",
+    "publish": "نشر الحملة",
+    "published": "تم نشر الحملة. يمكن للمواهب التقديم الآن",
+    "reject": "رفض",
+    "rejectedToast": "تم رفض الطلب",
+    "removedCampaign": "تمت إزالة هذه الحملة",
+    "removedProfile": "ملف محذوف",
+    "reopen": "إعادة فتح",
+    "saveDraft": "حفظ كمسودة",
+    "saved": "تم حفظ الحملة",
+    "searchLabel": "ابحث في الحملات",
+    "searchPlaceholder": "ابحث بالعنوان أو التفاصيل...",
+    "select": "اختيار",
+    "selected": "مختار",
+    "selectedOf": "تم اختيار {{accepted}} من {{slots}}",
+    "slots": "مطلوب {{count}} موهبة",
+    "startAgreement": "الانتقال إلى طلب التعاقد والاتفاقية",
+    "subtitle": "شركات ومؤسسات تبحث عن مواهب. اختر حملة وتقدّم بملفك.",
+    "title": "الحملات",
+    "verifiedBusiness": "شركة / مؤسسة موثّقة",
+    "verifyNow": "وثّق مؤسستك",
+    "verifyToPublish": "يمكن للمؤسسات الموثّقة فقط نشر الحملات. يمكنك حفظ مسودات حتى ذلك الحين.",
+    "viewProfile": "عرض الملف",
+    "viewPublic": "الصفحة العامة",
+    "website": "الموقع الإلكتروني",
+    "withdraw": "سحب الطلب",
+    "withdrawConfirm": "سحب طلبك؟ يمكنك التقديم مجدداً ما دامت الحملة مفتوحة.",
+    "withdrawn": "تم سحب الطلب",
+    "yourApplication": "طلبك",
+    "yourCampaign": "هذه حملتك",
+    "status": {
+      "draft": "مسودة",
+      "open": "مفتوحة",
+      "closed": "مغلقة"
+    },
+    "statusToast": {
+      "draft": "أُعيدت إلى المسودة",
+      "open": "الحملة مفتوحة للتقديم",
+      "closed": "تم إغلاق الحملة"
+    },
+    "applicationStatus": {
+      "pending": "قيد المراجعة",
+      "accepted": "تم الاختيار",
+      "rejected": "لم يتم الاختيار",
+      "withdrawn": "مسحوب"
+    },
+    "applicationHint": {
+      "pending": "لم تقرر الجهة المعلنة بعد. سيصلك إشعار.",
+      "accepted": "تم اختيارك! تمت مشاركة بيانات التواصل وتبدأ الاتفاقية من طلب التعاقد.",
+      "rejected": "اختارت الجهة المعلنة مواهب أخرى هذه المرة.",
+      "withdrawn": "لقد سحبت هذا الطلب."
+    },
+    "tabs": {
+      "all": "الكل",
+      "pending": "جديدة",
+      "accepted": "مختارة",
+      "rejected": "مرفوضة"
+    }
   }
 }

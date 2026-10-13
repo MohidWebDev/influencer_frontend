@@ -12,6 +12,7 @@ const AFTER_MUTATION_KEYS = [
   ['me'],
   ['agreements'],
   ['shortlists'],
+  ['campaigns'],
 ]
 
 const mutationCache = new MutationCache({

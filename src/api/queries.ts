@@ -12,6 +12,13 @@ import {
   listMyTalents,
 } from './manager'
 import { listBusinessDirectory, listManagerDirectory } from './directory'
+import {
+  getCampaign,
+  listCampaignApplications,
+  listCampaigns,
+  listMyApplications,
+  listMyCampaigns,
+} from './campaigns'
 import type { TaxonomyType } from '../types/person'
 
 // Har query ki key aur function ek jagah. Pages aur prefetch dono yahi use karte hain,
@@ -149,3 +156,36 @@ export function directoryQuery(kind: 'businesses' | 'managers', params: URLSearc
     staleTime: 30 * 1000,
   })
 }
+
+// Campaigns (open calls): public list, ek campaign, business ki apni, talent ki applications
+export function campaignsQuery(params: URLSearchParams) {
+  return queryOptions({
+    queryKey: ['campaigns', 'list', params.toString()],
+    queryFn: () => listCampaigns(params),
+    staleTime: 30 * 1000,
+  })
+}
+
+export function campaignQuery(id: string) {
+  return queryOptions({
+    queryKey: ['campaigns', 'one', id],
+    queryFn: () => getCampaign(id),
+  })
+}
+
+export const myCampaignsQuery = queryOptions({
+  queryKey: ['campaigns', 'mine'],
+  queryFn: listMyCampaigns,
+})
+
+export function campaignApplicationsQuery(id: string) {
+  return queryOptions({
+    queryKey: ['campaigns', 'applications', id],
+    queryFn: () => listCampaignApplications(id),
+  })
+}
+
+export const myApplicationsQuery = queryOptions({
+  queryKey: ['campaigns', 'my-applications'],
+  queryFn: listMyApplications,
+})

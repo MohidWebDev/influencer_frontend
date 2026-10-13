@@ -3,6 +3,7 @@ import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faArrowRight,
+  faBullhorn,
   faCalendarCheck,
   faFileContract,
   faFileInvoiceDollar,
@@ -46,6 +47,12 @@ const ROLE_DASHBOARDS: Record<SignupRole, RoleConfig> = {
     title: 'dash.talent.title',
     subtitle: 'dash.talent.subtitle',
     cards: [
+      {
+        icon: faBullhorn,
+        title: 'dash.campaigns.talentTitle',
+        description: 'dash.campaigns.talentDescription',
+        action: { label: 'dash.campaigns.talentAction', to: '/campaigns' },
+      },
       {
         icon: faFileInvoiceDollar,
         title: 'dash.services.title',
@@ -91,6 +98,12 @@ const ROLE_DASHBOARDS: Record<SignupRole, RoleConfig> = {
     subtitle: 'dash.business.subtitle',
     cards: [
       EXPLORE,
+      {
+        icon: faBullhorn,
+        title: 'dash.campaigns.businessTitle',
+        description: 'dash.campaigns.businessDescription',
+        action: { label: 'dash.campaigns.businessAction', to: '/dashboard/campaigns' },
+      },
       {
         icon: faStar,
         title: 'dash.shortlists.title',

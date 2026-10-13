@@ -41,6 +41,9 @@ export type NotificationType =
   | 'representation.ended'
   | 'hire.new_managed'
   | 'hire.answered_by_manager'
+  | 'campaign.application'
+  | 'campaign.accepted'
+  | 'campaign.rejected'
 
 export interface AppNotification {
   _id: string

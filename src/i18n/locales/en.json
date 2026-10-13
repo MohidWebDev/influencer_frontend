@@ -420,7 +420,8 @@
       "myBusiness": "My business",
       "agreements": "Agreements",
       "businesses": "Businesses",
-      "managers": "Managers"
+      "managers": "Managers",
+      "campaigns": "Campaigns"
     },
     "search": {
       "placeholder": "Search by name or what they do...",
@@ -849,6 +850,14 @@
     "repHires": {
       "title": "Hire requests",
       "action": "Open hire requests"
+    },
+    "campaigns": {
+      "businessTitle": "Campaigns",
+      "businessDescription": "Post an open call and let talents apply to you.",
+      "businessAction": "Open campaigns",
+      "talentTitle": "Open campaigns",
+      "talentDescription": "Businesses looking for talent right now. Apply with your profile.",
+      "talentAction": "Find campaigns"
     }
   },
   "oldAdmin": {
@@ -1152,7 +1161,10 @@
       "representation_declined": "{{name}} declined.",
       "representation_ended": "{{name}} ended the representation for {{person}}.",
       "hire_new_managed": "{{business}} wants to hire {{person}}. Reply from your dashboard.",
-      "hire_answered_by_manager": "Your manager {{name}} {{action}} the hire request from {{business}}."
+      "hire_answered_by_manager": "Your manager {{name}} {{action}} the hire request from {{business}}.",
+      "campaign_application": "{{person}} applied to your campaign \"{{campaign}}\".",
+      "campaign_accepted": "{{business}} selected you for \"{{campaign}}\". Your hire request is ready.",
+      "campaign_rejected": "You weren't selected for \"{{campaign}}\" this time."
     }
   },
   "dataState": {
@@ -1837,7 +1849,9 @@
     "managerTitle": "Manager dashboard",
     "managerDetails": "Manager details",
     "myTalents": "My talents",
-    "myManager": "My manager"
+    "myManager": "My manager",
+    "campaigns": "Campaigns",
+    "applications": "My applications"
   },
   "pageError": {
     "title": "This page couldn't load",
@@ -2036,5 +2050,148 @@
     "event_organizer": "Event organizer",
     "government": "Government body",
     "other": "Other"
+  },
+  "campaigns": {
+    "acceptedToast": "Talent selected. The hire request is now accepted",
+    "allCategories": "All categories",
+    "allCountries": "All countries",
+    "anyCountry": "Any country",
+    "applicants": "Applicants",
+    "applicantsSummary": "{{count}} applied · {{accepted}} selected",
+    "applicationsTitle": "My applications",
+    "applicationsSubtitle": "Campaigns you applied to and what the business decided.",
+    "applied": "{{count}} applied so far",
+    "appliedOn": "Applied {{date}}",
+    "apply": "Send application",
+    "applyBy": "Apply by {{date}}",
+    "applySent": "Application sent. The business will review it soon",
+    "applyTitle": "Apply to this campaign",
+    "applying": "Sending...",
+    "applyingAs": "Applying with your profile:",
+    "back": "Back to my campaigns",
+    "backToList": "All campaigns",
+    "browse": "Find campaigns",
+    "budgetOpen": "Budget on request",
+    "claimProfile": "Or find and claim your existing profile",
+    "close": "Close campaign",
+    "closeConfirm": "Close this campaign? Talents won't be able to apply any more.",
+    "closedTitle": "Applications are closed",
+    "closedText": "This campaign is not taking new applications any more.",
+    "count": "open campaigns",
+    "createProfile": "Create your profile",
+    "created": "created {{date}}",
+    "delete": "Delete campaign",
+    "deleteConfirm": "Delete this campaign and all its applications? Hire requests of selected talents stay.",
+    "deleted": "Campaign deleted",
+    "edit": "Edit campaign",
+    "emptyTitle": "No open campaigns yet",
+    "emptyText": "When a business or organization posts a campaign, it shows up here and talents can apply.",
+    "errors": {
+      "brief": "Describe the campaign in at least {{count}} characters",
+      "deadline": "The deadline has to be today or later",
+      "pitch": "Tell the business a bit more (at least {{count}} characters)",
+      "slots": "Enter a number from 1 to 100",
+      "title": "Use at least 3 characters"
+    },
+    "eyebrow": "Open calls",
+    "fields": {
+      "brief": "Brief",
+      "briefHint": "What you need, deliverables, dates and who you are looking for.",
+      "briefPlaceholder": "e.g. We are launching a summer snack range and need food creators for one reel each...",
+      "budget": "Budget per talent",
+      "budgetHint": "Leave empty if you'd rather discuss it.",
+      "category": "Type of work",
+      "country": "Talent's country",
+      "deadline": "Apply by",
+      "pitch": "Why are you a good fit?",
+      "pitchPlaceholder": "Your audience, similar work you've done, your idea for this campaign...",
+      "slots": "Talents needed",
+      "slotsHint": "The campaign closes once this many are selected.",
+      "title": "Campaign title",
+      "titlePlaceholder": "e.g. Summer snack launch on Instagram"
+    },
+    "followers": "{{count}} followers",
+    "formSubtitle": "Talents see this on the Campaigns page and apply with their profile.",
+    "fullHint": "You already selected as many talents as you need",
+    "joinAsTalent": "New here? Sign up as talent",
+    "loginToApply": "Log in with your talent account to apply.",
+    "manage": "Manage applicants",
+    "mineTitle": "Campaigns",
+    "mineSubtitle": "Post an open call and let talents apply to you.",
+    "mineEmptyTitle": "No campaigns yet",
+    "mineEmptyText": "Create your first campaign: describe the work and talents will apply with their profiles.",
+    "new": "New campaign",
+    "newApplicants": "new",
+    "noApplicants": "No applicants here",
+    "noApplicantsDraft": "Publish the campaign so talents can see it and apply.",
+    "noApplicantsText": "New applications show up here, and you get a notification.",
+    "noApplicationsTitle": "You haven't applied to any campaign yet",
+    "noApplicationsText": "Browse open campaigns from businesses and organizations and apply with your profile.",
+    "noDeadline": "No deadline",
+    "noMatch": "No campaigns match these filters",
+    "notFound": "Campaign not found",
+    "onlyTalent": "Only talent accounts can apply to campaigns.",
+    "openHire": "Open hire request",
+    "postOne": "Post a campaign",
+    "posted": "Posted {{date}}",
+    "postedBy": "Posted by",
+    "profileFirst": "You need a public profile first, so the business can see who you are.",
+    "publish": "Publish campaign",
+    "published": "Campaign published. Talents can apply now",
+    "reject": "Reject",
+    "rejectedToast": "Application rejected",
+    "removedCampaign": "This campaign was removed",
+    "removedProfile": "Removed profile",
+    "reopen": "Reopen",
+    "saveDraft": "Save as draft",
+    "saved": "Campaign saved",
+    "searchLabel": "Search campaigns",
+    "searchPlaceholder": "Search by title or brief...",
+    "select": "Select",
+    "selected": "selected",
+    "selectedOf": "{{accepted}} of {{slots}} selected",
+    "slots": "{{count}} talent(s) needed",
+    "startAgreement": "Go to hire request & agreement",
+    "subtitle": "Businesses and organizations looking for talent. Pick one and apply with your profile.",
+    "title": "Campaigns",
+    "verifiedBusiness": "Verified business / organization",
+    "verifyNow": "Verify your organization",
+    "verifyToPublish": "Only verified organizations can publish campaigns. You can save drafts until then.",
+    "viewProfile": "View profile",
+    "viewPublic": "Public page",
+    "website": "Website",
+    "withdraw": "Withdraw application",
+    "withdrawConfirm": "Withdraw your application? You can apply again while the campaign is open.",
+    "withdrawn": "Application withdrawn",
+    "yourApplication": "Your application",
+    "yourCampaign": "This is your campaign",
+    "status": {
+      "draft": "Draft",
+      "open": "Open",
+      "closed": "Closed"
+    },
+    "statusToast": {
+      "draft": "Moved back to draft",
+      "open": "Campaign is open for applications",
+      "closed": "Campaign closed"
+    },
+    "applicationStatus": {
+      "pending": "Under review",
+      "accepted": "Selected",
+      "rejected": "Not selected",
+      "withdrawn": "Withdrawn"
+    },
+    "applicationHint": {
+      "pending": "The business hasn't decided yet. You'll get a notification.",
+      "accepted": "You were selected! Your contacts are shared and the agreement starts from the hire request.",
+      "rejected": "The business picked other talents this time.",
+      "withdrawn": "You withdrew this application."
+    },
+    "tabs": {
+      "all": "All",
+      "pending": "New",
+      "accepted": "Selected",
+      "rejected": "Rejected"
+    }
   }
 }

@@ -28,6 +28,12 @@ import ForgotPassword from './pages/ForgotPassword'
 import BusinessesPage from './pages/directory/BusinessesPage'
 import ManagersPage from './pages/directory/ManagersPage'
 import MyProfileRedirect from './pages/MyProfileRedirect'
+import CampaignsPage from './pages/campaigns/CampaignsPage'
+import CampaignDetailPage from './pages/campaigns/CampaignDetailPage'
+import MyCampaignsPage from './pages/campaigns/MyCampaignsPage'
+import CampaignFormPage from './pages/campaigns/CampaignFormPage'
+import CampaignApplicantsPage from './pages/campaigns/CampaignApplicantsPage'
+import MyApplicationsPage from './pages/campaigns/MyApplicationsPage'
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import AdminPersonEditor from './pages/admin/AdminPersonEditor'
 import AdminLayout from './components/admin-panel/AdminLayout'
@@ -61,6 +67,8 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/businesses" element={<BusinessesPage />} />
         <Route path="/managers" element={<ManagersPage />} />
+        <Route path="/campaigns" element={<CampaignsPage />} />
+        <Route path="/campaigns/:id" element={<CampaignDetailPage />} />
         {/* Talent / business dashboard ke pages: admin panel jaisa sidebar */}
         <Route element={<DashboardLayout />}>
           <Route
@@ -92,6 +100,46 @@ function App() {
             element={
               <ProtectedRoute roles={['talent']}>
                 <ServicesPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/campaigns"
+            element={
+              <ProtectedRoute roles={['business']}>
+                <MyCampaignsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/campaigns/new"
+            element={
+              <ProtectedRoute roles={['business']}>
+                <CampaignFormPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/campaigns/:id"
+            element={
+              <ProtectedRoute roles={['business']}>
+                <CampaignApplicantsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/campaigns/:id/edit"
+            element={
+              <ProtectedRoute roles={['business']}>
+                <CampaignFormPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/applications"
+            element={
+              <ProtectedRoute roles={['talent']}>
+                <MyApplicationsPage />
               </ProtectedRoute>
             }
           />

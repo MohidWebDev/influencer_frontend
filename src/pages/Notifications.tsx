@@ -9,6 +9,7 @@ import {
   faBan,
   faBell,
   faBuilding,
+  faBullhorn,
   faCheckDouble,
   faCircleCheck,
   faCircleXmark,
@@ -80,6 +81,9 @@ const LOOK: Record<NotificationType, { icon: IconDefinition; tint: string }> = {
   'representation.ended': { icon: faBan, tint: 'bg-gray-100 text-gray-600' },
   'hire.new_managed': { icon: faHandshake, tint: 'bg-violet-50 text-violet-700' },
   'hire.answered_by_manager': { icon: faHandshake, tint: 'bg-blue-50 text-blue-700' },
+  'campaign.application': { icon: faBullhorn, tint: 'bg-violet-50 text-violet-700' },
+  'campaign.accepted': { icon: faBullhorn, tint: 'bg-green-50 text-green-700' },
+  'campaign.rejected': { icon: faCircleXmark, tint: 'bg-gray-100 text-gray-600' },
 }
 
 // "5 minutes ago" chuni hui zaban mein
@@ -256,6 +260,7 @@ function Notifications() {
                         title: data.title ?? '',
                         milestone: data.milestone ?? '',
                         rating: data.rating ?? '',
+                        campaign: data.campaign ?? '',
                         // Manager / talent ka naam, aur manager ne kya jawab diya
                         name: data.name ?? '',
                         manager: data.manager ?? '',

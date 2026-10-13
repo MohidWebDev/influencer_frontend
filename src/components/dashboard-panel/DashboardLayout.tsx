@@ -7,6 +7,7 @@ import {
   faArrowUpRightFromSquare,
   faBriefcase,
   faBuilding,
+  faBullhorn,
   faChartPie,
   faFileContract,
   faHandshake,
@@ -19,6 +20,7 @@ import {
 import { useAuth } from '../../hooks/useAuth'
 import {
   incomingHiresQuery,
+  myCampaignsQuery,
   myHiresQuery,
   myManagerQuery,
   myProfileQuery,
@@ -67,6 +69,7 @@ function TalentPanel() {
           also: ['/dashboard/profile/edit', '/my-profile/new'],
         },
         { to: '/dashboard/services', key: 'dashNav.services', icon: faBriefcase },
+        { to: '/dashboard/applications', key: 'dashNav.applications', icon: faBullhorn },
         { to: '/dashboard/hire-requests', key: 'dashNav.hireRequests', icon: faHandshake, badge: pending },
         { to: '/agreements', key: 'dashNav.agreements', icon: faFileContract },
         { to: '/dashboard/my-manager', key: 'dashNav.myManager', icon: faUserTie, badge: managerRequests },
@@ -90,6 +93,9 @@ function BusinessPanel() {
   const { data: hires } = useQuery(myHiresQuery)
   // Talent ne haan kar di, ab muahida banana business ka kaam hai
   const toDraft = hires?.filter((hire) => hire.status === 'accepted' && !hire.agreement).length ?? 0
+  // Campaigns pe naye talents jin ka jawab baqi
+  const { data: campaigns } = useQuery(myCampaignsQuery)
+  const newApplicants = campaigns?.campaigns.reduce((sum, c) => sum + c.counts.pending, 0) ?? 0
 
   return (
     <Panel
@@ -97,6 +103,13 @@ function BusinessPanel() {
       links={[
         { to: '/dashboard', key: 'dashNav.overview', icon: faChartPie, end: true },
         { to: '/dashboard/business', key: 'dashNav.businessDetails', icon: faBuilding },
+        {
+          to: '/dashboard/campaigns',
+          key: 'dashNav.campaigns',
+          icon: faBullhorn,
+          badge: newApplicants,
+          also: ['/dashboard/campaigns/new'],
+        },
         { to: '/shortlists', key: 'dashNav.shortlists', icon: faStar },
         { to: '/dashboard/hire-requests', key: 'dashNav.hireRequests', icon: faHandshake, badge: toDraft },
         { to: '/agreements', key: 'dashNav.agreements', icon: faFileContract },
