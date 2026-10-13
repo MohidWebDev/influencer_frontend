@@ -176,50 +176,7 @@ function About() {
       </section>
 
       {/* Platform mein kya kya hai */}
-      <section>
-        <h2 className="text-center text-2xl font-bold">{t('about.featuresTitle')}</h2>
-        <p className="mx-auto mt-2 max-w-xl text-center text-sm text-gray-500">
-          {t('about.featuresSubtitle')}
-        </p>
-        <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((feature) => {
-            const body = (
-              <>
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gray-100 text-gray-800">
-                  <FontAwesomeIcon icon={feature.icon} />
-                </span>
-                <span className="min-w-0">
-                  <span className="flex items-center gap-1.5 font-semibold text-gray-900">
-                    {t(`about.features.${feature.key}Title`)}
-                    {feature.to && (
-                      <FontAwesomeIcon
-                        icon={faArrowRight}
-                        className="text-[10px] text-gray-400 transition group-hover:translate-x-0.5 rtl:rotate-180"
-                      />
-                    )}
-                  </span>
-                  <span className="mt-1 block text-sm leading-relaxed text-gray-600">
-                    {t(`about.features.${feature.key}Body`)}
-                  </span>
-                </span>
-              </>
-            )
-            const className =
-              'group flex h-full gap-4 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-gray-100'
-            return (
-              <li key={feature.key}>
-                {feature.to ? (
-                  <Link to={feature.to} className={`${className} transition hover:ring-gray-300`}>
-                    {body}
-                  </Link>
-                ) : (
-                  <div className={className}>{body}</div>
-                )}
-              </li>
-            )
-          })}
-        </ul>
-      </section>
+      
 
       {/* Kis ke liye: teen account types */}
       <section>
