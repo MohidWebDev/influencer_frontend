@@ -70,21 +70,7 @@ function About() {
     body: t(`about.step${n}Body`),
   }))
 
-  // Platform mein kya kya hai
-  const features: { icon: IconDefinition; key: string; to?: string }[] = [
-    { icon: faMagnifyingGlass, key: 'search', to: '/search' },
-    { icon: faUserCheck, key: 'claim' },
-    { icon: faBriefcase, key: 'services' },
-    { icon: faHandshake, key: 'hire' },
-    { icon: faBullhorn, key: 'campaigns', to: '/campaigns' },
-    { icon: faFileSignature, key: 'agreements' },
-    { icon: faStar, key: 'reviews' },
-    { icon: faUserTie, key: 'managers', to: '/managers' },
-    { icon: faBuilding, key: 'businesses', to: '/businesses' },
-    { icon: faUsers, key: 'shortlists' },
-    { icon: faBell, key: 'notifications' },
-    { icon: faShieldHalved, key: 'safety' },
-  ]
+ 
 
   const values: { icon: IconDefinition; title: string; body: string }[] = [
     { icon: faChartLine, title: t('about.value1Title'), body: t('about.value1Body') },
