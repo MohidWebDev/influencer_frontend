@@ -175,7 +175,7 @@ function About() {
         </ol>
       </section>
 
-      {/* Platform mein kya kya hai */}
+     
       
 
       {/* Kis ke liye: teen account types */}
