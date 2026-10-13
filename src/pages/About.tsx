@@ -5,15 +5,24 @@ import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faArrowRight,
+  faBell,
   faBriefcase,
+  faBuilding,
+  faBullhorn,
   faChartLine,
   faChevronDown,
   faCircleCheck,
   faEye,
+  faFileSignature,
+  faHandshake,
   faIdBadge,
   faLanguage,
   faLock,
+  faMagnifyingGlass,
+  faShieldHalved,
+  faStar,
   faUserCheck,
+  faUserTie,
   faUsers,
 } from '@fortawesome/free-solid-svg-icons'
 import { peopleQuery } from '../api/queries'
@@ -25,7 +34,9 @@ import { formatCount } from '../utils/format'
 const ABOUT_IMAGE =
   'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1600&q=80'
 
-// About: platform kya hai, kis ke liye hai, aur kin usoolon pe chalta hai
+const FAQ_COUNT = 7
+
+// About: platform kya hai, kaise chalta hai, kis ke liye hai aur is mein kya kya hai
 function About() {
   const { t } = useTranslation()
   const { user } = useAuth()
@@ -53,6 +64,28 @@ function About() {
     { icon: faLanguage, value: '3', label: t('home.statLanguages') },
   ]
 
+  // Shuru se aakhir tak: dhoondo -> raabta / hire -> muahida -> kaam aur review
+  const steps = [1, 2, 3, 4].map((n) => ({
+    title: t(`about.step${n}Title`),
+    body: t(`about.step${n}Body`),
+  }))
+
+  // Platform mein kya kya hai
+  const features: { icon: IconDefinition; key: string; to?: string }[] = [
+    { icon: faMagnifyingGlass, key: 'search', to: '/search' },
+    { icon: faUserCheck, key: 'claim' },
+    { icon: faBriefcase, key: 'services' },
+    { icon: faHandshake, key: 'hire' },
+    { icon: faBullhorn, key: 'campaigns', to: '/campaigns' },
+    { icon: faFileSignature, key: 'agreements' },
+    { icon: faStar, key: 'reviews' },
+    { icon: faUserTie, key: 'managers', to: '/managers' },
+    { icon: faBuilding, key: 'businesses', to: '/businesses' },
+    { icon: faUsers, key: 'shortlists' },
+    { icon: faBell, key: 'notifications' },
+    { icon: faShieldHalved, key: 'safety' },
+  ]
+
   const values: { icon: IconDefinition; title: string; body: string }[] = [
     { icon: faChartLine, title: t('about.value1Title'), body: t('about.value1Body') },
     { icon: faUserCheck, title: t('about.value2Title'), body: t('about.value2Body') },
@@ -60,35 +93,35 @@ function About() {
     { icon: faLanguage, title: t('about.value4Title'), body: t('about.value4Body') },
   ]
 
-  const audiences: { title: string; points: string[] }[] = [
-    {
-      title: t('about.forTalentTitle'),
-      points: [t('about.forTalent1'), t('about.forTalent2'), t('about.forTalent3')],
-    },
-    {
-      title: t('about.forBusinessTitle'),
-      points: [t('about.forBusiness1'), t('about.forBusiness2'), t('about.forBusiness3')],
-    },
+  // Teen qism ke account: har ek ke apne fayde aur signup ka seedha raasta
+  const audiences: { key: string; icon: IconDefinition; type: string }[] = [
+    { key: 'talent', icon: faStar, type: 'talent' },
+    { key: 'manager', icon: faUserTie, type: 'representative' },
+    { key: 'business', icon: faBuilding, type: 'business' },
   ]
 
-  const faqs = [1, 2, 3, 4].map((n) => ({ q: t(`about.faq${n}Q`), a: t(`about.faq${n}A`) }))
+  const faqs = Array.from({ length: FAQ_COUNT }, (_, i) => ({
+    q: t(`about.faq${i + 1}Q`),
+    a: t(`about.faq${i + 1}A`),
+  }))
 
   return (
     <div className="space-y-16">
-      {/* Upar: tasveer wala card, Explore jaisa andaaz */}
+      {/* Upar: tasveer wala card */}
       <section className="keep-dark relative isolate overflow-hidden rounded-3xl bg-gray-900 px-5 py-14 text-white sm:px-10 md:py-20">
         <img
           src={ABOUT_IMAGE}
           alt=""
           decoding="async"
+          onError={(e) => (e.currentTarget.style.display = 'none')}
           className="absolute inset-0 -z-10 h-full w-full object-cover"
         />
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-gray-950/95 via-gray-950/75 to-gray-950/25 rtl:bg-gradient-to-l" />
         <div className="max-w-2xl">
-          <p className="text-xs font-medium uppercase tracking-wider text-white/60">
+          <p className="text-xs font-medium tracking-wider text-white/60 uppercase">
             {t('about.eyebrow')}
           </p>
-          <h1 className="mt-3 text-3xl font-extrabold leading-tight tracking-tight md:text-5xl">
+          <h1 className="mt-3 text-3xl leading-tight font-extrabold tracking-tight md:text-5xl">
             {t('about.title')}
           </h1>
           <p className="mt-4 text-sm leading-relaxed text-white/80 md:text-lg">
@@ -120,6 +153,129 @@ function About() {
         </dl>
       </section>
 
+      {/* Kaise kaam karta hai: 4 qadam */}
+      <section>
+        <h2 className="text-center text-2xl font-bold">{t('about.howTitle')}</h2>
+        <p className="mx-auto mt-2 max-w-xl text-center text-sm text-gray-500">
+          {t('about.howSubtitle')}
+        </p>
+        <ol className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {steps.map((step, i) => (
+            <li
+              key={step.title}
+              className="relative rounded-2xl bg-white p-5 shadow-sm ring-1 ring-gray-100"
+            >
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-900 text-sm font-bold text-white">
+                {i + 1}
+              </span>
+              <h3 className="mt-4 font-semibold">{step.title}</h3>
+              <p className="mt-1 text-sm leading-relaxed text-gray-600">{step.body}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {/* Platform mein kya kya hai */}
+      <section>
+        <h2 className="text-center text-2xl font-bold">{t('about.featuresTitle')}</h2>
+        <p className="mx-auto mt-2 max-w-xl text-center text-sm text-gray-500">
+          {t('about.featuresSubtitle')}
+        </p>
+        <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {features.map((feature) => {
+            const body = (
+              <>
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gray-100 text-gray-800">
+                  <FontAwesomeIcon icon={feature.icon} />
+                </span>
+                <span className="min-w-0">
+                  <span className="flex items-center gap-1.5 font-semibold text-gray-900">
+                    {t(`about.features.${feature.key}Title`)}
+                    {feature.to && (
+                      <FontAwesomeIcon
+                        icon={faArrowRight}
+                        className="text-[10px] text-gray-400 transition group-hover:translate-x-0.5 rtl:rotate-180"
+                      />
+                    )}
+                  </span>
+                  <span className="mt-1 block text-sm leading-relaxed text-gray-600">
+                    {t(`about.features.${feature.key}Body`)}
+                  </span>
+                </span>
+              </>
+            )
+            const className =
+              'group flex h-full gap-4 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-gray-100'
+            return (
+              <li key={feature.key}>
+                {feature.to ? (
+                  <Link to={feature.to} className={`${className} transition hover:ring-gray-300`}>
+                    {body}
+                  </Link>
+                ) : (
+                  <div className={className}>{body}</div>
+                )}
+              </li>
+            )
+          })}
+        </ul>
+      </section>
+
+      {/* Kis ke liye: teen account types */}
+      <section>
+        <h2 className="text-center text-2xl font-bold">{t('about.forTitle')}</h2>
+        <div className="mt-8 grid gap-4 lg:grid-cols-3">
+          {audiences.map((audience, i) => {
+            const dark = i === 0
+            return (
+              <div
+                key={audience.key}
+                className={`flex flex-col rounded-3xl p-6 md:p-8 ${
+                  dark ? 'keep-dark bg-gray-900 text-white' : 'bg-white shadow-sm ring-1 ring-gray-100'
+                }`}
+              >
+                <span
+                  className={`flex h-11 w-11 items-center justify-center rounded-xl ${
+                    dark ? 'bg-white text-gray-900' : 'bg-gray-900 text-white'
+                  }`}
+                >
+                  <FontAwesomeIcon icon={audience.icon} />
+                </span>
+                <h3 className="mt-4 text-xl font-semibold">
+                  {t(`about.for.${audience.key}Title`)}
+                </h3>
+                <ul className="mt-5 flex-1 space-y-3">
+                  {[1, 2, 3, 4].map((n) => (
+                    <li key={n} className="flex gap-3 text-sm leading-relaxed">
+                      <FontAwesomeIcon
+                        icon={faCircleCheck}
+                        className={`mt-1 shrink-0 ${dark ? 'text-emerald-400' : 'text-emerald-600'}`}
+                      />
+                      <span className={dark ? 'text-white/80' : 'text-gray-600'}>
+                        {t(`about.for.${audience.key}${n}`)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+                {!user && (
+                  <Link
+                    to={`/register?type=${audience.type}`}
+                    className={`mt-6 inline-flex items-center gap-2 self-start rounded-xl px-4 py-2.5 text-sm font-medium ${
+                      dark
+                        ? 'bg-white text-gray-900 hover:bg-gray-100'
+                        : 'bg-gray-900 text-white hover:bg-gray-800'
+                    }`}
+                  >
+                    {t(`about.for.${audience.key}Join`)}
+                    <FontAwesomeIcon icon={faArrowRight} className="text-xs rtl:rotate-180" />
+                  </Link>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      </section>
+
       {/* Usool */}
       <section>
         <h2 className="text-center text-2xl font-bold">{t('about.valuesTitle')}</h2>
@@ -140,31 +296,6 @@ function About() {
             </li>
           ))}
         </ul>
-      </section>
-
-      {/* Kis ke liye */}
-      <section className="grid gap-4 md:grid-cols-2">
-        {audiences.map((audience, i) => (
-          <div
-            key={audience.title}
-            className={`rounded-3xl p-6 md:p-8 ${
-              i === 0 ? 'keep-dark bg-gray-900 text-white' : 'bg-white shadow-sm ring-1 ring-gray-100'
-            }`}
-          >
-            <h2 className="text-xl font-semibold">{audience.title}</h2>
-            <ul className="mt-5 space-y-3">
-              {audience.points.map((point) => (
-                <li key={point} className="flex gap-3 text-sm leading-relaxed">
-                  <FontAwesomeIcon
-                    icon={faCircleCheck}
-                    className={`mt-1 shrink-0 ${i === 0 ? 'text-emerald-400' : 'text-emerald-600'}`}
-                  />
-                  <span className={i === 0 ? 'text-white/80' : 'text-gray-600'}>{point}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
       </section>
 
       {/* Aksar pooche jane wale sawal */}
@@ -192,7 +323,7 @@ function About() {
       {/* Aakhri dawat */}
       <section className="keep-dark flex flex-col items-start justify-between gap-6 rounded-3xl bg-gray-900 p-6 text-white md:flex-row md:items-center md:p-10">
         <div className="max-w-xl">
-          <p className="flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-white/60">
+          <p className="flex items-center gap-2 text-xs font-medium tracking-wider text-white/60 uppercase">
             <FontAwesomeIcon icon={faEye} />
             {t('about.ctaEyebrow')}
           </p>
@@ -206,6 +337,12 @@ function About() {
           >
             {t('about.ctaExplore')}
             <FontAwesomeIcon icon={faArrowRight} className="text-xs rtl:rotate-180" />
+          </Link>
+          <Link
+            to="/campaigns"
+            className="inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-medium text-white ring-1 ring-white/30 hover:bg-white/10"
+          >
+            {t('about.ctaCampaigns')}
           </Link>
           {!user && (
             <Link
