@@ -16,7 +16,7 @@ import type { AdminUser } from '../../types/adminPanel'
 import type { Role } from '../../types/user'
 import { adminErrorMessage, formatDate } from '../../utils/adminFormat'
 
-const ROLES: Role[] = ['talent', 'representative', 'business', 'agency', 'organization', 'admin']
+const ROLES: Role[] = ['talent', 'representative', 'business', 'admin']
 const PAGE_SIZE = 20
 
 type Pending =

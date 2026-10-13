@@ -1,55 +1,169 @@
 import { useTranslation } from 'react-i18next'
-import { useState, type FormEvent } from 'react'
+import { useState, type FormEvent, type ReactNode } from 'react'
 import { Link, Navigate, useNavigate, useSearchParams } from 'react-router-dom'
 import toast from 'react-hot-toast'
-import FormField from '../components/FormField'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
+import { faArrowLeft, faBuilding, faStar, faUserTie } from '@fortawesome/free-solid-svg-icons'
+import PasswordField from '../components/PasswordField'
+import { COUNTRY_OPTIONS } from '../constants/people'
 import { SIGNUP_ROLE_OPTIONS } from '../constants/roles'
-import { COMPANY_SIZES, type CompanySize } from '../types/business'
+import {
+  COMPANY_SIZES,
+  ORGANIZATION_TYPES,
+  type CompanySize,
+  type OrganizationType,
+} from '../types/business'
+import type { RegisterInput } from '../api/auth'
 import { useAuth } from '../hooks/useAuth'
 import type { SignupRole } from '../types/user'
 import { getApiError } from '../utils/apiError'
+import { countryName } from '../utils/format'
+
+const ROLE_ICONS: Record<SignupRole, IconDefinition> = {
+  talent: faStar,
+  representative: faUserTie,
+  business: faBuilding,
+}
+const MIN_PASSWORD = 8
+const inputClass = (error?: string) =>
+  `w-full rounded-lg border bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-gray-900 ${
+    error ? 'border-red-500' : 'border-gray-300'
+  }`
+const isUrl = (value: string) => /^https?:\/\/\S+\.\S+/i.test(value)
+
+// Label ke saath "*" (zaroori) ya "(optional)"
+function FieldLabel({
+  htmlFor,
+  children,
+  optional,
+}: {
+  htmlFor: string
+  children: ReactNode
+  optional?: boolean
+}) {
+  const { t } = useTranslation()
+  return (
+    <label htmlFor={htmlFor} className="mb-1 block text-sm font-medium">
+      {children}
+      {optional ? (
+        <span className="ms-1 text-xs font-normal text-gray-400">({t('register.optional')})</span>
+      ) : (
+        <span className="ms-0.5 text-red-500" aria-hidden="true">
+          *
+        </span>
+      )}
+    </label>
+  )
+}
+
+function FieldError({ message }: { message?: string }) {
+  return message ? <p className="mt-1 text-sm text-red-600">{message}</p> : null
+}
 
 function Register() {
   const { t } = useTranslation()
   const { user, register } = useAuth()
   const navigate = useNavigate()
   // /register?type=business -> account type pehle se chuna hua (Businesses / Managers page se)
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const typeParam = searchParams.get('type')
+  const role = SIGNUP_ROLE_OPTIONS.some((o) => o.value === typeParam)
+    ? (typeParam as SignupRole)
+    : null
 
+  // Sab ke liye
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [role, setRole] = useState<SignupRole | ''>(() => {
-    const type = searchParams.get('type')
-    return SIGNUP_ROLE_OPTIONS.some((o) => o.value === type) ? (type as SignupRole) : ''
-  })
-  // Business: naam ki jagah company ki details
+  // Manager aur business
+  const [country, setCountry] = useState('')
+  const [websiteUrl, setWebsiteUrl] = useState('')
+  // Sirf manager
+  const [agencyName, setAgencyName] = useState('')
+  // Sirf business: naam ki jagah organization ki details
+  const [organizationType, setOrganizationType] = useState<OrganizationType | ''>('')
   const [companyName, setCompanyName] = useState('')
   const [industry, setIndustry] = useState('')
   const [companySize, setCompanySize] = useState<CompanySize | ''>('')
   const [description, setDescription] = useState('')
-  const isBusiness = role === 'business'
+
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   if (user) return <Navigate to="/dashboard" replace />
 
+  // Type URL mein, taake back button pehle qadam pe le jaye
+  const chooseRole = (next: SignupRole | null) => {
+    setErrors({})
+    setSearchParams(next ? { type: next } : {}, { replace: false })
+  }
+
+  // Har field badalte hi us ka purana error hata do
+  const field =
+    <T,>(key: string, setter: (value: T) => void) =>
+    (value: T) => {
+      setter(value)
+      if (errors[key]) setErrors((prev) => ({ ...prev, [key]: '' }))
+    }
+
+  // Server se pehle yahin jaanch: sirf is type ke zaroori fields
+  function validate(current: SignupRole) {
+    const found: Record<string, string> = {}
+    if (current === 'business') {
+      if (!organizationType) found.organizationType = t('register.errors.orgType')
+      if (companyName.trim().length < 2) found.companyName = t('register.errors.orgName')
+    } else if (name.trim().length < 2) {
+      found.name = t('register.errors.name')
+    }
+    if (current !== 'talent' && !country) found.country = t('register.errors.country')
+    if (current !== 'talent' && websiteUrl.trim() && !isUrl(websiteUrl.trim())) {
+      found.websiteUrl = t('register.errors.url')
+    }
+    if (!/^\S+@\S+\.\S+$/.test(email.trim())) found.email = t('register.errors.email')
+    if (password.length < MIN_PASSWORD) {
+      found.password = t('register.errors.password', { count: MIN_PASSWORD })
+    }
+    return found
+  }
+
+  function payload(current: SignupRole): RegisterInput {
+    const base = { email: email.trim(), password, role: current }
+    if (current === 'talent') return { ...base, name: name.trim() }
+    if (current === 'representative') {
+      return {
+        ...base,
+        name: name.trim(),
+        country,
+        agencyName: agencyName.trim() || undefined,
+        websiteUrl: websiteUrl.trim() || undefined,
+      }
+    }
+    return {
+      ...base,
+      organizationType: organizationType as OrganizationType,
+      companyName: companyName.trim(),
+      country,
+      websiteUrl: websiteUrl.trim() || undefined,
+      industry: industry.trim() || undefined,
+      companySize,
+      description: description.trim() || undefined,
+    }
+  }
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
-    setErrors({})
-
-    if (!role) {
-      setErrors({ role: t('register.chooseType') })
+    if (!role) return
+    const found = validate(role)
+    setErrors(found)
+    if (Object.keys(found).length) {
+      document.getElementById(Object.keys(found)[0])?.focus()
       return
     }
 
     setIsSubmitting(true)
     try {
-      const created = await register(
-        isBusiness
-          ? { email, password, role, companyName, industry, companySize, description }
-          : { name, email, password, role },
-      )
+      const created = await register(payload(role))
       toast.success(t('register.welcome', { name: created.name }))
       navigate('/dashboard', { replace: true })
     } catch (error) {
@@ -61,146 +175,285 @@ function Register() {
     }
   }
 
+  // Qadam 1: account type chuno
+  if (!role) {
+    return (
+      <section className="mx-auto max-w-3xl rounded-2xl bg-white p-6 shadow-sm md:p-8">
+        <p className="text-xs font-medium tracking-wide text-gray-500 uppercase">
+          {t('forgot.step', { current: 1, total: 2 })}
+        </p>
+        <h1 className="mt-1 text-2xl font-bold">{t('register.title')}</h1>
+        <p className="mt-1 text-sm text-gray-500">{t('register.subtitle')}</p>
+
+        <div className="mt-6 grid gap-3 md:grid-cols-3">
+          {SIGNUP_ROLE_OPTIONS.map((option) => (
+            <button
+              key={option.value}
+              type="button"
+              onClick={() => chooseRole(option.value)}
+              className="group flex flex-col items-start rounded-xl border border-gray-300 p-5 text-start transition hover:border-gray-900 hover:shadow-md focus-visible:ring-2 focus-visible:ring-gray-900 focus-visible:outline-none"
+            >
+              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-900 text-white">
+                <FontAwesomeIcon icon={ROLE_ICONS[option.value]} />
+              </span>
+              <span className="mt-4 block font-semibold">{option.label}</span>
+              <span className="mt-1 block flex-1 text-sm text-gray-500">{option.description}</span>
+              <span className="mt-4 text-sm font-medium text-gray-900 underline-offset-4 group-hover:underline">
+                {t('register.continueAs', { type: option.label })}
+              </span>
+            </button>
+          ))}
+        </div>
+
+        <p className="mt-6 text-center text-sm text-gray-600">
+          {t('register.haveAccount')}{' '}
+          <Link to="/login" className="font-medium text-gray-900 underline">
+            {t('register.login')}
+          </Link>
+        </p>
+      </section>
+    )
+  }
+
+  const option = SIGNUP_ROLE_OPTIONS.find((o) => o.value === role)!
+  const isBusiness = role === 'business'
+
+  const countryField = (
+    <div>
+      <FieldLabel htmlFor="country">{t('business.fields.country')}</FieldLabel>
+      <select
+        id="country"
+        value={country}
+        onChange={(e) => field('country', setCountry)(e.target.value)}
+        className={inputClass(errors.country)}
+      >
+        <option value="">{t('register.chooseCountry')}</option>
+        {COUNTRY_OPTIONS.map((code) => (
+          <option key={code} value={code}>
+            {countryName(code)}
+          </option>
+        ))}
+      </select>
+      <FieldError message={errors.country} />
+    </div>
+  )
+
+  const websiteField = (label: string) => (
+    <div>
+      <FieldLabel htmlFor="websiteUrl" optional>
+        {label}
+      </FieldLabel>
+      <input
+        id="websiteUrl"
+        type="url"
+        inputMode="url"
+        dir="ltr"
+        placeholder="https://..."
+        value={websiteUrl}
+        onChange={(e) => field('websiteUrl', setWebsiteUrl)(e.target.value)}
+        className={inputClass(errors.websiteUrl)}
+      />
+      <FieldError message={errors.websiteUrl} />
+    </div>
+  )
+
+  // Qadam 2: chune hue type ka form (sirf us ke zaroori fields)
   return (
     <section className="mx-auto max-w-2xl rounded-2xl bg-white p-6 shadow-sm md:p-8">
-      <h1 className="text-2xl font-bold">{t('register.title')}</h1>
-      <p className="mt-1 text-sm text-gray-500">{t('register.subtitle')}</p>
+      <button
+        type="button"
+        onClick={() => chooseRole(null)}
+        className="inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-gray-900"
+      >
+        <FontAwesomeIcon icon={faArrowLeft} className="text-xs rtl:rotate-180" />
+        {t('register.changeType')}
+      </button>
 
-      <form onSubmit={handleSubmit} className="mt-6 space-y-6" noValidate>
-        <fieldset>
-          <legend className="mb-2 text-sm font-medium">{t('register.iAm')}</legend>
-          <div className="grid gap-3 sm:grid-cols-2">
-            {SIGNUP_ROLE_OPTIONS.map((option) => (
-              <label
-                key={option.value}
-                className={`cursor-pointer rounded-xl border p-4 transition ${
-                  role === option.value
-                    ? 'border-gray-900 ring-2 ring-gray-900'
-                    : 'border-gray-300 hover:border-gray-500'
-                }`}
+      <div className="mt-5 flex items-center gap-4">
+        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gray-900 text-lg text-white">
+          <FontAwesomeIcon icon={ROLE_ICONS[role]} />
+        </span>
+        <div>
+          <p className="text-xs font-medium tracking-wide text-gray-500 uppercase">
+            {t('forgot.step', { current: 2, total: 2 })}
+          </p>
+          <h1 className="text-2xl font-bold">{t('register.signUpAs', { type: option.label })}</h1>
+        </div>
+      </div>
+      <p className="mt-3 text-sm text-gray-500">{t(`register.note.${role}`)}</p>
+
+      <form onSubmit={handleSubmit} className="mt-6 space-y-4" noValidate>
+        {isBusiness ? (
+          <>
+            <p className="text-sm font-semibold">{t('register.aboutOrganization')}</p>
+            <div>
+              <FieldLabel htmlFor="organizationType">{t('register.orgType')}</FieldLabel>
+              <select
+                id="organizationType"
+                value={organizationType}
+                onChange={(e) =>
+                  field(
+                    'organizationType',
+                    setOrganizationType,
+                  )(e.target.value as OrganizationType | '')
+                }
+                className={inputClass(errors.organizationType)}
               >
-                <input
-                  type="radio"
-                  name="role"
-                  value={option.value}
-                  checked={role === option.value}
-                  onChange={() => setRole(option.value)}
-                  className="sr-only"
-                />
-                <span className="block font-medium">{option.label}</span>
-                <span className="mt-1 block text-sm text-gray-500">{option.description}</span>
-              </label>
-            ))}
-          </div>
-          {errors.role && <p className="mt-2 text-sm text-red-600">{errors.role}</p>}
-        </fieldset>
-
-        <div className="space-y-4">
-          {isBusiness ? (
-            <>
-              {/* Business: company ki details. Account ka naam company ka naam hoga */}
-              <p className="text-sm font-medium">{t('register.aboutCompany')}</p>
-              <FormField
+                <option value="">{t('register.chooseOrgType')}</option>
+                {ORGANIZATION_TYPES.map((type) => (
+                  <option key={type} value={type}>
+                    {t(`orgType.${type}`)}
+                  </option>
+                ))}
+              </select>
+              <FieldError message={errors.organizationType} />
+            </div>
+            <div>
+              <FieldLabel htmlFor="companyName">{t('register.orgName')}</FieldLabel>
+              <input
                 id="companyName"
-                label={t('business.fields.companyName')}
                 autoComplete="organization"
                 maxLength={120}
                 value={companyName}
-                onChange={(e) => setCompanyName(e.target.value)}
-                error={errors.companyName}
-                required
+                onChange={(e) => field('companyName', setCompanyName)(e.target.value)}
+                className={inputClass(errors.companyName)}
               />
-              <div className="grid gap-4 sm:grid-cols-2">
-                <FormField
+              <FieldError message={errors.companyName} />
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {countryField}
+              {websiteField(t('business.fields.websiteUrl'))}
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <FieldLabel htmlFor="industry" optional>
+                  {t('business.fields.industry')}
+                </FieldLabel>
+                <input
                   id="industry"
-                  label={t('business.fields.industry')}
-                  placeholder={t('business.fields.industryPlaceholder')}
                   maxLength={80}
+                  placeholder={t('business.fields.industryPlaceholder')}
                   value={industry}
-                  onChange={(e) => setIndustry(e.target.value)}
-                  error={errors.industry}
+                  onChange={(e) => field('industry', setIndustry)(e.target.value)}
+                  className={inputClass(errors.industry)}
                 />
-                <div>
-                  <label htmlFor="companySize" className="mb-1 block text-sm font-medium">
-                    {t('business.fields.companySize')}
-                  </label>
-                  <select
-                    id="companySize"
-                    value={companySize}
-                    onChange={(e) => setCompanySize(e.target.value as CompanySize | '')}
-                    className={`w-full rounded-lg border bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-gray-900 ${
-                      errors.companySize ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                  >
-                    <option value="">{t('business.fields.chooseSize')}</option>
-                    {COMPANY_SIZES.map((size) => (
-                      <option key={size} value={size}>
-                        {t('business.fields.employees', { size })}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.companySize && (
-                    <p className="mt-1 text-sm text-red-600">{errors.companySize}</p>
-                  )}
-                </div>
+                <FieldError message={errors.industry} />
               </div>
               <div>
-                <label htmlFor="description" className="mb-1 block text-sm font-medium">
-                  {t('business.fields.description')}
-                </label>
-                <textarea
-                  id="description"
-                  rows={3}
-                  maxLength={1000}
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  placeholder={t('business.fields.descriptionPlaceholder')}
-                  className={`w-full rounded-lg border px-3 py-2 outline-none focus:ring-2 focus:ring-gray-900 ${
-                    errors.description ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {errors.description && (
-                  <p className="mt-1 text-sm text-red-600">{errors.description}</p>
-                )}
+                <FieldLabel htmlFor="companySize" optional>
+                  {t('business.fields.companySize')}
+                </FieldLabel>
+                <select
+                  id="companySize"
+                  value={companySize}
+                  onChange={(e) =>
+                    field('companySize', setCompanySize)(e.target.value as CompanySize | '')
+                  }
+                  className={inputClass(errors.companySize)}
+                >
+                  <option value="">{t('business.fields.chooseSize')}</option>
+                  {COMPANY_SIZES.map((size) => (
+                    <option key={size} value={size}>
+                      {t('business.fields.employees', { size })}
+                    </option>
+                  ))}
+                </select>
+                <FieldError message={errors.companySize} />
               </div>
-              <p className="border-t border-gray-100 pt-4 text-sm font-medium">
-                {t('register.loginDetails')}
-              </p>
-            </>
-          ) : (
-            <FormField
-              id="name"
-              label={t('register.fullName')}
-              autoComplete="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              error={errors.name}
-              required
-            />
-          )}
-          <FormField
+            </div>
+            <div>
+              <FieldLabel htmlFor="description" optional>
+                {t('business.fields.description')}
+              </FieldLabel>
+              <textarea
+                id="description"
+                rows={3}
+                maxLength={1000}
+                value={description}
+                onChange={(e) => field('description', setDescription)(e.target.value)}
+                placeholder={t('business.fields.descriptionPlaceholder')}
+                className={inputClass(errors.description)}
+              />
+              <FieldError message={errors.description} />
+            </div>
+          </>
+        ) : (
+          <>
+            <p className="text-sm font-semibold">{t('register.aboutYou')}</p>
+            <div>
+              <FieldLabel htmlFor="name">{t('register.fullName')}</FieldLabel>
+              <input
+                id="name"
+                autoComplete="name"
+                maxLength={100}
+                value={name}
+                onChange={(e) => field('name', setName)(e.target.value)}
+                className={inputClass(errors.name)}
+              />
+              <FieldError message={errors.name} />
+            </div>
+            {role === 'representative' && (
+              <>
+                <div>
+                  <FieldLabel htmlFor="agencyName" optional>
+                    {t('register.agencyName')}
+                  </FieldLabel>
+                  <input
+                    id="agencyName"
+                    autoComplete="organization"
+                    maxLength={120}
+                    placeholder={t('register.agencyPlaceholder')}
+                    value={agencyName}
+                    onChange={(e) => field('agencyName', setAgencyName)(e.target.value)}
+                    className={inputClass(errors.agencyName)}
+                  />
+                  <FieldError message={errors.agencyName} />
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {countryField}
+                  {websiteField(t('register.managerWebsite'))}
+                </div>
+              </>
+            )}
+          </>
+        )}
+
+        <p className="border-t border-gray-100 pt-4 text-sm font-semibold">
+          {t('register.loginDetails')}
+        </p>
+        <div>
+          <FieldLabel htmlFor="email">
+            {isBusiness ? t('register.workEmail') : t('login.email')}
+          </FieldLabel>
+          <input
             id="email"
-            label={isBusiness ? t('register.workEmail') : t('login.email')}
             type="email"
             autoComplete="email"
+            dir="ltr"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            error={errors.email}
-            required
+            onChange={(e) => field('email', setEmail)(e.target.value)}
+            className={inputClass(errors.email)}
           />
-          <FormField
-            id="password"
-            label={t('login.password')}
-            type="password"
-            autoComplete="new-password"
-            placeholder={t('register.passwordHint')}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            error={errors.password}
-            required
-          />
+          <FieldError message={errors.email} />
         </div>
+        <PasswordField
+          id="password"
+          label={
+            <>
+              {t('login.password')}
+              <span className="ms-0.5 text-red-500" aria-hidden="true">
+                *
+              </span>
+            </>
+          }
+          autoComplete="new-password"
+          value={password}
+          onChange={field('password', setPassword)}
+          error={errors.password}
+        />
+        <p className="text-xs text-gray-500">{t('register.passwordHint')}</p>
 
+        <p className="text-xs text-gray-500">{t('register.requiredHint')}</p>
         <button
           type="submit"
           disabled={isSubmitting}

@@ -4,12 +4,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faArrowRight,
   faCalendarCheck,
-  faEnvelopeOpenText,
   faFileContract,
   faFileInvoiceDollar,
   faHandshake,
   faMagnifyingGlass,
-  faMicrophone,
   faStar,
   faUsers,
 } from '@fortawesome/free-solid-svg-icons'
@@ -38,8 +36,7 @@ interface RoleConfig {
 const EXPLORE: DashboardCard = {
   icon: faMagnifyingGlass,
   title: 'dash.discover.title',
-  description:
-    'dash.discover.description',
+  description: 'dash.discover.description',
   action: { label: 'dash.discover.action', to: '/search' },
 }
 
@@ -108,42 +105,6 @@ const ROLE_DASHBOARDS: Record<SignupRole, RoleConfig> = {
       },
     ],
   },
-  agency: {
-    title: 'dash.agency.title',
-    subtitle: 'dash.agency.subtitle',
-    cards: [
-      EXPLORE,
-      {
-        icon: faStar,
-        title: 'dash.shortlists.title',
-        description: 'dash.shortlists.agencyDescription',
-        action: { label: 'dash.shortlists.action', to: '/shortlists' },
-      },
-      {
-        icon: faEnvelopeOpenText,
-        title: 'dash.sentInquiries.title',
-        description: 'dash.sentInquiries.agencyDescription',
-      },
-    ],
-  },
-  organization: {
-    title: 'dash.organization.title',
-    subtitle: 'dash.organization.subtitle',
-    cards: [
-      EXPLORE,
-      {
-        icon: faMicrophone,
-        title: 'dash.eventRequests.title',
-        description: 'dash.eventRequests.description',
-      },
-      {
-        icon: faStar,
-        title: 'dash.shortlists.title',
-        description: 'dash.shortlists.orgDescription',
-        action: { label: 'dash.shortlists.action', to: '/shortlists' },
-      },
-    ],
-  },
 }
 
 function RoleDashboard({ role }: { role: SignupRole }) {
@@ -167,7 +128,9 @@ function RoleDashboard({ role }: { role: SignupRole }) {
         <p className="text-sm text-gray-500">{t(config.subtitle)}</p>
       </div>
 
-      <div className={`grid gap-4 sm:grid-cols-2 ${config.cards.length === 3 ? 'lg:grid-cols-3' : ''}`}>
+      <div
+        className={`grid gap-4 sm:grid-cols-2 ${config.cards.length === 3 ? 'lg:grid-cols-3' : ''}`}
+      >
         {config.cards.map((card) => (
           <article
             key={card.title}

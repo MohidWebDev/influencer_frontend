@@ -41,9 +41,7 @@
   "roles": {
     "talent": "Talent",
     "representative": "Manager / Agent",
-    "business": "Business",
-    "agency": "Agency",
-    "organization": "Organization",
+    "business": "Business / Organization",
     "admin": "Admin"
   },
   "overview": {
@@ -442,9 +440,7 @@
   "roleDesc": {
     "talent": "Creator, journalist, speaker, expert or public figure",
     "representative": "I represent one or more talents",
-    "business": "I want to hire or collaborate with talent",
-    "agency": "Marketing, PR or talent agency",
-    "organization": "NGO, university, event organizer or government body"
+    "business": "Company, brand, agency, NGO, university, event organizer or government body that wants to work with talent"
   },
   "profileStatus": {
     "public": "Public profile",
@@ -666,9 +662,8 @@
   },
   "register": {
     "title": "Create your account",
-    "subtitle": "First, tell us who you are.",
+    "subtitle": "First, choose the type of account you need.",
     "iAm": "I am a...",
-    "chooseType": "Choose an account type",
     "fullName": "Full name",
     "passwordHint": "At least 8 characters",
     "submit": "Create account",
@@ -676,9 +671,36 @@
     "haveAccount": "Already have an account?",
     "login": "Log in",
     "welcome": "Welcome, {{name}}!",
-    "aboutCompany": "About your company",
     "loginDetails": "Login details",
-    "workEmail": "Work email"
+    "workEmail": "Work email",
+    "continueAs": "Continue as {{type}} →",
+    "signUpAs": "Sign up as {{type}}",
+    "changeType": "Change account type",
+    "note": {
+      "talent": "Creators, journalists, speakers and experts. After signing up you can claim or build your public profile.",
+      "representative": "For managers and agents who represent talent. After signing up, verify your details to link with your talents.",
+      "business": "For any business or organization that wants to hire or collaborate with talent. After signing up, verify your organization to send hire requests."
+    },
+    "aboutOrganization": "About your organization",
+    "aboutYou": "About you",
+    "orgType": "Type of organization",
+    "chooseOrgType": "Choose a type",
+    "orgName": "Business / organization name",
+    "chooseCountry": "Choose a country",
+    "agencyName": "Agency / company name",
+    "agencyPlaceholder": "Leave empty if you work independently",
+    "managerWebsite": "Website or LinkedIn",
+    "optional": "optional",
+    "requiredHint": "Fields marked * are required.",
+    "errors": {
+      "name": "Enter your full name (at least 2 characters)",
+      "orgName": "Enter the name (at least 2 characters)",
+      "orgType": "Choose the type of organization",
+      "country": "Choose a country",
+      "url": "Enter a full link starting with https://",
+      "email": "Enter a valid email",
+      "password": "Password must be at least {{count}} characters"
+    }
   },
   "claimForm": {
     "sent": "Claim sent! We will review it soon.",
@@ -816,26 +838,7 @@
     "shortlists": {
       "title": "Shortlists",
       "businessDescription": "Save people into a list for each campaign, add private notes and compare them.",
-      "agencyDescription": "Build talent lists for each client or campaign.",
-      "orgDescription": "Keep lists of people for upcoming events.",
       "action": "Open shortlists"
-    },
-    "sentInquiries": {
-      "title": "Sent inquiries",
-      "businessDescription": "Track the requests you sent and their status.",
-      "agencyDescription": "Track every request you sent on behalf of clients."
-    },
-    "agency": {
-      "title": "Agency dashboard",
-      "subtitle": "Plan campaigns and manage requests for your clients."
-    },
-    "organization": {
-      "title": "Organization dashboard",
-      "subtitle": "Find speakers, experts and guests for your events and programs."
-    },
-    "eventRequests": {
-      "title": "Event requests",
-      "description": "Invite speakers and experts and follow up on replies."
     },
     "agreements": {
       "title": "Agreements",
@@ -2023,5 +2026,15 @@
       "emptyText": "Managers and agents show up here as soon as they create an account.",
       "join": "Sign up as a manager"
     }
+  },
+  "orgType": {
+    "company": "Company",
+    "brand": "Brand",
+    "marketing_agency": "Marketing / PR agency",
+    "ngo": "NGO / non-profit",
+    "university": "University / school",
+    "event_organizer": "Event organizer",
+    "government": "Government body",
+    "other": "Other"
   }
 }

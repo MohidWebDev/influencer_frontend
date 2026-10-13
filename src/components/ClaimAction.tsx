@@ -59,7 +59,7 @@ function ClaimAction({ person }: { person: Person }) {
     )
   }
 
-  // 4. Business, agency waghera claim nahi kar sakte
+  // 4. Business / organization waghera claim nahi kar sakte
   if (!isTalent) {
     return (
       <button

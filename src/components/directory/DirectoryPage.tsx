@@ -237,6 +237,7 @@ function DirectoryPage({ kind, icon }: { kind: Kind; icon: IconDefinition }) {
                   entry={b}
                   name={b.name}
                   subtitle={[
+                    b.organizationType && t(`orgType.${b.organizationType}`),
                     b.industry,
                     b.companySize && t('directory.employees', { size: b.companySize }),
                   ]

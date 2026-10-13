@@ -30,9 +30,23 @@ export type HireStatus = 'pending' | 'accepted' | 'declined' | 'cancelled'
 
 export const COMPANY_SIZES: CompanySize[] = ['1-10', '11-50', '51-200', '201-1000', '1000+']
 
+// Business / organization kis qism ka hai (signup pe chuna jata hai)
+export const ORGANIZATION_TYPES = [
+  'company',
+  'brand',
+  'marketing_agency',
+  'ngo',
+  'university',
+  'event_organizer',
+  'government',
+  'other',
+] as const
+export type OrganizationType = (typeof ORGANIZATION_TYPES)[number]
+
 export interface BusinessProfile {
   _id: string
   owner: string
+  organizationType?: OrganizationType
   companyName: string
   industry?: string
   companySize?: CompanySize
@@ -59,6 +73,7 @@ export interface BusinessProfile {
 }
 
 export interface BusinessInput {
+  organizationType?: OrganizationType | ''
   companyName: string
   industry?: string
   companySize?: CompanySize | ''
@@ -73,7 +88,14 @@ export interface BusinessInput {
 
 // Admin panel: owner aur reviewer ki details ke saath
 export interface AdminBusiness extends Omit<BusinessProfile, 'owner'> {
-  owner: { _id: string; name: string; email: string; role: Role; status: string; createdAt: string } | null
+  owner: {
+    _id: string
+    name: string
+    email: string
+    role: Role
+    status: string
+    createdAt: string
+  } | null
   reviewedBy?: { name: string; email: string }
   verifiedBy?: { name: string; email: string } | null
 }
@@ -86,7 +108,14 @@ export interface AdminBusinessPayload {
 
 export interface HireRequest {
   _id: string
-  person: { _id: string; name: string; slug: string; headline?: string; photoUrl?: string; verified: boolean } | null
+  person: {
+    _id: string
+    name: string
+    slug: string
+    headline?: string
+    photoUrl?: string
+    verified: boolean
+  } | null
   businessProfile?: {
     _id: string
     companyName: string

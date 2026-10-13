@@ -170,7 +170,7 @@ function ShortlistPicker({
   )
 }
 
-// Profile ko shortlist mein daalne ka sitara. Sirf business / agency / organization ko dikhta hai
+// Profile ko shortlist mein daalne ka sitara. Sirf business / organization ko dikhta hai
 function SaveToShortlist({ personId, personName, variant = 'icon' }: SaveToShortlistProps) {
   const { t } = useTranslation()
   const { user } = useAuth()

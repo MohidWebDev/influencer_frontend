@@ -11,17 +11,20 @@ import FormField from '../../components/FormField'
 import { COUNTRY_OPTIONS } from '../../constants/people'
 import type { ManagerInput, ManagerProfile } from '../../types/manager'
 import { getApiError } from '../../utils/apiError'
+import { useAuth } from '../../hooks/useAuth'
+import type { User } from '../../types/user'
 import { countryName } from '../../utils/format'
 
 const MAX_LINKS = 5
 const selectClass =
   'w-full rounded-lg border border-gray-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-gray-900'
 
-function toForm(manager: ManagerProfile | null): ManagerInput {
+// Pehli dafa: signup pe di gayi details se shuru (User.manager)
+function toForm(manager: ManagerProfile | null, signup?: User['manager']): ManagerInput {
   return {
-    agencyName: manager?.agencyName ?? '',
-    websiteUrl: manager?.websiteUrl ?? '',
-    country: manager?.country ?? 'PK',
+    agencyName: manager?.agencyName ?? signup?.agencyName ?? '',
+    websiteUrl: manager?.websiteUrl ?? signup?.websiteUrl ?? '',
+    country: manager?.country ?? signup?.country ?? 'PK',
     city: manager?.city ?? '',
     contactPhone: manager?.contactPhone ?? '',
     bio: manager?.bio ?? '',
@@ -35,7 +38,8 @@ function ManagerForm({ manager }: { manager: ManagerProfile | null }) {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-  const [form, setForm] = useState<ManagerInput>(() => toForm(manager))
+  const { user } = useAuth()
+  const [form, setForm] = useState<ManagerInput>(() => toForm(manager, user?.manager))
   const [errors, setErrors] = useState<Record<string, string>>({})
 
   const update = <K extends keyof ManagerInput>(key: K, value: ManagerInput[K]) => {
@@ -82,7 +86,9 @@ function ManagerForm({ manager }: { manager: ManagerProfile | null }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-5 rounded-2xl bg-white p-5 shadow-sm md:p-6">
       {manager?.status === 'approved' && (
-        <p className="rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-800">{t('manager.identityWarning')}</p>
+        <p className="rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-800">
+          {t('manager.identityWarning')}
+        </p>
       )}
       {manager?.status === 'rejected' && manager.rejectionReason && (
         <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
@@ -146,7 +152,11 @@ function ManagerForm({ manager }: { manager: ManagerProfile | null }) {
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block">
           <span className="mb-1 block text-sm font-medium">{t('business.fields.country')}</span>
-          <select value={form.country} onChange={(e) => update('country', e.target.value)} className={selectClass}>
+          <select
+            value={form.country}
+            onChange={(e) => update('country', e.target.value)}
+            className={selectClass}
+          >
             {COUNTRY_OPTIONS.map((code) => (
               <option key={code} value={code}>
                 {countryName(code)}
@@ -215,7 +225,10 @@ function ManagerForm({ manager }: { manager: ManagerProfile | null }) {
       </fieldset>
 
       <div className="flex flex-wrap justify-end gap-2 border-t border-gray-100 pt-5">
-        <Link to="/dashboard" className="rounded-lg border border-gray-300 px-4 py-2 text-sm hover:bg-gray-100">
+        <Link
+          to="/dashboard"
+          className="rounded-lg border border-gray-300 px-4 py-2 text-sm hover:bg-gray-100"
+        >
           {t('common.cancel')}
         </Link>
         <button
@@ -246,7 +259,9 @@ function ManagerProfileForm() {
         {t('site.backToDashboard')}
       </Link>
       <div>
-        <h1 className="text-2xl font-bold">{manager ? t('manager.editTitle') : t('manager.formTitle')}</h1>
+        <h1 className="text-2xl font-bold">
+          {manager ? t('manager.editTitle') : t('manager.formTitle')}
+        </h1>
         <p className="mt-1 text-sm text-gray-500">{t('manager.formSubtitle')}</p>
       </div>
       {isLoading && <div className="h-96 animate-pulse rounded-2xl bg-white shadow-sm" />}

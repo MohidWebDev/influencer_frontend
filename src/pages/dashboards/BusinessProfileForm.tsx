@@ -9,7 +9,12 @@ import { saveMyBusiness } from '../../api/business'
 import { myBusinessQuery } from '../../api/queries'
 import FormField from '../../components/FormField'
 import { COUNTRY_OPTIONS } from '../../constants/people'
-import { COMPANY_SIZES, type BusinessInput, type BusinessProfile } from '../../types/business'
+import {
+  COMPANY_SIZES,
+  ORGANIZATION_TYPES,
+  type BusinessInput,
+  type BusinessProfile,
+} from '../../types/business'
 import { getApiError } from '../../utils/apiError'
 import { useAuth } from '../../hooks/useAuth'
 import type { User } from '../../types/user'
@@ -19,16 +24,17 @@ const MAX_LINKS = 5
 const selectClass =
   'w-full rounded-lg border border-gray-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-gray-900'
 
-// Pehli dafa: signup pe di gayi company details se shuru (User.company)
+// Pehli dafa: signup pe di gayi organization details se shuru (User.company)
 function toForm(business: BusinessProfile | null, signup?: User['company']): BusinessInput {
   return {
+    organizationType: business?.organizationType ?? signup?.organizationType ?? '',
     companyName: business?.companyName ?? signup?.companyName ?? '',
     industry: business?.industry ?? signup?.industry ?? '',
     companySize: business?.companySize ?? signup?.companySize ?? '',
     description: business?.description ?? signup?.description ?? '',
-    websiteUrl: business?.websiteUrl ?? '',
+    websiteUrl: business?.websiteUrl ?? signup?.websiteUrl ?? '',
     registrationNumber: business?.registrationNumber ?? '',
-    country: business?.country ?? 'PK',
+    country: business?.country ?? signup?.country ?? 'PK',
     city: business?.city ?? '',
     contactPhone: business?.contactPhone ?? '',
     proofLinks: business?.proofLinks.length ? business.proofLinks : [''],
@@ -51,7 +57,11 @@ function BusinessForm({ business }: { business: BusinessProfile | null }) {
 
   const save = useMutation({
     mutationFn: () =>
-      saveMyBusiness({ ...form, proofLinks: form.proofLinks.map((l) => l.trim()).filter(Boolean) }),
+      saveMyBusiness({
+        ...form,
+        organizationType: form.organizationType || undefined,
+        proofLinks: form.proofLinks.map((l) => l.trim()).filter(Boolean),
+      }),
     onSuccess: (saved) => {
       queryClient.setQueryData(myBusinessQuery.queryKey, saved)
       // Pehli dafa, ya tasdeeq shuru se (pehchaan badli / reject ke baad) = "bhej diya"
@@ -90,9 +100,29 @@ function BusinessForm({ business }: { business: BusinessProfile | null }) {
         </p>
       )}
 
+      <label className="block">
+        <span className="mb-1 block text-sm font-medium">{t('register.orgType')}</span>
+        <select
+          value={form.organizationType}
+          onChange={(e) =>
+            update('organizationType', e.target.value as BusinessInput['organizationType'])
+          }
+          className={selectClass}
+        >
+          <option value="">{t('register.chooseOrgType')}</option>
+          {ORGANIZATION_TYPES.map((type) => (
+            <option key={type} value={type}>
+              {t(`orgType.${type}`)}
+            </option>
+          ))}
+        </select>
+        {errors.organizationType && (
+          <span className="mt-1 block text-sm text-red-600">{errors.organizationType}</span>
+        )}
+      </label>
       <FormField
         id="companyName"
-        label={t('business.fields.companyName')}
+        label={t('register.orgName')}
         value={form.companyName}
         onChange={(e) => update('companyName', e.target.value)}
         error={errors.companyName}

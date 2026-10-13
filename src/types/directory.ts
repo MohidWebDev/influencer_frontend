@@ -1,3 +1,5 @@
+import type { OrganizationType } from './business'
+
 // Navbar ke public "Businesses" aur "Managers" pages
 interface DirectoryEntry {
   _id: string
@@ -13,6 +15,7 @@ interface DirectoryEntry {
 }
 
 export interface DirectoryBusiness extends DirectoryEntry {
+  organizationType?: OrganizationType
   industry?: string
   companySize?: string
   description?: string

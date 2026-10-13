@@ -170,7 +170,7 @@ function App() {
           <Route
             path="/shortlists"
             element={
-              <ProtectedRoute roles={['business', 'agency', 'organization']}>
+              <ProtectedRoute roles={['business']}>
                 <ShortlistsPage />
               </ProtectedRoute>
             }
@@ -178,7 +178,7 @@ function App() {
           <Route
             path="/shortlists/:id"
             element={
-              <ProtectedRoute roles={['business', 'agency', 'organization']}>
+              <ProtectedRoute roles={['business']}>
                 <ShortlistDetailPage />
               </ProtectedRoute>
             }

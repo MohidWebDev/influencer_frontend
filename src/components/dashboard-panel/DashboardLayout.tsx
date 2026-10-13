@@ -36,7 +36,7 @@ interface SideLink {
 }
 
 // Talent, business aur manager ke dashboard pages: admin panel jaisa sidebar + page.
-// Baqi account types (agency, organization...) ke liye sirf page, sidebar nahi
+// Baqi account types ke liye sirf page, sidebar nahi
 function DashboardLayout() {
   const { user } = useAuth()
   const role = user?.role

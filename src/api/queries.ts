@@ -92,7 +92,7 @@ export function personReviewsQuery(slug: string) {
   })
 }
 
-// Shortlists: business / agency / organization
+// Shortlists: business / organization
 export const shortlistsQuery = queryOptions({
   queryKey: ['shortlists', 'all'],
   queryFn: listShortlists,

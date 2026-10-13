@@ -9,7 +9,6 @@ import {
   faGear,
   faHouse,
   faShieldHalved,
-  faStar,
   faTableColumns,
 } from '@fortawesome/free-solid-svg-icons'
 import { tr } from '../i18n/translated'
@@ -60,15 +59,6 @@ export const MAIN_NAV: NavItem[] = [
     },
     icon: faCircleInfo,
   },
-  {
-    to: '/shortlists',
-    get label() {
-      return tr('site.nav.shortlists')
-    },
-    icon: faStar,
-    // Business ke liye dashboard pe (navbar saaf rahe)
-    roles: ['agency', 'organization'],
-  },
 ]
 
 // Admin ka "Dashboard": right side pe bell ke saath (baqi users ke Dashboard ki jagah)
@@ -110,7 +100,7 @@ export const ACCOUNT_NAV: NavItem[] = [
     },
     icon: faTableColumns,
     // Admin ke liye Dashboard nahi, us ka Admin panel hai
-    roles: ['talent', 'representative', 'business', 'agency', 'organization'],
+    roles: ['talent', 'representative', 'business'],
   },
   {
     to: '/settings',

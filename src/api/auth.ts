@@ -1,15 +1,21 @@
 import api from './axios'
 import type { ApiSuccess } from '../types/api'
-import type { CompanySize } from '../types/business'
+import type { CompanySize, OrganizationType } from '../types/business'
 import type { SignupRole, User } from '../types/user'
 
 export interface RegisterInput {
-  // Business ke liye nahi: us ka naam company ka naam hota hai
+  // Business ke liye nahi: us ka naam organization ka naam hota hai
   name?: string
   email: string
   password: string
   role: SignupRole
+  // Manager aur business: mulk zaroori, website optional
+  country?: string
+  websiteUrl?: string
+  // Sirf manager
+  agencyName?: string
   // Sirf business
+  organizationType?: OrganizationType
   companyName?: string
   industry?: string
   companySize?: CompanySize | ''
@@ -48,13 +54,16 @@ export async function changePasswordRequest(input: {
 }
 
 // Profile ka kya hua: wapas unclaimed, chhupi (admin dekhega), hatane ki request, ya mit gayi
-export type DeletedProfileOutcome = 'unclaimed' | 'hidden_for_review' | 'removal_requested' | 'deleted'
+export type DeletedProfileOutcome =
+  | 'unclaimed'
+  | 'hidden_for_review'
+  | 'removal_requested'
+  | 'deleted'
 
 export async function deleteAccountRequest(confirm: string, removeProfile = false) {
-  const res = await api.delete<ApiSuccess<{ deleted: boolean; profile: DeletedProfileOutcome | null }>>(
-    '/auth/account',
-    { data: { confirm, removeProfile } },
-  )
+  const res = await api.delete<
+    ApiSuccess<{ deleted: boolean; profile: DeletedProfileOutcome | null }>
+  >('/auth/account', { data: { confirm, removeProfile } })
   return res.data.data.profile
 }
 

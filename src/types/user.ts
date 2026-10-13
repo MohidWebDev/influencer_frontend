@@ -1,12 +1,6 @@
-import type { CompanySize } from './business'
+import type { CompanySize, OrganizationType } from './business'
 
-export type Role =
-  | 'talent'
-  | 'representative'
-  | 'business'
-  | 'agency'
-  | 'organization'
-  | 'admin'
+export type Role = 'talent' | 'representative' | 'business' | 'admin'
 
 export type SignupRole = Exclude<Role, 'admin'>
 
@@ -17,12 +11,21 @@ export interface User {
   role: Role
   isEmailVerified: boolean
   status: 'active' | 'suspended'
-  // Business signup pe di gayi company details (tasdeeq ka form inhi se shuru hota hai)
+  // Business / organization signup pe di gayi details (tasdeeq ka form inhi se shuru hota hai)
   company?: {
+    organizationType?: OrganizationType
     companyName: string
     industry?: string
     companySize?: CompanySize
     description?: string
+    country?: string
+    websiteUrl?: string
+  }
+  // Manager signup pe di gayi details (tasdeeq ka form inhi se shuru hota hai)
+  manager?: {
+    agencyName?: string
+    country?: string
+    websiteUrl?: string
   }
   createdAt: string
   updatedAt: string

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
@@ -13,7 +13,7 @@ function PasswordField({
   autoComplete,
 }: {
   id: string
-  label: string
+  label: ReactNode
   value: string
   onChange: (value: string) => void
   error?: string
