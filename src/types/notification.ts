@@ -45,6 +45,28 @@ export type NotificationType =
   | 'campaign.accepted'
   | 'campaign.rejected'
 
+// Notifications page ke tabs (backend src/constants/notifications.ts jaisa)
+export type NotificationCategory =
+  | 'hiring'
+  | 'campaigns'
+  | 'agreements'
+  | 'verification'
+  | 'manager'
+  | 'admin'
+
+export const NOTIFICATION_CATEGORIES: NotificationCategory[] = [
+  'hiring',
+  'campaigns',
+  'agreements',
+  'verification',
+  'manager',
+  'admin',
+]
+
+export type CategoryCounts = Partial<
+  Record<NotificationCategory, { total: number; unread: number }>
+>
+
 export interface AppNotification {
   _id: string
   type: NotificationType

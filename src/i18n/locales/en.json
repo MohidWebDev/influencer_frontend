@@ -1165,6 +1165,17 @@
       "campaign_application": "{{person}} applied to your campaign \"{{campaign}}\".",
       "campaign_accepted": "{{business}} selected you for \"{{campaign}}\". Your hire request is ready.",
       "campaign_rejected": "You weren't selected for \"{{campaign}}\" this time."
+    },
+    "categoriesLabel": "Notification categories",
+    "unreadOnly": "Show unread only",
+    "emptyCategory": "No {{name}} notifications yet",
+    "categories": {
+      "hiring": "Hiring",
+      "campaigns": "Campaigns",
+      "agreements": "Agreements",
+      "verification": "Verification",
+      "manager": "Manager",
+      "admin": "Admin"
     }
   },
   "dataState": {

@@ -1165,6 +1165,17 @@
       "campaign_application": "{{person}} نے آپ کی کیمپین \"{{campaign}}\" پر اپلائی کیا۔",
       "campaign_accepted": "{{business}} نے آپ کو \"{{campaign}}\" کے لیے منتخب کیا۔ آپ کی ہائر ریکویسٹ تیار ہے۔",
       "campaign_rejected": "اس بار آپ \"{{campaign}}\" کے لیے منتخب نہیں ہوئے۔"
+    },
+    "categoriesLabel": "نوٹیفکیشن کی اقسام",
+    "unreadOnly": "صرف ان پڑھی دکھائیں",
+    "emptyCategory": "ابھی {{name}} کی کوئی نوٹیفکیشن نہیں",
+    "categories": {
+      "hiring": "ہائرنگ",
+      "campaigns": "کیمپینز",
+      "agreements": "معاہدے",
+      "verification": "تصدیق",
+      "manager": "مینیجر",
+      "admin": "ایڈمن"
     }
   },
   "dataState": {

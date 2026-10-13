@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
@@ -28,6 +28,8 @@ import {
   faUserPlus,
   faUserTie,
   faIdCard,
+  faInbox,
+  faShieldHalved,
 } from '@fortawesome/free-solid-svg-icons'
 import {
   NOTIFICATIONS_PAGE_SIZE,
@@ -35,7 +37,12 @@ import {
   markAllNotificationsRead,
   markNotificationRead,
 } from '../api/notifications'
-import type { AppNotification, NotificationType } from '../types/notification'
+import {
+  NOTIFICATION_CATEGORIES,
+  type AppNotification,
+  type NotificationCategory,
+  type NotificationType,
+} from '../types/notification'
 import { getApiError } from '../utils/apiError'
 
 // Har type ka icon aur rang
@@ -86,6 +93,16 @@ const LOOK: Record<NotificationType, { icon: IconDefinition; tint: string }> = {
   'campaign.rejected': { icon: faCircleXmark, tint: 'bg-gray-100 text-gray-600' },
 }
 
+// Har tab ka icon
+const CATEGORY_ICONS: Record<NotificationCategory, IconDefinition> = {
+  hiring: faHandshake,
+  campaigns: faBullhorn,
+  agreements: faFileContract,
+  verification: faCircleCheck,
+  manager: faUserTie,
+  admin: faShieldHalved,
+}
+
 // "5 minutes ago" chuni hui zaban mein
 function timeAgo(iso: string, lang: string) {
   const seconds = Math.round((new Date(iso).getTime() - Date.now()) / 1000)
@@ -110,18 +127,29 @@ function Notifications() {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const [unreadOnly, setUnreadOnly] = useState(false)
+  // Chuna hua tab URL mein (?tab=hiring), taake wapas aane pe wahi khule
+  const [searchParams, setSearchParams] = useSearchParams()
+  const tabParam = searchParams.get('tab') as NotificationCategory | null
+  const category = tabParam && NOTIFICATION_CATEGORIES.includes(tabParam) ? tabParam : undefined
+  const chooseCategory = (next?: NotificationCategory) =>
+    setSearchParams(next ? { tab: next } : {}, { replace: true })
 
   const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
-      queryKey: ['notifications', 'list', unreadOnly],
-      queryFn: ({ pageParam }) => listNotifications(pageParam, unreadOnly),
+      queryKey: ['notifications', 'list', unreadOnly, category ?? 'all'],
+      queryFn: ({ pageParam }) => listNotifications(pageParam, unreadOnly, category),
       initialPageParam: 1,
       getNextPageParam: (last) =>
         last.meta.page * NOTIFICATIONS_PAGE_SIZE < last.meta.total ? last.meta.page + 1 : undefined,
     })
 
   const items = data?.pages.flatMap((page) => page.notifications) ?? []
-  const unread = data?.pages[0]?.unread ?? 0
+  const totalUnread = data?.pages[0]?.unread ?? 0
+  const counts = data?.pages[0]?.categories ?? {}
+  // Sirf woh tabs jin mein kuch hai (har account type ke apne); chuna hua hamesha
+  const tabs = NOTIFICATION_CATEGORIES.filter((c) => counts[c] || c === category)
+  // Is tab ki unread ginti
+  const unread = category ? (counts[category]?.unread ?? 0) : totalUnread
 
   const refresh = () => queryClient.invalidateQueries({ queryKey: ['notifications'] })
 
@@ -138,7 +166,7 @@ function Notifications() {
   })
 
   const readAll = useMutation({
-    mutationFn: markAllNotificationsRead,
+    mutationFn: () => markAllNotificationsRead(category),
     onSuccess: () => {
       toast.success(t('notifications.allRead'))
       refresh()
@@ -146,10 +174,22 @@ function Notifications() {
     onError: (error) => toast.error(getApiError(error).message),
   })
 
-  const tab = (active: boolean) =>
-    `rounded-lg px-3 py-1.5 text-sm font-medium transition ${
-      active ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-900'
+  const chip = (active: boolean) =>
+    `inline-flex shrink-0 items-center gap-2 rounded-full px-3.5 py-2 text-sm font-medium whitespace-nowrap transition ${
+      active
+        ? 'bg-gray-900 text-white shadow-sm'
+        : 'bg-white text-gray-700 ring-1 ring-gray-200 hover:bg-gray-50'
     }`
+  const badge = (count: number, active: boolean) =>
+    count > 0 && (
+      <span
+        className={`min-w-5 rounded-full px-1.5 py-0.5 text-center text-[10px] leading-none font-semibold ${
+          active ? 'bg-white text-gray-900' : 'bg-red-600 text-white'
+        }`}
+      >
+        {count}
+      </span>
+    )
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
@@ -177,31 +217,46 @@ function Notifications() {
         )}
       </div>
 
-      <div className="inline-flex rounded-xl bg-gray-100 p-1" role="tablist">
-        <button
-          type="button"
-          role="tab"
-          aria-selected={!unreadOnly}
-          onClick={() => setUnreadOnly(false)}
-          className={tab(!unreadOnly)}
-        >
-          {t('notifications.all')}
-        </button>
-        <button
-          type="button"
-          role="tab"
-          aria-selected={unreadOnly}
-          onClick={() => setUnreadOnly(true)}
-          className={tab(unreadOnly)}
-        >
-          {t('notifications.unread')}
-          {unread > 0 && (
-            <span className="ms-1.5 rounded-full bg-red-600 px-1.5 py-0.5 text-[10px] font-semibold text-white">
-              {unread}
-            </span>
-          )}
-        </button>
+      {/* Category tabs: chhoti screen pe side scroll */}
+      <div className="-mx-4 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0">
+        <div className="flex gap-2" role="tablist" aria-label={t('notifications.categoriesLabel')}>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={!category}
+            onClick={() => chooseCategory()}
+            className={chip(!category)}
+          >
+            <FontAwesomeIcon icon={faInbox} className="text-xs" />
+            {t('notifications.all')}
+            {badge(totalUnread, !category)}
+          </button>
+          {tabs.map((c) => (
+            <button
+              key={c}
+              type="button"
+              role="tab"
+              aria-selected={category === c}
+              onClick={() => chooseCategory(c)}
+              className={chip(category === c)}
+            >
+              <FontAwesomeIcon icon={CATEGORY_ICONS[c]} className="text-xs" />
+              {t(`notifications.categories.${c}`)}
+              {badge(counts[c]?.unread ?? 0, category === c)}
+            </button>
+          ))}
+        </div>
       </div>
+
+      <label className="flex w-fit cursor-pointer items-center gap-2 text-sm text-gray-600">
+        <input
+          type="checkbox"
+          checked={unreadOnly}
+          onChange={(e) => setUnreadOnly(e.target.checked)}
+          className="h-4 w-4 rounded border-gray-300 accent-gray-900"
+        />
+        {t('notifications.unreadOnly')}
+      </label>
 
       {isLoading && (
         <div className="space-y-2">
@@ -211,9 +266,7 @@ function Notifications() {
         </div>
       )}
       {isError && items.length === 0 && (
-        <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
-          {t('common.error')}
-        </p>
+        <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{t('common.error')}</p>
       )}
 
       {!isLoading && !isError && items.length === 0 && (
@@ -222,7 +275,13 @@ function Notifications() {
             <FontAwesomeIcon icon={faBell} />
           </span>
           <p className="mt-4 font-semibold">
-            {unreadOnly ? t('notifications.noUnread') : t('notifications.empty')}
+            {unreadOnly
+              ? t('notifications.noUnread')
+              : category
+                ? t('notifications.emptyCategory', {
+                    name: t(`notifications.categories.${category}`),
+                  })
+                : t('notifications.empty')}
           </p>
           <p className="mt-1 text-sm text-gray-500">{t('notifications.emptyHint')}</p>
         </div>
@@ -264,12 +323,8 @@ function Notifications() {
                         // Manager / talent ka naam, aur manager ne kya jawab diya
                         name: data.name ?? '',
                         manager: data.manager ?? '',
-                        action: data.action
-                          ? t(`manager.actionWord.${data.action}`)
-                          : '',
-                        outcome: data.outcome
-                          ? t(`agreements.outcome.${data.outcome}`)
-                          : '',
+                        action: data.action ? t(`manager.actionWord.${data.action}`) : '',
+                        outcome: data.outcome ? t(`agreements.outcome.${data.outcome}`) : '',
                         reason: data.reason
                           ? t(`reportReason.${data.reason}`, {
                               defaultValue: data.reason,

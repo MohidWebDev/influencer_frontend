@@ -1165,6 +1165,17 @@
       "campaign_application": "تقدّم {{person}} لحملتك \"{{campaign}}\".",
       "campaign_accepted": "اختارتك {{business}} لحملة \"{{campaign}}\". طلب التعاقد جاهز.",
       "campaign_rejected": "لم يتم اختيارك لحملة \"{{campaign}}\" هذه المرة."
+    },
+    "categoriesLabel": "فئات الإشعارات",
+    "unreadOnly": "عرض غير المقروءة فقط",
+    "emptyCategory": "لا توجد إشعارات {{name}} بعد",
+    "categories": {
+      "hiring": "التعاقد",
+      "campaigns": "الحملات",
+      "agreements": "الاتفاقيات",
+      "verification": "التوثيق",
+      "manager": "المدير",
+      "admin": "الإدارة"
     }
   },
   "dataState": {
