@@ -5,21 +5,19 @@ import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faArrowRight,
-  faBell,
+ 
   faBriefcase,
   faBuilding,
-  faBullhorn,
+  
   faChartLine,
   faChevronDown,
   faCircleCheck,
   faEye,
-  faFileSignature,
-  faHandshake,
+  
   faIdBadge,
   faLanguage,
   faLock,
-  faMagnifyingGlass,
-  faShieldHalved,
+  
   faStar,
   faUserCheck,
   faUserTie,
