@@ -32,7 +32,10 @@ export async function listMyAgreements() {
 }
 
 export async function getAgreement(id: string) {
-  const res = await api.get<ApiSuccess<{ agreement: Agreement; side: AgreementParty }>>(
+  // byManager = talent ka manager us ki taraf se dekh / chala raha hai
+  const res = await api.get<
+    ApiSuccess<{ agreement: Agreement; side: AgreementParty; byManager?: boolean }>
+  >(
     `/agreements/${id}`,
   )
   return { ...res.data.data, agreement: normalizeAgreement(res.data.data.agreement) }
@@ -69,10 +72,6 @@ export async function deliverMilestone(id: string, index: number, note: string, 
 
 export async function approveMilestone(id: string, index: number) {
   return one(await api.post<One>(`/agreements/${id}/milestones/${index}/approve`))
-}
-
-export async function requestMilestoneChanges(id: string, index: number, note: string) {
-  return one(await api.post<One>(`/agreements/${id}/milestones/${index}/request-changes`, { note }))
 }
 
 export async function openDispute(id: string, reason: string) {

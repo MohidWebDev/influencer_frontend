@@ -133,6 +133,7 @@ function ManagerPanel() {
         { to: '/dashboard/manager', key: 'dashNav.managerDetails', icon: faUserTie },
         { to: '/talents', key: 'dashNav.myTalents', icon: faUsers, badge: invites },
         { to: '/dashboard/hire-requests', key: 'dashNav.hireRequests', icon: faHandshake, badge: pending },
+        { to: '/agreements', key: 'dashNav.agreements', icon: faFileContract },
       ]}
     />
   )

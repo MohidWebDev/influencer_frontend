@@ -16,12 +16,16 @@ function AgreementsPage() {
   const { user } = useAuth()
   const { data, isLoading, isError, error, refetch } = useQuery(myAgreementsQuery)
   const side: AgreementParty = user?.role === 'business' ? 'business' : 'talent'
+  // Manager apne talents ke muahide dekhta hai (talent ki taraf se)
+  const isManager = user?.role === 'representative'
 
   return (
     <div className="mx-auto max-w-4xl space-y-5">
       <div>
         <h1 className="text-2xl font-bold">{t('agreements.title')}</h1>
-        <p className="mt-1 text-sm text-gray-500">{t(`agreements.subtitle.${side}`)}</p>
+        <p className="mt-1 text-sm text-gray-500">
+          {isManager ? t('agreements.subtitle.manager') : t(`agreements.subtitle.${side}`)}
+        </p>
       </div>
       <DataState
         isLoading={isLoading}
@@ -30,7 +34,7 @@ function AgreementsPage() {
         isEmpty={!!data && data.length === 0}
         emptyIcon={faFileContract}
         emptyTitle={t('agreements.emptyTitle')}
-        emptyText={t(`agreements.emptyText.${side}`)}
+        emptyText={isManager ? t('agreements.emptyText.manager') : t(`agreements.emptyText.${side}`)}
         onRetry={() => refetch()}
       >
         <ul className="space-y-3">
@@ -56,6 +60,11 @@ function AgreementsPage() {
                     />
                   </div>
                   <p className="mt-1 text-sm text-gray-600">
+                    {isManager && (
+                      <span className="font-medium text-gray-900">
+                        {t('agreements.forTalent', { name: agreement.person?.name ?? '—' })} ·{' '}
+                      </span>
+                    )}
                     {t(`agreements.with.${side}`, { name: otherName ?? '—' })} ·{' '}
                     {money(agreementTotal(agreement.terms), agreement.terms.currency)} ·{' '}
                     {t('agreements.updatedOn', { date: formatDate(agreement.updatedAt) })}

@@ -90,6 +90,11 @@ function SignPanel({
           <span className="text-green-700">
             <FontAwesomeIcon icon={faCircleCheck} className="me-1.5" />
             {t('agreements.signedOn', { date: formatDateTime(signature.signedAt) })}
+            {signature.onBehalfOf && (
+              <span className="ms-1 text-gray-500">
+                {t('agreements.signedByManager', { name: signature.name })}
+              </span>
+            )}
           </span>
         ) : (
           <span className="text-gray-500">

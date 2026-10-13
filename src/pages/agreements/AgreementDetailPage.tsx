@@ -11,9 +11,9 @@ import {
   faFilePdf,
   faFlag,
   faPen,
-  faRotateLeft,
   faTriangleExclamation,
   faTruckFast,
+  faUserTie,
   faXmark,
 } from '@fortawesome/free-solid-svg-icons'
 import {
@@ -21,7 +21,6 @@ import {
   cancelAgreement,
   deliverMilestone,
   openDispute,
-  requestMilestoneChanges,
   reviewAgreement,
   updateAgreementTerms,
 } from '../../api/agreements'
@@ -42,10 +41,10 @@ const card = 'rounded-2xl bg-white p-5 shadow-sm'
 const button =
   'inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition disabled:opacity-50'
 
-// Ek milestone pe talent / business ka action (deliver, approve, changes)
+// Ek milestone pe talent / business ka action (deliver, approve). Sign ke baad
+// business kaam wapas "changes" ke liye nahi bhej sakta
 type MilestoneDialog =
   | { kind: 'deliver'; index: number }
-  | { kind: 'changes'; index: number }
   | { kind: 'approve'; index: number }
 
 function ReviewForm({ agreement }: { agreement: Agreement }) {
@@ -142,7 +141,6 @@ function AgreementDetailPage() {
   const milestone = useMutation({
     mutationFn: (action: MilestoneDialog) => {
       if (action.kind === 'deliver') return deliverMilestone(id, action.index, note.trim(), link.trim() || undefined)
-      if (action.kind === 'changes') return requestMilestoneChanges(id, action.index, note.trim())
       return approveMilestone(id, action.index)
     },
     onSuccess: (agreement, action) => {
@@ -201,18 +199,8 @@ function AgreementDetailPage() {
       )
     }
     if (side === 'business' && work?.status === 'delivered') {
-      const left = agreement.terms.revisions - agreement.revisionsUsed
       return (
         <div className="mt-2 flex flex-wrap justify-end gap-2">
-          <button
-            onClick={() => setMilestoneDialog({ kind: 'changes', index })}
-            disabled={left <= 0}
-            title={left <= 0 ? t('agreements.noRevisionsLeft') : undefined}
-            className={`${button} border border-gray-300 hover:bg-gray-100`}
-          >
-            <FontAwesomeIcon icon={faRotateLeft} />
-            {t('agreements.requestChanges', { count: left })}
-          </button>
           <button
             onClick={() => setMilestoneDialog({ kind: 'approve', index })}
             className={`${button} bg-green-600 text-white hover:bg-green-700`}
@@ -244,6 +232,12 @@ function AgreementDetailPage() {
           <>
             <AgreementDocument agreement={agreement} />
             <div className="space-y-5 print:hidden">
+              {data?.byManager && (
+                <p className="flex items-center gap-2 rounded-xl bg-violet-50 px-4 py-3 text-sm text-violet-800">
+                  <FontAwesomeIcon icon={faUserTie} />
+                  {t('agreements.actingAsManager', { name: agreement.person?.name ?? '—' })}
+                </p>
+              )}
               {/* Upar: naam, halat, PDF */}
               <section className={card}>
                 <div className="flex flex-wrap items-start justify-between gap-3">
@@ -362,14 +356,6 @@ function AgreementDetailPage() {
                       work={agreement.status === 'negotiating' ? undefined : agreement.work}
                       milestoneActions={milestoneActions}
                     />
-                    {agreement.status !== 'negotiating' && agreement.terms.revisions > 0 && (
-                      <p className="mt-2 text-xs text-gray-500">
-                        {t('agreements.revisionsUsed', {
-                          used: agreement.revisionsUsed,
-                          total: agreement.terms.revisions,
-                        })}
-                      </p>
-                    )}
                   </>
                 )}
               </section>
@@ -528,25 +514,6 @@ function AgreementDetailPage() {
                   className="w-full rounded-lg border border-gray-300 px-3 py-2"
                 />
               </label>
-            </ConfirmDialog>
-            <ConfirmDialog
-              open={milestoneDialog?.kind === 'changes'}
-              title={t('agreements.changesTitle')}
-              confirmLabel={t('agreements.sendBack')}
-              isBusy={milestone.isPending}
-              confirmDisabled={note.trim().length < 3}
-              onConfirm={() => milestoneDialog && milestone.mutate(milestoneDialog)}
-              onCancel={closeDialogs}
-            >
-              <textarea
-                rows={3}
-                maxLength={1000}
-                value={note}
-                onChange={(e) => setNote(e.target.value)}
-                placeholder={t('agreements.changesPlaceholder')}
-                aria-label={t('agreements.changesTitle')}
-                className="w-full rounded-lg border border-gray-300 px-3 py-2"
-              />
             </ConfirmDialog>
             <ConfirmDialog
               open={milestoneDialog?.kind === 'approve'}

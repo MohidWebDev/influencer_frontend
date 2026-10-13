@@ -61,7 +61,12 @@ function AgreementDocument({ agreement }: { agreement: Agreement }) {
                   <td className="py-2">
                     {valid
                       ? t('agreements.print.signature', {
-                          name: signature.name,
+                          name: signature.onBehalfOf
+                            ? t('agreements.print.onBehalf', {
+                                name: signature.name,
+                                talent: signature.onBehalfOf,
+                              })
+                            : signature.name,
                           email: signature.email,
                           date: formatDateTime(signature.signedAt),
                         })

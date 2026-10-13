@@ -198,7 +198,7 @@ function App() {
           <Route
             path="/agreements"
             element={
-              <ProtectedRoute roles={['business', 'talent']}>
+              <ProtectedRoute roles={['business', 'talent', 'representative']}>
                 <AgreementsPage />
               </ProtectedRoute>
             }
@@ -214,7 +214,7 @@ function App() {
           <Route
             path="/agreements/:id"
             element={
-              <ProtectedRoute roles={['business', 'talent']}>
+              <ProtectedRoute roles={['business', 'talent', 'representative']}>
                 <AgreementDetailPage />
               </ProtectedRoute>
             }

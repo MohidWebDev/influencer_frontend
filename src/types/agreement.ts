@@ -40,6 +40,8 @@ export interface AgreementSignature {
   name: string
   email: string
   ip?: string
+  // Manager ne talent ki taraf se sign kiya: talent ka naam
+  onBehalfOf?: string
 }
 
 export interface MilestoneWork {

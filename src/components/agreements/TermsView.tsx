@@ -94,9 +94,6 @@ function TermsView({
       <dl className="mt-3 divide-y divide-gray-100">
         <Clause label={t('agreements.fields.paymentTerms')}>{terms.paymentTerms}</Clause>
         <Clause label={t('agreements.fields.usageRights')}>{terms.usageRights}</Clause>
-        <Clause label={t('agreements.fields.revisions')}>
-          {t('agreements.revisionsCount', { count: terms.revisions })}
-        </Clause>
         <Clause label={t('agreements.fields.cancellationTerms')}>{terms.cancellationTerms}</Clause>
       </dl>
     </div>

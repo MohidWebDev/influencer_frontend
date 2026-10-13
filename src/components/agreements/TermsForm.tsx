@@ -5,7 +5,6 @@ import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { CURRENCIES } from '../../constants/services'
 import {
   MAX_MILESTONES,
-  MAX_REVISIONS,
   agreementTotal,
   type AgreementTerms,
 } from '../../types/agreement'
@@ -50,7 +49,6 @@ function TermsForm({ initial, errors, isSaving, submitLabel, onSubmit, onCancel 
   )
   const [paymentTerms, setPaymentTerms] = useState(initial.paymentTerms ?? '')
   const [usageRights, setUsageRights] = useState(initial.usageRights ?? '')
-  const [revisions, setRevisions] = useState(String(initial.revisions))
   const [cancellationTerms, setCancellationTerms] = useState(initial.cancellationTerms ?? '')
   const [local, setLocal] = useState<Record<string, string>>({})
   const shown = { ...errors, ...local }
@@ -66,7 +64,8 @@ function TermsForm({ initial, errors, isSaving, submitLabel, onSubmit, onCancel 
     })),
     paymentTerms: paymentTerms.trim() || undefined,
     usageRights: usageRights.trim() || undefined,
-    revisions: Number(revisions) || 0,
+    // Sign ke baad changes nahi maange ja sakte, is liye rounds of changes 0
+    revisions: 0,
     cancellationTerms: cancellationTerms.trim() || undefined,
   })
 
@@ -239,18 +238,6 @@ function TermsForm({ initial, errors, isSaving, submitLabel, onSubmit, onCancel 
             placeholder={t('agreements.fields.cancellationPlaceholder')}
             className={`${input} border-gray-300`}
           />
-        </label>
-        <label className="block">
-          <span className="mb-1 block text-sm font-medium">{t('agreements.fields.revisions')}</span>
-          <input
-            type="number"
-            min={0}
-            max={MAX_REVISIONS}
-            value={revisions}
-            onChange={(e) => setRevisions(e.target.value)}
-            className={`${input} border-gray-300 sm:w-32`}
-          />
-          <span className="mt-1 block text-xs text-gray-500">{t('agreements.fields.revisionsHint')}</span>
         </label>
       </div>
 
