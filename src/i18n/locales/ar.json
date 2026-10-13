@@ -1128,7 +1128,8 @@
       "hire_answered_by_manager": "{{action}} مديرك {{name}} طلب التوظيف من {{business}}.",
       "campaign_application": "تقدّم {{person}} لحملتك \"{{campaign}}\".",
       "campaign_accepted": "اختارتك {{business}} لحملة \"{{campaign}}\". طلب التعاقد جاهز.",
-      "campaign_rejected": "لم يتم اختيارك لحملة \"{{campaign}}\" هذه المرة."
+      "campaign_rejected": "لم يتم اختيارك لحملة \"{{campaign}}\" هذه المرة.",
+      "manager_reviewed": "منحك {{name}} {{rating}} نجمة."
     },
     "categoriesLabel": "فئات الإشعارات",
     "unreadOnly": "عرض غير المقروءة فقط",
@@ -1959,7 +1960,12 @@
     "actionWord": {
       "accept": "قبل",
       "decline": "رفض"
-    }
+    },
+    "rateTitle": "كيف كان العمل مع {{name}}؟",
+    "reviewPlaceholder": "بضع كلمات عن مديرك (اختياري)",
+    "sendReview": "إرسال التقييم",
+    "reviewSent": "شكراً! ظهر تقييمك على صفحته",
+    "yourReview": "تقييمك:"
   },
   "managerStatus": {
     "pending": "قيد المراجعة",
@@ -2015,7 +2021,21 @@
       "emptyTitle": "لا يوجد مديرون بعد",
       "emptyText": "يظهر المديرون والوكلاء هنا فور إنشاء حساب.",
       "join": "سجّل كمدير"
-    }
+    },
+    "notFound": "هذه الصفحة غير متاحة",
+    "backToList": "العودة إلى القائمة",
+    "backToBusinesses": "كل الشركات",
+    "backToManagers": "كل المديرين",
+    "completedWork": "{{count}} مشروع مكتمل",
+    "aboutBusiness": "نبذة",
+    "aboutManager": "نبذة",
+    "reviewsFromTalent": "تقييمات المواهب",
+    "noReviewsBusiness": "لا توجد تقييمات بعد. يقيّم المواهب الجهة بعد إنهاء العمل معاً.",
+    "noReviewsManager": "لا توجد تقييمات بعد. يمكن للمواهب التي يمثلها هذا المدير تقييمه.",
+    "openCampaigns": "حملات مفتوحة",
+    "noOpenCampaigns": "لا توجد حملات مفتوحة حالياً.",
+    "representedTalents": "المواهب التي يمثلها",
+    "noRepresentedTalents": "لا يمثل أي موهبة على المنصة بعد."
   },
   "orgType": {
     "company": "شركة",

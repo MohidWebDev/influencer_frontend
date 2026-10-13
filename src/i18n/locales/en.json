@@ -1128,7 +1128,8 @@
       "hire_answered_by_manager": "Your manager {{name}} {{action}} the hire request from {{business}}.",
       "campaign_application": "{{person}} applied to your campaign \"{{campaign}}\".",
       "campaign_accepted": "{{business}} selected you for \"{{campaign}}\". Your hire request is ready.",
-      "campaign_rejected": "You weren't selected for \"{{campaign}}\" this time."
+      "campaign_rejected": "You weren't selected for \"{{campaign}}\" this time.",
+      "manager_reviewed": "{{name}} gave you {{rating}} star(s)."
     },
     "categoriesLabel": "Notification categories",
     "unreadOnly": "Show unread only",
@@ -1959,7 +1960,12 @@
     "actionWord": {
       "accept": "accepted",
       "decline": "declined"
-    }
+    },
+    "rateTitle": "How was working with {{name}}?",
+    "reviewPlaceholder": "A few words about your manager (optional)",
+    "sendReview": "Send review",
+    "reviewSent": "Thanks! Your review is on their page",
+    "yourReview": "Your review:"
   },
   "managerStatus": {
     "pending": "Pending review",
@@ -2015,7 +2021,21 @@
       "emptyTitle": "No managers yet",
       "emptyText": "Managers and agents show up here as soon as they create an account.",
       "join": "Sign up as a manager"
-    }
+    },
+    "notFound": "This page is not available",
+    "backToList": "Back to the list",
+    "backToBusinesses": "All businesses",
+    "backToManagers": "All managers",
+    "completedWork": "{{count}} completed project(s)",
+    "aboutBusiness": "About",
+    "aboutManager": "About",
+    "reviewsFromTalent": "Reviews from talent",
+    "noReviewsBusiness": "No reviews yet. Talents review a business after they finish work together.",
+    "noReviewsManager": "No reviews yet. The talents this manager represents can rate them.",
+    "openCampaigns": "Open campaigns",
+    "noOpenCampaigns": "No open campaigns right now.",
+    "representedTalents": "Talents they represent",
+    "noRepresentedTalents": "Not representing any talent on the platform yet."
   },
   "orgType": {
     "company": "Company",

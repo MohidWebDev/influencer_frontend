@@ -80,6 +80,8 @@ export interface Representation {
   } | null
   respondedAt?: string
   endedAt?: string
+  // Talent ki di hui review (ek dafa)
+  review?: { rating: number; comment?: string; createdAt: string }
   createdAt: string
   updatedAt: string
 }

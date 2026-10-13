@@ -11,7 +11,14 @@ import {
   listMyRepresentations,
   listMyTalents,
 } from './manager'
-import { listBusinessDirectory, listManagerDirectory } from './directory'
+import {
+  getBusinessDetail,
+  getDirectoryReviews,
+  getManagerDetail,
+  listBusinessDirectory,
+  listManagerDirectory,
+  type DirectoryKind,
+} from './directory'
 import {
   getCampaign,
   listCampaignApplications,
@@ -155,6 +162,30 @@ export function directoryQuery(kind: 'businesses' | 'managers', params: URLSearc
       kind === 'businesses' ? listBusinessDirectory(params) : listManagerDirectory(params),
     // Naya signup jaldi dikhe
     staleTime: 30 * 1000,
+  })
+}
+
+export function businessDetailQuery(id: string) {
+  return queryOptions({
+    queryKey: ['directory', 'business', id],
+    queryFn: () => getBusinessDetail(id),
+    staleTime: 30 * 1000,
+  })
+}
+
+export function managerDetailQuery(id: string) {
+  return queryOptions({
+    queryKey: ['directory', 'manager', id],
+    queryFn: () => getManagerDetail(id),
+    staleTime: 30 * 1000,
+  })
+}
+
+export function directoryReviewsQuery(kind: DirectoryKind, id: string) {
+  return queryOptions({
+    queryKey: ['directory', kind, id, 'reviews'],
+    queryFn: () => getDirectoryReviews(kind, id),
+    staleTime: 60 * 1000,
   })
 }
 

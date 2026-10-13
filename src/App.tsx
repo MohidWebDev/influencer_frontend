@@ -27,6 +27,8 @@ import BusinessProfileForm from './pages/dashboards/BusinessProfileForm'
 import ForgotPassword from './pages/ForgotPassword'
 import BusinessesPage from './pages/directory/BusinessesPage'
 import ManagersPage from './pages/directory/ManagersPage'
+import BusinessDetailPage from './pages/directory/BusinessDetailPage'
+import ManagerDetailPage from './pages/directory/ManagerDetailPage'
 import MyProfileRedirect from './pages/MyProfileRedirect'
 import CampaignsPage from './pages/campaigns/CampaignsPage'
 import CampaignDetailPage from './pages/campaigns/CampaignDetailPage'
@@ -67,6 +69,8 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/businesses" element={<BusinessesPage />} />
         <Route path="/managers" element={<ManagersPage />} />
+        <Route path="/businesses/:id" element={<BusinessDetailPage />} />
+        <Route path="/managers/:id" element={<ManagerDetailPage />} />
         <Route path="/campaigns" element={<CampaignsPage />} />
         <Route path="/campaigns/:id" element={<CampaignDetailPage />} />
         {/* Talent / business dashboard ke pages: admin panel jaisa sidebar */}

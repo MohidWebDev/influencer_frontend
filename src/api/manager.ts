@@ -97,6 +97,11 @@ export async function updatePermissions(id: string, permissions: RepresentationP
   await api.patch(`/me/manager/${id}`, { permissions })
 }
 
+// Talent apne manager ko sitare deta hai (har rishte pe ek dafa)
+export async function reviewMyManager(id: string, rating: number, comment?: string) {
+  await api.post(`/me/manager/${id}/review`, { rating, comment })
+}
+
 export async function talentEnd(id: string) {
   await api.post(`/me/manager/${id}/end`)
 }
