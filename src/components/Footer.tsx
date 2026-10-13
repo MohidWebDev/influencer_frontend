@@ -41,7 +41,7 @@ function Footer() {
       title: t('footer.discover'),
       links: [
         { label: t('footer.explorePeople'), to: '/search' },
-        { label: t('footer.browseIndustries'), to: '/browse' },
+      
         { label: t('footer.mostFollowed'), to: '/search?sort=followers' },
       ],
     },
@@ -82,10 +82,7 @@ function Footer() {
             <p className="mt-3 max-w-sm text-sm leading-relaxed text-gray-400">
               {t('footer.tagline')}
             </p>
-            <p className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/5 px-3 py-1.5 text-xs text-gray-300 ring-1 ring-white/10">
-              <FontAwesomeIcon icon={faShieldHalved} className="text-emerald-400" />
-              {t('footer.trust')}
-            </p>
+            
 
             <ul className="mt-6 flex flex-wrap gap-2" aria-label={t('footer.followUs')}>
               {SOCIALS.map((social) => (
