@@ -321,7 +321,9 @@
         "dispute": "{{actor}} opened a dispute on the agreement {{target}}.",
         "resolve": "{{actor}} resolved the dispute on the agreement {{target}}."
       }
-    }
+    },
+    "field": "Field",
+    "value": "Value"
   },
   "auditTarget": {
     "person": "Profile",

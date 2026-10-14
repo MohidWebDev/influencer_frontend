@@ -321,7 +321,9 @@
         "dispute": "{{actor}} نے معاہدے {{target}} پر تنازع کھولا۔",
         "resolve": "{{actor}} نے معاہدے {{target}} کا تنازع حل کیا۔"
       }
-    }
+    },
+    "field": "فیلڈ",
+    "value": "قدر"
   },
   "auditTarget": {
     "person": "پروفائل",

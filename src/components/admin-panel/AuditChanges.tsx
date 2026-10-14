@@ -2,8 +2,6 @@ import { useTranslation } from 'react-i18next'
 import type { AuditLogEntry } from '../../types/adminPanel'
 import { formatDateTime } from '../../utils/adminFormat'
 import { countryName, formatCount, languageName } from '../../utils/format'
-import Sentence from './Sentence'
-import { SLOTS } from './sentenceSlots'
 
 type Plain = Record<string, unknown>
 
@@ -165,7 +163,7 @@ function useFormatter(targetType: AuditLogEntry['targetType'], names: Map<string
   return { one, fieldName }
 }
 
-// "Show changes": sirf badle hue fields, pehle -> baad, saaf andaaz mein
+// "Show changes": sirf badle hue fields, table mein: Field | Pehle | Baad
 function AuditChanges({ log }: { log: AuditLogEntry }) {
   const { t } = useTranslation()
   const names = new Map<string, string>()
@@ -196,56 +194,87 @@ function AuditChanges({ log }: { log: AuditLogEntry }) {
     )
 
   if (rows.length === 0) {
-    return <p className="text-sm text-gray-500">{t('audit.noChanges')}</p>
+    return (
+      <p className="rounded-xl border border-dashed border-gray-300 bg-white px-4 py-6 text-center text-sm text-gray-500">
+        {t('audit.noChanges')}
+      </p>
+    )
   }
 
   const mode = !hasBefore ? 'created' : !hasAfter ? 'deleted' : 'changed'
-  // Har field ke liye ek jumla: "City ko Lahore se badal kar Karachi kiya"
-  const kindOf = (old: Shown, now: Shown) => {
-    if (mode !== 'changed') return mode
-    if (!old.key) return 'added'
-    if (!now.key) return 'removed'
-    return 'changed'
-  }
+  const empty = <span className="text-gray-400">—</span>
+  const before_ = (value: Shown) =>
+    value.key ? (
+      <span
+        className={`inline rounded-md px-1.5 py-0.5 break-words ${
+          mode === 'deleted'
+            ? 'bg-gray-100 text-gray-800'
+            : 'bg-red-50 text-red-700 line-through decoration-red-300'
+        }`}
+      >
+        {value.text}
+      </span>
+    ) : (
+      empty
+    )
+  const after_ = (value: Shown) =>
+    value.key ? (
+      <span className="inline rounded-md bg-green-50 px-1.5 py-0.5 break-words text-green-800">
+        {value.text}
+      </span>
+    ) : (
+      empty
+    )
+  const columns =
+    mode === 'changed'
+      ? 'sm:grid-cols-[minmax(0,0.8fr)_minmax(0,1fr)_minmax(0,1fr)]'
+      : 'sm:grid-cols-[minmax(0,0.8fr)_minmax(0,2fr)]'
 
   return (
-    <div>
-      <p className="mb-2 text-xs font-medium uppercase tracking-wide text-gray-500">
-        {t(`audit.mode.${mode}`, { count: rows.length })}
-      </p>
-      <ul className="space-y-2">
-        {rows.map(({ field, old, now }) => (
-          <li
-            key={field}
-            className="flex gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm leading-7 text-gray-700"
-          >
-            <span className="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-gray-400" />
-            <p className="min-w-0 break-words">
-              <Sentence
-                template={t(`audit.change.${kindOf(old, now)}`, SLOTS)}
-                parts={{
-                  field: (
-                    <strong className="font-semibold text-gray-900">{fieldName(field)}</strong>
-                  ),
-                  from: (
-                    <span
-                      className={`rounded px-1.5 py-0.5 ${mode === 'deleted' ? 'bg-gray-100 text-gray-800' : 'bg-red-50 text-red-700 line-through decoration-red-300'}`}
-                    >
-                      {old.text}
-                    </span>
-                  ),
-                  to: (
-                    <span className="rounded bg-green-50 px-1.5 py-0.5 text-green-800">
-                      {now.text}
-                    </span>
-                  ),
-                }}
-              />
-            </p>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <section>
+      <div className="mb-2 flex items-center justify-between gap-3">
+        <h3 className="text-sm font-semibold text-gray-900">
+          {t(`audit.mode.${mode}`, { count: rows.length })}
+        </h3>
+      </div>
+      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
+        {/* Sar-e-fehrist (sirf bari screen pe; mobile pe har khana apna label dikhata hai) */}
+        <div
+          className={`hidden gap-4 border-b border-gray-200 bg-gray-50 px-4 py-2 text-xs font-medium tracking-wide text-gray-500 uppercase sm:grid ${columns}`}
+        >
+          <span>{t('audit.field')}</span>
+          {mode !== 'created' && (
+            <span>{mode === 'deleted' ? t('audit.value') : t('audit.before')}</span>
+          )}
+          {mode !== 'deleted' && (
+            <span>{mode === 'created' ? t('audit.value') : t('audit.after')}</span>
+          )}
+        </div>
+        <ul className="divide-y divide-gray-100">
+          {rows.map(({ field, old, now }) => (
+            <li key={field} className={`grid gap-1.5 px-4 py-3 text-sm sm:gap-4 ${columns}`}>
+              <span className="font-medium text-gray-900">{fieldName(field)}</span>
+              {mode !== 'created' && (
+                <span className="min-w-0 text-gray-700">
+                  <span className="me-1.5 text-xs text-gray-400 sm:hidden">
+                    {mode === 'deleted' ? t('audit.value') : t('audit.before')}:
+                  </span>
+                  {before_(old)}
+                </span>
+              )}
+              {mode !== 'deleted' && (
+                <span className="min-w-0 text-gray-700">
+                  <span className="me-1.5 text-xs text-gray-400 sm:hidden">
+                    {mode === 'created' ? t('audit.value') : t('audit.after')}:
+                  </span>
+                  {after_(now)}
+                </span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
   )
 }
 

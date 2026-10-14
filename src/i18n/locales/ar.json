@@ -321,7 +321,9 @@
         "dispute": "فتح {{actor}} نزاعًا على الاتفاقية {{target}}.",
         "resolve": "حلّ {{actor}} النزاع على الاتفاقية {{target}}."
       }
-    }
+    },
+    "field": "الحقل",
+    "value": "القيمة"
   },
   "auditTarget": {
     "person": "ملف",
