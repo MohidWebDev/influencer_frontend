@@ -13,6 +13,7 @@ import {
 import { faArrowUp, faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import { CONTACT_EMAIL, PLATFORM_NAME, SOCIAL_LINKS } from '../constants/config'
 import { useAuth } from '../hooks/useAuth'
+import NewsletterForm from './NewsletterForm'
 
 const currentYear = new Date().getFullYear()
 
@@ -31,39 +32,53 @@ interface FooterLink {
   href?: string
 }
 
-// Site ke neeche: brand, kaam ke links, social accounts aur copyright
+// Site ke neeche: brand, newsletter, paanch columns ke links, social accounts aur copyright
 function Footer() {
   const { t } = useTranslation()
   const { user } = useAuth()
 
+  // Logged-in user ke liye "shuru karo" wale links us ke dashboard pe
+  const home = user ? (user.role === 'admin' ? '/admin' : '/dashboard') : null
   const columns: { title: string; links: FooterLink[] }[] = [
     {
-      title: t('footer.discover'),
+      title: t('footer.product'),
       links: [
         { label: t('footer.explorePeople'), to: '/search' },
-      
         { label: t('footer.mostFollowed'), to: '/search?sort=followers' },
+        { label: t('footer.campaigns'), to: '/campaigns' },
+        { label: t('footer.businesses'), to: '/businesses' },
+        { label: t('footer.managers'), to: '/managers' },
       ],
     },
     {
-      title: t('footer.forTalent'),
-      links: user
-        ? [
-            { label: t('footer.dashboard'), to: user.role === 'admin' ? '/admin' : '/dashboard' },
-            { label: t('footer.findYourProfile'), to: '/search' },
-          ]
-        : [
-            { label: t('footer.claimProfile'), to: '/search' },
-            { label: t('footer.createAccount'), to: '/register' },
-            { label: t('footer.login'), to: '/login' },
-          ],
+      title: t('footer.solutions'),
+      links: [
+        { label: t('footer.forBrands'), to: home ?? '/register' },
+        { label: t('footer.forTalent'), to: home ?? '/search' },
+        { label: t('footer.forManagers'), to: home ?? '/register' },
+      ],
     },
     {
-      title: t('footer.support'),
+      title: t('footer.resources'),
+      links: [
+        { label: t('footer.howItWorks'), to: '/#how-it-works' },
+        { label: t('footer.features'), to: '/#features' },
+        { label: t('footer.faq'), to: '/#faq' },
+      ],
+    },
+    {
+      title: t('footer.company'),
       links: [
         { label: t('footer.about'), to: '/about' },
         { label: t('footer.contact'), href: `mailto:${CONTACT_EMAIL}` },
         { label: t('footer.reportProblem'), href: `mailto:${CONTACT_EMAIL}?subject=Report` },
+      ],
+    },
+    {
+      title: t('footer.legal'),
+      links: [
+        { label: t('footer.privacy'), to: '/privacy' },
+        { label: t('footer.terms'), to: '/terms' },
       ],
     },
   ]
@@ -73,16 +88,16 @@ function Footer() {
   return (
     <footer className="keep-dark bg-gray-950 text-gray-300 print:hidden">
       <div className="mx-auto max-w-6xl px-4 pb-8 pt-14">
-        <div className="grid gap-10 md:grid-cols-12">
-          {/* Brand + paigham + social */}
-          <div className="md:col-span-5">
+        <div className="grid gap-10 lg:grid-cols-12">
+          {/* Brand + paigham + social + newsletter */}
+          <div className="lg:col-span-4">
             <TopLink to="/" className="text-xl font-bold text-white">
               {PLATFORM_NAME}
             </TopLink>
             <p className="mt-3 max-w-sm text-sm leading-relaxed text-gray-400">
               {t('footer.tagline')}
             </p>
-            
+
 
             <ul className="mt-6 flex flex-wrap gap-2" aria-label={t('footer.followUs')}>
               {SOCIALS.map((social) => (
@@ -100,12 +115,16 @@ function Footer() {
                 </li>
               ))}
             </ul>
+
+            <div className="mt-8 max-w-sm">
+              <NewsletterForm />
+            </div>
           </div>
 
           {/* Link columns */}
           <nav
             aria-label={t('footer.siteLinks')}
-            className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:col-span-7"
+            className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-5 lg:col-span-8"
           >
             {columns.map((column) => (
               <div key={column.title}>

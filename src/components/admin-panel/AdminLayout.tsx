@@ -5,6 +5,7 @@ import {
   faBuilding,
   faChartPie,
   faClipboardList,
+  faEnvelopeOpenText,
   faFileContract,
   faFlag,
   faIdCard,
@@ -23,6 +24,7 @@ const LINKS: { to: string; key: string; icon: IconDefinition; end?: boolean }[] 
   { to: '/admin/users', key: 'nav.users', icon: faUsers },
   { to: '/admin/reports', key: 'nav.reports', icon: faFlag },
   { to: '/admin/audit-logs', key: 'nav.auditLog', icon: faClipboardList },
+  { to: '/admin/newsletter', key: 'nav.newsletter', icon: faEnvelopeOpenText },
 ]
 
 // /admin ka dhaancha: sidebar + page. dir se Urdu/Arabic mein layout ulta ho jata hai

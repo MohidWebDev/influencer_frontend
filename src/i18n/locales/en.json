@@ -10,7 +10,8 @@
     "language": "Language",
     "businesses": "Businesses",
     "agreements": "Agreements",
-    "managers": "Managers"
+    "managers": "Managers",
+    "newsletter": "Newsletter"
   },
   "common": {
     "loading": "Loading...",
@@ -1189,7 +1190,28 @@
     "contactBody": "Write to us and our team will get back to you within 1–2 working days.",
     "rights": "All rights reserved.",
     "backToTop": "Back to top",
-    "about": "About us"
+    "about": "About us",
+    "product": "Product",
+    "solutions": "Solutions",
+    "resources": "Resources",
+    "company": "Company",
+    "legal": "Legal",
+    "campaigns": "Campaigns",
+    "businesses": "Businesses",
+    "managers": "Managers",
+    "forBrands": "For brands",
+    "forManagers": "For managers",
+    "howItWorks": "How it works",
+    "features": "Features",
+    "faq": "FAQ",
+    "privacy": "Privacy policy",
+    "terms": "Terms of service",
+    "newsletterTitle": "Get the newsletter",
+    "newsletterBody": "New talents, features and tips, about once a month. Unsubscribe any time.",
+    "newsletterPlaceholder": "you@example.com",
+    "newsletterButton": "Subscribe",
+    "newsletterSending": "Subscribing...",
+    "newsletterDone": "Thanks! You're on the list."
   },
   "newProfile": {
     "cta": "Can't find it? Create your profile",
@@ -2473,6 +2495,133 @@
     "errors": {
       "type": "Choose a JPG, PNG or WebP image",
       "size": "The image must be 2 MB or smaller"
+    }
+  },
+  "adminNewsletter": {
+    "title": "Newsletter",
+    "subtitle": "{{count}} subscribed. Emails from the footer form.",
+    "searchPlaceholder": "Search email",
+    "export": "Export CSV",
+    "emptyTitle": "No subscribers yet",
+    "emptyText": "Emails appear here when people subscribe from the footer.",
+    "colEmail": "Email",
+    "colLanguage": "Language",
+    "colSince": "Subscribed",
+    "status": {
+      "subscribed": "Subscribed",
+      "unsubscribed": "Unsubscribed"
+    },
+    "delete": "Delete",
+    "deleteTitle": "Delete this email?",
+    "deleteBody": "{{email}} will be removed from the list for good.",
+    "deleted": "Email deleted"
+  },
+  "legal": {
+    "updated": "Last updated: {{date}}",
+    "questions": "Questions about this page? Email us at",
+    "unsubscribedTitle": "You're unsubscribed",
+    "unsubscribedText": "{{email}} will no longer get our newsletter. You can subscribe again from the footer any time.",
+    "unsubscribeFailedTitle": "This link doesn't work",
+    "unsubscribeFailedText": "The unsubscribe link is not valid. Please use the link from your latest email, or contact us.",
+    "privacy": {
+      "title": "Privacy policy",
+      "intro": "This policy explains what information {{platform}} collects, how we use it and the choices you have. By using {{platform}}, you agree to this policy.",
+      "sections": [
+        {
+          "title": "Who we are",
+          "body": "{{platform}} is a platform where businesses find journalists, creators, speakers and experts, and where those people manage their public profiles and work. You can reach us at {{email}}."
+        },
+        {
+          "title": "Public profiles",
+          "body": "Many profiles are created from public sources such as official social media accounts, websites and press coverage, and the sources are listed on each profile. A profile shows public information only, such as name, profession, location, social accounts, follower counts and engagement. If a profile is about you, you can claim it to correct it, or ask us to hide or remove it."
+        },
+        {
+          "title": "Information you give us",
+          "body": "When you create an account we collect your name, email address, password (stored only as a secure hash) and account type. Depending on how you use the platform, we also keep the details you add: your profile, services and availability, company or manager details, proof links for verification, hire requests, shortlists, agreements, reviews and reports, and your newsletter subscription."
+        },
+        {
+          "title": "Information collected automatically",
+          "body": "We use cookies that keep you logged in and remember settings such as your language and theme. Our servers record basic technical data (such as IP address and request times) to keep the service secure, for example to limit repeated login attempts."
+        },
+        {
+          "title": "How we use information",
+          "body": "We use information to run the platform: to show profiles and search results, verify talents, businesses and managers, deliver hire requests, agreements and notifications, send emails you need (such as sign-in and signing codes), prevent abuse, and improve the service. We send the newsletter only to people who subscribe."
+        },
+        {
+          "title": "Who can see what",
+          "body": "Public profiles are visible to everyone. Contact details in a hire request are shared between a business and a talent only after the talent accepts. Agreements are visible to the people in them (and to a talent's manager when the talent allows it), and to our admins when needed to resolve a dispute. We do not sell personal information."
+        },
+        {
+          "title": "Service providers",
+          "body": "We use trusted providers to host our servers and database and to send email. They process data only to provide those services to us."
+        },
+        {
+          "title": "How long we keep information",
+          "body": "We keep your information while your account is active. When you delete your account, we delete your account data, and you can choose to also remove your public profile. Some records, such as signed agreements, may be kept where needed to resolve disputes or meet legal duties."
+        },
+        {
+          "title": "Your choices and rights",
+          "body": "You can update most of your information in your settings and dashboard, delete your account from Settings, and unsubscribe from the newsletter using the link in any email. To ask for a copy of your data, a correction or deletion, email {{email}}."
+        },
+        {
+          "title": "Security",
+          "body": "We protect information with measures such as hashed passwords, secure cookies, rate limits and access controls. No online service can be completely secure, so please keep your password private."
+        },
+        {
+          "title": "Changes to this policy",
+          "body": "We may update this policy. When we make important changes, we will update the date at the top of this page and, where appropriate, let you know."
+        }
+      ]
+    },
+    "terms": {
+      "title": "Terms of service",
+      "intro": "These terms are the agreement between you and {{platform}} for using the website and services. By creating an account or using {{platform}}, you agree to them.",
+      "sections": [
+        {
+          "title": "Using the platform",
+          "body": "You must be old enough to form a binding contract where you live, or have permission from a parent or guardian. Use the platform only for lawful purposes and in line with these terms."
+        },
+        {
+          "title": "Your account",
+          "body": "Give accurate information and keep it up to date. You are responsible for activity on your account and for keeping your password safe. Tell us at {{email}} if you think someone else has used your account."
+        },
+        {
+          "title": "Profiles and claims",
+          "body": "Only claim a profile that is really about you. Claims are checked with a one-time code and approved by our team before the verified badge appears. We may refuse or remove a claim, and hide or correct a profile, if information is false or misleading."
+        },
+        {
+          "title": "Businesses, managers and hiring",
+          "body": "Businesses and managers must give true details for verification. Verified businesses can send hire requests to verified talents. A manager may act for a talent only with the talent's permission, and the talent can change or remove that permission at any time."
+        },
+        {
+          "title": "Agreements and payments",
+          "body": "Agreements made on {{platform}} are between the business and the talent (or the manager acting for the talent). {{platform}} is not a party to them and does not guarantee the work. Payments are made directly between the parties as agreed; the platform does not hold or process money. If a dispute arises, our team may help, but the parties remain responsible for their agreement."
+        },
+        {
+          "title": "Acceptable use",
+          "body": "Do not post false, unlawful, hateful or infringing content; impersonate anyone; harass other users; send spam; scrape the platform or try to break its security; or use it to collect other people's data without permission."
+        },
+        {
+          "title": "Your content",
+          "body": "You keep ownership of the content you add, such as profile text, photos and reviews. You allow {{platform}} to show and use it to run the platform. Make sure you have the right to share anything you upload."
+        },
+        {
+          "title": "Reviews and reports",
+          "body": "Reviews must be honest and based on real work. Anyone can report a profile; we review reports and may hide content while we check it."
+        },
+        {
+          "title": "Suspension and ending your account",
+          "body": "You can delete your account at any time from Settings. We may suspend or close accounts that break these terms or put others at risk."
+        },
+        {
+          "title": "Disclaimers and liability",
+          "body": "The platform is provided \"as is\". We work to keep information accurate, but follower counts and other data come from public sources and may change or contain errors. To the extent the law allows, {{platform}} is not liable for indirect losses or for the actions of users."
+        },
+        {
+          "title": "Changes to these terms",
+          "body": "We may update these terms. When we make important changes, we will update the date at the top of this page. Continuing to use the platform after a change means you accept the new terms."
+        }
+      ]
     }
   }
 }

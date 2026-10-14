@@ -13,10 +13,12 @@ function TopLink({ onClick, state, to, ...props }: LinkProps) {
     if (target === `${location.pathname}${location.search}`) smoothScrollTop()
   }
 
+  // "/#faq" jaisa link: upar nahi, us hisse tak (ScrollManager)
+  const toHash = typeof to === 'string' ? to.includes('#') : Boolean(to.hash)
   return (
     <Link
       to={to}
-      state={{ ...(typeof state === 'object' ? state : {}), smoothTop: true }}
+      state={{ ...(typeof state === 'object' ? state : {}), smoothTop: !toHash }}
       onClick={handleClick}
       {...props}
     />

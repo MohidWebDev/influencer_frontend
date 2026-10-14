@@ -248,7 +248,7 @@ function FeatureBlocks() {
   }
 
   return (
-    <section>
+    <section id="features" className="scroll-mt-24">
       <div className="text-center">
         <h2 className="text-xl font-semibold md:text-2xl">{t('home.featuresTitle')}</h2>
         <p className="mx-auto mt-1 max-w-xl text-sm text-gray-500">{t('home.featuresSubtitle')}</p>

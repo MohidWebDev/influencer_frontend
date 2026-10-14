@@ -11,7 +11,7 @@ const QUESTIONS = ['agency', 'data', 'free', 'verification', 'claim', 'hiring', 
 function FaqSection() {
   const { t } = useTranslation()
   return (
-    <section className="grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-12">
+    <section id="faq" className="grid scroll-mt-24 gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-12">
       <div>
         <h2 className="text-xl font-semibold md:text-2xl">{t('home.faqTitle')}</h2>
         <p className="mt-2 text-sm text-gray-500">{t('home.faqSubtitle')}</p>

@@ -56,6 +56,9 @@ import AgreementNewPage from './pages/agreements/AgreementNewPage'
 import AgreementDetailPage from './pages/agreements/AgreementDetailPage'
 import AdminAgreementsPage from './pages/admin-panel/AdminAgreementsPage'
 import AdminManagersPage from './pages/admin-panel/AdminManagersPage'
+import AdminNewsletterPage from './pages/admin-panel/AdminNewsletterPage'
+import LegalPage from './pages/LegalPage'
+import NewsletterUnsubscribe from './pages/NewsletterUnsubscribe'
 import AdminManagerDetailPage from './pages/admin-panel/AdminManagerDetailPage'
 import AdminAgreementDetailPage from './pages/admin-panel/AdminAgreementDetailPage'
 
@@ -67,6 +70,9 @@ function App() {
         <Route path="/search" element={<Search />} />
         {/* <Route path="/browse" element={<Browse />} /> */}
         <Route path="/about" element={<About />} />
+        <Route path="/privacy" element={<LegalPage key="privacy" page="privacy" />} />
+        <Route path="/terms" element={<LegalPage key="terms" page="terms" />} />
+        <Route path="/newsletter/unsubscribe" element={<NewsletterUnsubscribe />} />
         <Route path="/businesses" element={<BusinessesPage />} />
         <Route path="/managers" element={<ManagersPage />} />
         <Route path="/businesses/:id" element={<BusinessDetailPage />} />
@@ -318,6 +324,7 @@ function App() {
           <Route path="agreements" element={<AdminAgreementsPage />} />
           <Route path="agreements/:id" element={<AdminAgreementDetailPage />} />
           <Route path="audit-logs" element={<AdminAuditLogPage />} />
+          <Route path="newsletter" element={<AdminNewsletterPage />} />
         </Route>
         <Route path="/people/:slug/report" element={<ReportProfile />} />
         <Route path="*" element={<NotFound />} />

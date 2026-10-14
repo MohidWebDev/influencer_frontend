@@ -312,7 +312,7 @@ function Home() {
         </section>
 
         {/* Kaise kaam karta hai */}
-        <section className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-gray-100 md:p-10">
+        <section id="how-it-works" className="scroll-mt-24 rounded-3xl bg-white p-6 shadow-sm ring-1 ring-gray-100 md:p-10">
           <h2 className="text-center text-2xl font-bold">{t('home.howTitle')}</h2>
           <p className="mx-auto mt-2 max-w-xl text-center text-sm text-gray-500">
             {t('home.howSubtitle')}
