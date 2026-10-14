@@ -6,7 +6,6 @@ import {
   faBell,
   faCircleInfo,
   faCompass,
-  faEnvelope,
   faGear,
   faHouse,
   faShieldHalved,
@@ -81,14 +80,7 @@ export const ADMIN_PANEL_NAV: NavItem = {
 
 // Right side ke chhote icon buttons (logged-in)
 export const UTILITY_NAV: NavItem[] = [
-  {
-    to: '/inbox',
-    get label() {
-      return tr('site.nav.inbox')
-    },
-    icon: faEnvelope,
-    roles: 'auth',
-  },
+ 
   {
     to: '/notifications',
     get label() {
