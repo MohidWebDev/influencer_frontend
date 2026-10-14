@@ -528,7 +528,14 @@
     },
     "statIndustries": "القطاعات",
     "statProfessions": "المهن",
-    "statLanguages": "اللغات المتاحة"
+    "statLanguages": "اللغات المتاحة",
+    "featuredTitle": "أبرز الملفات",
+    "featuredSubtitle": "الأكثر متابعة على المنصة الآن.",
+    "followers": "المتابعون",
+    "engagement": "التفاعل",
+    "viewProfile": "عرض الملف",
+    "previous": "السابق",
+    "next": "التالي"
   },
   "login": {
     "title": "تسجيل الدخول",

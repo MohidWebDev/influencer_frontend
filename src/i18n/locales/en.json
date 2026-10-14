@@ -528,7 +528,14 @@
     },
     "statIndustries": "Industries",
     "statProfessions": "Professions",
-    "statLanguages": "Languages supported"
+    "statLanguages": "Languages supported",
+    "featuredTitle": "Top profiles",
+    "featuredSubtitle": "The most followed people on the platform right now.",
+    "followers": "Followers",
+    "engagement": "Engagement",
+    "viewProfile": "View profile",
+    "previous": "Previous",
+    "next": "Next"
   },
   "login": {
     "title": "Log in",

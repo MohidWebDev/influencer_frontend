@@ -23,7 +23,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { homeStatsQuery, peopleQuery } from '../api/queries'
 import type { HomeCategoryKey } from '../api/stats'
-import PersonCard from '../components/PersonCard'
+import FeaturedCarousel from '../components/home/FeaturedCarousel'
 import SearchBar from '../components/SearchBar'
 import { CONTACT_EMAIL } from '../constants/config'
 import { useAuth } from '../hooks/useAuth'
@@ -46,7 +46,7 @@ const CATEGORY_LOOK: Record<HomeCategoryKey, { icon: IconDefinition; tint: strin
 }
 const CATEGORY_ORDER: HomeCategoryKey[] = ['journalists', 'creators', 'speakers', 'experts']
 const SLIDE_MS = 4000
-const FEATURED_COUNT = 6
+const FEATURED_COUNT = 10
 const INDUSTRY_LIMIT = 8
 
 // User ne "kam harkat" chuni ho to slides khud na chalein
@@ -297,24 +297,15 @@ function Home() {
           </div>
         </section>
 
-        {/* Sab se zyada followers wale log */}
+        {/* Sab se zyada followers wale log: swipe hone wala carousel */}
         <section>
-          <SectionHeader title={t('home.mostFollowed')} to="/search?sort=followers" />
-          {isError && !featured && (
-            <p className="mt-5 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
-              {t('home.loadError')}
-            </p>
+          {isError && !featured ? (
+            <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{t('home.loadError')}</p>
+          ) : featured && featured.people.length === 0 ? (
+            <p className="text-gray-500">{t('home.noProfiles')}</p>
+          ) : (
+            <FeaturedCarousel people={featured?.people} isLoading={isLoading} />
           )}
-          {featured && featured.people.length === 0 && (
-            <p className="mt-5 text-gray-500">{t('home.noProfiles')}</p>
-          )}
-          <div className="mt-5 grid gap-4 md:grid-cols-2">
-            {isLoading
-              ? Array.from({ length: FEATURED_COUNT }, (_, i) => (
-                  <div key={i} className="h-32 animate-pulse rounded-2xl bg-gray-200/70" />
-                ))
-              : featured?.people.map((person) => <PersonCard key={person._id} person={person} />)}
-          </div>
         </section>
 
         {/* Kaise kaam karta hai */}

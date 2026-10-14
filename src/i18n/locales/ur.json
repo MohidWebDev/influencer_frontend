@@ -528,7 +528,14 @@
     },
     "statIndustries": "شعبے",
     "statProfessions": "پیشے",
-    "statLanguages": "زبانیں دستیاب"
+    "statLanguages": "زبانیں دستیاب",
+    "featuredTitle": "نمایاں پروفائلز",
+    "featuredSubtitle": "اس وقت پلیٹ فارم پر سب سے زیادہ فالو کیے جانے والے لوگ۔",
+    "followers": "فالوورز",
+    "engagement": "انگیجمنٹ",
+    "viewProfile": "پروفائل دیکھیں",
+    "previous": "پچھلا",
+    "next": "اگلا"
   },
   "login": {
     "title": "لاگ ان",

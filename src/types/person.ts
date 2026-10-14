@@ -49,6 +49,8 @@ export interface PersonSummary {
   availability?: Pick<Availability, 'isOpen' | 'openTo'>
   // Businesses ki reviews ka average aur kitno ne di (koi review na ho to null)
   rating?: PersonRating | null
+  // Accounts ka followers ke hisaab se average engagement % (pata na ho to null)
+  engagementRate?: number | null
 }
 
 export interface PersonRating {
