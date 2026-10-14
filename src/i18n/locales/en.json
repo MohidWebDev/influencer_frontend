@@ -610,6 +610,43 @@
       "brand": "brand",
       "talent": "talent",
       "signedBy": "Signed by {{side}}"
+    },
+    "faqTitle": "Frequently asked questions",
+    "faqSubtitle": "Everything you need to know before you start. Still have a question? We are happy to help.",
+    "faqContact": "Email our team",
+    "faq": {
+      "agency": {
+        "q": "Is this an agency?",
+        "a": "No. We are a platform, not an agency. Businesses find talents and contact them (or their manager) directly, and talents set their own services and prices."
+      },
+      "data": {
+        "q": "Where does the profile data come from?",
+        "a": "Profiles are built from public sources such as official social media accounts, websites and press coverage, and the sources are listed on every profile. When a talent claims their profile, they can correct and update it themselves, and anyone can report a mistake."
+      },
+      "free": {
+        "q": "Is it free? Is there a free trial?",
+        "a": "Yes, it is free right now: searching profiles, creating an account, claiming your profile, shortlists, hire requests and agreements. There is no trial to start and no card needed. If we add paid plans later, we will announce them first."
+      },
+      "verification": {
+        "q": "What does the verified badge mean?",
+        "a": "It means the person behind the profile has proved it is theirs. Our team sends a one-time code to one of their official accounts, the talent enters it, and an admin approves the claim. Businesses and managers are verified by our team too."
+      },
+      "claim": {
+        "q": "How do I claim my profile?",
+        "a": "Search for your name and open your profile, then click \"Is this you? Claim\". If you cannot find yourself, create your profile from your dashboard. It goes live once your claim is approved."
+      },
+      "hiring": {
+        "q": "Who can hire talents, and how?",
+        "a": "Verified businesses can send a hire request to verified talents, with the project, budget and dates. The talent (or their manager) accepts or declines, and an accepted request becomes an agreement both sides sign."
+      },
+      "manager": {
+        "q": "Can my manager handle things for me?",
+        "a": "Yes. Invite your verified manager from \"My manager\" and choose what they may do: manage your profile and services, and handle hire requests and agreements, including signing for you. Signatures show it was signed on your behalf, and you can change permissions or remove your manager at any time."
+      },
+      "payments": {
+        "q": "How do agreements and payments work?",
+        "a": "Agreements set out the scope, milestones, amounts, payment terms and usage rights, and both sides sign with a code sent to their email. Payments are made directly between the business and the talent as agreed; the platform does not hold or process money yet."
+      }
     }
   },
   "login": {
@@ -2023,10 +2060,10 @@
     },
     "permissionHelp": {
       "manageProfile": "Edit the profile, services, prices and availability.",
-      "handleHires": "Accept or decline hire requests from businesses."
+      "handleHires": "Answer hire requests and handle agreements for you: negotiate terms, sign on your behalf, deliver and review."
     },
     "whatCanTheyDo": "What can they do for you?",
-    "signingNote": "You always sign agreements yourself. You can change these permissions or remove your manager at any time.",
+    "signingNote": "With \"Handle hire requests\", your manager can also sign agreements for you; each signature shows it was made on your behalf. You can change these permissions or remove your manager at any time.",
     "backToTalents": "Back to my talents",
     "workingFor": "Working for",
     "switchTalent": "Switch talent",
