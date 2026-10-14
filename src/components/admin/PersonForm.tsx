@@ -217,6 +217,26 @@ function PersonForm({
 
   return (
     <form onSubmit={handleSubmit} noValidate className="space-y-6">
+      {/* Sab se upar: profile photo (foran save). Form ka photoUrl bhi saath badalta hai
+          taake "Save" purana link wapas na likh de */}
+      {canUploadPhoto && person && (
+        <section className={sectionClass}>
+          <PhotoUploader
+            name={form.name || person.name}
+            photoUrl={form.photoUrl}
+            label={t('personForm.photo')}
+            onUpload={async (file) => {
+              update('photoUrl', await uploadPersonPhoto(person._id, file))
+              queryClient.invalidateQueries({ queryKey: ['person'] })
+            }}
+            onRemove={async () => {
+              await removePersonPhoto(person._id)
+              update('photoUrl', '')
+              queryClient.invalidateQueries({ queryKey: ['person'] })
+            }}
+          />
+        </section>
+      )}
       <section className={sectionClass}>
         <h2 className="text-lg font-semibold">{t('personForm.identity')}</h2>
         {isOwner ? (
@@ -255,24 +275,7 @@ function PersonForm({
           />
           {errors.bio && <p className="mt-1 text-sm text-red-600">{errors.bio}</p>}
         </div>
-        {canUploadPhoto && person ? (
-          // Photo upload (foran save). Form ka photoUrl bhi saath badalta hai taake
-          // "Save" purana link wapas na likh de
-          <PhotoUploader
-            name={form.name || person.name}
-            photoUrl={form.photoUrl}
-            label={t('personForm.photo')}
-            onUpload={async (file) => {
-              update('photoUrl', await uploadPersonPhoto(person._id, file))
-              queryClient.invalidateQueries({ queryKey: ['person'] })
-            }}
-            onRemove={async () => {
-              await removePersonPhoto(person._id)
-              update('photoUrl', '')
-              queryClient.invalidateQueries({ queryKey: ['person'] })
-            }}
-          />
-        ) : (
+        {!canUploadPhoto && (
           <FormField
             id="photoUrl"
             label={t('personForm.photoUrl')}

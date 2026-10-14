@@ -17,6 +17,8 @@ import {
 } from '../../types/business'
 import { getApiError } from '../../utils/apiError'
 import { useAuth } from '../../hooks/useAuth'
+import PhotoUploader from '../../components/PhotoUploader'
+import { removeAvatar, uploadAvatar } from '../../api/auth'
 import type { User } from '../../types/user'
 import { countryName } from '../../utils/format'
 
@@ -46,7 +48,7 @@ function BusinessForm({ business }: { business: BusinessProfile | null }) {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-  const { user } = useAuth()
+  const { user, updateUser } = useAuth()
   const [form, setForm] = useState<BusinessInput>(() => toForm(business, user?.company))
   const [errors, setErrors] = useState<Record<string, string>>({})
 
@@ -89,6 +91,19 @@ function BusinessForm({ business }: { business: BusinessProfile | null }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5 rounded-2xl bg-white p-5 shadow-sm md:p-6">
+      {/* Sab se upar: apni photo / logo (foran save, cards aur page pe dikhta hai) */}
+      {user && (
+        <div className="border-b border-gray-100 pb-5">
+          <PhotoUploader
+            name={user.name}
+            photoUrl={user.avatarUrl}
+            shape="square"
+            label={t('photo.logoLabel')}
+            onUpload={async (file) => updateUser(await uploadAvatar(file))}
+            onRemove={async () => updateUser(await removeAvatar())}
+          />
+        </div>
+      )}
       {business && business.status !== 'rejected' && (
         <p className="rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-800">
           {t('business.identityWarning')}

@@ -13,6 +13,8 @@ import type { ManagerInput, ManagerProfile } from '../../types/manager'
 import type { SocialPlatform } from '../../types/person'
 import { getApiError } from '../../utils/apiError'
 import { useAuth } from '../../hooks/useAuth'
+import PhotoUploader from '../../components/PhotoUploader'
+import { removeAvatar, uploadAvatar } from '../../api/auth'
 import type { User } from '../../types/user'
 import { countryName } from '../../utils/format'
 
@@ -43,7 +45,7 @@ function ManagerForm({ manager }: { manager: ManagerProfile | null }) {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-  const { user } = useAuth()
+  const { user, updateUser } = useAuth()
   const [form, setForm] = useState<ManagerInput>(() => toForm(manager, user?.manager))
   const [errors, setErrors] = useState<Record<string, string>>({})
 
@@ -115,6 +117,19 @@ function ManagerForm({ manager }: { manager: ManagerProfile | null }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5 rounded-2xl bg-white p-5 shadow-sm md:p-6">
+      {/* Sab se upar: apni photo / logo (foran save, cards aur page pe dikhta hai) */}
+      {user && (
+        <div className="border-b border-gray-100 pb-5">
+          <PhotoUploader
+            name={user.name}
+            photoUrl={user.avatarUrl}
+            shape="round"
+            label={t('photo.accountLabel')}
+            onUpload={async (file) => updateUser(await uploadAvatar(file))}
+            onRemove={async () => updateUser(await removeAvatar())}
+          />
+        </div>
+      )}
       {manager?.status === 'approved' && (
         <p className="rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-800">
           {t('manager.identityWarning')}
