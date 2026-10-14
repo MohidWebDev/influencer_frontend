@@ -480,9 +480,6 @@
     "heroLabel": "مميز",
     "popular": "الأكثر رواجاً:",
     "statProfiles": "ملفات عامة",
-    "statIndustries": "القطاعات",
-    "statProfessions": "المهن",
-    "statLanguages": "اللغات المتاحة",
     "howTitle": "كيف يعمل",
     "howSubtitle": "من البحث إلى الاتفاق في ثلاث خطوات بسيطة.",
     "step1Title": "اكتشف",
@@ -504,7 +501,34 @@
     "startFree": "ابدأ مجانًا",
     "requestDemo": "اطلب عرضًا توضيحيًا",
     "demoSubject": "طلب عرض توضيحي",
-    "claimLink": "طالب به هنا"
+    "claimLink": "طالب به هنا",
+    "statNewWeek": "جدد هذا الأسبوع",
+    "statCountries": "دول",
+    "statVerified": "ملفات موثّقة",
+    "categoriesTitle": "عمّن تبحث؟",
+    "categoriesSubtitle": "ابدأ بفئة، ثم ضيّق البحث حسب المجال أو الموضوع أو المدينة.",
+    "categoryCount": "{{count}} ملف",
+    "categories": {
+      "journalists": {
+        "title": "صحفيون",
+        "body": "مراسلون ومذيعون ومقدمو برامج يصنعون الأخبار."
+      },
+      "creators": {
+        "title": "مبدعون",
+        "body": "يوتيوبرز وتيك توكرز وصانعو بودكاست وبث مباشر بجماهير متفاعلة."
+      },
+      "speakers": {
+        "title": "متحدثون",
+        "body": "متحدثون رئيسيون ومدربون ومعلمون للفعاليات والتدريب."
+      },
+      "experts": {
+        "title": "خبراء",
+        "body": "أطباء وعلماء ومحامون وقادة أعمال ذوو مصداقية حقيقية."
+      }
+    },
+    "statIndustries": "القطاعات",
+    "statProfessions": "المهن",
+    "statLanguages": "اللغات المتاحة"
   },
   "login": {
     "title": "تسجيل الدخول",

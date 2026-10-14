@@ -480,9 +480,6 @@
     "heroLabel": "Featured",
     "popular": "Popular:",
     "statProfiles": "Public profiles",
-    "statIndustries": "Industries",
-    "statProfessions": "Professions",
-    "statLanguages": "Languages supported",
     "howTitle": "How it works",
     "howSubtitle": "From search to a signed deal in three simple steps.",
     "step1Title": "Discover",
@@ -504,7 +501,34 @@
     "startFree": "Start free",
     "requestDemo": "Request a demo",
     "demoSubject": "Demo request",
-    "claimLink": "Claim it here"
+    "claimLink": "Claim it here",
+    "statNewWeek": "New this week",
+    "statCountries": "Countries",
+    "statVerified": "Verified profiles",
+    "categoriesTitle": "Who are you looking for?",
+    "categoriesSubtitle": "Start with a category, then narrow down by industry, topic or city.",
+    "categoryCount": "{{count}} profiles",
+    "categories": {
+      "journalists": {
+        "title": "Journalists",
+        "body": "Reporters, anchors and TV hosts who shape the news."
+      },
+      "creators": {
+        "title": "Creators",
+        "body": "YouTubers, TikTokers, podcasters and streamers with engaged audiences."
+      },
+      "speakers": {
+        "title": "Speakers",
+        "body": "Keynote speakers, coaches and educators for events and training."
+      },
+      "experts": {
+        "title": "Experts",
+        "body": "Doctors, scientists, lawyers and business leaders with real authority."
+      }
+    },
+    "statIndustries": "Industries",
+    "statProfessions": "Professions",
+    "statLanguages": "Languages supported"
   },
   "login": {
     "title": "Log in",

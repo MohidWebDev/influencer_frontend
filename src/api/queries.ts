@@ -26,6 +26,7 @@ import {
   listMyApplications,
   listMyCampaigns,
 } from './campaigns'
+import { getHomeStats } from './stats'
 import type { TaxonomyType } from '../types/person'
 
 // Har query ki key aur function ek jagah. Pages aur prefetch dono yahi use karte hain,
@@ -47,6 +48,13 @@ export function personQuery(slug: string) {
     staleTime: 30 * 1000,
   })
 }
+
+// Home page ke numbers aur categories. Server pe bhi 5 minute cache hai
+export const homeStatsQuery = queryOptions({
+  queryKey: ['stats', 'home'],
+  queryFn: getHomeStats,
+  staleTime: 5 * 60 * 1000,
+})
 
 export function taxonomyQuery(type: TaxonomyType) {
   return queryOptions({

@@ -6,18 +6,23 @@ import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faArrowRight,
-  faBriefcase,
   faChartLine,
+  faCircleCheck,
+  faEarthAsia,
   faEnvelope,
   faHandshake,
-  faIdBadge,
-  faLanguage,
   faLayerGroup,
   faMagnifyingGlass,
+  faMicrophone,
+  faNewspaper,
   faRocket,
+  faUserGraduate,
+  faUserPlus,
   faUsers,
+  faVideo,
 } from '@fortawesome/free-solid-svg-icons'
-import { peopleQuery } from '../api/queries'
+import { homeStatsQuery, peopleQuery } from '../api/queries'
+import type { HomeCategoryKey } from '../api/stats'
 import PersonCard from '../components/PersonCard'
 import SearchBar from '../components/SearchBar'
 import { CONTACT_EMAIL } from '../constants/config'
@@ -32,6 +37,14 @@ const HERO_IMAGES = [
   'https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=1600&q=80',
   'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1600&q=80',
 ]
+// Categories cards ka icon aur rang (kaun si professions = backend ka src/constants/homeCategories.ts)
+const CATEGORY_LOOK: Record<HomeCategoryKey, { icon: IconDefinition; tint: string }> = {
+  journalists: { icon: faNewspaper, tint: 'bg-blue-50 text-blue-700' },
+  creators: { icon: faVideo, tint: 'bg-violet-50 text-violet-700' },
+  speakers: { icon: faMicrophone, tint: 'bg-amber-50 text-amber-700' },
+  experts: { icon: faUserGraduate, tint: 'bg-green-50 text-green-700' },
+}
+const CATEGORY_ORDER: HomeCategoryKey[] = ['journalists', 'creators', 'speakers', 'experts']
 const SLIDE_MS = 4000
 const FEATURED_COUNT = 6
 const INDUSTRY_LIMIT = 8
@@ -47,7 +60,6 @@ function Home() {
   const { t } = useTranslation()
   const { user } = useAuth()
   const { data: industries } = useTaxonomy('industries')
-  const { data: professions } = useTaxonomy('professions')
 
   const [slide, setSlide] = useState(0)
   const [autoPlay] = useState(() => !prefersReducedMotion())
@@ -71,24 +83,20 @@ function Home() {
     return () => window.clearInterval(id)
   }, [autoPlay])
 
+  // Platform ke asal numbers (sirf public profiles)
+  const { data: homeStats } = useQuery(homeStatsQuery)
+  const count = (value?: number) => (value === undefined ? '–' : formatCount(value))
   const stats: { icon: IconDefinition; value: string; label: string }[] = [
-    {
-      icon: faUsers,
-      value: featured ? formatCount(featured.meta.total) : '–',
-      label: t('home.statProfiles'),
-    },
-    {
-      icon: faBriefcase,
-      value: industries ? String(industries.length) : '–',
-      label: t('home.statIndustries'),
-    },
-    {
-      icon: faIdBadge,
-      value: professions ? String(professions.length) : '–',
-      label: t('home.statProfessions'),
-    },
-    { icon: faLanguage, value: '3', label: t('home.statLanguages') },
+    { icon: faUsers, value: count(homeStats?.profiles), label: t('home.statProfiles') },
+    { icon: faUserPlus, value: count(homeStats?.newThisWeek), label: t('home.statNewWeek') },
+    { icon: faEarthAsia, value: count(homeStats?.countries), label: t('home.statCountries') },
+    { icon: faCircleCheck, value: count(homeStats?.verified), label: t('home.statVerified') },
   ]
+  const categories = CATEGORY_ORDER.map((key) => ({
+    key,
+    ...CATEGORY_LOOK[key],
+    data: homeStats?.categories.find((c) => c.key === key),
+  }))
 
   // Har qadam ke saath us ka agla kaam (link)
   const startTo = user ? '/dashboard' : '/register'
@@ -218,6 +226,46 @@ function Home() {
       </section>
 
       <div className="mx-auto max-w-6xl space-y-16 px-4">
+        {/* Categories: journalists, creators, speakers, experts (ginti ke saath) */}
+        <section>
+          <div className="text-center">
+            <h2 className="text-xl font-semibold md:text-2xl">{t('home.categoriesTitle')}</h2>
+            <p className="mx-auto mt-1 max-w-xl text-sm text-gray-500">{t('home.categoriesSubtitle')}</p>
+          </div>
+          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {categories.map((category) => (
+              <Link
+                key={category.key}
+                to={
+                  category.data
+                    ? `/search?profession=${category.data.slugs.join(',')}`
+                    : '/search'
+                }
+                className="group flex flex-col rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-gray-900 hover:shadow-md"
+              >
+                <span className={`flex h-12 w-12 items-center justify-center rounded-xl ${category.tint}`}>
+                  <FontAwesomeIcon icon={category.icon} className="text-lg" />
+                </span>
+                <h3 className="mt-4 text-lg font-semibold">{t(`home.categories.${category.key}.title`)}</h3>
+                <p className="mt-1 flex-1 text-sm text-gray-600">{t(`home.categories.${category.key}.body`)}</p>
+                <span className="mt-4 flex items-center justify-between text-sm">
+                  {category.data ? (
+                    <span className="font-semibold">
+                      {t('home.categoryCount', { count: formatCount(category.data.count) })}
+                    </span>
+                  ) : (
+                    <span className="h-4 w-20 animate-pulse rounded bg-gray-200/70" />
+                  )}
+                  <FontAwesomeIcon
+                    icon={faArrowRight}
+                    className="text-xs text-gray-400 transition group-hover:text-gray-900 rtl:rotate-180"
+                  />
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+
         {/* Industry ke hisaab se */}
         <section>
           <SectionHeader title={t('home.browseByIndustry')} to="/browse" />

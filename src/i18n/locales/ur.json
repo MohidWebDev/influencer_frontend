@@ -480,9 +480,6 @@
     "heroLabel": "نمایاں",
     "popular": "مقبول:",
     "statProfiles": "عوامی پروفائلز",
-    "statIndustries": "شعبے",
-    "statProfessions": "پیشے",
-    "statLanguages": "زبانیں دستیاب",
     "howTitle": "یہ کیسے کام کرتا ہے",
     "howSubtitle": "تلاش سے معاہدے تک، صرف تین آسان مراحل میں۔",
     "step1Title": "دریافت کریں",
@@ -504,7 +501,34 @@
     "startFree": "مفت شروع کریں",
     "requestDemo": "ڈیمو کی درخواست",
     "demoSubject": "ڈیمو کی درخواست",
-    "claimLink": "یہاں کلیم کریں"
+    "claimLink": "یہاں کلیم کریں",
+    "statNewWeek": "اس ہفتے نئے",
+    "statCountries": "ممالک",
+    "statVerified": "تصدیق شدہ پروفائلز",
+    "categoriesTitle": "آپ کسے تلاش کر رہے ہیں؟",
+    "categoriesSubtitle": "کسی زمرے سے شروع کریں، پھر شعبے، موضوع یا شہر سے محدود کریں۔",
+    "categoryCount": "{{count}} پروفائلز",
+    "categories": {
+      "journalists": {
+        "title": "صحافی",
+        "body": "رپورٹرز، اینکرز اور ٹی وی میزبان جو خبروں کو شکل دیتے ہیں۔"
+      },
+      "creators": {
+        "title": "کریئیٹرز",
+        "body": "یوٹیوبرز، ٹک ٹاکرز، پوڈکاسٹرز اور اسٹریمرز جن کے فعال ناظرین ہیں۔"
+      },
+      "speakers": {
+        "title": "مقررین",
+        "body": "تقریبات اور تربیت کے لیے کلیدی مقررین، کوچز اور معلمین۔"
+      },
+      "experts": {
+        "title": "ماہرین",
+        "body": "ڈاکٹرز، سائنس دان، وکلا اور کاروباری رہنما جن کی بات میں وزن ہے۔"
+      }
+    },
+    "statIndustries": "شعبے",
+    "statProfessions": "پیشے",
+    "statLanguages": "زبانیں دستیاب"
   },
   "login": {
     "title": "لاگ ان",
