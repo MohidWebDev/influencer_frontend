@@ -50,9 +50,9 @@ function Badge({
 }) {
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap ${tone}`}
+      className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium whitespace-nowrap sm:text-xs ${tone}`}
     >
-      <FontAwesomeIcon icon={icon} className="text-[10px]" />
+      <FontAwesomeIcon icon={icon} className="text-[9px] sm:text-[10px]" />
       {children}
     </span>
   )
@@ -83,18 +83,20 @@ function EntryCard({
   })
 
   return (
-    <article className="relative flex flex-col rounded-2xl border border-gray-200 bg-white p-5 transition hover:border-gray-400 hover:shadow-sm">
-      <div className="flex items-start gap-4">
+    <article className="relative flex flex-col rounded-2xl border border-gray-200 bg-white p-4 transition hover:border-gray-400 hover:shadow-sm sm:p-5">
+      <div className="flex items-start gap-3 sm:gap-4">
+        {/* Avatar: mobile pe chhota */}
         <span
           aria-hidden="true"
-          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gray-900 text-base font-semibold text-white"
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gray-900 text-sm font-semibold text-white sm:h-12 sm:w-12 sm:text-base"
         >
           {initials(name)}
         </span>
+
         <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <h3 className="truncate font-semibold text-gray-900">
-              {/* Poore card pe click: link ka parda card pe phaila hua (website link us ke upar) */}
+          {/* Title + badges: mobile pe wrap honge, chhote text */}
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+            <h3 className="min-w-0 truncate text-sm font-semibold text-gray-900 sm:text-base">
               <Link to={to} className="after:absolute after:inset-0 after:rounded-2xl">
                 {name}
               </Link>
@@ -113,7 +115,12 @@ function EntryCard({
               </Badge>
             )}
           </div>
-          {subtitle && <p className="mt-0.5 truncate text-sm text-gray-600">{subtitle}</p>}
+
+          {subtitle && (
+            <p className="mt-0.5 line-clamp-2 text-xs text-gray-600 sm:truncate sm:text-sm">
+              {subtitle}
+            </p>
+          )}
           {entry.rating && (
             <div className="mt-1">
               <RatingBadge rating={entry.rating} />
@@ -122,17 +129,22 @@ function EntryCard({
         </div>
       </div>
 
-      {description && <p className="mt-3 line-clamp-2 text-sm text-gray-600">{description}</p>}
+      {description && (
+        <p className="mt-2 line-clamp-2 text-xs text-gray-600 sm:mt-3 sm:text-sm">
+          {description}
+        </p>
+      )}
 
-      <div className="mt-auto flex flex-wrap gap-x-4 gap-y-1 pt-4 text-xs text-gray-500">
+      {/* Meta row: mobile pe column, sm pe row */}
+      <div className="mt-auto flex flex-wrap gap-x-3 gap-y-1 pt-3 text-[11px] text-gray-500 sm:gap-x-4 sm:pt-4 sm:text-xs">
         {location && (
-          <span>
+          <span className="inline-flex items-center">
             <FontAwesomeIcon icon={faLocationDot} className="me-1 text-gray-400" />
-            {location}
+            <span className="truncate">{location}</span>
           </span>
         )}
         {extra}
-        <span>
+        <span className="inline-flex items-center">
           <FontAwesomeIcon icon={faCalendar} className="me-1 text-gray-400" />
           {t('directory.joined', { date: joined })}
         </span>
@@ -141,10 +153,10 @@ function EntryCard({
             href={entry.websiteUrl}
             target="_blank"
             rel="noopener noreferrer nofollow"
-            className="relative z-10 inline-flex items-center gap-1 font-medium text-gray-700 hover:text-gray-950 hover:underline"
+            className="relative z-10 inline-flex max-w-full items-center gap-1 font-medium text-gray-700 hover:text-gray-950 hover:underline"
           >
-            {hostOf(entry.websiteUrl)}
-            <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="text-[9px]" />
+            <span className="truncate">{hostOf(entry.websiteUrl)}</span>
+            <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="shrink-0 text-[9px]" />
           </a>
         )}
       </div>
@@ -198,9 +210,9 @@ function DirectoryPage({ kind, icon }: { kind: Kind; icon: IconDefinition }) {
   let results: ReactNode
   if (isLoading) {
     results = (
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-3 sm:gap-4 md:grid-cols-2 xl:grid-cols-3">
         {Array.from({ length: 6 }, (_, i) => (
-          <div key={i} className="h-44 animate-pulse rounded-2xl bg-gray-200/70" />
+          <div key={i} className="h-40 animate-pulse rounded-2xl bg-gray-200/70 sm:h-44" />
         ))}
       </div>
     )
@@ -219,7 +231,7 @@ function DirectoryPage({ kind, icon }: { kind: Kind; icon: IconDefinition }) {
     )
   } else if (!data || data.items.length === 0) {
     results = (
-      <div className="rounded-3xl border border-dashed border-gray-300 bg-white px-6 py-14 text-center">
+      <div className="rounded-3xl border border-dashed border-gray-300 bg-white px-4 py-10 text-center sm:px-6 sm:py-14">
         <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 text-gray-500">
           <FontAwesomeIcon icon={q ? faMagnifyingGlass : icon} />
         </span>
@@ -235,7 +247,7 @@ function DirectoryPage({ kind, icon }: { kind: Kind; icon: IconDefinition }) {
   } else {
     results = (
       <>
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-3 sm:gap-4 md:grid-cols-2 xl:grid-cols-3">
           {kind === 'businesses'
             ? (data.items as DirectoryBusiness[]).map((b) => (
                 <EntryCard
@@ -262,7 +274,7 @@ function DirectoryPage({ kind, icon }: { kind: Kind; icon: IconDefinition }) {
                   subtitle={m.agencyName}
                   description={m.bio}
                   extra={
-                    <span>
+                    <span className="inline-flex items-center">
                       <FontAwesomeIcon icon={faUsers} className="me-1 text-gray-400" />
                       {t('directory.talents', { count: m.talents })}
                     </span>
@@ -276,29 +288,36 @@ function DirectoryPage({ kind, icon }: { kind: Kind; icon: IconDefinition }) {
   }
 
   return (
-    <div className="space-y-6">
-      <section className="keep-dark relative isolate overflow-hidden rounded-3xl bg-gray-900 px-5 py-10 text-white sm:px-8 md:py-14">
+    <div className="space-y-4 sm:space-y-6">
+      {/* Header: mobile pe kam padding, chhota text */}
+      <section className="keep-dark relative isolate overflow-hidden rounded-2xl bg-gray-900 px-4 py-8 text-white sm:rounded-3xl sm:px-8 sm:py-10 md:py-14">
         <img
           src={HEADER_IMAGES[kind]}
           alt=""
           decoding="async"
-          // Tasveer na aaye to bhi header saaf (gehra rang) rahe
           onError={(e) => (e.currentTarget.style.display = 'none')}
           className="absolute inset-0 -z-10 h-full w-full object-cover object-center"
         />
-        {/* Likhai wali taraf gehra parda taake text saaf parha jaye */}
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-gray-950/95 via-gray-950/75 to-gray-950/25 rtl:bg-gradient-to-l" />
+
         <div className="max-w-2xl">
-          <p className="inline-flex items-center gap-2 text-xs font-medium tracking-wider text-white/60 uppercase">
+          <p className="inline-flex items-center gap-2 text-[10px] font-medium tracking-wider text-white/60 uppercase sm:text-xs">
             <FontAwesomeIcon icon={icon} />
             {t(`directory.${kind}.eyebrow`)}
           </p>
-          <h1 className="mt-2 text-2xl font-bold tracking-tight md:text-3xl">
+          <h1 className="mt-2 text-xl font-bold tracking-tight sm:text-2xl md:text-3xl">
             {t(`directory.${kind}.title`)}
           </h1>
-          <p className="mt-1 text-sm text-white/70">{t(`directory.${kind}.subtitle`)}</p>
+          <p className="mt-1 text-xs text-white/70 sm:text-sm">
+            {t(`directory.${kind}.subtitle`)}
+          </p>
 
-          <form onSubmit={search} className="mt-5 flex max-w-lg gap-2" role="search">
+          {/* Search: mobile pe column, sm+ pe row */}
+          <form
+            onSubmit={search}
+            className="mt-4 flex max-w-lg flex-col gap-2 sm:mt-5 sm:flex-row"
+            role="search"
+          >
             <label className="relative flex-1">
               <span className="sr-only">{t(`directory.${kind}.searchLabel`)}</span>
               <FontAwesomeIcon
@@ -309,7 +328,7 @@ function DirectoryPage({ kind, icon }: { kind: Kind; icon: IconDefinition }) {
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
                 placeholder={t(`directory.${kind}.searchPlaceholder`)}
-                className="w-full rounded-xl bg-white py-3 ps-11 pe-10 text-gray-900 outline-none placeholder:text-gray-400 focus:ring-2 focus:ring-white/60"
+                className="w-full rounded-xl bg-white py-2.5 ps-11 pe-10 text-sm text-gray-900 outline-none placeholder:text-gray-400 focus:ring-2 focus:ring-white/60 sm:py-3 sm:text-base"
               />
               {draft && (
                 <button
@@ -327,7 +346,7 @@ function DirectoryPage({ kind, icon }: { kind: Kind; icon: IconDefinition }) {
             </label>
             <button
               type="submit"
-              className="rounded-xl bg-white px-5 text-sm font-medium text-gray-900 hover:bg-gray-100"
+              className="rounded-xl bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 sm:py-3"
             >
               {t('common.search')}
             </button>
@@ -335,7 +354,8 @@ function DirectoryPage({ kind, icon }: { kind: Kind; icon: IconDefinition }) {
         </div>
       </section>
 
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      {/* Count + join: mobile pe stack, sm+ pe row */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
         <p className="text-sm text-gray-600">
           {data ? (
             <>
@@ -346,7 +366,9 @@ function DirectoryPage({ kind, icon }: { kind: Kind; icon: IconDefinition }) {
             ' '
           )}
         </p>
-        {showJoin && data && data.items.length > 0 && joinButton}
+        {showJoin && data && data.items.length > 0 && (
+          <div className="self-start sm:self-auto">{joinButton}</div>
+        )}
       </div>
 
       {results}
