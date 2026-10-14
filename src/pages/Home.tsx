@@ -8,16 +8,19 @@ import {
   faArrowRight,
   faBriefcase,
   faChartLine,
+  faEnvelope,
   faHandshake,
   faIdBadge,
   faLanguage,
   faLayerGroup,
   faMagnifyingGlass,
+  faRocket,
   faUsers,
 } from '@fortawesome/free-solid-svg-icons'
 import { peopleQuery } from '../api/queries'
 import PersonCard from '../components/PersonCard'
 import SearchBar from '../components/SearchBar'
+import { CONTACT_EMAIL } from '../constants/config'
 import { useAuth } from '../hooks/useAuth'
 import { useTaxonomy } from '../hooks/useTaxonomy'
 import { formatCount } from '../utils/format'
@@ -87,11 +90,32 @@ function Home() {
     { icon: faLanguage, value: '3', label: t('home.statLanguages') },
   ]
 
-  const steps: { icon: IconDefinition; title: string; body: string }[] = [
-    { icon: faMagnifyingGlass, title: t('home.step1Title'), body: t('home.step1Body') },
-    { icon: faChartLine, title: t('home.step2Title'), body: t('home.step2Body') },
-    { icon: faHandshake, title: t('home.step3Title'), body: t('home.step3Body') },
+  // Har qadam ke saath us ka agla kaam (link)
+  const startTo = user ? '/dashboard' : '/register'
+  const steps: { icon: IconDefinition; title: string; body: string; link: string; to: string }[] = [
+    {
+      icon: faMagnifyingGlass,
+      title: t('home.step1Title'),
+      body: t('home.step1Body'),
+      link: t('home.step1Link'),
+      to: '/search',
+    },
+    {
+      icon: faChartLine,
+      title: t('home.step2Title'),
+      body: t('home.step2Body'),
+      link: t('home.step2Link'),
+      to: '/search?sort=followers',
+    },
+    {
+      icon: faHandshake,
+      title: t('home.step3Title'),
+      body: t('home.step3Body'),
+      link: user ? t('home.ctaDashboard') : t('home.step3Link'),
+      to: startTo,
+    },
   ]
+  const demoHref = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(t('home.demoSubject'))}`
 
   const chip =
     'rounded-full border border-white/25 bg-white/10 px-3 py-1.5 backdrop-blur transition hover:bg-white/20 hover:text-white'
@@ -135,6 +159,24 @@ function Home() {
 
             <div className="mt-7 max-w-xl md:mx-0 mx-auto">
               <SearchBar size="lg" tone="onDark" />
+            </div>
+
+            {/* Do bare raste: dhoondo, ya account bana kar shuru karo */}
+            <div className="mt-5 flex flex-wrap items-center justify-center gap-3 md:justify-start">
+              <Link
+                to="/search"
+                className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-gray-900 shadow-sm transition hover:bg-gray-100"
+              >
+                <FontAwesomeIcon icon={faMagnifyingGlass} className="text-xs" />
+                {t('home.heroFind')}
+              </Link>
+              <Link
+                to={startTo}
+                className="inline-flex items-center gap-2 rounded-xl border border-white/40 bg-white/10 px-5 py-3 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/20"
+              >
+                {user ? t('home.ctaDashboard') : t('home.heroStart')}
+                <FontAwesomeIcon icon={faArrowRight} className="text-xs rtl:rotate-180" />
+              </Link>
             </div>
 
             {/* Jaldi wale links: sab se zyada followers + pehli chand industries */}
@@ -233,43 +275,81 @@ function Home() {
           <p className="mx-auto mt-2 max-w-xl text-center text-sm text-gray-500">
             {t('home.howSubtitle')}
           </p>
-          <ol className="mt-8 grid gap-6 md:grid-cols-3">
-            {steps.map((step) => (
-              <li key={step.title} className="rounded-2xl bg-gray-50 p-5">
-                <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-900 text-white">
-                  <FontAwesomeIcon icon={step.icon} />
-                </span>
-                <h3 className="mt-4 font-semibold">{step.title}</h3>
-                <p className="mt-1 text-sm text-gray-600">{step.body}</p>
+          <ol className="mt-8 grid gap-6 md:grid-cols-3 md:gap-8">
+            {steps.map((step, i) => (
+              <li key={step.title} className="relative flex flex-col rounded-2xl bg-gray-50 p-5 md:p-6">
+                {/* Qadam ka number aur icon */}
+                <div className="flex items-center justify-between">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-900 text-white">
+                    <FontAwesomeIcon icon={step.icon} />
+                  </span>
+                  <span className="text-3xl font-extrabold tabular-nums text-gray-200" aria-hidden="true">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                </div>
+                <h3 className="mt-4 font-semibold">
+                  <span className="sr-only">{t('home.stepNumber', { number: i + 1 })} </span>
+                  {step.title}
+                </h3>
+                <p className="mt-1 flex-1 text-sm text-gray-600">{step.body}</p>
+                <Link
+                  to={step.to}
+                  className="mt-4 inline-flex items-center gap-1.5 self-start text-sm font-medium text-gray-900 underline-offset-4 hover:underline"
+                >
+                  {step.link}
+                  <FontAwesomeIcon icon={faArrowRight} className="text-[10px] rtl:rotate-180" />
+                </Link>
+                {/* Agle qadam ki taraf teer (sirf desktop) */}
+                {i < steps.length - 1 && (
+                  <span
+                    aria-hidden="true"
+                    className="absolute -end-6 top-1/2 hidden h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white text-gray-400 shadow-sm ring-1 ring-gray-200 md:flex"
+                  >
+                    <FontAwesomeIcon icon={faArrowRight} className="text-xs rtl:rotate-180" />
+                  </span>
+                )}
               </li>
             ))}
           </ol>
         </section>
 
-        {/* Aakhri dawat: guest ke liye sign up, login wale ke liye dashboard */}
-        <section className="grid gap-4 md:grid-cols-2">
-          <div className="keep-dark rounded-3xl bg-gray-900 p-6 text-white md:p-8">
-            <h2 className="text-xl font-semibold">{t('home.ctaTalentTitle')}</h2>
-            <p className="mt-2 text-sm text-white/75">{t('home.ctaTalentBody')}</p>
+        {/* Aakhri dawat: muft shuru karo ya demo mango. Talent ke liye profile claim ka chhota rasta */}
+        <section className="keep-dark relative isolate overflow-hidden rounded-3xl bg-gray-900 px-6 py-10 text-center text-white md:px-12 md:py-14">
+          <div
+            aria-hidden="true"
+            className="absolute -top-24 start-1/2 -z-10 h-64 w-64 -translate-x-1/2 rounded-full bg-white/10 blur-3xl rtl:translate-x-1/2"
+          />
+          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/15">
+            <FontAwesomeIcon icon={faRocket} />
+          </span>
+          <h2 className="mx-auto mt-5 max-w-2xl text-2xl font-bold tracking-tight md:text-4xl">
+            {t('home.finalTitle')}
+          </h2>
+          <p className="mx-auto mt-3 max-w-xl text-sm text-white/75 md:text-base">{t('home.finalBody')}</p>
+          <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
             <Link
-              to={user ? '/dashboard' : '/register'}
-              className="mt-5 inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100"
+              to={startTo}
+              className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-gray-900 hover:bg-gray-100"
             >
-              {user ? t('home.ctaDashboard') : t('home.ctaTalentButton')}
+              {user ? t('home.ctaDashboard') : t('home.startFree')}
               <FontAwesomeIcon icon={faArrowRight} className="text-xs rtl:rotate-180" />
             </Link>
-          </div>
-          <div className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-gray-100 md:p-8">
-            <h2 className="text-xl font-semibold">{t('home.ctaBusinessTitle')}</h2>
-            <p className="mt-2 text-sm text-gray-600">{t('home.ctaBusinessBody')}</p>
-            <Link
-              to="/search"
-              className="mt-5 inline-flex items-center gap-2 rounded-xl bg-gray-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-gray-800"
+            <a
+              href={demoHref}
+              className="inline-flex items-center gap-2 rounded-xl border border-white/40 px-5 py-3 text-sm font-semibold text-white hover:bg-white/10"
             >
-              {t('home.ctaBusinessButton')}
-              <FontAwesomeIcon icon={faArrowRight} className="text-xs rtl:rotate-180" />
-            </Link>
+              <FontAwesomeIcon icon={faEnvelope} className="text-xs" />
+              {t('home.requestDemo')}
+            </a>
           </div>
+          {!user && (
+            <p className="mt-6 text-xs text-white/60">
+              {t('home.ctaTalentTitle')}{' '}
+              <Link to="/search" className="font-medium text-white underline underline-offset-4">
+                {t('home.claimLink')}
+              </Link>
+            </p>
+          )}
         </section>
       </div>
     </div>
