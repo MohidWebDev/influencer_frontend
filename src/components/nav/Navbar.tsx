@@ -82,7 +82,7 @@ function Navbar() {
       <nav className="flex items-center gap-3 px-4 py-3 sm:px-6 xl:grid xl:grid-cols-[1fr_auto_1fr] lg:px-8">
         <TopLink
           to="/"
-          className="me-2 truncate text-baManager Dashboard – Backend Integration & Dashboard Connectivitybrse font-bold sm:text-xl xl:justify-self-start"
+          className="me-2 truncate text-base font-bold sm:text-xl xl:justify-self-start"
         >
           {PLATFORM_NAME}
         </TopLink>
@@ -146,20 +146,23 @@ function Navbar() {
           )}
         </div>
 
-        {/* Mobile: notifications + menu button */}
+        {/* ✅ Mobile: SAARE utility icons (inbox + notifications) + menu button.
+            Pehle sirf UTILITY_NAV[1] (notifications) tha jo index change hone par crash karta tha. */}
         <div className="ms-auto flex items-center gap-1 xl:hidden">
           <ThemeToggle />
-          {user && (
-            <TopLink
-              to="/notifications"
-              aria-label={t('site.nav.notifications')}
-              className={`relative ${iconButton(pathname === '/notifications')}`}
-              onClick={() => setMobileOpen(false)}
-            >
-              <FontAwesomeIcon icon={UTILITY_NAV[1].icon} />
-              <BellCount count={unread} />
-            </TopLink>
-          )}
+          {user &&
+            utilityItems.map((item) => (
+              <TopLink
+                key={item.to}
+                to={item.to}
+                aria-label={item.label}
+                className={`relative ${iconButton(pathname === item.to)}`}
+                onClick={() => setMobileOpen(false)}
+              >
+                <FontAwesomeIcon icon={item.icon} />
+                {item.to === '/notifications' && <BellCount count={unread} />}
+              </TopLink>
+            ))}
           <button
             onClick={() => setMobileOpen((o) => !o)}
             aria-label={mobileOpen ? t('site.nav.closeMenu') : t('site.nav.openMenu')}
