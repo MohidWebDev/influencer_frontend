@@ -17,6 +17,7 @@ import {
   faXmark,
 } from '@fortawesome/free-solid-svg-icons'
 import { deleteCampaign, respondApplication, updateCampaign } from '../../api/campaigns'
+import ConfirmDialog from '../../components/admin-panel/ConfirmDialog'
 import { campaignApplicationsQuery, myCampaignsQuery } from '../../api/queries'
 import {
   ApplicationStatusBadge,
@@ -156,12 +157,17 @@ function CampaignApplicantsPage() {
   const navigate = useNavigate()
   const { id = '' } = useParams()
   const [tab, setTab] = useState<Tab>('all')
+  // Kaunsa "pakka?" dialog khula hai (browser ke alert ki jagah)
+  const [confirming, setConfirming] = useState<'close' | 'delete' | null>(null)
   const { data, isLoading, isError } = useQuery(campaignApplicationsQuery(id))
   const { data: mine } = useQuery(myCampaignsQuery)
 
   const setStatus = useMutation({
     mutationFn: (status: CampaignStatus) => updateCampaign(id, { status }),
-    onSuccess: (saved) => toast.success(t(`campaigns.statusToast.${saved.status}`)),
+    onSuccess: (saved) => {
+      toast.success(t(`campaigns.statusToast.${saved.status}`))
+      setConfirming(null)
+    },
     onError: (error) => toast.error(getApiError(error).message),
   })
   const remove = useMutation({
@@ -230,9 +236,7 @@ function CampaignApplicantsPage() {
               <button
                 type="button"
                 disabled={setStatus.isPending}
-                onClick={() =>
-                  window.confirm(t('campaigns.closeConfirm')) && setStatus.mutate('closed')
-                }
+                onClick={() => setConfirming('close')}
                 className={actionButton}
               >
                 {t('campaigns.close')}
@@ -262,7 +266,7 @@ function CampaignApplicantsPage() {
             <button
               type="button"
               disabled={remove.isPending}
-              onClick={() => window.confirm(t('campaigns.deleteConfirm')) && remove.mutate()}
+              onClick={() => setConfirming('delete')}
               aria-label={t('campaigns.delete')}
               title={t('campaigns.delete')}
               className={`${actionButton} text-red-600 hover:bg-red-50`}
@@ -322,6 +326,28 @@ function CampaignApplicantsPage() {
           ))}
         </ul>
       )}
+
+      <ConfirmDialog
+        open={confirming === 'close'}
+        title={t('campaigns.closeTitle')}
+        confirmLabel={t('campaigns.close')}
+        isBusy={setStatus.isPending}
+        onConfirm={() => setStatus.mutate('closed')}
+        onCancel={() => setConfirming(null)}
+      >
+        <p>{t('campaigns.closeConfirm')}</p>
+      </ConfirmDialog>
+      <ConfirmDialog
+        open={confirming === 'delete'}
+        title={t('campaigns.deleteTitle', { title: campaign.title })}
+        tone="danger"
+        confirmLabel={t('campaigns.delete')}
+        isBusy={remove.isPending}
+        onConfirm={() => remove.mutate()}
+        onCancel={() => setConfirming(null)}
+      >
+        <p>{t('campaigns.deleteConfirm')}</p>
+      </ConfirmDialog>
     </div>
   )
 }

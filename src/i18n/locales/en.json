@@ -2077,14 +2077,14 @@
     "budgetOpen": "Budget on request",
     "claimProfile": "Or find and claim your existing profile",
     "close": "Close campaign",
-    "closeConfirm": "Close this campaign? Talents won't be able to apply any more.",
+    "closeConfirm": "Talents won't be able to apply any more. You can reopen it later.",
     "closedTitle": "Applications are closed",
     "closedText": "This campaign is not taking new applications any more.",
     "count": "open campaigns",
     "createProfile": "Create your profile",
     "created": "created {{date}}",
     "delete": "Delete campaign",
-    "deleteConfirm": "Delete this campaign and all its applications? Hire requests of selected talents stay.",
+    "deleteConfirm": "The campaign and all its applications will be removed. This can't be undone. Hire requests of talents you already selected stay.",
     "deleted": "Campaign deleted",
     "edit": "Edit campaign",
     "emptyTitle": "No open campaigns yet",
@@ -2164,7 +2164,7 @@
     "viewPublic": "Public page",
     "website": "Website",
     "withdraw": "Withdraw application",
-    "withdrawConfirm": "Withdraw your application? You can apply again while the campaign is open.",
+    "withdrawConfirm": "The business won't see it any more. You can apply again while the campaign is open.",
     "withdrawn": "Application withdrawn",
     "yourApplication": "Your application",
     "yourCampaign": "This is your campaign",
@@ -2195,7 +2195,10 @@
       "pending": "New",
       "accepted": "Selected",
       "rejected": "Rejected"
-    }
+    },
+    "deleteTitle": "Are you sure you want to delete “{{title}}”?",
+    "closeTitle": "Close this campaign?",
+    "withdrawTitle": "Withdraw your application?"
   },
   "reviews": {
     "ratingTitle": "Rated {{average}} out of 5 by {{count}} business(es)",

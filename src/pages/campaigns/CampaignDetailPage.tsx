@@ -14,6 +14,7 @@ import {
   faUsers,
 } from '@fortawesome/free-solid-svg-icons'
 import { applyToCampaign, withdrawApplication } from '../../api/campaigns'
+import ConfirmDialog from '../../components/admin-panel/ConfirmDialog'
 import { campaignQuery, myProfileQuery } from '../../api/queries'
 import {
   ApplicationStatusBadge,
@@ -56,9 +57,13 @@ function ApplyBox({ detail }: { detail: CampaignDetail }) {
       setError(fields.pitch ?? message)
     },
   })
+  const [confirmWithdraw, setConfirmWithdraw] = useState(false)
   const withdraw = useMutation({
     mutationFn: () => withdrawApplication(myApplication!._id),
-    onSuccess: () => toast.success(t('campaigns.withdrawn')),
+    onSuccess: () => {
+      toast.success(t('campaigns.withdrawn'))
+      setConfirmWithdraw(false)
+    },
     onError: (err) => toast.error(getApiError(err).message),
   })
 
@@ -119,12 +124,23 @@ function ApplyBox({ detail }: { detail: CampaignDetail }) {
           <button
             type="button"
             disabled={withdraw.isPending}
-            onClick={() => window.confirm(t('campaigns.withdrawConfirm')) && withdraw.mutate()}
+            onClick={() => setConfirmWithdraw(true)}
             className="mt-4 w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-60"
           >
             {t('campaigns.withdraw')}
           </button>
         )}
+        <ConfirmDialog
+          open={confirmWithdraw}
+          title={t('campaigns.withdrawTitle')}
+          tone="danger"
+          confirmLabel={t('campaigns.withdraw')}
+          isBusy={withdraw.isPending}
+          onConfirm={() => withdraw.mutate()}
+          onCancel={() => setConfirmWithdraw(false)}
+        >
+          <p>{t('campaigns.withdrawConfirm')}</p>
+        </ConfirmDialog>
       </div>
     )
   }

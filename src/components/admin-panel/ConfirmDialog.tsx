@@ -1,4 +1,5 @@
 import { useEffect, useRef, type ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 
 interface ConfirmDialogProps {
@@ -65,8 +66,12 @@ function ConfirmDialog({
 
   if (!open) return null
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 p-4 sm:items-center">
+  // Body pe portal: kisi parent ka transform / overflow parda chhota na kare (poora page dhaka rahe)
+  return createPortal(
+    <div
+      className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 p-4 sm:items-center"
+      onClick={(e) => e.target === e.currentTarget && !isBusy && onCancel()}
+    >
       <div
         role="dialog"
         aria-modal="true"
@@ -80,12 +85,14 @@ function ConfirmDialog({
         <div className="mt-6 flex justify-end gap-2">
           <button
             ref={cancelRef}
+            type="button"
             onClick={onCancel}
             className="rounded-lg border border-gray-300 px-4 py-2 text-sm hover:bg-gray-100"
           >
             {t('common.cancel')}
           </button>
           <button
+            type="button"
             onClick={onConfirm}
             disabled={isBusy || confirmDisabled}
             className={`rounded-lg px-4 py-2 text-sm font-medium text-white disabled:opacity-50 ${TONES[tone]}`}
@@ -94,7 +101,8 @@ function ConfirmDialog({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }
 

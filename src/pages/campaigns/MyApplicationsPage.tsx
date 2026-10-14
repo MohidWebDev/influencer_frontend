@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -5,6 +6,7 @@ import toast from 'react-hot-toast'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBullhorn, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { withdrawApplication } from '../../api/campaigns'
+import ConfirmDialog from '../../components/admin-panel/ConfirmDialog'
 import { myApplicationsQuery } from '../../api/queries'
 import { ApplicationStatusBadge, CampaignBusiness } from '../../components/campaigns/campaignUi'
 import { useCampaignFormat } from '../../components/campaigns/campaignFormat'
@@ -15,9 +17,13 @@ function ApplicationRow({ application }: { application: MyApplication }) {
   const { t } = useTranslation()
   const format = useCampaignFormat()
   const campaign = application.campaign
+  const [confirmWithdraw, setConfirmWithdraw] = useState(false)
   const withdraw = useMutation({
     mutationFn: () => withdrawApplication(application._id),
-    onSuccess: () => toast.success(t('campaigns.withdrawn')),
+    onSuccess: () => {
+      toast.success(t('campaigns.withdrawn'))
+      setConfirmWithdraw(false)
+    },
     onError: (error) => toast.error(getApiError(error).message),
   })
 
@@ -63,13 +69,24 @@ function ApplicationRow({ application }: { application: MyApplication }) {
           <button
             type="button"
             disabled={withdraw.isPending}
-            onClick={() => window.confirm(t('campaigns.withdrawConfirm')) && withdraw.mutate()}
+            onClick={() => setConfirmWithdraw(true)}
             className="rounded-xl border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-60"
           >
             {t('campaigns.withdraw')}
           </button>
         )}
       </div>
+      <ConfirmDialog
+        open={confirmWithdraw}
+        title={t('campaigns.withdrawTitle')}
+        tone="danger"
+        confirmLabel={t('campaigns.withdraw')}
+        isBusy={withdraw.isPending}
+        onConfirm={() => withdraw.mutate()}
+        onCancel={() => setConfirmWithdraw(false)}
+      >
+        <p>{t('campaigns.withdrawConfirm')}</p>
+      </ConfirmDialog>
     </li>
   )
 }
