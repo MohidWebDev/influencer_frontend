@@ -647,7 +647,10 @@
         "q": "How do agreements and payments work?",
         "a": "Agreements set out the scope, milestones, amounts, payment terms and usage rights, and both sides sign with a code sent to their email. Payments are made directly between the business and the talent as agreed; the platform does not hold or process money yet."
       }
-    }
+    },
+    "testimonialsTitle": "What people say",
+    "testimonialsSubtitle": "Brands, managers and talents who use the platform.",
+    "testimonialOf": "Testimonial {{number}} of {{total}}"
   },
   "login": {
     "title": "Log in",

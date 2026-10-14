@@ -26,6 +26,7 @@ import type { HomeCategoryKey } from '../api/stats'
 import FeaturedCarousel from '../components/home/FeaturedCarousel'
 import FeatureBlocks from '../components/home/FeatureBlocks'
 import FaqSection from '../components/home/FaqSection'
+import TestimonialsSlider from '../components/home/TestimonialsSlider'
 import SearchBar from '../components/SearchBar'
 import { CONTACT_EMAIL } from '../constants/config'
 import { useAuth } from '../hooks/useAuth'
@@ -356,6 +357,9 @@ function Home() {
 
         {/* Platform kya kya karta hai: paanch hisse, likhai aur mock-up baari baari */}
         <FeatureBlocks />
+
+        {/* Asal logon ki baatein (list khali ho to ye hissa nahi dikhta) */}
+        <TestimonialsSlider />
 
         {/* Aksar pooche jane wale sawal */}
         <FaqSection />
