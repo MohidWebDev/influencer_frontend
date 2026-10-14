@@ -19,6 +19,8 @@ interface DirectoryEntry {
 }
 
 export interface DirectoryBusiness extends DirectoryEntry {
+  // Business ka upload kiya hua logo
+  logoUrl?: string
   organizationType?: OrganizationType
   industry?: string
   companySize?: string
@@ -26,6 +28,7 @@ export interface DirectoryBusiness extends DirectoryEntry {
 }
 
 export interface DirectoryManager extends DirectoryEntry {
+  photoUrl?: string
   agencyName?: string
   bio?: string
   // Is waqt kitne talents ko represent kar rahe hain

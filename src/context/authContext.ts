@@ -18,6 +18,8 @@ export interface AuthContextValue {
   resetPassword: (email: string, resetToken: string, newPassword: string) => Promise<User>
   // confirm = "delete <naam>"
   deleteAccount: (confirm: string, removeProfile?: boolean) => Promise<DeletedProfileOutcome | null>
+  // Server se aaya naya user (jaise photo badalne ke baad) foran har jagah
+  updateUser: (user: User) => void
 }
 
 export const AuthContext = createContext<AuthContextValue | null>(null)

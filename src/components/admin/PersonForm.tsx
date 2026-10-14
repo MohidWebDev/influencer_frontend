@@ -1,6 +1,9 @@
 import { useTranslation } from 'react-i18next'
 import { useState, type FormEvent, type ReactNode } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 import FormField from '../FormField'
+import PhotoUploader from '../PhotoUploader'
+import { removePersonPhoto, uploadPersonPhoto } from '../../api/auth'
 import TaxonomyPicker from './TaxonomyPicker'
 import {
   COUNTRY_OPTIONS,
@@ -164,6 +167,9 @@ function PersonForm({
   const isAdmin = mode === 'admin'
   // Talent (apni profile / nayi profile): kam az kam ek social account zaroori, website optional
   const needsSocial = !isAdmin
+  // Photo upload: maalik (ya us ka manager), ya admin unclaimed profile pe
+  const canUploadPhoto = Boolean(person) && (isOwner || (isAdmin && !person?.claimedBy))
+  const queryClient = useQueryClient()
   const [form, setForm] = useState<FormState>(() => toFormState(person, needsSocial))
   // Yahin ki jaanch ke errors (server ke errors ke upar)
   const [localErrors, setLocalErrors] = useState<Record<string, string>>({})
@@ -249,14 +255,33 @@ function PersonForm({
           />
           {errors.bio && <p className="mt-1 text-sm text-red-600">{errors.bio}</p>}
         </div>
-        <FormField
-          id="photoUrl"
-          label={t('personForm.photoUrl')}
-          placeholder="https://..."
-          value={form.photoUrl}
-          onChange={(e) => update('photoUrl', e.target.value)}
-          error={errors.photoUrl}
-        />
+        {canUploadPhoto && person ? (
+          // Photo upload (foran save). Form ka photoUrl bhi saath badalta hai taake
+          // "Save" purana link wapas na likh de
+          <PhotoUploader
+            name={form.name || person.name}
+            photoUrl={form.photoUrl}
+            label={t('personForm.photo')}
+            onUpload={async (file) => {
+              update('photoUrl', await uploadPersonPhoto(person._id, file))
+              queryClient.invalidateQueries({ queryKey: ['person'] })
+            }}
+            onRemove={async () => {
+              await removePersonPhoto(person._id)
+              update('photoUrl', '')
+              queryClient.invalidateQueries({ queryKey: ['person'] })
+            }}
+          />
+        ) : (
+          <FormField
+            id="photoUrl"
+            label={t('personForm.photoUrl')}
+            placeholder="https://..."
+            value={form.photoUrl}
+            onChange={(e) => update('photoUrl', e.target.value)}
+            error={errors.photoUrl}
+          />
+        )}
         <FormField
           id="websiteUrl"
           label={needsSocial ? t('personForm.websiteOptional') : t('personForm.website')}

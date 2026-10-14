@@ -92,3 +92,33 @@ export async function resetPasswordRequest(input: {
   const res = await api.post<ApiSuccess<{ user: User }>>('/auth/reset-password', input)
   return res.data.data.user
 }
+
+// Photo / logo upload (multipart, field "photo")
+function photoForm(file: File) {
+  const form = new FormData()
+  form.append('photo', file)
+  return form
+}
+
+export async function uploadAvatar(file: File) {
+  const res = await api.put<ApiSuccess<{ user: User }>>('/account/avatar', photoForm(file))
+  return res.data.data.user
+}
+
+export async function removeAvatar() {
+  const res = await api.delete<ApiSuccess<{ user: User }>>('/account/avatar')
+  return res.data.data.user
+}
+
+// Talent ki public profile photo (talent khud, us ka manager ya admin)
+export async function uploadPersonPhoto(personId: string, file: File) {
+  const res = await api.put<ApiSuccess<{ photoUrl: string }>>(
+    `/people/${personId}/photo`,
+    photoForm(file),
+  )
+  return res.data.data.photoUrl
+}
+
+export async function removePersonPhoto(personId: string) {
+  await api.delete(`/people/${personId}/photo`)
+}

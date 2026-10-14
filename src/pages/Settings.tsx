@@ -23,6 +23,8 @@ import { useAuth } from '../hooks/useAuth'
 import { useTheme } from '../hooks/useTheme'
 import { getApiError } from '../utils/apiError'
 import type { ThemePreference } from '../utils/theme'
+import PhotoUploader from '../components/PhotoUploader'
+import { removeAvatar, uploadAvatar } from '../api/auth'
 
 const MIN_PASSWORD = 8
 
@@ -447,15 +449,9 @@ function DangerSection() {
 // /settings -> password (AuthContext), theme (ThemeContext) aur account delete
 function Settings() {
   const { t } = useTranslation()
-  const { user } = useAuth()
+  const { user, updateUser } = useAuth()
   if (!user) return null
-
-  const initials = user.name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase())
-    .join('')
+  const isBusiness = user.role === 'business'
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
@@ -464,19 +460,27 @@ function Settings() {
         <p className="mt-1 text-sm text-gray-500">{t('settings.subtitle')}</p>
       </div>
 
-      <div className="flex items-center gap-4 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-gray-200/70 sm:p-6">
-        <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-gray-900 text-lg font-semibold text-white">
-          {initials}
-        </span>
-        <div className="min-w-0 flex-1">
-          <p className="truncate font-semibold text-gray-900">{user.name}</p>
-          <p className="truncate text-sm text-gray-500" dir="ltr">
-            {user.email}
-          </p>
+      <div className="space-y-5 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-gray-200/70 sm:p-6">
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="min-w-0 flex-1">
+            <p className="truncate font-semibold text-gray-900">{user.name}</p>
+            <p className="truncate text-sm text-gray-500" dir="ltr">
+              {user.email}
+            </p>
+          </div>
+          <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700">
+            {t(`roles.${user.role}`)}
+          </span>
         </div>
-        <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700">
-          {t(`roles.${user.role}`)}
-        </span>
+        {/* Har account ki apni photo; business ka logo */}
+        <PhotoUploader
+          name={user.name}
+          photoUrl={user.avatarUrl}
+          shape={isBusiness ? 'square' : 'round'}
+          label={isBusiness ? t('photo.logoLabel') : t('photo.accountLabel')}
+          onUpload={async (file) => updateUser(await uploadAvatar(file))}
+          onRemove={async () => updateUser(await removeAvatar())}
+        />
       </div>
 
       <AppearanceSection />

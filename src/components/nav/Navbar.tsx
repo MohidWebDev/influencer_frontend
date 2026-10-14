@@ -180,7 +180,7 @@ function Navbar() {
           <div className="mx-auto max-w-6xl space-y-4 px-4 py-4">
             {user && (
               <div className="flex items-center gap-3 rounded-xl bg-gray-50 p-3">
-                <Avatar name={user.name} size="sm" />
+                <Avatar name={user.name} photoUrl={user.avatarUrl} size="sm" />
                 <div className="min-w-0">
                   <p className="truncate text-sm font-medium">{user.name}</p>
                   <p className="truncate text-xs text-gray-500">{ROLE_LABELS[user.role]}</p>

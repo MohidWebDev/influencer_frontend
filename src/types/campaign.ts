@@ -23,6 +23,7 @@ export interface Campaign {
   business: {
     _id: string
     name: string
+    logoUrl?: string
     organizationType?: OrganizationType
     country?: string
     city?: string

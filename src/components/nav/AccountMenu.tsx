@@ -28,7 +28,7 @@ function AccountMenu({ onLogout }: { onLogout: () => void }) {
         aria-expanded={open}
         className="inline-flex items-center gap-2 rounded-full border border-gray-200 py-1 ps-1 pe-3 hover:bg-gray-50"
       >
-        <Avatar name={user.name} size="sm" />
+        <Avatar name={user.name} photoUrl={user.avatarUrl} size="sm" />
         <FontAwesomeIcon icon={faChevronDown} className="text-xs text-gray-500" />
       </button>
       {open && (

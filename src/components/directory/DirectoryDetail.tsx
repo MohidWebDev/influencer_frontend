@@ -14,7 +14,7 @@ import {
 import RatingBadge from '../agreements/RatingBadge'
 import type { DirectoryBusiness, DirectoryManager } from '../../types/directory'
 import { countryName, initials } from '../../utils/format'
-import { hostOf } from './directoryUtils'
+import { hostOf, imageOf } from './directoryUtils'
 
 // Business / manager ke page ka upar wala hissa: naam, tasdeeq, sitare, jagah, website
 export function DirectoryHeader({
@@ -53,12 +53,21 @@ export function DirectoryHeader({
   return (
     <section className="rounded-2xl bg-white p-6 shadow-sm md:p-8">
       <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
-        <span
-          aria-hidden="true"
-          className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-gray-900 text-2xl font-semibold text-white"
-        >
-          {initials(entry.name)}
-        </span>
+        {imageOf(entry) ? (
+          <img
+            src={imageOf(entry)}
+            alt=""
+            loading="lazy"
+            className="h-20 w-20 shrink-0 rounded-2xl bg-gray-100 object-cover ring-1 ring-gray-200"
+          />
+        ) : (
+          <span
+            aria-hidden="true"
+            className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-gray-900 text-2xl font-semibold text-white"
+          >
+            {initials(entry.name)}
+          </span>
+        )}
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <h1 className="text-2xl font-bold md:text-3xl">{entry.name}</h1>

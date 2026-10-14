@@ -11,6 +11,8 @@ export interface User {
   role: Role
   isEmailVerified: boolean
   status: 'active' | 'suspended'
+  // Apni photo / business ka logo (upload ki hui)
+  avatarUrl?: string
   // Business / organization signup pe di gayi details (tasdeeq ka form inhi se shuru hota hai)
   company?: {
     organizationType?: OrganizationType

@@ -138,6 +138,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         changePassword,
         deleteAccount,
         resetPassword,
+        updateUser: (next: User) => queryClient.setQueryData<User | null>(ME_KEY, next),
       }}
     >
       {children}

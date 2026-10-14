@@ -88,12 +88,21 @@ export function CampaignBusiness({ campaign }: { campaign: Campaign }) {
   if (!business) return null
   return (
     <div className="flex min-w-0 items-center gap-3">
-      <span
-        aria-hidden="true"
-        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gray-900 text-sm font-semibold text-white"
-      >
-        {initials(business.name)}
-      </span>
+      {business.logoUrl ? (
+        <img
+          src={business.logoUrl}
+          alt=""
+          loading="lazy"
+          className="h-10 w-10 shrink-0 rounded-xl bg-gray-100 object-cover ring-1 ring-gray-200"
+        />
+      ) : (
+        <span
+          aria-hidden="true"
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gray-900 text-sm font-semibold text-white"
+        >
+          {initials(business.name)}
+        </span>
+      )}
       <div className="min-w-0">
         <p className="flex items-center gap-1.5 truncate text-sm font-semibold text-gray-900">
           <span className="truncate">{business.name}</span>

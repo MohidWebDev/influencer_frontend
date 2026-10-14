@@ -957,7 +957,8 @@
     "websiteOptional": "Website (optional)",
     "socialRequired": "Add at least one social account",
     "socialUrlRequired": "Enter the profile link (https://...)",
-    "socialRequiredHint": "At least one social account is required, so businesses can see your work and reach."
+    "socialRequiredHint": "At least one social account is required, so businesses can see your work and reach.",
+    "photo": "Profile photo"
   },
   "oldClaims": {
     "title": "Claim requests",
@@ -2301,5 +2302,19 @@
     "ctaExplore": "Explore talent",
     "ctaCampaigns": "Browse campaigns",
     "ctaJoin": "Create a free account"
+  },
+  "photo": {
+    "uploaded": "Photo saved",
+    "removed": "Photo removed",
+    "upload": "Upload photo",
+    "change": "Change photo",
+    "remove": "Remove",
+    "hint": "JPG, PNG or WebP, up to 2 MB.",
+    "accountLabel": "Profile photo",
+    "logoLabel": "Logo",
+    "errors": {
+      "type": "Choose a JPG, PNG or WebP image",
+      "size": "The image must be 2 MB or smaller"
+    }
   }
 }

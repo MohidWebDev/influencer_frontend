@@ -20,3 +20,8 @@ export const fromTalent = (review: DirectoryReview): ReviewItemData => ({
   href: review.reviewerSlug ? `/people/${review.reviewerSlug}` : undefined,
   photoUrl: review.reviewerPhoto,
 })
+
+// Card / page pe tasveer: business ka logo, manager ki photo
+export const imageOf = (entry: object) =>
+  ('logoUrl' in entry ? (entry.logoUrl as string | undefined) : undefined) ??
+  ('photoUrl' in entry ? (entry.photoUrl as string | undefined) : undefined)

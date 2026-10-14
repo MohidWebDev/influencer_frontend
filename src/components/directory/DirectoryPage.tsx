@@ -17,7 +17,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import Pagination from '../Pagination'
 import RatingBadge from '../agreements/RatingBadge'
-import { hostOf } from './directoryUtils'
+import { hostOf, imageOf } from './directoryUtils'
 import { directoryQuery } from '../../api/queries'
 import { useAuth } from '../../hooks/useAuth'
 import type { DirectoryBusiness, DirectoryManager } from '../../types/directory'
@@ -86,12 +86,21 @@ function EntryCard({
     <article className="relative flex flex-col rounded-2xl border border-gray-200 bg-white p-4 transition hover:border-gray-400 hover:shadow-sm sm:p-5">
       <div className="flex items-start gap-3 sm:gap-4">
         {/* Avatar: mobile pe chhota */}
-        <span
-          aria-hidden="true"
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gray-900 text-sm font-semibold text-white sm:h-12 sm:w-12 sm:text-base"
-        >
-          {initials(name)}
-        </span>
+        {imageOf(entry) ? (
+          <img
+            src={imageOf(entry)}
+            alt=""
+            loading="lazy"
+            className="h-10 w-10 shrink-0 rounded-xl bg-gray-100 object-cover ring-1 ring-gray-200 sm:h-12 sm:w-12"
+          />
+        ) : (
+          <span
+            aria-hidden="true"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gray-900 text-sm font-semibold text-white sm:h-12 sm:w-12 sm:text-base"
+          >
+            {initials(name)}
+          </span>
+        )}
 
         <div className="min-w-0 flex-1">
           {/* Title + badges: mobile pe wrap honge, chhote text */}
