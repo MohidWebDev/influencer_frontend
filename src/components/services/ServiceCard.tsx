@@ -19,21 +19,26 @@ function ServiceCard({ service, isBusy, onToggle, onEdit, onDelete }: ServiceCar
   const { t } = useTranslation()
   return (
     <article
-      className={`rounded-2xl border bg-white p-5 transition ${
+      className={`w-full rounded-2xl border bg-white p-4 transition sm:p-5 ${
         service.isActive ? 'border-gray-200 shadow-sm' : 'border-dashed border-gray-300'
       }`}
     >
-      <div className="flex items-start gap-4">
+      <div className="flex items-start gap-3 sm:gap-4">
         <span
-          className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${
+          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl sm:h-12 sm:w-12 ${
             service.isActive ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-400'
           }`}
         >
           <FontAwesomeIcon icon={categoryIcon(service.category)} />
         </span>
+
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h3 className={`font-semibold ${service.isActive ? 'text-gray-900' : 'text-gray-500'}`}>
+            <h3
+              className={`min-w-0 break-words text-base font-semibold sm:text-lg ${
+                service.isActive ? 'text-gray-900' : 'text-gray-500'
+              }`}
+            >
               {service.title}
             </h3>
             {!service.isActive && (
@@ -42,34 +47,47 @@ function ServiceCard({ service, isBusy, onToggle, onEdit, onDelete }: ServiceCar
               </span>
             )}
           </div>
-          <p className="text-xs text-gray-500">{t(`services.category.${service.category}`)}</p>
-          <p className="mt-2 text-base font-semibold text-gray-900">
-            {formatPrice(service.pricing)}
+
+          <p className="text-xs text-gray-500 sm:text-sm">
+            {t(`services.category.${service.category}`)}
           </p>
-          {service.deliveryDays && (
-            <p className="mt-1 text-xs text-gray-500">
-              <FontAwesomeIcon icon={faClock} className="me-1" />
-              {t('services.deliveryIn', { count: service.deliveryDays })}
+
+          <div className="mt-2 flex flex-wrap items-baseline gap-x-4 gap-y-1">
+            <p className="text-lg font-semibold text-gray-900 sm:text-xl">
+              {formatPrice(service.pricing)}
+            </p>
+            {service.deliveryDays && (
+              <p className="text-sm text-gray-500">
+                <FontAwesomeIcon icon={faClock} className="me-1" />
+                {t('services.deliveryIn', { count: service.deliveryDays })}
+              </p>
+            )}
+          </div>
+
+          {service.description && (
+            <p className="mt-2 line-clamp-3 text-sm text-gray-600 sm:text-base">
+              {service.description}
             </p>
           )}
-          {service.description && (
-            <p className="mt-2 line-clamp-3 text-sm text-gray-600">{service.description}</p>
-          )}
         </div>
-        <Switch
-          size="sm"
-          checked={service.isActive}
-          disabled={isBusy}
-          onChange={onToggle}
-          label={t('services.fields.active')}
-        />
+
+        <div className="shrink-0">
+          <Switch
+            size="sm"
+            checked={service.isActive}
+            disabled={isBusy}
+            onChange={onToggle}
+            label={t('services.fields.active')}
+          />
+        </div>
       </div>
-      <div className="mt-4 flex gap-2 border-t border-gray-100 pt-3">
+
+      <div className="mt-4 flex gap-2 border-t border-gray-100 pt-3 sm:justify-end sm:gap-3 sm:pt-4">
         <button
           type="button"
           onClick={onEdit}
           disabled={isBusy}
-          className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-100"
+          className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100 disabled:opacity-50 sm:flex-none"
         >
           <FontAwesomeIcon icon={faPen} className="text-xs" />
           {t('services.edit')}
@@ -78,7 +96,7 @@ function ServiceCard({ service, isBusy, onToggle, onEdit, onDelete }: ServiceCar
           type="button"
           onClick={onDelete}
           disabled={isBusy}
-          className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-red-600 hover:bg-red-50"
+          className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-50 disabled:opacity-50 sm:flex-none"
         >
           <FontAwesomeIcon icon={faTrash} className="text-xs" />
           {t('services.delete')}

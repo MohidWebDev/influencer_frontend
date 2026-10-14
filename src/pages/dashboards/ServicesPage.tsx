@@ -110,11 +110,11 @@ function ServicesPage({ personId }: { personId?: string } = {}) {
 
   if (isLoading) {
     return (
-      <div className="mx-auto max-w-6xl space-y-4" aria-busy="true">
+      <div className="mx-auto max-w-screen-2xl space-y-4" aria-busy="true">
         <div className="h-10 w-72 animate-pulse rounded-lg bg-gray-200/70" />
-        <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
-          <div className="h-80 animate-pulse rounded-2xl bg-gray-200/70" />
-          <div className="h-80 animate-pulse rounded-2xl bg-gray-200/70" />
+        <div className="flex flex-col gap-6 lg:flex-row">
+          <div className="h-80 flex-1 animate-pulse rounded-2xl bg-gray-200/70" />
+          <div className="h-80 w-full animate-pulse rounded-2xl bg-gray-200/70 lg:w-[400px] lg:shrink-0" />
         </div>
       </div>
     )
@@ -165,7 +165,7 @@ function ServicesPage({ personId }: { personId?: string } = {}) {
   const busyId = toggle.isPending ? toggle.variables?.id : undefined
 
   return (
-    <div className="mx-auto max-w-6xl space-y-6">
+    <div className="mx-auto max-w-screen-2xl space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         {personId ? (
           <span />
@@ -217,9 +217,10 @@ function ServicesPage({ personId }: { personId?: string } = {}) {
         </p>
       ) : null}
 
-      <div className="grid items-start gap-6 lg:grid-cols-[1fr_380px]">
-        {/* Services */}
-        <section className="order-2 space-y-4 lg:order-1">
+      {/* ✅ GRID KHATAM — flex layout. Desktop pe services left (flex-1), sidebar right (fixed) */}
+      <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
+        {/* Services list — left side, full width */}
+        <section className="w-full space-y-4 lg:flex-1">
           <div className="flex items-center justify-between gap-3">
             <div>
               <h2 className="text-lg font-semibold">{t('services.yourServices')}</h2>
@@ -274,7 +275,8 @@ function ServicesPage({ personId }: { personId?: string } = {}) {
               </div>
             </div>
           ) : (
-            <div className="grid gap-4 xl:grid-cols-2">
+            /* ✅ SIMPLE STACKED LIST — koi grid nahi */
+            <div className="space-y-4">
               {services.map((service) => (
                 <ServiceCard
                   key={service._id}
@@ -289,8 +291,8 @@ function ServicesPage({ personId }: { personId?: string } = {}) {
           )}
         </section>
 
-        {/* Availability: mobile pe upar */}
-        <div className="order-1 lg:sticky lg:top-24 lg:order-2">
+        {/* Sidebar — mobile pe neeche, desktop pe right side fixed width */}
+        <div className="w-full lg:sticky lg:top-24 lg:w-[400px] lg:shrink-0 xl:w-[440px]">
           <AvailabilityPanel
             // Server se naya data aaye to form usi se dobara shuru
             key={data.availability?.updatedAt ?? 'none'}
