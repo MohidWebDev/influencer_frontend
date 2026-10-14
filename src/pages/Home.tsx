@@ -24,6 +24,7 @@ import {
 import { homeStatsQuery, peopleQuery } from '../api/queries'
 import type { HomeCategoryKey } from '../api/stats'
 import FeaturedCarousel from '../components/home/FeaturedCarousel'
+import FeatureBlocks from '../components/home/FeatureBlocks'
 import SearchBar from '../components/SearchBar'
 import { CONTACT_EMAIL } from '../constants/config'
 import { useAuth } from '../hooks/useAuth'
@@ -351,6 +352,9 @@ function Home() {
             ))}
           </ol>
         </section>
+
+        {/* Platform kya kya karta hai: paanch hisse, likhai aur mock-up baari baari */}
+        <FeatureBlocks />
 
         {/* Aakhri dawat: muft shuru karo ya demo mango. Talent ke liye profile claim ka chhota rasta */}
         <section className="keep-dark relative isolate overflow-hidden rounded-3xl bg-gray-900 px-6 py-10 text-center text-white md:px-12 md:py-14">

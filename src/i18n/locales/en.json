@@ -535,7 +535,82 @@
     "engagement": "Engagement",
     "viewProfile": "View profile",
     "previous": "Previous",
-    "next": "Next"
+    "next": "Next",
+    "featuresTitle": "Everything you need, from search to signed deal",
+    "featuresSubtitle": "One place to find the right people, check them and work together.",
+    "features": {
+      "discovery": {
+        "eyebrow": "Discovery",
+        "title": "Find the right people in seconds",
+        "body": "Search by name or what they do, then combine filters to get a short, relevant list.",
+        "p1": "Filter by profession, industry, topic, country, city and language",
+        "p2": "Set a minimum follower count and see who is open for work",
+        "p3": "Match any or all of your filters",
+        "cta": "Try the filters"
+      },
+      "reach": {
+        "eyebrow": "Audience & reach",
+        "title": "See real reach on every platform",
+        "body": "Every profile shows followers and engagement for each social account, with the sources shown openly.",
+        "p1": "Followers and engagement per platform",
+        "p2": "Total reach across all accounts",
+        "p3": "Sources listed on every profile",
+        "cta": "See top profiles"
+      },
+      "authenticity": {
+        "eyebrow": "Authenticity",
+        "title": "Know who is real",
+        "body": "Talents claim their own profiles and prove it with a one-time code, and an admin checks every claim before the verified badge appears.",
+        "p1": "Verified badge only after an admin approves the claim",
+        "p2": "Businesses and managers are verified too",
+        "p3": "Ratings and reviews from past work",
+        "cta": "Claim your profile"
+      },
+      "outreach": {
+        "eyebrow": "Outreach",
+        "title": "Shortlist, compare and reach out",
+        "body": "Save people into lists for each campaign, compare them side by side and send a hire request in a few clicks.",
+        "p1": "Named shortlists with private notes",
+        "p2": "Side-by-side compare of reach, prices and ratings",
+        "p3": "Hire requests go to the talent or their verified manager",
+        "cta": "Create a business account"
+      },
+      "hiring": {
+        "eyebrow": "Hiring & booking",
+        "title": "Agree, sign and deliver in one place",
+        "body": "Turn an accepted request into an agreement with clear terms, milestones and signatures from both sides.",
+        "p1": "Scope, milestones, payment terms and usage rights",
+        "p2": "Both sides sign with a code sent to their email",
+        "p3": "Track deliveries, approvals and reviews",
+        "cta": "Get started"
+      }
+    },
+    "mock": {
+      "searchHint": "Food creators in Lahore",
+      "filterProfession": "Content Creator",
+      "filterCountry": "Pakistan",
+      "filterFollowers": "100K+",
+      "totalReach": "Total reach",
+      "avgEngagement": "5.1% avg. engagement",
+      "sources": "Sources: official profiles, checked by our team",
+      "checkClaimed": "Profile claimed by its owner",
+      "checkCode": "One-time code confirmed",
+      "checkSources": "Social accounts linked",
+      "checkReviews": "4.9 from 12 reviews",
+      "shortlist": "Ramadan campaign",
+      "requestTitle": "Spring snack campaign",
+      "budget": "Budget: PKR 250,000",
+      "send": "Send request",
+      "accepted": "Request accepted",
+      "agreement": "Brand partnership",
+      "active": "Active",
+      "milestone1": "Concept approved",
+      "milestone2": "3 Instagram reels",
+      "milestone3": "Final report",
+      "brand": "brand",
+      "talent": "talent",
+      "signedBy": "Signed by {{side}}"
+    }
   },
   "login": {
     "title": "Log in",
