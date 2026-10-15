@@ -17,13 +17,49 @@ import NewsletterForm from './NewsletterForm'
 
 const currentYear = new Date().getFullYear()
 
-const SOCIALS: { key: keyof typeof SOCIAL_LINKS; label: string; icon: IconDefinition }[] = [
-  { key: 'instagram', label: 'Instagram', icon: faInstagram },
-  { key: 'x', label: 'X', icon: faXTwitter },
-  { key: 'linkedin', label: 'LinkedIn', icon: faLinkedinIn },
-  { key: 'youtube', label: 'YouTube', icon: faYoutube },
-  { key: 'facebook', label: 'Facebook', icon: faFacebookF },
-  { key: 'tiktok', label: 'TikTok', icon: faTiktok },
+// ✅ Har social ka original brand color — DEFAULT state mein
+const SOCIALS: {
+  key: keyof typeof SOCIAL_LINKS
+  label: string
+  icon: IconDefinition
+  bg: string
+}[] = [
+  {
+    key: 'instagram',
+    label: 'Instagram',
+    icon: faInstagram,
+    bg: 'bg-gradient-to-br from-amber-400 via-pink-500 to-purple-600',
+  },
+  {
+    key: 'x',
+    label: 'X',
+    icon: faXTwitter,
+    bg: 'bg-black',
+  },
+  {
+    key: 'linkedin',
+    label: 'LinkedIn',
+    icon: faLinkedinIn,
+    bg: 'bg-[#0A66C2]',
+  },
+  {
+    key: 'youtube',
+    label: 'YouTube',
+    icon: faYoutube,
+    bg: 'bg-[#FF0000]',
+  },
+  {
+    key: 'facebook',
+    label: 'Facebook',
+    icon: faFacebookF,
+    bg: 'bg-[#1877F2]',
+  },
+  {
+    key: 'tiktok',
+    label: 'TikTok',
+    icon: faTiktok,
+    bg: 'bg-black',
+  },
 ]
 
 interface FooterLink {
@@ -37,7 +73,6 @@ function Footer() {
   const { t } = useTranslation()
   const { user } = useAuth()
 
-  // Logged-in user ke liye "shuru karo" wale links us ke dashboard pe
   const home = user ? (user.role === 'admin' ? '/admin' : '/dashboard') : null
   const columns: { title: string; links: FooterLink[] }[] = [
     {
@@ -86,19 +121,19 @@ function Footer() {
   const linkClass = 'text-sm text-gray-400 transition hover:text-white'
 
   return (
-    <footer className="keep-dark bg-gray-950 text-gray-300 print:hidden">
-      <div className="mx-auto max-w-6xl px-4 pb-8 pt-14">
+    <footer className="keep-dark w-full bg-gray-950 text-gray-300 print:hidden">
+      <div className="mx-auto w-full max-w-screen-2xl px-4 pb-8 pt-14 sm:px-6 lg:px-10">
         <div className="grid gap-10 lg:grid-cols-12">
           {/* Brand + paigham + social + newsletter */}
           <div className="lg:col-span-4">
-            <TopLink to="/" className="text-xl font-bold text-white">
+            <TopLink to="/" className="text-2xl font-bold text-white">
               {PLATFORM_NAME}
             </TopLink>
-            <p className="mt-3 max-w-sm text-sm leading-relaxed text-gray-400">
+            <p className="mt-3 max-w-md text-sm leading-relaxed text-gray-400">
               {t('footer.tagline')}
             </p>
 
-
+            {/* ✅ Social icons — brand color DEFAULT, hover pe icon bara */}
             <ul className="mt-6 flex flex-wrap gap-2" aria-label={t('footer.followUs')}>
               {SOCIALS.map((social) => (
                 <li key={social.key}>
@@ -108,15 +143,18 @@ function Footer() {
                     rel="noopener noreferrer"
                     aria-label={social.label}
                     title={social.label}
-                    className="flex h-10 w-10 items-center justify-center rounded-full bg-white/5 text-gray-300 ring-1 ring-white/10 transition hover:-translate-y-0.5 hover:bg-white hover:text-gray-950"
+                    className={`group flex h-10 w-10 items-center justify-center rounded-full text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md ${social.bg}`}
                   >
-                    <FontAwesomeIcon icon={social.icon} />
+                    <FontAwesomeIcon
+                      icon={social.icon}
+                      className="transition-transform duration-300 group-hover:scale-125"
+                    />
                   </a>
                 </li>
               ))}
             </ul>
 
-            <div className="mt-8 max-w-sm">
+            <div className="mt-8 max-w-md">
               <NewsletterForm />
             </div>
           </div>
@@ -124,7 +162,7 @@ function Footer() {
           {/* Link columns */}
           <nav
             aria-label={t('footer.siteLinks')}
-            className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-5 lg:col-span-8"
+            className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-5 lg:col-span-8 lg:gap-8"
           >
             {columns.map((column) => (
               <div key={column.title}>
@@ -152,7 +190,7 @@ function Footer() {
         </div>
 
         {/* Email wali patti */}
-        <div className="mt-12 flex flex-col items-start justify-between gap-4 rounded-2xl bg-white/5 p-5 ring-1 ring-white/10 sm:flex-row sm:items-center">
+        <div className="mt-12 flex flex-col items-start justify-between gap-4 rounded-2xl bg-white/5 p-5 ring-1 ring-white/10 sm:flex-row sm:items-center sm:p-6">
           <div>
             <p className="font-semibold text-white">{t('footer.contactTitle')}</p>
             <p className="mt-1 text-sm text-gray-400">{t('footer.contactBody')}</p>
