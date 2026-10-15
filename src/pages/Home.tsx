@@ -129,10 +129,11 @@ function Home() {
   const demoHref = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(t('home.demoSubject'))}`
 
   const chip =
-    'rounded-full border border-white/25 bg-white/10 px-3 py-1.5 backdrop-blur transition hover:bg-white/20 hover:text-white'
+    'rounded-full border border-white/25 bg-white px-3 py-1.5 backdrop-blur transition hover:bg-white/20 hover:text-white'
 
   return (
-    <div className="space-y-16">
+    /* ✅ Background white — poore page par */
+    <div className="space-y-16 bg-white">
       {/* Hero: tasveeron ka carousel, search aur platform ke numbers */}
       <section
         aria-label={t('home.heroLabel')}
@@ -160,15 +161,14 @@ function Home() {
         {/* Likhai navbar ki seedh mein: andar max-w-6xl, tasveer poori chaurai */}
         <div className="relative mx-auto flex min-h-[34rem] max-w-6xl flex-col justify-between gap-10 px-4 py-12 sm:py-14 md:min-h-[38rem] md:py-20">
           <div className="max-w-2xl text-center md:text-start">
-
             <h1 className="text-3xl font-extrabold leading-[1.1] tracking-tight text-white sm:text-4xl md:text-6xl">
               {t('home.title')}
             </h1>
-            <p className="mt-4 max-w-xl text-sm leading-relaxed text-white/80 md:mx-0 md:text-lg mx-auto">
+            <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-white/80 md:mx-0 md:text-lg">
               {t('home.subtitle')}
             </p>
 
-            <div className="mt-7 max-w-xl md:mx-0 mx-auto">
+            <div className="mx-auto mt-7 max-w-xl md:mx-0">
               <SearchBar size="lg" tone="onDark" />
             </div>
 
@@ -228,12 +228,15 @@ function Home() {
         </div>
       </section>
 
+      {/* ✅ PEHLA CONTAINER: categories, industries, featured */}
       <div className="mx-auto max-w-6xl space-y-16 px-4">
         {/* Categories: journalists, creators, speakers, experts (ginti ke saath) */}
         <section>
           <div className="text-center">
             <h2 className="text-xl font-semibold md:text-2xl">{t('home.categoriesTitle')}</h2>
-            <p className="mx-auto mt-1 max-w-xl text-sm text-gray-500">{t('home.categoriesSubtitle')}</p>
+            <p className="mx-auto mt-1 max-w-xl text-sm text-gray-500">
+              {t('home.categoriesSubtitle')}
+            </p>
           </div>
           <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {categories.map((category) => (
@@ -246,11 +249,17 @@ function Home() {
                 }
                 className="group flex flex-col rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-gray-900 hover:shadow-md"
               >
-                <span className={`flex h-12 w-12 items-center justify-center rounded-xl ${category.tint}`}>
+                <span
+                  className={`flex h-12 w-12 items-center justify-center rounded-xl ${category.tint}`}
+                >
                   <FontAwesomeIcon icon={category.icon} className="text-lg" />
                 </span>
-                <h3 className="mt-4 text-lg font-semibold">{t(`home.categories.${category.key}.title`)}</h3>
-                <p className="mt-1 flex-1 text-sm text-gray-600">{t(`home.categories.${category.key}.body`)}</p>
+                <h3 className="mt-4 text-lg font-semibold">
+                  {t(`home.categories.${category.key}.title`)}
+                </h3>
+                <p className="mt-1 flex-1 text-sm text-gray-600">
+                  {t(`home.categories.${category.key}.body`)}
+                </p>
                 <span className="mt-4 flex items-center justify-between text-sm">
                   {category.data ? (
                     <span className="font-semibold">
@@ -303,29 +312,44 @@ function Home() {
         {/* Sab se zyada followers wale log: swipe hone wala carousel */}
         <section>
           {isError && !featured ? (
-            <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{t('home.loadError')}</p>
+            <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
+              {t('home.loadError')}
+            </p>
           ) : featured && featured.people.length === 0 ? (
             <p className="text-gray-500">{t('home.noProfiles')}</p>
           ) : (
             <FeaturedCarousel people={featured?.people} isLoading={isLoading} />
           )}
         </section>
+      </div>
 
-        {/* Kaise kaam karta hai */}
-        <section id="how-it-works" className="scroll-mt-24 rounded-3xl bg-white p-6 shadow-sm ring-1 ring-gray-100 md:p-10">
+      {/* ✅ FULL WIDTH SECTION — container ke bahar, background edge-to-edge.
+          Andar max-w-6xl rakha hai taake 3 cards ki width pehle jaisi rahe. */}
+      <section
+        id="how-it-works"
+        className="scroll-mt-24 w-full bg-white py-12 shadow-sm ring-1 ring-gray-100 md:py-16"
+      >
+        <div className="mx-auto max-w-6xl px-4">
           <h2 className="text-center text-2xl font-bold">{t('home.howTitle')}</h2>
           <p className="mx-auto mt-2 max-w-xl text-center text-sm text-gray-500">
             {t('home.howSubtitle')}
           </p>
+
           <ol className="mt-8 grid gap-6 md:grid-cols-3 md:gap-8">
             {steps.map((step, i) => (
-              <li key={step.title} className="relative flex flex-col rounded-2xl bg-gray-50 p-5 md:p-6">
+              <li
+                key={step.title}
+                className="relative flex flex-col rounded-2xl bg-gray-50 p-5 md:p-6"
+              >
                 {/* Qadam ka number aur icon */}
                 <div className="flex items-center justify-between">
                   <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-900 text-white">
                     <FontAwesomeIcon icon={step.icon} />
                   </span>
-                  <span className="text-3xl font-extrabold tabular-nums text-gray-200" aria-hidden="true">
+                  <span
+                    className="text-3xl font-extrabold tabular-nums text-gray-200"
+                    aria-hidden="true"
+                  >
                     {String(i + 1).padStart(2, '0')}
                   </span>
                 </div>
@@ -353,11 +377,13 @@ function Home() {
               </li>
             ))}
           </ol>
-        </section>
+        </div>
+      </section>
 
-        {/* Platform kya kya karta hai: paanch hisse, likhai aur mock-up baari baari */}
-        <FeatureBlocks />
+      <FeatureBlocks />
 
+      {/* ✅ DOOSRA CONTAINER: Testimonials, FAQ, CTA */}
+      <div className="mx-auto max-w-6xl space-y-16 px-4">
         {/* Asal logon ki baatein (list khali ho to ye hissa nahi dikhta) */}
         <TestimonialsSlider />
 
@@ -376,7 +402,9 @@ function Home() {
           <h2 className="mx-auto mt-5 max-w-2xl text-2xl font-bold tracking-tight md:text-4xl">
             {t('home.finalTitle')}
           </h2>
-          <p className="mx-auto mt-3 max-w-xl text-sm text-white/75 md:text-base">{t('home.finalBody')}</p>
+          <p className="mx-auto mt-3 max-w-xl text-sm text-white/75 md:text-base">
+            {t('home.finalBody')}
+          </p>
           <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
             <Link
               to={startTo}
